@@ -2,9 +2,9 @@ use crate::{interface::AcpiGenericAddress, types::AcpiTableHeader};
 
 use super::ACPI_SUBTABLE_HEADER;
 
-#[doc = " PCCT - Platform Communications Channel Table (ACPI 5.0)"]
-#[doc = "        Version 2 (ACPI 6.2)"]
-#[doc = ""]
+///  PCCT - Platform Communications Channel Table (ACPI 5.0)
+///         Version 2 (ACPI 6.2)
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_pcct {
@@ -12,9 +12,9 @@ pub struct acpi_table_pcct {
     pub Flags: u32,
     pub Reserved: u64,
 }
-#[doc = " PCCT - Platform Communications Channel Table (ACPI 5.0)"]
-#[doc = "        Version 2 (ACPI 6.2)"]
-#[doc = ""]
+///  PCCT - Platform Communications Channel Table (ACPI 5.0)
+///         Version 2 (ACPI 6.2)
+/// 
 pub type ACPI_TABLE_PCCT = acpi_table_pcct;
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]

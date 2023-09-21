@@ -1,12 +1,12 @@
 use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
 
 
-#[doc = " DMAR - DMA Remapping table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"Intel Virtualization Technology for Directed I/O\","]
-#[doc = " Version 2.3, October 2014"]
-#[doc = ""]
+///  DMAR - DMA Remapping table
+///         Version 1
+/// 
+///  Conforms to \"Intel Virtualization Technology for Directed I/O\",
+///  Version 2.3, October 2014
+/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_dmar {
@@ -15,12 +15,12 @@ pub struct acpi_table_dmar {
     pub Flags: u8,
     pub Reserved: [u8; 10usize],
 }
-#[doc = " DMAR - DMA Remapping table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"Intel Virtualization Technology for Directed I/O\","]
-#[doc = " Version 2.3, October 2014"]
-#[doc = ""]
+///  DMAR - DMA Remapping table
+///         Version 1
+/// 
+///  Conforms to \"Intel Virtualization Technology for Directed I/O\",
+///  Version 2.3, October 2014
+/// 
 pub type ACPI_TABLE_DMAR = acpi_table_dmar;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]

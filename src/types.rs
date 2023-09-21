@@ -17,9 +17,9 @@ impl AcpiString {
     pub const NULL: Self = Self(core::ptr::null_mut());
 }
 
-#[doc = " Master ACPI Table Header. This common header is used by all ACPI tables"]
-#[doc = " except the RSDP and FACS."]
-#[doc = ""]
+///  Master ACPI Table Header. This common header is used by all ACPI tables
+///  except the RSDP and FACS.
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct AcpiTableHeader {

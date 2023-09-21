@@ -2,9 +2,9 @@ use crate::types::AcpiTableHeader;
 
 use super::ACPI_SUBTABLE_HEADER;
 
-#[doc = " MADT - Multiple APIC Description Table"]
-#[doc = "        Version 3"]
-#[doc = ""]
+///  MADT - Multiple APIC Description Table
+///         Version 3
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_madt {
@@ -12,9 +12,9 @@ pub struct acpi_table_madt {
     pub Address: u32,
     pub Flags: u32,
 }
-#[doc = " MADT - Multiple APIC Description Table"]
-#[doc = "        Version 3"]
-#[doc = ""]
+///  MADT - Multiple APIC Description Table
+///         Version 3
+/// 
 pub type ACPI_TABLE_MADT = acpi_table_madt;
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]

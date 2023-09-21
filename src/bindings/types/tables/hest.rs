@@ -1,17 +1,17 @@
 use crate::{types::AcpiTableHeader, interface::AcpiGenericAddress};
 
-#[doc = " HEST - Hardware Error Source Table (ACPI 4.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  HEST - Hardware Error Source Table (ACPI 4.0)
+///         Version 1
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_hest {
     pub Header: AcpiTableHeader,
     pub ErrorSourceCount: u32,
 }
-#[doc = " HEST - Hardware Error Source Table (ACPI 4.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  HEST - Hardware Error Source Table (ACPI 4.0)
+///         Version 1
+/// 
 pub type ACPI_TABLE_HEST = acpi_table_hest;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]

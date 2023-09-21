@@ -2,9 +2,9 @@ use crate::{types::AcpiTableHeader, bindings::types::ACPI_WHEA_HEADER};
 
 
 
-#[doc = " ERST - Error Record Serialization Table (ACPI 4.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  ERST - Error Record Serialization Table (ACPI 4.0)
+///         Version 1
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_erst {
@@ -13,9 +13,9 @@ pub struct acpi_table_erst {
     pub Reserved: u32,
     pub Entries: u32,
 }
-#[doc = " ERST - Error Record Serialization Table (ACPI 4.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  ERST - Error Record Serialization Table (ACPI 4.0)
+///         Version 1
+/// 
 pub type ACPI_TABLE_ERST = acpi_table_erst;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]

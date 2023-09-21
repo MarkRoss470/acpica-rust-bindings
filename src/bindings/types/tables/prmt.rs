@@ -1,17 +1,17 @@
 use crate::types::AcpiTableHeader;
 
 
-#[doc = " PRMT - Platform Runtime Mechanism Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  PRMT - Platform Runtime Mechanism Table
+///         Version 1
+/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_prmt {
     pub Header: AcpiTableHeader,
 }
-#[doc = " PRMT - Platform Runtime Mechanism Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  PRMT - Platform Runtime Mechanism Table
+///         Version 1
+/// 
 pub type ACPI_TABLE_PRMT = acpi_table_prmt;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]

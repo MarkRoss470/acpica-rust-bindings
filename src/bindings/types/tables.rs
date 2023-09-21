@@ -34,9 +34,9 @@ pub mod viot;
 pub mod watchdog;
 pub mod windows;
 
-#[doc = " Master ACPI Table Header. This common header is used by all ACPI tables"]
-#[doc = " except the RSDP and FACS."]
-#[doc = ""]
+///  Master ACPI Table Header. This common header is used by all ACPI tables
+///  except the RSDP and FACS.
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableHeader {
@@ -51,21 +51,21 @@ pub struct FfiAcpiTableHeader {
     pub AslCompilerRevision: u32,
 }
 
-#[doc = " Common subtable headers"]
-#[doc = ""]
+///  Common subtable headers
+/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_subtable_header {
     pub Type: u8,
     pub Length: u8,
 }
-#[doc = " Common subtable headers"]
-#[doc = ""]
+///  Common subtable headers
+/// 
 pub type ACPI_SUBTABLE_HEADER = acpi_subtable_header;
 
-#[doc = " RSDP - Root System Description Pointer (Signature is \"RSD PTR \")"]
-#[doc = "        Version 2"]
-#[doc = ""]
+///  RSDP - Root System Description Pointer (Signature is \"RSD PTR \")
+///         Version 2
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_rsdp {
@@ -79,9 +79,9 @@ pub struct acpi_table_rsdp {
     pub ExtendedChecksum: u8,
     pub Reserved: [u8; 3usize],
 }
-#[doc = " RSDP - Root System Description Pointer (Signature is \"RSD PTR \")"]
-#[doc = "        Version 2"]
-#[doc = ""]
+///  RSDP - Root System Description Pointer (Signature is \"RSD PTR \")
+///         Version 2
+/// 
 pub type ACPI_TABLE_RSDP = acpi_table_rsdp;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]

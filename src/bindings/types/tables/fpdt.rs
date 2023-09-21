@@ -1,16 +1,16 @@
 use crate::types::AcpiTableHeader;
 
-#[doc = " FPDT - Firmware Performance Data Table (ACPI 5.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  FPDT - Firmware Performance Data Table (ACPI 5.0)
+///         Version 1
+/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_fpdt {
     pub Header: AcpiTableHeader,
 }
-#[doc = " FPDT - Firmware Performance Data Table (ACPI 5.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  FPDT - Firmware Performance Data Table (ACPI 5.0)
+///         Version 1
+/// 
 pub type ACPI_TABLE_FPDT = acpi_table_fpdt;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]

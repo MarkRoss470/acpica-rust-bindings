@@ -1,21 +1,21 @@
 use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
 
 
-#[doc = " CSRT - Core System Resource Table"]
-#[doc = "        Version 0"]
-#[doc = ""]
-#[doc = " Conforms to the \"Core System Resource Table (CSRT)\", November 14, 2011"]
-#[doc = ""]
+///  CSRT - Core System Resource Table
+///         Version 0
+/// 
+///  Conforms to the \"Core System Resource Table (CSRT)\", November 14, 2011
+/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_csrt {
     pub Header: AcpiTableHeader,
 }
-#[doc = " CSRT - Core System Resource Table"]
-#[doc = "        Version 0"]
-#[doc = ""]
-#[doc = " Conforms to the \"Core System Resource Table (CSRT)\", November 14, 2011"]
-#[doc = ""]
+///  CSRT - Core System Resource Table
+///         Version 0
+/// 
+///  Conforms to the \"Core System Resource Table (CSRT)\", November 14, 2011
+/// 
 pub type ACPI_TABLE_CSRT = acpi_table_csrt;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]

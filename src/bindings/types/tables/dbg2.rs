@@ -1,11 +1,11 @@
 use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
 
 
-#[doc = " DBG2 - Debug Port Table 2"]
-#[doc = "        Version 0 (Both main table and subtables)"]
-#[doc = ""]
-#[doc = " Conforms to \"Microsoft Debug Port Table 2 (DBG2)\", September 21, 2020"]
-#[doc = ""]
+///  DBG2 - Debug Port Table 2
+///         Version 0 (Both main table and subtables)
+/// 
+///  Conforms to \"Microsoft Debug Port Table 2 (DBG2)\", September 21, 2020
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_dbg2 {
@@ -13,11 +13,11 @@ pub struct acpi_table_dbg2 {
     pub InfoOffset: u32,
     pub InfoCount: u32,
 }
-#[doc = " DBG2 - Debug Port Table 2"]
-#[doc = "        Version 0 (Both main table and subtables)"]
-#[doc = ""]
-#[doc = " Conforms to \"Microsoft Debug Port Table 2 (DBG2)\", September 21, 2020"]
-#[doc = ""]
+///  DBG2 - Debug Port Table 2
+///         Version 0 (Both main table and subtables)
+/// 
+///  Conforms to \"Microsoft Debug Port Table 2 (DBG2)\", September 21, 2020
+/// 
 pub type ACPI_TABLE_DBG2 = acpi_table_dbg2;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]

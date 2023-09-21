@@ -1,20 +1,20 @@
 use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
 
-#[doc = " AEST - Arm Error Source Table"]
-#[doc = ""]
-#[doc = " Conforms to: ACPI for the Armv8 RAS Extensions 1.1 Platform Design Document"]
-#[doc = " September 2020."]
-#[doc = ""]
+///  AEST - Arm Error Source Table
+/// 
+///  Conforms to: ACPI for the Armv8 RAS Extensions 1.1 Platform Design Document
+///  September 2020.
+/// 
 #[repr(C, packed)]
 pub struct acpi_table_aest {
     pub Header: AcpiTableHeader,
     NodeArray: __IncompleteArrayField<*mut ::core::ffi::c_void>,
 }
-#[doc = " AEST - Arm Error Source Table"]
-#[doc = ""]
-#[doc = " Conforms to: ACPI for the Armv8 RAS Extensions 1.1 Platform Design Document"]
-#[doc = " September 2020."]
-#[doc = ""]
+///  AEST - Arm Error Source Table
+/// 
+///  Conforms to: ACPI for the Armv8 RAS Extensions 1.1 Platform Design Document
+///  September 2020.
+/// 
 pub type ACPI_TABLE_AEST = acpi_table_aest;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]

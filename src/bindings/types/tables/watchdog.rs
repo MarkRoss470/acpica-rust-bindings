@@ -1,11 +1,11 @@
 use crate::{types::AcpiTableHeader, interface::AcpiGenericAddress};
 
-#[doc = " WDAT - Watchdog Action Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"Hardware Watchdog Timers Design Specification\","]
-#[doc = " Copyright 2006 Microsoft Corporation."]
-#[doc = ""]
+///  WDAT - Watchdog Action Table
+///         Version 1
+/// 
+///  Conforms to \"Hardware Watchdog Timers Design Specification\",
+///  Copyright 2006 Microsoft Corporation.
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_wdat {
@@ -23,12 +23,12 @@ pub struct acpi_table_wdat {
     pub Reserved2: [u8; 3usize],
     pub Entries: u32,
 }
-#[doc = " WDAT - Watchdog Action Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"Hardware Watchdog Timers Design Specification\","]
-#[doc = " Copyright 2006 Microsoft Corporation."]
-#[doc = ""]
+///  WDAT - Watchdog Action Table
+///         Version 1
+/// 
+///  Conforms to \"Hardware Watchdog Timers Design Specification\",
+///  Copyright 2006 Microsoft Corporation.
+/// 
 pub type ACPI_TABLE_WDAT = acpi_table_wdat;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
@@ -70,12 +70,12 @@ pub enum AcpiWdatInstructions {
     ACPI_WDAT_INSTRUCTION_RESERVED = 4,
     ACPI_WDAT_PRESERVE_REGISTER = 128,
 }
-#[doc = " WDDT - Watchdog Descriptor Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"Using the Intel ICH Family Watchdog Timer (WDT)\","]
-#[doc = " Version 001, September 2002"]
-#[doc = ""]
+///  WDDT - Watchdog Descriptor Table
+///         Version 1
+/// 
+///  Conforms to \"Using the Intel ICH Family Watchdog Timer (WDT)\",
+///  Version 001, September 2002
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_wddt {
@@ -90,19 +90,19 @@ pub struct acpi_table_wddt {
     pub Status: u16,
     pub Capability: u16,
 }
-#[doc = " WDDT - Watchdog Descriptor Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"Using the Intel ICH Family Watchdog Timer (WDT)\","]
-#[doc = " Version 001, September 2002"]
-#[doc = ""]
+///  WDDT - Watchdog Descriptor Table
+///         Version 1
+/// 
+///  Conforms to \"Using the Intel ICH Family Watchdog Timer (WDT)\",
+///  Version 001, September 2002
+/// 
 pub type ACPI_TABLE_WDDT = acpi_table_wddt;
-#[doc = " WDRT - Watchdog Resource Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"Watchdog Timer Hardware Requirements for Windows Server 2003\","]
-#[doc = " Version 1.01, August 28, 2006"]
-#[doc = ""]
+///  WDRT - Watchdog Resource Table
+///         Version 1
+/// 
+///  Conforms to \"Watchdog Timer Hardware Requirements for Windows Server 2003\",
+///  Version 1.01, August 28, 2006
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_wdrt {
@@ -118,10 +118,10 @@ pub struct acpi_table_wdrt {
     pub MaxCount: u16,
     pub Units: u8,
 }
-#[doc = " WDRT - Watchdog Resource Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"Watchdog Timer Hardware Requirements for Windows Server 2003\","]
-#[doc = " Version 1.01, August 28, 2006"]
-#[doc = ""]
+///  WDRT - Watchdog Resource Table
+///         Version 1
+/// 
+///  Conforms to \"Watchdog Timer Hardware Requirements for Windows Server 2003\",
+///  Version 1.01, August 28, 2006
+/// 
 pub type ACPI_TABLE_WDRT = acpi_table_wdrt;

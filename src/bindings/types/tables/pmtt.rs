@@ -1,18 +1,18 @@
 use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
 
 
-#[doc = " PMTT - Platform Memory Topology Table (ACPI 5.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  PMTT - Platform Memory Topology Table (ACPI 5.0)
+///         Version 1
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_pmtt {
     pub Header: AcpiTableHeader,
     pub MemoryDeviceCount: u32,
 }
-#[doc = " PMTT - Platform Memory Topology Table (ACPI 5.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  PMTT - Platform Memory Topology Table (ACPI 5.0)
+///         Version 1
+/// 
 pub type ACPI_TABLE_PMTT = acpi_table_pmtt;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]

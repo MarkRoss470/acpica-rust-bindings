@@ -1,10 +1,10 @@
 use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
 
 
-#[doc = " DRTM - Dynamic Root of Trust for Measurement table"]
-#[doc = " Conforms to \"TCG D-RTM Architecture\" June 17 2013, Version 1.0.0"]
-#[doc = " Table version 1"]
-#[doc = ""]
+///  DRTM - Dynamic Root of Trust for Measurement table
+///  Conforms to \"TCG D-RTM Architecture\" June 17 2013, Version 1.0.0
+///  Table version 1
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_drtm {
@@ -19,10 +19,10 @@ pub struct acpi_table_drtm {
     pub ArchDependentAddress: u64,
     pub Flags: u32,
 }
-#[doc = " DRTM - Dynamic Root of Trust for Measurement table"]
-#[doc = " Conforms to \"TCG D-RTM Architecture\" June 17 2013, Version 1.0.0"]
-#[doc = " Table version 1"]
-#[doc = ""]
+///  DRTM - Dynamic Root of Trust for Measurement table
+///  Conforms to \"TCG D-RTM Architecture\" June 17 2013, Version 1.0.0
+///  Table version 1
+/// 
 pub type ACPI_TABLE_DRTM = acpi_table_drtm;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]

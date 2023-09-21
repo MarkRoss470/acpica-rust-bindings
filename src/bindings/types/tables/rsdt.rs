@@ -1,17 +1,17 @@
 use crate::types::AcpiTableHeader;
 
-#[doc = " RSDT/XSDT - Root System Description Tables"]
-#[doc = "             Version 1 (both)"]
-#[doc = ""]
+///  RSDT/XSDT - Root System Description Tables
+///              Version 1 (both)
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_rsdt {
     pub Header: AcpiTableHeader,
     pub TableOffsetEntry: [u32; 1usize],
 }
-#[doc = " RSDT/XSDT - Root System Description Tables"]
-#[doc = "             Version 1 (both)"]
-#[doc = ""]
+///  RSDT/XSDT - Root System Description Tables
+///              Version 1 (both)
+/// 
 pub type ACPI_TABLE_RSDT = acpi_table_rsdt;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]

@@ -1,9 +1,9 @@
 use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
 
 
-#[doc = " GTDT - Generic Timer Description Table (ACPI 5.1)"]
-#[doc = "        Version 2"]
-#[doc = ""]
+///  GTDT - Generic Timer Description Table (ACPI 5.1)
+///         Version 2
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_gtdt {
@@ -22,9 +22,9 @@ pub struct acpi_table_gtdt {
     pub PlatformTimerCount: u32,
     pub PlatformTimerOffset: u32,
 }
-#[doc = " GTDT - Generic Timer Description Table (ACPI 5.1)"]
-#[doc = "        Version 2"]
-#[doc = ""]
+///  GTDT - Generic Timer Description Table (ACPI 5.1)
+///         Version 2
+/// 
 pub type ACPI_TABLE_GTDT = acpi_table_gtdt;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]

@@ -1,8 +1,8 @@
 use crate::{types::AcpiTableHeader, bindings::types::{__IncompleteArrayField, ACPI_WHEA_HEADER}};
 
-#[doc = " EINJ - Error Injection Table (ACPI 4.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  EINJ - Error Injection Table (ACPI 4.0)
+///         Version 1
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_einj {
@@ -13,9 +13,9 @@ pub struct acpi_table_einj {
     pub Entries: u32,
 }
 
-#[doc = " EINJ - Error Injection Table (ACPI 4.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  EINJ - Error Injection Table (ACPI 4.0)
+///         Version 1
+/// 
 pub type ACPI_TABLE_EINJ = acpi_table_einj;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]

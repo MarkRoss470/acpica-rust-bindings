@@ -2,21 +2,21 @@ use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField, int
 
 use super::ACPI_SUBTABLE_HEADER;
 
-#[doc = " ASF - Alert Standard Format table (Signature \"ASF!\")"]
-#[doc = "       Revision 0x10"]
-#[doc = ""]
-#[doc = " Conforms to the Alert Standard Format Specification V2.0, 23 April 2003"]
-#[doc = ""]
+///  ASF - Alert Standard Format table (Signature \"ASF!\")
+///        Revision 0x10
+/// 
+///  Conforms to the Alert Standard Format Specification V2.0, 23 April 2003
+/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_asf {
     pub Header: AcpiTableHeader,
 }
-#[doc = " ASF - Alert Standard Format table (Signature \"ASF!\")"]
-#[doc = "       Revision 0x10"]
-#[doc = ""]
-#[doc = " Conforms to the Alert Standard Format Specification V2.0, 23 April 2003"]
-#[doc = ""]
+///  ASF - Alert Standard Format table (Signature \"ASF!\")
+///        Revision 0x10
+/// 
+///  Conforms to the Alert Standard Format Specification V2.0, 23 April 2003
+/// 
 pub type ACPI_TABLE_ASF = acpi_table_asf;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
@@ -114,9 +114,9 @@ pub struct acpi_asf_address {
     pub Devices: u8,
 }
 pub type ACPI_ASF_ADDRESS = acpi_asf_address;
-#[doc = " BERT - Boot Error Record Table (ACPI 4.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  BERT - Boot Error Record Table (ACPI 4.0)
+///         Version 1
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_bert {
@@ -124,9 +124,9 @@ pub struct acpi_table_bert {
     pub RegionLength: u32,
     pub Address: u64,
 }
-#[doc = " BERT - Boot Error Record Table (ACPI 4.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  BERT - Boot Error Record Table (ACPI 4.0)
+///         Version 1
+/// 
 pub type ACPI_TABLE_BERT = acpi_table_bert;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
@@ -147,9 +147,9 @@ pub enum AcpiBertErrorSeverity {
     ACPI_BERT_ERROR_NONE = 3,
     ACPI_BERT_ERROR_RESERVED = 4,
 }
-#[doc = " BGRT - Boot Graphics Resource Table (ACPI 5.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  BGRT - Boot Graphics Resource Table (ACPI 5.0)
+///         Version 1
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_bgrt {
@@ -161,15 +161,15 @@ pub struct acpi_table_bgrt {
     pub ImageOffsetX: u32,
     pub ImageOffsetY: u32,
 }
-#[doc = " BGRT - Boot Graphics Resource Table (ACPI 5.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  BGRT - Boot Graphics Resource Table (ACPI 5.0)
+///         Version 1
+/// 
 pub type ACPI_TABLE_BGRT = acpi_table_bgrt;
-#[doc = " BOOT - Simple Boot Flag Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to the \"Simple Boot Flag Specification\", Version 2.1"]
-#[doc = ""]
+///  BOOT - Simple Boot Flag Table
+///         Version 1
+/// 
+///  Conforms to the \"Simple Boot Flag Specification\", Version 2.1
+/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_boot {
@@ -177,25 +177,25 @@ pub struct acpi_table_boot {
     pub CmosIndex: u8,
     pub Reserved: [u8; 3usize],
 }
-#[doc = " BOOT - Simple Boot Flag Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to the \"Simple Boot Flag Specification\", Version 2.1"]
-#[doc = ""]
+///  BOOT - Simple Boot Flag Table
+///         Version 1
+/// 
+///  Conforms to the \"Simple Boot Flag Specification\", Version 2.1
+/// 
 pub type ACPI_TABLE_BOOT = acpi_table_boot;
 
-#[doc = " CPEP - Corrected Platform Error Polling table (ACPI 4.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  CPEP - Corrected Platform Error Polling table (ACPI 4.0)
+///         Version 1
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_cpep {
     pub Header: AcpiTableHeader,
     pub Reserved: u64,
 }
-#[doc = " CPEP - Corrected Platform Error Polling table (ACPI 4.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  CPEP - Corrected Platform Error Polling table (ACPI 4.0)
+///         Version 1
+/// 
 pub type ACPI_TABLE_CPEP = acpi_table_cpep;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
@@ -208,11 +208,11 @@ pub struct acpi_cpep_polling {
 pub type ACPI_CPEP_POLLING = acpi_cpep_polling;
 
 
-#[doc = " DBGP - Debug Port table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to the \"Debug Port Specification\", Version 1.00, 2/9/2000"]
-#[doc = ""]
+///  DBGP - Debug Port table
+///         Version 1
+/// 
+///  Conforms to the \"Debug Port Specification\", Version 1.00, 2/9/2000
+/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_dbgp {
@@ -221,17 +221,17 @@ pub struct acpi_table_dbgp {
     pub Reserved: [u8; 3usize],
     pub DebugPort: AcpiGenericAddress,
 }
-#[doc = " DBGP - Debug Port table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to the \"Debug Port Specification\", Version 1.00, 2/9/2000"]
-#[doc = ""]
+///  DBGP - Debug Port table
+///         Version 1
+/// 
+///  Conforms to the \"Debug Port Specification\", Version 1.00, 2/9/2000
+/// 
 pub type ACPI_TABLE_DBGP = acpi_table_dbgp;
 
 
-#[doc = " ECDT - Embedded Controller Boot Resources Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  ECDT - Embedded Controller Boot Resources Table
+///         Version 1
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_ecdt {
@@ -242,45 +242,45 @@ pub struct acpi_table_ecdt {
     pub Gpe: u8,
     pub Id: [u8; 1usize],
 }
-#[doc = " ECDT - Embedded Controller Boot Resources Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  ECDT - Embedded Controller Boot Resources Table
+///         Version 1
+/// 
 pub type ACPI_TABLE_ECDT = acpi_table_ecdt;
 
 
-#[doc = " BDAT - BIOS Data ACPI Table"]
-#[doc = ""]
-#[doc = " Conforms to \"BIOS Data ACPI Table\", Interface Specification v4.0 Draft 5"]
-#[doc = " Nov 2020"]
-#[doc = ""]
+///  BDAT - BIOS Data ACPI Table
+/// 
+///  Conforms to \"BIOS Data ACPI Table\", Interface Specification v4.0 Draft 5
+///  Nov 2020
+/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_bdat {
     pub Header: AcpiTableHeader,
     pub Gas: AcpiGenericAddress,
 }
-#[doc = " BDAT - BIOS Data ACPI Table"]
-#[doc = ""]
-#[doc = " Conforms to \"BIOS Data ACPI Table\", Interface Specification v4.0 Draft 5"]
-#[doc = " Nov 2020"]
-#[doc = ""]
+///  BDAT - BIOS Data ACPI Table
+/// 
+///  Conforms to \"BIOS Data ACPI Table\", Interface Specification v4.0 Draft 5
+///  Nov 2020
+/// 
 pub type ACPI_TABLE_BDAT = acpi_table_bdat;
 
 
 
-#[doc = " LPIT - Low Power Idle Table"]
-#[doc = ""]
-#[doc = " Conforms to \"ACPI Low Power Idle Table (LPIT)\" July 2014."]
-#[doc = ""]
+///  LPIT - Low Power Idle Table
+/// 
+///  Conforms to \"ACPI Low Power Idle Table (LPIT)\" July 2014.
+/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_lpit {
     pub Header: AcpiTableHeader,
 }
-#[doc = " LPIT - Low Power Idle Table"]
-#[doc = ""]
-#[doc = " Conforms to \"ACPI Low Power Idle Table (LPIT)\" July 2014."]
-#[doc = ""]
+///  LPIT - Low Power Idle Table
+/// 
+///  Conforms to \"ACPI Low Power Idle Table (LPIT)\" July 2014.
+/// 
 pub type ACPI_TABLE_LPIT = acpi_table_lpit;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
@@ -310,22 +310,22 @@ pub struct acpi_lpit_native {
 }
 pub type ACPI_LPIT_NATIVE = acpi_lpit_native;
 
-#[doc = " MCFG - PCI Memory Mapped Configuration table and subtable"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"PCI Firmware Specification\", Revision 3.0, June 20, 2005"]
-#[doc = ""]
+///  MCFG - PCI Memory Mapped Configuration table and subtable
+///         Version 1
+/// 
+///  Conforms to \"PCI Firmware Specification\", Revision 3.0, June 20, 2005
+/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_mcfg {
     pub Header: AcpiTableHeader,
     pub Reserved: [u8; 8usize],
 }
-#[doc = " MCFG - PCI Memory Mapped Configuration table and subtable"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"PCI Firmware Specification\", Revision 3.0, June 20, 2005"]
-#[doc = ""]
+///  MCFG - PCI Memory Mapped Configuration table and subtable
+///         Version 1
+/// 
+///  Conforms to \"PCI Firmware Specification\", Revision 3.0, June 20, 2005
+/// 
 pub type ACPI_TABLE_MCFG = acpi_table_mcfg;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
@@ -337,12 +337,12 @@ pub struct acpi_mcfg_allocation {
     pub Reserved: u32,
 }
 pub type ACPI_MCFG_ALLOCATION = acpi_mcfg_allocation;
-#[doc = " MCHI - Management Controller Host Interface Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"Management Component Transport Protocol (MCTP) Host"]
-#[doc = " Interface Specification\", Revision 1.0.0a, October 13, 2009"]
-#[doc = ""]
+///  MCHI - Management Controller Host Interface Table
+///         Version 1
+/// 
+///  Conforms to \"Management Component Transport Protocol (MCTP) Host
+///  Interface Specification\", Revision 1.0.0a, October 13, 2009
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_mchi {
@@ -360,17 +360,17 @@ pub struct acpi_table_mchi {
     pub PciDevice: u8,
     pub PciFunction: u8,
 }
-#[doc = " MCHI - Management Controller Host Interface Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"Management Component Transport Protocol (MCTP) Host"]
-#[doc = " Interface Specification\", Revision 1.0.0a, October 13, 2009"]
-#[doc = ""]
+///  MCHI - Management Controller Host Interface Table
+///         Version 1
+/// 
+///  Conforms to \"Management Component Transport Protocol (MCTP) Host
+///  Interface Specification\", Revision 1.0.0a, October 13, 2009
+/// 
 pub type ACPI_TABLE_MCHI = acpi_table_mchi;
 
-#[doc = " MSCT - Maximum System Characteristics Table (ACPI 4.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  MSCT - Maximum System Characteristics Table (ACPI 4.0)
+///         Version 1
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_msct {
@@ -380,9 +380,9 @@ pub struct acpi_table_msct {
     pub MaxClockDomains: u32,
     pub MaxAddress: u64,
 }
-#[doc = " MSCT - Maximum System Characteristics Table (ACPI 4.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  MSCT - Maximum System Characteristics Table (ACPI 4.0)
+///         Version 1
+/// 
 pub type ACPI_TABLE_MSCT = acpi_table_msct;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
@@ -395,28 +395,28 @@ pub struct acpi_msct_proximity {
     pub MemoryCapacity: u64,
 }
 pub type ACPI_MSCT_PROXIMITY = acpi_msct_proximity;
-#[doc = " MSDM - Microsoft Data Management table"]
-#[doc = ""]
-#[doc = " Conforms to \"Microsoft Software Licensing Tables (SLIC and MSDM)\","]
-#[doc = " November 29, 2011. Copyright 2011 Microsoft"]
-#[doc = ""]
+///  MSDM - Microsoft Data Management table
+/// 
+///  Conforms to \"Microsoft Software Licensing Tables (SLIC and MSDM)\",
+///  November 29, 2011. Copyright 2011 Microsoft
+/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_msdm {
     pub Header: AcpiTableHeader,
 }
-#[doc = " MSDM - Microsoft Data Management table"]
-#[doc = ""]
-#[doc = " Conforms to \"Microsoft Software Licensing Tables (SLIC and MSDM)\","]
-#[doc = " November 29, 2011. Copyright 2011 Microsoft"]
-#[doc = ""]
+///  MSDM - Microsoft Data Management table
+/// 
+///  Conforms to \"Microsoft Software Licensing Tables (SLIC and MSDM)\",
+///  November 29, 2011. Copyright 2011 Microsoft
+/// 
 pub type ACPI_TABLE_MSDM = acpi_table_msdm;
 
 
 
-#[doc = " PDTT - Platform Debug Trigger Table (ACPI 6.2)"]
-#[doc = "        Version 0"]
-#[doc = ""]
+///  PDTT - Platform Debug Trigger Table (ACPI 6.2)
+///         Version 0
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_pdtt {
@@ -425,9 +425,9 @@ pub struct acpi_table_pdtt {
     pub Reserved: [u8; 3usize],
     pub ArrayOffset: u32,
 }
-#[doc = " PDTT - Platform Debug Trigger Table (ACPI 6.2)"]
-#[doc = "        Version 0"]
-#[doc = ""]
+///  PDTT - Platform Debug Trigger Table (ACPI 6.2)
+///         Version 0
+/// 
 pub type ACPI_TABLE_PDTT = acpi_table_pdtt;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -438,12 +438,12 @@ pub struct acpi_pdtt_channel {
 pub type ACPI_PDTT_CHANNEL = acpi_pdtt_channel;
 
 
-#[doc = " RGRT - Regulatory Graphics Resource Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"ACPI RGRT\" available at:"]
-#[doc = " https://microsoft.github.io/mu/dyn/mu_plus/MsCorePkg/AcpiRGRT/feature_acpi_rgrt/"]
-#[doc = ""]
+///  RGRT - Regulatory Graphics Resource Table
+///         Version 1
+/// 
+///  Conforms to \"ACPI RGRT\" available at:
+///  https://microsoft.github.io/mu/dyn/mu_plus/MsCorePkg/AcpiRGRT/feature_acpi_rgrt/
+/// 
 #[repr(C, packed)]
 pub struct acpi_table_rgrt {
     pub Header: AcpiTableHeader,
@@ -452,12 +452,12 @@ pub struct acpi_table_rgrt {
     pub Reserved: u8,
     Image: __IncompleteArrayField<u8>,
 }
-#[doc = " RGRT - Regulatory Graphics Resource Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"ACPI RGRT\" available at:"]
-#[doc = " https://microsoft.github.io/mu/dyn/mu_plus/MsCorePkg/AcpiRGRT/feature_acpi_rgrt/"]
-#[doc = ""]
+///  RGRT - Regulatory Graphics Resource Table
+///         Version 1
+/// 
+///  Conforms to \"ACPI RGRT\" available at:
+///  https://microsoft.github.io/mu/dyn/mu_plus/MsCorePkg/AcpiRGRT/feature_acpi_rgrt/
+/// 
 pub type ACPI_TABLE_RGRT = acpi_table_rgrt;
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
@@ -466,9 +466,9 @@ pub enum AcpiRgrtImageType {
     ACPI_RGRT_IMAGE_TYPE_PNG = 1,
     ACPI_RGRT_TYPE_RESERVED = 2,
 }
-#[doc = " SBST - Smart Battery Specification Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  SBST - Smart Battery Specification Table
+///         Version 1
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_sbst {
@@ -477,44 +477,44 @@ pub struct acpi_table_sbst {
     pub LowLevel: u32,
     pub CriticalLevel: u32,
 }
-#[doc = " SBST - Smart Battery Specification Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  SBST - Smart Battery Specification Table
+///         Version 1
+/// 
 pub type ACPI_TABLE_SBST = acpi_table_sbst;
-#[doc = " SDEI - Software Delegated Exception Interface Descriptor Table"]
-#[doc = ""]
-#[doc = " Conforms to \"Software Delegated Exception Interface (SDEI)\" ARM DEN0054A,"]
-#[doc = " May 8th, 2017. Copyright 2017 ARM Ltd."]
-#[doc = ""]
+///  SDEI - Software Delegated Exception Interface Descriptor Table
+/// 
+///  Conforms to \"Software Delegated Exception Interface (SDEI)\" ARM DEN0054A,
+///  May 8th, 2017. Copyright 2017 ARM Ltd.
+/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_sdei {
     pub Header: AcpiTableHeader,
 }
-#[doc = " SDEI - Software Delegated Exception Interface Descriptor Table"]
-#[doc = ""]
-#[doc = " Conforms to \"Software Delegated Exception Interface (SDEI)\" ARM DEN0054A,"]
-#[doc = " May 8th, 2017. Copyright 2017 ARM Ltd."]
-#[doc = ""]
+///  SDEI - Software Delegated Exception Interface Descriptor Table
+/// 
+///  Conforms to \"Software Delegated Exception Interface (SDEI)\" ARM DEN0054A,
+///  May 8th, 2017. Copyright 2017 ARM Ltd.
+/// 
 pub type ACPI_TABLE_SDEI = acpi_table_sdei;
 
 
-#[doc = " SVKL - Storage Volume Key Location Table (ACPI 6.4)"]
-#[doc = "        From: \"Guest-Host-Communication Interface (GHCI) for Intel"]
-#[doc = "        Trust Domain Extensions (Intel TDX)\"."]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  SVKL - Storage Volume Key Location Table (ACPI 6.4)
+///         From: \"Guest-Host-Communication Interface (GHCI) for Intel
+///         Trust Domain Extensions (Intel TDX)\".
+///         Version 1
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_svkl {
     pub Header: AcpiTableHeader,
     pub Count: u32,
 }
-#[doc = " SVKL - Storage Volume Key Location Table (ACPI 6.4)"]
-#[doc = "        From: \"Guest-Host-Communication Interface (GHCI) for Intel"]
-#[doc = "        Trust Domain Extensions (Intel TDX)\"."]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  SVKL - Storage Volume Key Location Table (ACPI 6.4)
+///         From: \"Guest-Host-Communication Interface (GHCI) for Intel
+///         Trust Domain Extensions (Intel TDX)\".
+///         Version 1
+/// 
 pub type ACPI_TABLE_SVKL = acpi_table_svkl;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
@@ -537,25 +537,25 @@ pub enum acpi_svkl_format {
     ACPI_SVKL_FORMAT_RAW_BINARY = 0,
     ACPI_SVKL_FORMAT_RESERVED = 1,
 }
-#[doc = " SLIC - Software Licensing Description Table"]
-#[doc = ""]
-#[doc = " Conforms to \"Microsoft Software Licensing Tables (SLIC and MSDM)\","]
-#[doc = " November 29, 2011. Copyright 2011 Microsoft"]
-#[doc = ""]
+///  SLIC - Software Licensing Description Table
+/// 
+///  Conforms to \"Microsoft Software Licensing Tables (SLIC and MSDM)\",
+///  November 29, 2011. Copyright 2011 Microsoft
+/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_slic {
     pub Header: AcpiTableHeader,
 }
-#[doc = " SLIC - Software Licensing Description Table"]
-#[doc = ""]
-#[doc = " Conforms to \"Microsoft Software Licensing Tables (SLIC and MSDM)\","]
-#[doc = " November 29, 2011. Copyright 2011 Microsoft"]
-#[doc = ""]
+///  SLIC - Software Licensing Description Table
+/// 
+///  Conforms to \"Microsoft Software Licensing Tables (SLIC and MSDM)\",
+///  November 29, 2011. Copyright 2011 Microsoft
+/// 
 pub type ACPI_TABLE_SLIC = acpi_table_slic;
-#[doc = " SLIT - System Locality Distance Information Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  SLIT - System Locality Distance Information Table
+///         Version 1
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_slit {
@@ -563,16 +563,16 @@ pub struct acpi_table_slit {
     pub LocalityCount: u64,
     pub Entry: [u8; 1usize],
 }
-#[doc = " SLIT - System Locality Distance Information Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  SLIT - System Locality Distance Information Table
+///         Version 1
+/// 
 pub type ACPI_TABLE_SLIT = acpi_table_slit;
-#[doc = " SPCR - Serial Port Console Redirection table"]
-#[doc = "        Version 2"]
-#[doc = ""]
-#[doc = " Conforms to \"Serial Port Console Redirection Table\","]
-#[doc = " Version 1.03, August 10, 2015"]
-#[doc = ""]
+///  SPCR - Serial Port Console Redirection table
+///         Version 2
+/// 
+///  Conforms to \"Serial Port Console Redirection Table\",
+///  Version 1.03, August 10, 2015
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_spcr {
@@ -598,20 +598,20 @@ pub struct acpi_table_spcr {
     pub PciSegment: u8,
     pub Reserved2: u32,
 }
-#[doc = " SPCR - Serial Port Console Redirection table"]
-#[doc = "        Version 2"]
-#[doc = ""]
-#[doc = " Conforms to \"Serial Port Console Redirection Table\","]
-#[doc = " Version 1.03, August 10, 2015"]
-#[doc = ""]
+///  SPCR - Serial Port Console Redirection table
+///         Version 2
+/// 
+///  Conforms to \"Serial Port Console Redirection Table\",
+///  Version 1.03, August 10, 2015
+/// 
 pub type ACPI_TABLE_SPCR = acpi_table_spcr;
-#[doc = " SPMI - Server Platform Management Interface table"]
-#[doc = "        Version 5"]
-#[doc = ""]
-#[doc = " Conforms to \"Intelligent Platform Management Interface Specification"]
-#[doc = " Second Generation v2.0\", Document Revision 1.0, February 12, 2004 with"]
-#[doc = " June 12, 2009 markup."]
-#[doc = ""]
+///  SPMI - Server Platform Management Interface table
+///         Version 5
+/// 
+///  Conforms to \"Intelligent Platform Management Interface Specification
+///  Second Generation v2.0\", Document Revision 1.0, February 12, 2004 with
+///  June 12, 2009 markup.
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_spmi {
@@ -631,13 +631,13 @@ pub struct acpi_table_spmi {
     pub PciFunction: u8,
     pub Reserved2: u8,
 }
-#[doc = " SPMI - Server Platform Management Interface table"]
-#[doc = "        Version 5"]
-#[doc = ""]
-#[doc = " Conforms to \"Intelligent Platform Management Interface Specification"]
-#[doc = " Second Generation v2.0\", Document Revision 1.0, February 12, 2004 with"]
-#[doc = " June 12, 2009 markup."]
-#[doc = ""]
+///  SPMI - Server Platform Management Interface table
+///         Version 5
+/// 
+///  Conforms to \"Intelligent Platform Management Interface Specification
+///  Second Generation v2.0\", Document Revision 1.0, February 12, 2004 with
+///  June 12, 2009 markup.
+/// 
 pub type ACPI_TABLE_SPMI = acpi_table_spmi;
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
@@ -651,24 +651,24 @@ pub enum AcpiSpmiInterfaceTypes {
 }
 
 
-#[doc = " STAO - Status Override Table (_STA override) - ACPI 6.0"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"ACPI Specification for Status Override Table\""]
-#[doc = " 6 January 2015"]
-#[doc = ""]
+///  STAO - Status Override Table (_STA override) - ACPI 6.0
+///         Version 1
+/// 
+///  Conforms to \"ACPI Specification for Status Override Table\"
+///  6 January 2015
+/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_stao {
     pub Header: AcpiTableHeader,
     pub IgnoreUart: u8,
 }
-#[doc = " STAO - Status Override Table (_STA override) - ACPI 6.0"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"ACPI Specification for Status Override Table\""]
-#[doc = " 6 January 2015"]
-#[doc = ""]
+///  STAO - Status Override Table (_STA override) - ACPI 6.0
+///         Version 1
+/// 
+///  Conforms to \"ACPI Specification for Status Override Table\"
+///  6 January 2015
+/// 
 pub type ACPI_TABLE_STAO = acpi_table_stao;
 
 #[repr(C, packed)]
@@ -700,12 +700,12 @@ pub struct acpi_table_tcpa_server {
 }
 pub type ACPI_TABLE_TCPA_SERVER = acpi_table_tcpa_server;
 
-#[doc = " UEFI - UEFI Boot optimization Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"Unified Extensible Firmware Interface Specification\","]
-#[doc = " Version 2.3, May 8, 2009"]
-#[doc = ""]
+///  UEFI - UEFI Boot optimization Table
+///         Version 1
+/// 
+///  Conforms to \"Unified Extensible Firmware Interface Specification\",
+///  Version 2.3, May 8, 2009
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_uefi {
@@ -713,20 +713,20 @@ pub struct acpi_table_uefi {
     pub Identifier: [u8; 16usize],
     pub DataOffset: u16,
 }
-#[doc = " UEFI - UEFI Boot optimization Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"Unified Extensible Firmware Interface Specification\","]
-#[doc = " Version 2.3, May 8, 2009"]
-#[doc = ""]
+///  UEFI - UEFI Boot optimization Table
+///         Version 1
+/// 
+///  Conforms to \"Unified Extensible Firmware Interface Specification\",
+///  Version 2.3, May 8, 2009
+/// 
 pub type ACPI_TABLE_UEFI = acpi_table_uefi;
 
 
-#[doc = " XENV - Xen Environment Table (ACPI 6.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"ACPI Specification for Xen Environment Table\" 4 January 2015"]
-#[doc = ""]
+///  XENV - Xen Environment Table (ACPI 6.0)
+///         Version 1
+/// 
+///  Conforms to \"ACPI Specification for Xen Environment Table\" 4 January 2015
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_xenv {
@@ -736,9 +736,9 @@ pub struct acpi_table_xenv {
     pub EventInterrupt: u32,
     pub EventFlags: u8,
 }
-#[doc = " XENV - Xen Environment Table (ACPI 6.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"ACPI Specification for Xen Environment Table\" 4 January 2015"]
-#[doc = ""]
+///  XENV - Xen Environment Table (ACPI 6.0)
+///         Version 1
+/// 
+///  Conforms to \"ACPI Specification for Xen Environment Table\" 4 January 2015
+/// 
 pub type ACPI_TABLE_XENV = acpi_table_xenv;

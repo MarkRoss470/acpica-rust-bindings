@@ -1,11 +1,11 @@
 use crate::types::AcpiTableHeader;
 
-#[doc = " IVRS - I/O Virtualization Reporting Structure"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"AMD I/O Virtualization Technology (IOMMU) Specification\","]
-#[doc = " Revision 1.26, February 2009."]
-#[doc = ""]
+///  IVRS - I/O Virtualization Reporting Structure
+///         Version 1
+/// 
+///  Conforms to \"AMD I/O Virtualization Technology (IOMMU) Specification\",
+///  Revision 1.26, February 2009.
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_ivrs {
@@ -14,12 +14,12 @@ pub struct acpi_table_ivrs {
     pub Reserved: u64,
 }
 
-#[doc = " IVRS - I/O Virtualization Reporting Structure"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"AMD I/O Virtualization Technology (IOMMU) Specification\","]
-#[doc = " Revision 1.26, February 2009."]
-#[doc = ""]
+///  IVRS - I/O Virtualization Reporting Structure
+///         Version 1
+/// 
+///  Conforms to \"AMD I/O Virtualization Technology (IOMMU) Specification\",
+///  Revision 1.26, February 2009.
+/// 
 pub type ACPI_TABLE_IVRS = acpi_table_ivrs;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]

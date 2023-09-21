@@ -1,20 +1,20 @@
 use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
 
-#[doc = " CEDT - CXL Early Discovery Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to the \"CXL Early Discovery Table\" (CXL 2.0)"]
-#[doc = ""]
+///  CEDT - CXL Early Discovery Table
+///         Version 1
+/// 
+///  Conforms to the \"CXL Early Discovery Table\" (CXL 2.0)
+/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_cedt {
     pub Header: AcpiTableHeader,
 }
-#[doc = " CEDT - CXL Early Discovery Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to the \"CXL Early Discovery Table\" (CXL 2.0)"]
-#[doc = ""]
+///  CEDT - CXL Early Discovery Table
+///         Version 1
+/// 
+///  Conforms to the \"CXL Early Discovery Table\" (CXL 2.0)
+/// 
 pub type ACPI_TABLE_CEDT = acpi_table_cedt;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]

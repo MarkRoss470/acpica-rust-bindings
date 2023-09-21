@@ -3,9 +3,9 @@ use crate::types::AcpiTableHeader;
 use super::ACPI_SUBTABLE_HEADER;
 
 
-#[doc = " SRAT - System Resource Affinity Table"]
-#[doc = "        Version 3"]
-#[doc = ""]
+///  SRAT - System Resource Affinity Table
+///         Version 3
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_srat {
@@ -13,9 +13,9 @@ pub struct acpi_table_srat {
     pub TableRevision: u32,
     pub Reserved: u64,
 }
-#[doc = " SRAT - System Resource Affinity Table"]
-#[doc = "        Version 3"]
-#[doc = ""]
+///  SRAT - System Resource Affinity Table
+///         Version 3
+/// 
 pub type ACPI_TABLE_SRAT = acpi_table_srat;
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]

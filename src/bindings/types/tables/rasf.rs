@@ -1,18 +1,18 @@
 use crate::types::AcpiTableHeader;
 
 
-#[doc = " RASF - RAS Feature Table (ACPI 5.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  RASF - RAS Feature Table (ACPI 5.0)
+///         Version 1
+/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_rasf {
     pub Header: AcpiTableHeader,
     pub ChannelId: [u8; 12usize],
 }
-#[doc = " RASF - RAS Feature Table (ACPI 5.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  RASF - RAS Feature Table (ACPI 5.0)
+///         Version 1
+/// 
 pub type ACPI_TABLE_RASF = acpi_table_rasf;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]

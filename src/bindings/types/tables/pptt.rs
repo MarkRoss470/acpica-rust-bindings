@@ -2,17 +2,17 @@ use crate::types::AcpiTableHeader;
 
 use super::ACPI_SUBTABLE_HEADER;
 
-#[doc = " PPTT - Processor Properties Topology Table (ACPI 6.2)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  PPTT - Processor Properties Topology Table (ACPI 6.2)
+///         Version 1
+/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_pptt {
     pub Header: AcpiTableHeader,
 }
-#[doc = " PPTT - Processor Properties Topology Table (ACPI 6.2)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  PPTT - Processor Properties Topology Table (ACPI 6.2)
+///         Version 1
+/// 
 pub type ACPI_TABLE_PPTT = acpi_table_pptt;
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]

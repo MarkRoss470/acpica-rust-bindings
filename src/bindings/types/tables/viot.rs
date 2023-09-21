@@ -1,8 +1,8 @@
 use crate::types::AcpiTableHeader;
 
-#[doc = " VIOT - Virtual I/O Translation Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  VIOT - Virtual I/O Translation Table
+///         Version 1
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_viot {
@@ -11,9 +11,9 @@ pub struct acpi_table_viot {
     pub NodeOffset: u16,
     pub Reserved: [u8; 8usize],
 }
-#[doc = " VIOT - Virtual I/O Translation Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  VIOT - Virtual I/O Translation Table
+///         Version 1
+/// 
 pub type ACPI_TABLE_VIOT = acpi_table_viot;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]

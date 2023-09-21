@@ -53,12 +53,12 @@ pub(crate) type FfiAcpiAdtSpaceType = u8;
 pub(crate) type FfiAcpiSleepFunction =
     ::core::option::Option<unsafe extern "C" fn(SleepState: u8) -> AcpiStatus>;
 
-#[doc = " GAS - Generic Address Structure (ACPI 2.0+)"]
-#[doc = ""]
-#[doc = " Note: Since this structure is used in the ACPI tables, it is byte aligned."]
-#[doc = " If misaligned access is not supported by the hardware, accesses to the"]
-#[doc = " 64-bit Address field must be performed with care."]
-#[doc = ""]
+///  GAS - Generic Address Structure (ACPI 2.0+)
+/// 
+///  Note: Since this structure is used in the ACPI tables, it is byte aligned.
+///  If misaligned access is not supported by the hardware, accesses to the
+///  64-bit Address field must be performed with care.
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiGenericAddress {
@@ -200,8 +200,8 @@ pub(crate) type ACPI_WALK_CALLBACK = ::core::option::Option<
         ReturnValue: *mut *mut ::core::ffi::c_void,
     ) -> AcpiStatus,
 >;
-#[doc = " ACPICA public interface prototypes"]
-#[doc = ""]
+///  ACPICA public interface prototypes
+/// 
 pub(crate) type ACPI_WALK_RESOURCE_CALLBACK = ::core::option::Option<
     unsafe extern "C" fn(
         Resource: *mut ACPI_RESOURCE,

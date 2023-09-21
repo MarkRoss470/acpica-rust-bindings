@@ -1,10 +1,10 @@
 use crate::types::AcpiTableHeader;
 
-#[doc = " IORT - IO Remapping Table"]
-#[doc = ""]
-#[doc = " Conforms to \"IO Remapping Table System Software on ARM Platforms\","]
-#[doc = " Document number: ARM DEN 0049E.b, Feb 2021"]
-#[doc = ""]
+///  IORT - IO Remapping Table
+/// 
+///  Conforms to \"IO Remapping Table System Software on ARM Platforms\",
+///  Document number: ARM DEN 0049E.b, Feb 2021
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_iort {
@@ -13,11 +13,11 @@ pub struct acpi_table_iort {
     pub NodeOffset: u32,
     pub Reserved: u32,
 }
-#[doc = " IORT - IO Remapping Table"]
-#[doc = ""]
-#[doc = " Conforms to \"IO Remapping Table System Software on ARM Platforms\","]
-#[doc = " Document number: ARM DEN 0049E.b, Feb 2021"]
-#[doc = ""]
+///  IORT - IO Remapping Table
+/// 
+///  Conforms to \"IO Remapping Table System Software on ARM Platforms\",
+///  Document number: ARM DEN 0049E.b, Feb 2021
+/// 
 pub type ACPI_TABLE_IORT = acpi_table_iort;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]

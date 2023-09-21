@@ -1,15 +1,15 @@
 use crate::types::AcpiTableHeader;
 
-#[doc = " HMAT - Heterogeneous Memory Attributes Table (ACPI 6.3)"]
-#[doc = ""]
+///  HMAT - Heterogeneous Memory Attributes Table (ACPI 6.3)
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_hmat {
     pub Header: AcpiTableHeader,
     pub Reserved: u32,
 }
-#[doc = " HMAT - Heterogeneous Memory Attributes Table (ACPI 6.3)"]
-#[doc = ""]
+///  HMAT - Heterogeneous Memory Attributes Table (ACPI 6.3)
+/// 
 pub type ACPI_TABLE_HMAT = acpi_table_hmat;
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]

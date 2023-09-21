@@ -19,9 +19,9 @@ pub struct AcpiTableFacs {
     pub reserved1: [u8; 24usize],
 }
 
-#[doc = " FADT - Fixed ACPI Description Table (Signature \"FACP\")"]
-#[doc = "        Version 6"]
-#[doc = ""]
+///  FADT - Fixed ACPI Description Table (Signature \"FACP\")
+///         Version 6
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct AcpiTableFadt {

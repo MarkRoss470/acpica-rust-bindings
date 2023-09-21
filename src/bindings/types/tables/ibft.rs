@@ -1,29 +1,29 @@
 use crate::types::AcpiTableHeader;
 
-#[doc = " IBFT - Boot Firmware Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"iSCSI Boot Firmware Table (iBFT) as Defined in ACPI 3.0b"]
-#[doc = " Specification\", Version 1.01, March 1, 2007"]
-#[doc = ""]
-#[doc = " Note: It appears that this table is not intended to appear in the RSDT/XSDT."]
-#[doc = " Therefore, it is not currently supported by the disassembler."]
-#[doc = ""]
+///  IBFT - Boot Firmware Table
+///         Version 1
+/// 
+///  Conforms to \"iSCSI Boot Firmware Table (iBFT) as Defined in ACPI 3.0b
+///  Specification\", Version 1.01, March 1, 2007
+/// 
+///  Note: It appears that this table is not intended to appear in the RSDT/XSDT.
+///  Therefore, it is not currently supported by the disassembler.
+/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_ibft {
     pub Header: AcpiTableHeader,
     pub Reserved: [u8; 12usize],
 }
-#[doc = " IBFT - Boot Firmware Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"iSCSI Boot Firmware Table (iBFT) as Defined in ACPI 3.0b"]
-#[doc = " Specification\", Version 1.01, March 1, 2007"]
-#[doc = ""]
-#[doc = " Note: It appears that this table is not intended to appear in the RSDT/XSDT."]
-#[doc = " Therefore, it is not currently supported by the disassembler."]
-#[doc = ""]
+///  IBFT - Boot Firmware Table
+///         Version 1
+/// 
+///  Conforms to \"iSCSI Boot Firmware Table (iBFT) as Defined in ACPI 3.0b
+///  Specification\", Version 1.01, March 1, 2007
+/// 
+///  Note: It appears that this table is not intended to appear in the RSDT/XSDT.
+///  Therefore, it is not currently supported by the disassembler.
+/// 
 pub type ACPI_TABLE_IBFT = acpi_table_ibft;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]

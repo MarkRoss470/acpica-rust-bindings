@@ -1,17 +1,17 @@
 use crate::types::AcpiTableHeader;
 
-#[doc = " NFIT - NVDIMM Interface Table (ACPI 6.0+)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  NFIT - NVDIMM Interface Table (ACPI 6.0+)
+///         Version 1
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_nfit {
     pub Header: AcpiTableHeader,
     pub Reserved: u32,
 }
-#[doc = " NFIT - NVDIMM Interface Table (ACPI 6.0+)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  NFIT - NVDIMM Interface Table (ACPI 6.0+)
+///         Version 1
+/// 
 pub type ACPI_TABLE_NFIT = acpi_table_nfit;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]

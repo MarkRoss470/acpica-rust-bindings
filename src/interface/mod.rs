@@ -11,12 +11,12 @@ use self::{status::AcpiError, handler::SUBSYSTEM_IS_INITIALIZED};
 pub mod object;
 pub mod status;
 
-#[doc = " GAS - Generic Address Structure (ACPI 2.0+)"]
-#[doc = ""]
-#[doc = " Note: Since this structure is used in the ACPI tables, it is byte aligned."]
-#[doc = " If misaligned access is not supported by the hardware, accesses to the"]
-#[doc = " 64-bit Address field must be performed with care."]
-#[doc = ""]
+///  GAS - Generic Address Structure (ACPI 2.0+)
+/// 
+///  Note: Since this structure is used in the ACPI tables, it is byte aligned.
+///  If misaligned access is not supported by the hardware, accesses to the
+///  64-bit Address field must be performed with care.
+/// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct AcpiGenericAddress {

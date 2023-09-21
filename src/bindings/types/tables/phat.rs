@@ -1,16 +1,16 @@
 use crate::types::AcpiTableHeader;
 
-#[doc = " PHAT - Platform Health Assessment Table (ACPI 6.4)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  PHAT - Platform Health Assessment Table (ACPI 6.4)
+///         Version 1
+/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_phat {
     pub Header: AcpiTableHeader,
 }
-#[doc = " PHAT - Platform Health Assessment Table (ACPI 6.4)"]
-#[doc = "        Version 1"]
-#[doc = ""]
+///  PHAT - Platform Health Assessment Table (ACPI 6.4)
+///         Version 1
+/// 
 pub type ACPI_TABLE_PHAT = acpi_table_phat;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
