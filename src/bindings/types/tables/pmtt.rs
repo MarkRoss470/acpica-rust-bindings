@@ -1,3 +1,5 @@
+use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
+
 
 #[doc = " PMTT - Platform Memory Topology Table (ACPI 5.0)"]
 #[doc = "        Version 1"]
@@ -51,6 +53,6 @@ pub type ACPI_PMTT_PHYSICAL_COMPONENT = acpi_pmtt_physical_component;
 pub struct acpi_pmtt_vendor_specific {
     pub Header: ACPI_PMTT_HEADER,
     pub TypeUuid: [u8; 16usize],
-    pub Specific: __IncompleteArrayField<u8>,
+    Specific: __IncompleteArrayField<u8>,
 }
 pub type ACPI_PMTT_VENDOR_SPECIFIC = acpi_pmtt_vendor_specific;

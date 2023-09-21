@@ -31,47 +31,47 @@ extern "C" {
 
     pub(crate) fn AcpiPurgeCachedObjects() -> AcpiStatus;
 
-    pub(crate) fn AcpiInstallInterface(InterfaceName: ACPI_STRING) -> AcpiStatus;
+    pub(crate) fn AcpiInstallInterface(InterfaceName: FfiAcpiString) -> AcpiStatus;
 
-    pub(crate) fn AcpiRemoveInterface(InterfaceName: ACPI_STRING) -> AcpiStatus;
+    pub(crate) fn AcpiRemoveInterface(InterfaceName: FfiAcpiString) -> AcpiStatus;
 
     pub(crate) fn AcpiUpdateInterfaces(Action: u8) -> AcpiStatus;
 
     pub(crate) fn AcpiCheckAddressRange(
-        SpaceId: ACPI_ADR_SPACE_TYPE,
-        Address: ACPI_PHYSICAL_ADDRESS,
-        Length: ACPI_SIZE,
+        SpaceId: FfiAcpiAdtSpaceType,
+        Address: FfiAcpiPhysicalAddress,
+        Length: FfiAcpiSize,
         Warn: bool,
     ) -> u32;
 
     pub(crate) fn AcpiDecodePldBuffer(
         InBuffer: *mut u8,
-        Length: ACPI_SIZE,
+        Length: FfiAcpiSize,
         ReturnBuffer: *mut *mut ACPI_PLD_INFO,
     ) -> AcpiStatus;
 
-    pub(crate) fn AcpiInstallTable(Address: ACPI_PHYSICAL_ADDRESS, Physical: bool) -> AcpiStatus;
+    pub(crate) fn AcpiInstallTable(Address: FfiAcpiPhysicalAddress, Physical: bool) -> AcpiStatus;
 
     pub(crate) fn AcpiLoadTable(Table: *mut AcpiTableHeader, TableIdx: *mut u32) -> AcpiStatus;
 
     pub(crate) fn AcpiUnloadTable(TableIndex: u32) -> AcpiStatus;
 
-    pub(crate) fn AcpiUnloadParentTable(Object: ACPI_HANDLE) -> AcpiStatus;
+    pub(crate) fn AcpiUnloadParentTable(Object: FfiAcpiHandle) -> AcpiStatus;
 
     pub(crate) fn AcpiLoadTables() -> AcpiStatus;
 
     pub(crate) fn AcpiReallocateRootTable() -> AcpiStatus;
 
-    pub(crate) fn AcpiFindRootPointer(RsdpAddress: *mut ACPI_PHYSICAL_ADDRESS) -> AcpiStatus;
+    pub(crate) fn AcpiFindRootPointer(RsdpAddress: *mut FfiAcpiPhysicalAddress) -> AcpiStatus;
 
     pub(crate) fn AcpiGetTableHeader(
-        Signature: ACPI_STRING,
+        Signature: FfiAcpiString,
         Instance: u32,
         OutTableHeader: *mut AcpiTableHeader,
     ) -> AcpiStatus;
 
     pub(crate) fn AcpiGetTable(
-        Signature: ACPI_STRING,
+        Signature: FfiAcpiString,
         Instance: u32,
         OutTable: *mut *mut AcpiTableHeader,
     ) -> AcpiStatus;
@@ -92,7 +92,7 @@ extern "C" {
 
     pub(crate) fn AcpiWalkNamespace(
         Type: AcpiObjectType,
-        StartObject: ACPI_HANDLE,
+        StartObject: FfiAcpiHandle,
         MaxDepth: u32,
         DescendingCallback: ACPI_WALK_CALLBACK,
         AscendingCallback: ACPI_WALK_CALLBACK,
@@ -108,27 +108,27 @@ extern "C" {
     ) -> AcpiStatus;
 
     pub(crate) fn AcpiGetName(
-        Object: ACPI_HANDLE,
+        Object: FfiAcpiHandle,
         NameType: u32,
         RetPathPtr: *mut ACPI_BUFFER,
     ) -> AcpiStatus;
 
     pub(crate) fn AcpiGetHandle(
-        Parent: ACPI_HANDLE,
-        Pathname: ACPI_STRING,
-        RetHandle: *mut ACPI_HANDLE,
+        Parent: FfiAcpiHandle,
+        Pathname: FfiAcpiString,
+        RetHandle: *mut FfiAcpiHandle,
     ) -> AcpiStatus;
 
     pub(crate) fn AcpiAttachData(
-        Object: ACPI_HANDLE,
+        Object: FfiAcpiHandle,
         Handler: ACPI_OBJECT_HANDLER,
         Data: *mut ::core::ffi::c_void,
     ) -> AcpiStatus;
 
-    pub(crate) fn AcpiDetachData(Object: ACPI_HANDLE, Handler: ACPI_OBJECT_HANDLER) -> AcpiStatus;
+    pub(crate) fn AcpiDetachData(Object: FfiAcpiHandle, Handler: ACPI_OBJECT_HANDLER) -> AcpiStatus;
 
     pub(crate) fn AcpiGetData(
-        Object: ACPI_HANDLE,
+        Object: FfiAcpiHandle,
         Handler: ACPI_OBJECT_HANDLER,
         Data: *mut *mut ::core::ffi::c_void,
     ) -> AcpiStatus;
@@ -141,22 +141,22 @@ extern "C" {
     ) -> AcpiStatus;
 
     pub(crate) fn AcpiEvaluateObject(
-        Object: ACPI_HANDLE,
-        Pathname: ACPI_STRING,
+        Object: FfiAcpiHandle,
+        Pathname: FfiAcpiString,
         ParameterObjects: *mut ACPI_OBJECT_LIST,
         ReturnObjectBuffer: *mut ACPI_BUFFER,
     ) -> AcpiStatus;
 
     pub(crate) fn AcpiEvaluateObjectTyped(
-        Object: ACPI_HANDLE,
-        Pathname: ACPI_STRING,
+        Object: FfiAcpiHandle,
+        Pathname: FfiAcpiString,
         ExternalParams: *mut ACPI_OBJECT_LIST,
         ReturnBuffer: *mut ACPI_BUFFER,
         ReturnType: AcpiObjectType,
     ) -> AcpiStatus;
 
     pub(crate) fn AcpiGetObjectInfo(
-        Object: ACPI_HANDLE,
+        Object: FfiAcpiHandle,
         ReturnBuffer: *mut *mut ACPI_DEVICE_INFO,
     ) -> AcpiStatus;
 
@@ -164,14 +164,14 @@ extern "C" {
 
     pub(crate) fn AcpiGetNextObject(
         Type: AcpiObjectType,
-        Parent: ACPI_HANDLE,
-        Child: ACPI_HANDLE,
-        OutHandle: *mut ACPI_HANDLE,
+        Parent: FfiAcpiHandle,
+        Child: FfiAcpiHandle,
+        OutHandle: *mut FfiAcpiHandle,
     ) -> AcpiStatus;
 
-    pub(crate) fn AcpiGetType(Object: ACPI_HANDLE, OutType: *mut AcpiObjectType) -> AcpiStatus;
+    pub(crate) fn AcpiGetType(Object: FfiAcpiHandle, OutType: *mut AcpiObjectType) -> AcpiStatus;
 
-    pub(crate) fn AcpiGetParent(Object: ACPI_HANDLE, OutHandle: *mut ACPI_HANDLE) -> AcpiStatus;
+    pub(crate) fn AcpiGetParent(Object: FfiAcpiHandle, OutHandle: *mut FfiAcpiHandle) -> AcpiStatus;
 
     pub(crate) fn AcpiInstallInitializationHandler(
         Handler: ACPI_INIT_HANDLER,
@@ -199,7 +199,7 @@ extern "C" {
     pub(crate) fn AcpiRemoveFixedEventHandler(AcpiEvent: u32, Handler: ACPI_EVENT_HANDLER) -> AcpiStatus;
 
     pub(crate) fn AcpiInstallGpeHandler(
-        GpeDevice: ACPI_HANDLE,
+        GpeDevice: FfiAcpiHandle,
         GpeNumber: u32,
         Type: u32,
         Address: ACPI_GPE_HANDLER,
@@ -207,7 +207,7 @@ extern "C" {
     ) -> AcpiStatus;
 
     pub(crate) fn AcpiInstallGpeRawHandler(
-        GpeDevice: ACPI_HANDLE,
+        GpeDevice: FfiAcpiHandle,
         GpeNumber: u32,
         Type: u32,
         Address: ACPI_GPE_HANDLER,
@@ -215,35 +215,35 @@ extern "C" {
     ) -> AcpiStatus;
 
     pub(crate) fn AcpiRemoveGpeHandler(
-        GpeDevice: ACPI_HANDLE,
+        GpeDevice: FfiAcpiHandle,
         GpeNumber: u32,
         Address: ACPI_GPE_HANDLER,
     ) -> AcpiStatus;
 
     pub(crate) fn AcpiInstallNotifyHandler(
-        Device: ACPI_HANDLE,
+        Device: FfiAcpiHandle,
         HandlerType: u32,
         Handler: ACPI_NOTIFY_HANDLER,
         Context: *mut ::core::ffi::c_void,
     ) -> AcpiStatus;
 
     pub(crate) fn AcpiRemoveNotifyHandler(
-        Device: ACPI_HANDLE,
+        Device: FfiAcpiHandle,
         HandlerType: u32,
         Handler: ACPI_NOTIFY_HANDLER,
     ) -> AcpiStatus;
 
     pub(crate) fn AcpiInstallAddressSpaceHandler(
-        Device: ACPI_HANDLE,
-        SpaceId: ACPI_ADR_SPACE_TYPE,
+        Device: FfiAcpiHandle,
+        SpaceId: FfiAcpiAdtSpaceType,
         Handler: ACPI_ADR_SPACE_HANDLER,
         Setup: ACPI_ADR_SPACE_SETUP,
         Context: *mut ::core::ffi::c_void,
     ) -> AcpiStatus;
 
     pub(crate) fn AcpiRemoveAddressSpaceHandler(
-        Device: ACPI_HANDLE,
-        SpaceId: ACPI_ADR_SPACE_TYPE,
+        Device: FfiAcpiHandle,
+        SpaceId: FfiAcpiAdtSpaceType,
         Handler: ACPI_ADR_SPACE_HANDLER,
     ) -> AcpiStatus;
 
@@ -256,12 +256,12 @@ extern "C" {
     pub(crate) fn AcpiReleaseGlobalLock(Handle: u32) -> AcpiStatus;
 
     pub(crate) fn AcpiAcquireMutex(
-        Handle: ACPI_HANDLE,
-        Pathname: ACPI_STRING,
+        Handle: FfiAcpiHandle,
+        Pathname: FfiAcpiString,
         Timeout: u16,
     ) -> AcpiStatus;
 
-    pub(crate) fn AcpiReleaseMutex(Handle: ACPI_HANDLE, Pathname: ACPI_STRING) -> AcpiStatus;
+    pub(crate) fn AcpiReleaseMutex(Handle: FfiAcpiHandle, Pathname: FfiAcpiString) -> AcpiStatus;
 
     pub(crate) fn AcpiEnableEvent(Event: u32, Flags: u32) -> AcpiStatus;
 
@@ -269,39 +269,39 @@ extern "C" {
 
     pub(crate) fn AcpiClearEvent(Event: u32) -> AcpiStatus;
 
-    pub(crate) fn AcpiGetEventStatus(Event: u32, EventStatus: *mut ACPI_EVENT_STATUS) -> AcpiStatus;
+    pub(crate) fn AcpiGetEventStatus(Event: u32, EventStatus: *mut FfiAcpiEventStatus) -> AcpiStatus;
 
     pub(crate) fn AcpiUpdateAllGpes() -> AcpiStatus;
 
-    pub(crate) fn AcpiEnableGpe(GpeDevice: ACPI_HANDLE, GpeNumber: u32) -> AcpiStatus;
+    pub(crate) fn AcpiEnableGpe(GpeDevice: FfiAcpiHandle, GpeNumber: u32) -> AcpiStatus;
 
-    pub(crate) fn AcpiDisableGpe(GpeDevice: ACPI_HANDLE, GpeNumber: u32) -> AcpiStatus;
+    pub(crate) fn AcpiDisableGpe(GpeDevice: FfiAcpiHandle, GpeNumber: u32) -> AcpiStatus;
 
-    pub(crate) fn AcpiClearGpe(GpeDevice: ACPI_HANDLE, GpeNumber: u32) -> AcpiStatus;
+    pub(crate) fn AcpiClearGpe(GpeDevice: FfiAcpiHandle, GpeNumber: u32) -> AcpiStatus;
 
-    pub(crate) fn AcpiSetGpe(GpeDevice: ACPI_HANDLE, GpeNumber: u32, Action: u8) -> AcpiStatus;
+    pub(crate) fn AcpiSetGpe(GpeDevice: FfiAcpiHandle, GpeNumber: u32, Action: u8) -> AcpiStatus;
 
-    pub(crate) fn AcpiFinishGpe(GpeDevice: ACPI_HANDLE, GpeNumber: u32) -> AcpiStatus;
+    pub(crate) fn AcpiFinishGpe(GpeDevice: FfiAcpiHandle, GpeNumber: u32) -> AcpiStatus;
 
-    pub(crate) fn AcpiMaskGpe(GpeDevice: ACPI_HANDLE, GpeNumber: u32, IsMasked: bool) -> AcpiStatus;
+    pub(crate) fn AcpiMaskGpe(GpeDevice: FfiAcpiHandle, GpeNumber: u32, IsMasked: bool) -> AcpiStatus;
 
-    pub(crate) fn AcpiMarkGpeForWake(GpeDevice: ACPI_HANDLE, GpeNumber: u32) -> AcpiStatus;
+    pub(crate) fn AcpiMarkGpeForWake(GpeDevice: FfiAcpiHandle, GpeNumber: u32) -> AcpiStatus;
 
     pub(crate) fn AcpiSetupGpeForWake(
-        ParentDevice: ACPI_HANDLE,
-        GpeDevice: ACPI_HANDLE,
+        ParentDevice: FfiAcpiHandle,
+        GpeDevice: FfiAcpiHandle,
         GpeNumber: u32,
     ) -> AcpiStatus;
 
-    pub(crate) fn AcpiSetGpeWakeMask(GpeDevice: ACPI_HANDLE, GpeNumber: u32, Action: u8) -> AcpiStatus;
+    pub(crate) fn AcpiSetGpeWakeMask(GpeDevice: FfiAcpiHandle, GpeNumber: u32, Action: u8) -> AcpiStatus;
 
     pub(crate) fn AcpiGetGpeStatus(
-        GpeDevice: ACPI_HANDLE,
+        GpeDevice: FfiAcpiHandle,
         GpeNumber: u32,
-        EventStatus: *mut ACPI_EVENT_STATUS,
+        EventStatus: *mut FfiAcpiEventStatus,
     ) -> AcpiStatus;
 
-    pub(crate) fn AcpiDispatchGpe(GpeDevice: ACPI_HANDLE, GpeNumber: u32) -> u32;
+    pub(crate) fn AcpiDispatchGpe(GpeDevice: FfiAcpiHandle, GpeNumber: u32) -> u32;
 
     pub(crate) fn AcpiDisableAllGpes() -> AcpiStatus;
 
@@ -311,36 +311,36 @@ extern "C" {
 
     pub(crate) fn AcpiAnyGpeStatusSet() -> u32;
 
-    pub(crate) fn AcpiGetGpeDevice(GpeIndex: u32, GpeDevice: *mut ACPI_HANDLE) -> AcpiStatus;
+    pub(crate) fn AcpiGetGpeDevice(GpeIndex: u32, GpeDevice: *mut FfiAcpiHandle) -> AcpiStatus;
 
     pub(crate) fn AcpiInstallGpeBlock(
-        GpeDevice: ACPI_HANDLE,
+        GpeDevice: FfiAcpiHandle,
         GpeBlockAddress: *mut FfiAcpiGenericAddress,
         RegisterCount: u32,
         InterruptNumber: u32,
     ) -> AcpiStatus;
 
-    pub(crate) fn AcpiRemoveGpeBlock(GpeDevice: ACPI_HANDLE) -> AcpiStatus;
+    pub(crate) fn AcpiRemoveGpeBlock(GpeDevice: FfiAcpiHandle) -> AcpiStatus;
 }
 
 extern "C" {
     pub(crate) fn AcpiGetVendorResource(
-        Device: ACPI_HANDLE,
+        Device: FfiAcpiHandle,
         Name: *mut i8,
         Uuid: *mut ACPI_VENDOR_UUID,
         RetBuffer: *mut ACPI_BUFFER,
     ) -> AcpiStatus;
 
-    pub(crate) fn AcpiGetCurrentResources(Device: ACPI_HANDLE, RetBuffer: *mut ACPI_BUFFER)
+    pub(crate) fn AcpiGetCurrentResources(Device: FfiAcpiHandle, RetBuffer: *mut ACPI_BUFFER)
         -> AcpiStatus;
 
     pub(crate) fn AcpiGetPossibleResources(
-        Device: ACPI_HANDLE,
+        Device: FfiAcpiHandle,
         RetBuffer: *mut ACPI_BUFFER,
     ) -> AcpiStatus;
 
     pub(crate) fn AcpiGetEventResources(
-        DeviceHandle: ACPI_HANDLE,
+        DeviceHandle: FfiAcpiHandle,
         RetBuffer: *mut ACPI_BUFFER,
     ) -> AcpiStatus;
 
@@ -351,15 +351,15 @@ extern "C" {
     ) -> AcpiStatus;
 
     pub(crate) fn AcpiWalkResources(
-        Device: ACPI_HANDLE,
+        Device: FfiAcpiHandle,
         Name: *mut i8,
         UserFunction: ACPI_WALK_RESOURCE_CALLBACK,
         Context: *mut ::core::ffi::c_void,
     ) -> AcpiStatus;
 
-    pub(crate) fn AcpiSetCurrentResources(Device: ACPI_HANDLE, InBuffer: *mut ACPI_BUFFER) -> AcpiStatus;
+    pub(crate) fn AcpiSetCurrentResources(Device: FfiAcpiHandle, InBuffer: *mut ACPI_BUFFER) -> AcpiStatus;
 
-    pub(crate) fn AcpiGetIrqRoutingTable(Device: ACPI_HANDLE, RetBuffer: *mut ACPI_BUFFER) -> AcpiStatus;
+    pub(crate) fn AcpiGetIrqRoutingTable(Device: FfiAcpiHandle, RetBuffer: *mut ACPI_BUFFER) -> AcpiStatus;
 
     pub(crate) fn AcpiResourceToAddress64(
         Resource: *mut ACPI_RESOURCE,
@@ -399,8 +399,8 @@ extern "C" {
     pub(crate) fn AcpiLeaveSleepState(SleepState: u8) -> AcpiStatus;
 
     pub(crate) fn AcpiSetFirmwareWakingVector(
-        PhysicalAddress: ACPI_PHYSICAL_ADDRESS,
-        PhysicalAddress64: ACPI_PHYSICAL_ADDRESS,
+        PhysicalAddress: FfiAcpiPhysicalAddress,
+        PhysicalAddress64: FfiAcpiPhysicalAddress,
     ) -> AcpiStatus;
 
     pub(crate) fn AcpiGetTimerResolution(Resolution: *mut u32) -> AcpiStatus;

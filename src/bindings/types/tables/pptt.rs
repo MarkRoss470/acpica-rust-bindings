@@ -1,3 +1,7 @@
+use crate::types::AcpiTableHeader;
+
+use super::ACPI_SUBTABLE_HEADER;
+
 #[doc = " PPTT - Processor Properties Topology Table (ACPI 6.2)"]
 #[doc = "        Version 1"]
 #[doc = ""]

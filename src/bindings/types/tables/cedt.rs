@@ -1,3 +1,15 @@
+use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
+
+#[doc = " CEDT - CXL Early Discovery Table"]
+#[doc = "        Version 1"]
+#[doc = ""]
+#[doc = " Conforms to the \"CXL Early Discovery Table\" (CXL 2.0)"]
+#[doc = ""]
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct acpi_table_cedt {
+    pub Header: AcpiTableHeader,
+}
 #[doc = " CEDT - CXL Early Discovery Table"]
 #[doc = "        Version 1"]
 #[doc = ""]
@@ -42,6 +54,6 @@ pub struct acpi_cedt_cfmws {
     pub Granularity: u32,
     pub Restrictions: u16,
     pub QtgId: u16,
-    pub InterleaveTargets: __IncompleteArrayField<u32>,
+    InterleaveTargets: __IncompleteArrayField<u32>,
 }
 pub type ACPI_CEDT_CFMWS = acpi_cedt_cfmws;

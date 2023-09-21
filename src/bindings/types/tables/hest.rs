@@ -1,3 +1,5 @@
+use crate::{types::AcpiTableHeader, interface::AcpiGenericAddress};
+
 #[doc = " HEST - Hardware Error Source Table (ACPI 4.0)"]
 #[doc = "        Version 1"]
 #[doc = ""]
@@ -173,7 +175,7 @@ pub struct acpi_hest_generic {
     pub RecordsToPreallocate: u32,
     pub MaxSectionsPerRecord: u32,
     pub MaxRawDataLength: u32,
-    pub ErrorStatusAddress: ACPI_GENERIC_ADDRESS,
+    pub ErrorStatusAddress: AcpiGenericAddress,
     pub Notify: ACPI_HEST_NOTIFY,
     pub ErrorBlockLength: u32,
 }
@@ -188,10 +190,10 @@ pub struct acpi_hest_generic_v2 {
     pub RecordsToPreallocate: u32,
     pub MaxSectionsPerRecord: u32,
     pub MaxRawDataLength: u32,
-    pub ErrorStatusAddress: ACPI_GENERIC_ADDRESS,
+    pub ErrorStatusAddress: AcpiGenericAddress,
     pub Notify: ACPI_HEST_NOTIFY,
     pub ErrorBlockLength: u32,
-    pub ReadAckRegister: ACPI_GENERIC_ADDRESS,
+    pub ReadAckRegister: AcpiGenericAddress,
     pub ReadAckPreserve: u64,
     pub ReadAckWrite: u64,
 }

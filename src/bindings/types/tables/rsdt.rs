@@ -1,3 +1,5 @@
+use crate::types::AcpiTableHeader;
+
 #[doc = " RSDT/XSDT - Root System Description Tables"]
 #[doc = "             Version 1 (both)"]
 #[doc = ""]

@@ -1,3 +1,5 @@
+use crate::types::AcpiTableHeader;
+
 #[doc = " IORT - IO Remapping Table"]
 #[doc = ""]
 #[doc = " Conforms to \"IO Remapping Table System Software on ARM Platforms\","]

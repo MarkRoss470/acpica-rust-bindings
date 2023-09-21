@@ -1,3 +1,6 @@
+use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
+
+
 #[doc = " GTDT - Generic Timer Description Table (ACPI 5.1)"]
 #[doc = "        Version 2"]
 #[doc = ""]

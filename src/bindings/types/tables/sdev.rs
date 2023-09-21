@@ -1,3 +1,14 @@
+use crate::types::AcpiTableHeader;
+
+
+#[doc = " SDEV - Secure Devices Table (ACPI 6.2)"]
+#[doc = "        Version 1"]
+#[doc = ""]
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct acpi_table_sdev {
+    pub Header: AcpiTableHeader,
+}
 #[doc = " SDEV - Secure Devices Table (ACPI 6.2)"]
 #[doc = "        Version 1"]
 #[doc = ""]

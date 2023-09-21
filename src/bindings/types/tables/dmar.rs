@@ -1,3 +1,6 @@
+use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
+
+
 #[doc = " DMAR - DMA Remapping table"]
 #[doc = "        Version 1"]
 #[doc = ""]

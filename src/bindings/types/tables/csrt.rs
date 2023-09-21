@@ -1,3 +1,6 @@
+use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
+
+
 #[doc = " CSRT - Core System Resource Table"]
 #[doc = "        Version 0"]
 #[doc = ""]

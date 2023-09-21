@@ -1,3 +1,5 @@
+use crate::types::AcpiTableHeader;
+
 
 #[doc = " RASF - RAS Feature Table (ACPI 5.0)"]
 #[doc = "        Version 1"]

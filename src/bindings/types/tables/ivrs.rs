@@ -1,3 +1,19 @@
+use crate::types::AcpiTableHeader;
+
+#[doc = " IVRS - I/O Virtualization Reporting Structure"]
+#[doc = "        Version 1"]
+#[doc = ""]
+#[doc = " Conforms to \"AMD I/O Virtualization Technology (IOMMU) Specification\","]
+#[doc = " Revision 1.26, February 2009."]
+#[doc = ""]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct acpi_table_ivrs {
+    pub Header: AcpiTableHeader,
+    pub Info: u32,
+    pub Reserved: u64,
+}
+
 #[doc = " IVRS - I/O Virtualization Reporting Structure"]
 #[doc = "        Version 1"]
 #[doc = ""]

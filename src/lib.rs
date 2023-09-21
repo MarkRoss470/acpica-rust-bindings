@@ -11,15 +11,8 @@
 // #![warn(clippy::pedantic)]
 #![deny(improper_ctypes, improper_ctypes_definitions)]
 
-use interface::debug_trace;
-
 extern crate alloc;
 
 mod bindings;
-pub mod types;
 pub mod interface;
-
-#[test]
-fn test() {
-    debug_trace("test", 0, 0, 0);
-}
+pub mod types;

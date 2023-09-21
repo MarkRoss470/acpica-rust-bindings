@@ -1,3 +1,5 @@
+use crate::types::AcpiTableHeader;
+
 #[doc = " NFIT - NVDIMM Interface Table (ACPI 6.0+)"]
 #[doc = "        Version 1"]
 #[doc = ""]

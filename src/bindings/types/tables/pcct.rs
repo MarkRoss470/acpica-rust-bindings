@@ -1,3 +1,17 @@
+use crate::{interface::AcpiGenericAddress, types::AcpiTableHeader};
+
+use super::ACPI_SUBTABLE_HEADER;
+
+#[doc = " PCCT - Platform Communications Channel Table (ACPI 5.0)"]
+#[doc = "        Version 2 (ACPI 6.2)"]
+#[doc = ""]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct acpi_table_pcct {
+    pub Header: AcpiTableHeader,
+    pub Flags: u32,
+    pub Reserved: u64,
+}
 #[doc = " PCCT - Platform Communications Channel Table (ACPI 5.0)"]
 #[doc = "        Version 2 (ACPI 6.2)"]
 #[doc = ""]
@@ -20,7 +34,7 @@ pub struct acpi_pcct_subspace {
     pub Reserved: [u8; 6usize],
     pub BaseAddress: u64,
     pub Length: u64,
-    pub DoorbellRegister: ACPI_GENERIC_ADDRESS,
+    pub DoorbellRegister: AcpiGenericAddress,
     pub PreserveMask: u64,
     pub WriteMask: u64,
     pub Latency: u32,
@@ -37,7 +51,7 @@ pub struct acpi_pcct_hw_reduced {
     pub Reserved: u8,
     pub BaseAddress: u64,
     pub Length: u64,
-    pub DoorbellRegister: ACPI_GENERIC_ADDRESS,
+    pub DoorbellRegister: AcpiGenericAddress,
     pub PreserveMask: u64,
     pub WriteMask: u64,
     pub Latency: u32,
@@ -54,13 +68,13 @@ pub struct acpi_pcct_hw_reduced_type2 {
     pub Reserved: u8,
     pub BaseAddress: u64,
     pub Length: u64,
-    pub DoorbellRegister: ACPI_GENERIC_ADDRESS,
+    pub DoorbellRegister: AcpiGenericAddress,
     pub PreserveMask: u64,
     pub WriteMask: u64,
     pub Latency: u32,
     pub MaxAccessRate: u32,
     pub MinTurnaroundTime: u16,
-    pub PlatformAckRegister: ACPI_GENERIC_ADDRESS,
+    pub PlatformAckRegister: AcpiGenericAddress,
     pub AckPreserveMask: u64,
     pub AckWriteMask: u64,
 }
@@ -74,22 +88,22 @@ pub struct acpi_pcct_ext_pcc_master {
     pub Reserved1: u8,
     pub BaseAddress: u64,
     pub Length: u32,
-    pub DoorbellRegister: ACPI_GENERIC_ADDRESS,
+    pub DoorbellRegister: AcpiGenericAddress,
     pub PreserveMask: u64,
     pub WriteMask: u64,
     pub Latency: u32,
     pub MaxAccessRate: u32,
     pub MinTurnaroundTime: u32,
-    pub PlatformAckRegister: ACPI_GENERIC_ADDRESS,
+    pub PlatformAckRegister: AcpiGenericAddress,
     pub AckPreserveMask: u64,
     pub AckSetMask: u64,
     pub Reserved2: u64,
-    pub CmdCompleteRegister: ACPI_GENERIC_ADDRESS,
+    pub CmdCompleteRegister: AcpiGenericAddress,
     pub CmdCompleteMask: u64,
-    pub CmdUpdateRegister: ACPI_GENERIC_ADDRESS,
+    pub CmdUpdateRegister: AcpiGenericAddress,
     pub CmdUpdatePreserveMask: u64,
     pub CmdUpdateSetMask: u64,
-    pub ErrorStatusRegister: ACPI_GENERIC_ADDRESS,
+    pub ErrorStatusRegister: AcpiGenericAddress,
     pub ErrorStatusMask: u64,
 }
 pub type ACPI_PCCT_EXT_PCC_MASTER = acpi_pcct_ext_pcc_master;
@@ -102,22 +116,22 @@ pub struct acpi_pcct_ext_pcc_slave {
     pub Reserved1: u8,
     pub BaseAddress: u64,
     pub Length: u32,
-    pub DoorbellRegister: ACPI_GENERIC_ADDRESS,
+    pub DoorbellRegister: AcpiGenericAddress,
     pub PreserveMask: u64,
     pub WriteMask: u64,
     pub Latency: u32,
     pub MaxAccessRate: u32,
     pub MinTurnaroundTime: u32,
-    pub PlatformAckRegister: ACPI_GENERIC_ADDRESS,
+    pub PlatformAckRegister: AcpiGenericAddress,
     pub AckPreserveMask: u64,
     pub AckSetMask: u64,
     pub Reserved2: u64,
-    pub CmdCompleteRegister: ACPI_GENERIC_ADDRESS,
+    pub CmdCompleteRegister: AcpiGenericAddress,
     pub CmdCompleteMask: u64,
-    pub CmdUpdateRegister: ACPI_GENERIC_ADDRESS,
+    pub CmdUpdateRegister: AcpiGenericAddress,
     pub CmdUpdatePreserveMask: u64,
     pub CmdUpdateSetMask: u64,
-    pub ErrorStatusRegister: ACPI_GENERIC_ADDRESS,
+    pub ErrorStatusRegister: AcpiGenericAddress,
     pub ErrorStatusMask: u64,
 }
 pub type ACPI_PCCT_EXT_PCC_SLAVE = acpi_pcct_ext_pcc_slave;
@@ -128,12 +142,12 @@ pub struct acpi_pcct_hw_reg {
     pub Version: u16,
     pub BaseAddress: u64,
     pub Length: u64,
-    pub DoorbellRegister: ACPI_GENERIC_ADDRESS,
+    pub DoorbellRegister: AcpiGenericAddress,
     pub DoorbellPreserve: u64,
     pub DoorbellWrite: u64,
-    pub CmdCompleteRegister: ACPI_GENERIC_ADDRESS,
+    pub CmdCompleteRegister: AcpiGenericAddress,
     pub CmdCompleteMask: u64,
-    pub ErrorStatusRegister: ACPI_GENERIC_ADDRESS,
+    pub ErrorStatusRegister: AcpiGenericAddress,
     pub ErrorStatusMask: u64,
     pub NominalLatency: u32,
     pub MinTurnaroundTime: u32,

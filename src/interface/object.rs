@@ -1,6 +1,6 @@
 use crate::bindings::types::{
     object::{AcpiObjectType, FfiAcpiObject},
-    ACPI_HANDLE, ACPI_IO_ADDRESS,
+    FfiAcpiHandle, FfiAcpiIoAddress,
 };
 
 pub struct AcpiObjectPackage {
@@ -21,11 +21,11 @@ pub enum AcpiObject {
     Package(AcpiObjectPackage),
     Reference {
         actual_type: AcpiObjectType,
-        handle: ACPI_HANDLE,
+        handle: FfiAcpiHandle,
     },
     Processor {
         proc_id: u32,
-        pblk_address: ACPI_IO_ADDRESS,
+        pblk_address: FfiAcpiIoAddress,
         pblk_length: u32,
     },
     PowerResource {

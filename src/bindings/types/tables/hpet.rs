@@ -1,3 +1,5 @@
+use crate::{types::AcpiTableHeader, interface::AcpiGenericAddress};
+
 #[doc = " HPET - High Precision Event Timer table"]
 #[doc = "        Version 1"]
 #[doc = ""]
@@ -9,7 +11,7 @@
 pub struct acpi_table_hpet {
     pub Header: AcpiTableHeader,
     pub Id: u32,
-    pub Address: ACPI_GENERIC_ADDRESS,
+    pub Address: AcpiGenericAddress,
     pub Sequence: u8,
     pub MinimumTick: u16,
     pub Flags: u8,

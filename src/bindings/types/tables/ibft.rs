@@ -1,3 +1,5 @@
+use crate::types::AcpiTableHeader;
+
 #[doc = " IBFT - Boot Firmware Table"]
 #[doc = "        Version 1"]
 #[doc = ""]

@@ -1,3 +1,18 @@
+use crate::types::AcpiTableHeader;
+
+use super::ACPI_SUBTABLE_HEADER;
+
+
+#[doc = " SRAT - System Resource Affinity Table"]
+#[doc = "        Version 3"]
+#[doc = ""]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct acpi_table_srat {
+    pub Header: AcpiTableHeader,
+    pub TableRevision: u32,
+    pub Reserved: u64,
+}
 #[doc = " SRAT - System Resource Affinity Table"]
 #[doc = "        Version 3"]
 #[doc = ""]

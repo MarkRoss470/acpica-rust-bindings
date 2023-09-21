@@ -1,3 +1,17 @@
+use crate::{types::AcpiTableHeader, bindings::types::{__IncompleteArrayField, ACPI_WHEA_HEADER}};
+
+#[doc = " EINJ - Error Injection Table (ACPI 4.0)"]
+#[doc = "        Version 1"]
+#[doc = ""]
+#[repr(C, packed)]
+#[derive(Debug, Copy, Clone)]
+pub struct acpi_table_einj {
+    pub Header: AcpiTableHeader,
+    pub HeaderLength: u32,
+    pub Flags: u8,
+    pub Reserved: [u8; 3usize],
+    pub Entries: u32,
+}
 
 #[doc = " EINJ - Error Injection Table (ACPI 4.0)"]
 #[doc = "        Version 1"]
@@ -6,7 +20,7 @@ pub type ACPI_TABLE_EINJ = acpi_table_einj;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_einj_entry {
-    pub WheaHeader: ACPI_WHEA_HEADER,
+    WheaHeader: ACPI_WHEA_HEADER,
 }
 pub type ACPI_EINJ_ENTRY = acpi_einj_entry;
 #[repr(u32)]

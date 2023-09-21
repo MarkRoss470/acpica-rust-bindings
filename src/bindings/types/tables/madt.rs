@@ -1,3 +1,7 @@
+use crate::types::AcpiTableHeader;
+
+use super::ACPI_SUBTABLE_HEADER;
+
 #[doc = " MADT - Multiple APIC Description Table"]
 #[doc = "        Version 3"]
 #[doc = ""]

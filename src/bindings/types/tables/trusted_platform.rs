@@ -1,3 +1,5 @@
+use crate::types::AcpiTableHeader;
+
 #[doc = " TCPA - Trusted Computing Platform Alliance table"]
 #[doc = "        Version 2"]
 #[doc = ""]

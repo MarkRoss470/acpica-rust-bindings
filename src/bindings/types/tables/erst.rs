@@ -1,3 +1,7 @@
+use crate::{types::AcpiTableHeader, bindings::types::ACPI_WHEA_HEADER};
+
+
+
 #[doc = " ERST - Error Record Serialization Table (ACPI 4.0)"]
 #[doc = "        Version 1"]
 #[doc = ""]
@@ -16,7 +20,7 @@ pub type ACPI_TABLE_ERST = acpi_table_erst;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_erst_entry {
-    pub WheaHeader: ACPI_WHEA_HEADER,
+    WheaHeader: ACPI_WHEA_HEADER,
 }
 pub type ACPI_ERST_ENTRY = acpi_erst_entry;
 #[repr(u32)]

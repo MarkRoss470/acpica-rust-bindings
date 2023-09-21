@@ -1,3 +1,5 @@
+use crate::types::AcpiTableHeader;
+
 #[doc = " HMAT - Heterogeneous Memory Attributes Table (ACPI 6.3)"]
 #[doc = ""]
 #[repr(C, packed)]

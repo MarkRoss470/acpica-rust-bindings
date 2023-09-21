@@ -1,3 +1,5 @@
+use crate::types::AcpiTableHeader;
+
 #[doc = " PHAT - Platform Health Assessment Table (ACPI 6.4)"]
 #[doc = "        Version 1"]
 #[doc = ""]

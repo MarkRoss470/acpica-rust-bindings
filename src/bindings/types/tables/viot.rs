@@ -1,3 +1,5 @@
+use crate::types::AcpiTableHeader;
+
 #[doc = " VIOT - Virtual I/O Translation Table"]
 #[doc = "        Version 1"]
 #[doc = ""]

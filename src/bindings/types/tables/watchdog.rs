@@ -1,3 +1,5 @@
+use crate::{types::AcpiTableHeader, interface::AcpiGenericAddress};
+
 #[doc = " WDAT - Watchdog Action Table"]
 #[doc = "        Version 1"]
 #[doc = ""]
@@ -34,7 +36,7 @@ pub struct acpi_wdat_entry {
     pub Action: u8,
     pub Instruction: u8,
     pub Reserved: u16,
-    pub RegisterRegion: ACPI_GENERIC_ADDRESS,
+    pub RegisterRegion: AcpiGenericAddress,
     pub Value: u32,
     pub Mask: u32,
 }
@@ -81,7 +83,7 @@ pub struct acpi_table_wddt {
     pub SpecVersion: u16,
     pub TableVersion: u16,
     pub PciVendorId: u16,
-    pub Address: ACPI_GENERIC_ADDRESS,
+    pub Address: AcpiGenericAddress,
     pub MaxCount: u16,
     pub MinCount: u16,
     pub Period: u16,
@@ -105,8 +107,8 @@ pub type ACPI_TABLE_WDDT = acpi_table_wddt;
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_wdrt {
     pub Header: AcpiTableHeader,
-    pub ControlRegister: ACPI_GENERIC_ADDRESS,
-    pub CountRegister: ACPI_GENERIC_ADDRESS,
+    pub ControlRegister: AcpiGenericAddress,
+    pub CountRegister: AcpiGenericAddress,
     pub PciDeviceId: u16,
     pub PciVendorId: u16,
     pub PciBus: u8,

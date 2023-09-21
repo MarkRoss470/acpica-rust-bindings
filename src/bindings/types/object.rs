@@ -1,4 +1,4 @@
-use super::{ACPI_HANDLE, ACPI_IO_ADDRESS};
+use super::{FfiAcpiHandle, FfiAcpiIoAddress};
 
 pub(crate) type AcpiObjectType = u32;
 
@@ -46,14 +46,14 @@ pub(crate) struct FfiObjectTypePackage {
 pub(crate) struct FfiObjectTypeReference {
     pub object_type: AcpiObjectType,
     pub actual_type: AcpiObjectType,
-    pub handle: ACPI_HANDLE,
+    pub handle: FfiAcpiHandle,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiObjectTypeProcessor {
     pub object_type: AcpiObjectType,
     pub proc_id: u32,
-    pub pblk_address: ACPI_IO_ADDRESS,
+    pub pblk_address: FfiAcpiIoAddress,
     pub pblk_length: u32,
 }
 #[repr(C)]

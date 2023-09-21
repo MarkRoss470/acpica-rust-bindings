@@ -1,3 +1,5 @@
+use crate::types::AcpiTableHeader;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_mpst {

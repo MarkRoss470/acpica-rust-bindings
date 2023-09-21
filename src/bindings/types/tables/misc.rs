@@ -1,3 +1,7 @@
+use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField, interface::AcpiGenericAddress};
+
+use super::ACPI_SUBTABLE_HEADER;
+
 #[doc = " ASF - Alert Standard Format table (Signature \"ASF!\")"]
 #[doc = "       Revision 0x10"]
 #[doc = ""]
@@ -179,16 +183,6 @@ pub struct acpi_table_boot {
 #[doc = " Conforms to the \"Simple Boot Flag Specification\", Version 2.1"]
 #[doc = ""]
 pub type ACPI_TABLE_BOOT = acpi_table_boot;
-#[doc = " CEDT - CXL Early Discovery Table"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to the \"CXL Early Discovery Table\" (CXL 2.0)"]
-#[doc = ""]
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct acpi_table_cedt {
-    pub Header: AcpiTableHeader,
-}
 
 #[doc = " CPEP - Corrected Platform Error Polling table (ACPI 4.0)"]
 #[doc = "        Version 1"]
@@ -225,7 +219,7 @@ pub struct acpi_table_dbgp {
     pub Header: AcpiTableHeader,
     pub Type: u8,
     pub Reserved: [u8; 3usize],
-    pub DebugPort: ACPI_GENERIC_ADDRESS,
+    pub DebugPort: AcpiGenericAddress,
 }
 #[doc = " DBGP - Debug Port table"]
 #[doc = "        Version 1"]
@@ -242,8 +236,8 @@ pub type ACPI_TABLE_DBGP = acpi_table_dbgp;
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_ecdt {
     pub Header: AcpiTableHeader,
-    pub Control: ACPI_GENERIC_ADDRESS,
-    pub Data: ACPI_GENERIC_ADDRESS,
+    pub Control: AcpiGenericAddress,
+    pub Data: AcpiGenericAddress,
     pub Uid: u32,
     pub Gpe: u8,
     pub Id: [u8; 1usize],
@@ -252,18 +246,7 @@ pub struct acpi_table_ecdt {
 #[doc = "        Version 1"]
 #[doc = ""]
 pub type ACPI_TABLE_ECDT = acpi_table_ecdt;
-#[doc = " EINJ - Error Injection Table (ACPI 4.0)"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[repr(C, packed)]
-#[derive(Debug, Copy, Clone)]
-pub struct acpi_table_einj {
-    pub Header: AcpiTableHeader,
-    pub HeaderLength: u32,
-    pub Flags: u8,
-    pub Reserved: [u8; 3usize],
-    pub Entries: u32,
-}
+
 
 #[doc = " BDAT - BIOS Data ACPI Table"]
 #[doc = ""]
@@ -274,7 +257,7 @@ pub struct acpi_table_einj {
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_bdat {
     pub Header: AcpiTableHeader,
-    pub Gas: ACPI_GENERIC_ADDRESS,
+    pub Gas: AcpiGenericAddress,
 }
 #[doc = " BDAT - BIOS Data ACPI Table"]
 #[doc = ""]
@@ -283,19 +266,7 @@ pub struct acpi_table_bdat {
 #[doc = ""]
 pub type ACPI_TABLE_BDAT = acpi_table_bdat;
 
-#[doc = " IVRS - I/O Virtualization Reporting Structure"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[doc = " Conforms to \"AMD I/O Virtualization Technology (IOMMU) Specification\","]
-#[doc = " Revision 1.26, February 2009."]
-#[doc = ""]
-#[repr(C, packed)]
-#[derive(Debug, Copy, Clone)]
-pub struct acpi_table_ivrs {
-    pub Header: AcpiTableHeader,
-    pub Info: u32,
-    pub Reserved: u64,
-}
+
 
 #[doc = " LPIT - Low Power Idle Table"]
 #[doc = ""]
@@ -331,10 +302,10 @@ pub enum AcpiLpitType {
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_lpit_native {
     pub Header: ACPI_LPIT_HEADER,
-    pub EntryTrigger: ACPI_GENERIC_ADDRESS,
+    pub EntryTrigger: AcpiGenericAddress,
     pub Residency: u32,
     pub Latency: u32,
-    pub ResidencyCounter: ACPI_GENERIC_ADDRESS,
+    pub ResidencyCounter: AcpiGenericAddress,
     pub CounterFrequency: u64,
 }
 pub type ACPI_LPIT_NATIVE = acpi_lpit_native;
@@ -383,7 +354,7 @@ pub struct acpi_table_mchi {
     pub Gpe: u8,
     pub PciDeviceFlag: u8,
     pub GlobalInterrupt: u32,
-    pub ControlRegister: ACPI_GENERIC_ADDRESS,
+    pub ControlRegister: AcpiGenericAddress,
     pub PciSegment: u8,
     pub PciBus: u8,
     pub PciDevice: u8,
@@ -441,16 +412,7 @@ pub struct acpi_table_msdm {
 #[doc = ""]
 pub type ACPI_TABLE_MSDM = acpi_table_msdm;
 
-#[doc = " PCCT - Platform Communications Channel Table (ACPI 5.0)"]
-#[doc = "        Version 2 (ACPI 6.2)"]
-#[doc = ""]
-#[repr(C, packed)]
-#[derive(Debug, Copy, Clone)]
-pub struct acpi_table_pcct {
-    pub Header: AcpiTableHeader,
-    pub Flags: u32,
-    pub Reserved: u64,
-}
+
 
 #[doc = " PDTT - Platform Debug Trigger Table (ACPI 6.2)"]
 #[doc = "        Version 0"]
@@ -488,7 +450,7 @@ pub struct acpi_table_rgrt {
     pub Version: u16,
     pub ImageType: u8,
     pub Reserved: u8,
-    pub Image: __IncompleteArrayField<u8>,
+    Image: __IncompleteArrayField<u8>,
 }
 #[doc = " RGRT - Regulatory Graphics Resource Table"]
 #[doc = "        Version 1"]
@@ -535,14 +497,7 @@ pub struct acpi_table_sdei {
 #[doc = " May 8th, 2017. Copyright 2017 ARM Ltd."]
 #[doc = ""]
 pub type ACPI_TABLE_SDEI = acpi_table_sdei;
-#[doc = " SDEV - Secure Devices Table (ACPI 6.2)"]
-#[doc = "        Version 1"]
-#[doc = ""]
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct acpi_table_sdev {
-    pub Header: AcpiTableHeader,
-}
+
 
 #[doc = " SVKL - Storage Volume Key Location Table (ACPI 6.4)"]
 #[doc = "        From: \"Guest-Host-Communication Interface (GHCI) for Intel"]
@@ -624,7 +579,7 @@ pub struct acpi_table_spcr {
     pub Header: AcpiTableHeader,
     pub InterfaceType: u8,
     pub Reserved: [u8; 3usize],
-    pub SerialPort: ACPI_GENERIC_ADDRESS,
+    pub SerialPort: AcpiGenericAddress,
     pub InterruptType: u8,
     pub PcInterrupt: u8,
     pub Interrupt: u32,
@@ -669,7 +624,7 @@ pub struct acpi_table_spmi {
     pub Reserved1: u8,
     pub PciDeviceFlag: u8,
     pub Interrupt: u32,
-    pub IpmiRegister: ACPI_GENERIC_ADDRESS,
+    pub IpmiRegister: AcpiGenericAddress,
     pub PciSegment: u8,
     pub PciBus: u8,
     pub PciDevice: u8,
@@ -694,16 +649,7 @@ pub enum AcpiSpmiInterfaceTypes {
     ACPI_SPMI_SMBUS = 4,
     ACPI_SPMI_RESERVED = 5,
 }
-#[doc = " SRAT - System Resource Affinity Table"]
-#[doc = "        Version 3"]
-#[doc = ""]
-#[repr(C, packed)]
-#[derive(Debug, Copy, Clone)]
-pub struct acpi_table_srat {
-    pub Header: AcpiTableHeader,
-    pub TableRevision: u32,
-    pub Reserved: u64,
-}
+
 
 #[doc = " STAO - Status Override Table (_STA override) - ACPI 6.0"]
 #[doc = "        Version 1"]
@@ -744,9 +690,9 @@ pub struct acpi_table_tcpa_server {
     pub GpeNumber: u8,
     pub Reserved2: [u8; 3usize],
     pub GlobalInterrupt: u32,
-    pub Address: ACPI_GENERIC_ADDRESS,
+    pub Address: AcpiGenericAddress,
     pub Reserved3: u32,
-    pub ConfigAddress: ACPI_GENERIC_ADDRESS,
+    pub ConfigAddress: AcpiGenericAddress,
     pub Group: u8,
     pub Bus: u8,
     pub Device: u8,

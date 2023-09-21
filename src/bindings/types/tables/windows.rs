@@ -1,3 +1,5 @@
+use crate::types::AcpiTableHeader;
+
 #[doc = " WAET - Windows ACPI Emulated devices Table"]
 #[doc = "        Version 1"]
 #[doc = ""]

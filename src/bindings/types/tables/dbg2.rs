@@ -1,3 +1,6 @@
+use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
+
+
 #[doc = " DBG2 - Debug Port Table 2"]
 #[doc = "        Version 0 (Both main table and subtables)"]
 #[doc = ""]

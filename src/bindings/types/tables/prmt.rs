@@ -1,3 +1,5 @@
+use crate::types::AcpiTableHeader;
+
 
 #[doc = " PRMT - Platform Runtime Mechanism Table"]
 #[doc = "        Version 1"]

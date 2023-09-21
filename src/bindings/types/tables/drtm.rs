@@ -1,3 +1,6 @@
+use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
+
+
 #[doc = " DRTM - Dynamic Root of Trust for Measurement table"]
 #[doc = " Conforms to \"TCG D-RTM Architecture\" June 17 2013, Version 1.0.0"]
 #[doc = " Table version 1"]

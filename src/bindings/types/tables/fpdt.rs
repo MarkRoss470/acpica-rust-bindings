@@ -1,3 +1,5 @@
+use crate::types::AcpiTableHeader;
+
 #[doc = " FPDT - Firmware Performance Data Table (ACPI 5.0)"]
 #[doc = "        Version 1"]
 #[doc = ""]
