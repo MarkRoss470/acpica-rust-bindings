@@ -1,4 +1,4 @@
-use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
+use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteArrayField};
 
 
 ///  DBG2 - Debug Port Table 2
@@ -9,23 +9,16 @@ use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_dbg2 {
-    pub Header: AcpiTableHeader,
+    pub Header: FfiAcpiTableHeader,
     pub InfoOffset: u32,
     pub InfoCount: u32,
 }
-///  DBG2 - Debug Port Table 2
-///         Version 0 (Both main table and subtables)
-/// 
-///  Conforms to \"Microsoft Debug Port Table 2 (DBG2)\", September 21, 2020
-/// 
-pub type ACPI_TABLE_DBG2 = acpi_table_dbg2;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_dbg2_header {
     pub InfoOffset: u32,
     pub InfoCount: u32,
 }
-pub type ACPI_DBG2_HEADER = acpi_dbg2_header;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_dbg2_device {
@@ -42,4 +35,3 @@ pub struct acpi_dbg2_device {
     pub BaseAddressOffset: u16,
     pub AddressSizeOffset: u16,
 }
-pub type ACPI_DBG2_DEVICE = acpi_dbg2_device;

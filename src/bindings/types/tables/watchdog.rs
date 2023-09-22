@@ -1,4 +1,4 @@
-use crate::{types::AcpiTableHeader, interface::AcpiGenericAddress};
+use crate::{bindings::types::FfiAcpiTableHeader, interface::AcpiGenericAddress};
 
 ///  WDAT - Watchdog Action Table
 ///         Version 1
@@ -9,7 +9,7 @@ use crate::{types::AcpiTableHeader, interface::AcpiGenericAddress};
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_wdat {
-    pub Header: AcpiTableHeader,
+    pub Header: FfiAcpiTableHeader,
     pub HeaderLength: u32,
     pub PciSegment: u16,
     pub PciBus: u8,
@@ -29,7 +29,7 @@ pub struct acpi_table_wdat {
 ///  Conforms to \"Hardware Watchdog Timers Design Specification\",
 ///  Copyright 2006 Microsoft Corporation.
 /// 
-pub type ACPI_TABLE_WDAT = acpi_table_wdat;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_wdat_entry {
@@ -40,7 +40,7 @@ pub struct acpi_wdat_entry {
     pub Value: u32,
     pub Mask: u32,
 }
-pub type ACPI_WDAT_ENTRY = acpi_wdat_entry;
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum AcpiWdatActions {
@@ -79,7 +79,7 @@ pub enum AcpiWdatInstructions {
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_wddt {
-    pub Header: AcpiTableHeader,
+    pub Header: FfiAcpiTableHeader,
     pub SpecVersion: u16,
     pub TableVersion: u16,
     pub PciVendorId: u16,
@@ -96,7 +96,7 @@ pub struct acpi_table_wddt {
 ///  Conforms to \"Using the Intel ICH Family Watchdog Timer (WDT)\",
 ///  Version 001, September 2002
 /// 
-pub type ACPI_TABLE_WDDT = acpi_table_wddt;
+
 ///  WDRT - Watchdog Resource Table
 ///         Version 1
 /// 
@@ -106,7 +106,7 @@ pub type ACPI_TABLE_WDDT = acpi_table_wddt;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_wdrt {
-    pub Header: AcpiTableHeader,
+    pub Header: FfiAcpiTableHeader,
     pub ControlRegister: AcpiGenericAddress,
     pub CountRegister: AcpiGenericAddress,
     pub PciDeviceId: u16,
@@ -118,10 +118,4 @@ pub struct acpi_table_wdrt {
     pub MaxCount: u16,
     pub Units: u8,
 }
-///  WDRT - Watchdog Resource Table
-///         Version 1
-/// 
-///  Conforms to \"Watchdog Timer Hardware Requirements for Windows Server 2003\",
-///  Version 1.01, August 28, 2006
-/// 
-pub type ACPI_TABLE_WDRT = acpi_table_wdrt;
+

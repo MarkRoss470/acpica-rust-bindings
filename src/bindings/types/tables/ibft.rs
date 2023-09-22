@@ -1,4 +1,4 @@
-use crate::types::AcpiTableHeader;
+use crate::bindings::types::FfiAcpiTableHeader;
 
 ///  IBFT - Boot Firmware Table
 ///         Version 1
@@ -12,7 +12,7 @@ use crate::types::AcpiTableHeader;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_ibft {
-    pub Header: AcpiTableHeader,
+    pub Header: FfiAcpiTableHeader,
     pub Reserved: [u8; 12usize],
 }
 ///  IBFT - Boot Firmware Table
@@ -24,7 +24,7 @@ pub struct acpi_table_ibft {
 ///  Note: It appears that this table is not intended to appear in the RSDT/XSDT.
 ///  Therefore, it is not currently supported by the disassembler.
 /// 
-pub type ACPI_TABLE_IBFT = acpi_table_ibft;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_ibft_header {
@@ -34,7 +34,7 @@ pub struct acpi_ibft_header {
     pub Index: u8,
     pub Flags: u8,
 }
-pub type ACPI_IBFT_HEADER = acpi_ibft_header;
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum AcpiIbftType {
@@ -49,7 +49,7 @@ pub enum AcpiIbftType {
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_ibft_control {
-    pub Header: ACPI_IBFT_HEADER,
+    pub Header: acpi_ibft_header,
     pub Extensions: u16,
     pub InitiatorOffset: u16,
     pub Nic0Offset: u16,
@@ -57,11 +57,11 @@ pub struct acpi_ibft_control {
     pub Nic1Offset: u16,
     pub Target1Offset: u16,
 }
-pub type ACPI_IBFT_CONTROL = acpi_ibft_control;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_ibft_initiator {
-    pub Header: ACPI_IBFT_HEADER,
+    pub Header: acpi_ibft_header,
     pub SnsServer: [u8; 16usize],
     pub SlpServer: [u8; 16usize],
     pub PrimaryServer: [u8; 16usize],
@@ -69,11 +69,11 @@ pub struct acpi_ibft_initiator {
     pub NameLength: u16,
     pub NameOffset: u16,
 }
-pub type ACPI_IBFT_INITIATOR = acpi_ibft_initiator;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_ibft_nic {
-    pub Header: ACPI_IBFT_HEADER,
+    pub Header: acpi_ibft_header,
     pub IpAddress: [u8; 16usize],
     pub SubnetMaskPrefix: u8,
     pub Origin: u8,
@@ -87,11 +87,11 @@ pub struct acpi_ibft_nic {
     pub NameLength: u16,
     pub NameOffset: u16,
 }
-pub type ACPI_IBFT_NIC = acpi_ibft_nic;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_ibft_target {
-    pub Header: ACPI_IBFT_HEADER,
+    pub Header: acpi_ibft_header,
     pub TargetIpAddress: [u8; 16usize],
     pub TargetIpSocket: u16,
     pub TargetBootLun: [u8; 8usize],
@@ -108,4 +108,3 @@ pub struct acpi_ibft_target {
     pub ReverseChapSecretLength: u16,
     pub ReverseChapSecretOffset: u16,
 }
-pub type ACPI_IBFT_TARGET = acpi_ibft_target;

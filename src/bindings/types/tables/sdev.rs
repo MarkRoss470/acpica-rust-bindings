@@ -1,4 +1,4 @@
-use crate::types::AcpiTableHeader;
+use crate::bindings::types::FfiAcpiTableHeader;
 
 
 ///  SDEV - Secure Devices Table (ACPI 6.2)
@@ -7,12 +7,12 @@ use crate::types::AcpiTableHeader;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_sdev {
-    pub Header: AcpiTableHeader,
+    pub Header: FfiAcpiTableHeader,
 }
 ///  SDEV - Secure Devices Table (ACPI 6.2)
 ///         Version 1
 /// 
-pub type ACPI_TABLE_SDEV = acpi_table_sdev;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_sdev_header {
@@ -20,7 +20,7 @@ pub struct acpi_sdev_header {
     pub Flags: u8,
     pub Length: u16,
 }
-pub type ACPI_SDEV_HEADER = acpi_sdev_header;
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum AcpiSdevType {
@@ -31,26 +31,26 @@ pub enum AcpiSdevType {
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_sdev_namespace {
-    pub Header: ACPI_SDEV_HEADER,
+    pub Header: acpi_sdev_header,
     pub DeviceIdOffset: u16,
     pub DeviceIdLength: u16,
     pub VendorDataOffset: u16,
     pub VendorDataLength: u16,
 }
-pub type ACPI_SDEV_NAMESPACE = acpi_sdev_namespace;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_sdev_secure_component {
     pub SecureComponentOffset: u16,
     pub SecureComponentLength: u16,
 }
-pub type ACPI_SDEV_SECURE_COMPONENT = acpi_sdev_secure_component;
+
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_sdev_component {
-    pub Header: ACPI_SDEV_HEADER,
+    pub Header: acpi_sdev_header,
 }
-pub type ACPI_SDEV_COMPONENT = acpi_sdev_component;
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum AcpiSacType {
@@ -60,7 +60,7 @@ pub enum AcpiSacType {
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_sdev_id_component {
-    pub Header: ACPI_SDEV_HEADER,
+    pub Header: acpi_sdev_header,
     pub HardwareIdOffset: u16,
     pub HardwareIdLength: u16,
     pub SubsystemIdOffset: u16,
@@ -72,20 +72,20 @@ pub struct acpi_sdev_id_component {
     pub PciSubClass: u8,
     pub PciProgrammingXface: u8,
 }
-pub type ACPI_SDEV_ID_COMPONENT = acpi_sdev_id_component;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_sdev_mem_component {
-    pub Header: ACPI_SDEV_HEADER,
+    pub Header: acpi_sdev_header,
     pub Reserved: u32,
     pub MemoryBaseAddress: u64,
     pub MemoryLength: u64,
 }
-pub type ACPI_SDEV_MEM_COMPONENT = acpi_sdev_mem_component;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_sdev_pcie {
-    pub Header: ACPI_SDEV_HEADER,
+    pub Header: acpi_sdev_header,
     pub Segment: u16,
     pub StartBus: u16,
     pub PathOffset: u16,
@@ -93,11 +93,10 @@ pub struct acpi_sdev_pcie {
     pub VendorDataOffset: u16,
     pub VendorDataLength: u16,
 }
-pub type ACPI_SDEV_PCIE = acpi_sdev_pcie;
+
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_sdev_pcie_path {
     pub Device: u8,
     pub Function: u8,
 }
-pub type ACPI_SDEV_PCIE_PATH = acpi_sdev_pcie_path;

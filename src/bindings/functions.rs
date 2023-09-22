@@ -1,7 +1,8 @@
 use crate::{types::AcpiTableHeader, interface::status::AcpiStatus};
 
-use super::types::{*, object::AcpiObjectType};
+use super::types::{*, object::AcpiObjectType, tables::FfiAcpiTableHeader};
 
+#[allow(dead_code)]
 extern "C" {
     pub(crate) fn AcpiInitializeTables(
         InitialStorage: *mut ACPI_TABLE_DESC,
@@ -52,7 +53,7 @@ extern "C" {
 
     pub(crate) fn AcpiInstallTable(Address: FfiAcpiPhysicalAddress, Physical: bool) -> AcpiStatus;
 
-    pub(crate) fn AcpiLoadTable(Table: *mut AcpiTableHeader, TableIdx: *mut u32) -> AcpiStatus;
+    pub(crate) fn AcpiLoadTable(Table: *mut FfiAcpiTableHeader, TableIdx: *mut u32) -> AcpiStatus;
 
     pub(crate) fn AcpiUnloadTable(TableIndex: u32) -> AcpiStatus;
 
@@ -67,20 +68,20 @@ extern "C" {
     pub(crate) fn AcpiGetTableHeader(
         Signature: FfiAcpiString,
         Instance: u32,
-        OutTableHeader: *mut AcpiTableHeader,
+        OutTableHeader: *mut FfiAcpiTableHeader,
     ) -> AcpiStatus;
 
     pub(crate) fn AcpiGetTable(
         Signature: FfiAcpiString,
         Instance: u32,
-        OutTable: *mut *mut AcpiTableHeader,
+        OutTable: *mut *mut FfiAcpiTableHeader,
     ) -> AcpiStatus;
 
-    pub(crate) fn AcpiPutTable(Table: *mut AcpiTableHeader);
+    pub(crate) fn AcpiPutTable(Table: *mut FfiAcpiTableHeader);
 
     pub(crate) fn AcpiGetTableByIndex(
         TableIndex: u32,
-        OutTable: *mut *mut AcpiTableHeader,
+        OutTable: *mut *mut FfiAcpiTableHeader,
     ) -> AcpiStatus;
 
     pub(crate) fn AcpiInstallTableHandler(
@@ -321,9 +322,7 @@ extern "C" {
     ) -> AcpiStatus;
 
     pub(crate) fn AcpiRemoveGpeBlock(GpeDevice: FfiAcpiHandle) -> AcpiStatus;
-}
 
-extern "C" {
     pub(crate) fn AcpiGetVendorResource(
         Device: FfiAcpiHandle,
         Name: *mut i8,

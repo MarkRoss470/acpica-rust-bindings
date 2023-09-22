@@ -3,11 +3,13 @@ use crate::bindings::types::{
     FfiAcpiHandle, FfiAcpiIoAddress,
 };
 
+#[derive(Debug)]
 pub struct AcpiObjectPackage {
     count: u32,
     elements: *mut FfiAcpiObject,
 }
 
+#[derive(Debug)]
 pub enum AcpiObject {
     Integer(u64),
     String {

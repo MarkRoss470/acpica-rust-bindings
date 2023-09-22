@@ -1,4 +1,4 @@
-use crate::types::AcpiTableHeader;
+use crate::bindings::types::FfiAcpiTableHeader;
 
 
 ///  PRMT - Platform Runtime Mechanism Table
@@ -7,12 +7,12 @@ use crate::types::AcpiTableHeader;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_prmt {
-    pub Header: AcpiTableHeader,
+    pub Header: FfiAcpiTableHeader,
 }
 ///  PRMT - Platform Runtime Mechanism Table
 ///         Version 1
 /// 
-pub type ACPI_TABLE_PRMT = acpi_table_prmt;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_prmt_header {
@@ -20,14 +20,14 @@ pub struct acpi_table_prmt_header {
     pub ModuleInfoOffset: u32,
     pub ModuleInfoCount: u32,
 }
-pub type ACPI_TABLE_PRMT_HEADER = acpi_table_prmt_header;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_prmt_module_header {
     pub Revision: u16,
     pub Length: u16,
 }
-pub type ACPI_PRMT_MODULE_HEADER = acpi_prmt_module_header;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_prmt_module_info {
@@ -40,7 +40,7 @@ pub struct acpi_prmt_module_info {
     pub HandlerInfoOffset: u32,
     pub MmioListPointer: u64,
 }
-pub type ACPI_PRMT_MODULE_INFO = acpi_prmt_module_info;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_prmt_handler_info {
@@ -51,4 +51,3 @@ pub struct acpi_prmt_handler_info {
     pub StaticDataBufferAddress: u64,
     pub AcpiParamBufferAddress: u64,
 }
-pub type ACPI_PRMT_HANDLER_INFO = acpi_prmt_handler_info;

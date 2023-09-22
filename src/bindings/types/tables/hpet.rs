@@ -1,4 +1,4 @@
-use crate::{types::AcpiTableHeader, interface::AcpiGenericAddress};
+use crate::{bindings::types::FfiAcpiTableHeader, interface::AcpiGenericAddress};
 
 ///  HPET - High Precision Event Timer table
 ///         Version 1
@@ -9,7 +9,7 @@ use crate::{types::AcpiTableHeader, interface::AcpiGenericAddress};
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_hpet {
-    pub Header: AcpiTableHeader,
+    pub Header: FfiAcpiTableHeader,
     pub Id: u32,
     pub Address: AcpiGenericAddress,
     pub Sequence: u8,
@@ -22,7 +22,7 @@ pub struct acpi_table_hpet {
 ///  Conforms to \"IA-PC HPET (High Precision Event Timers) Specification\",
 ///  Version 1.0a, October 2004
 /// 
-pub type ACPI_TABLE_HPET = acpi_table_hpet;
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum AcpiHpetPageProtect {

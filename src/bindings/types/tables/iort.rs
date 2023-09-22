@@ -1,4 +1,4 @@
-use crate::types::AcpiTableHeader;
+use crate::bindings::types::FfiAcpiTableHeader;
 
 ///  IORT - IO Remapping Table
 /// 
@@ -8,7 +8,7 @@ use crate::types::AcpiTableHeader;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_iort {
-    pub Header: AcpiTableHeader,
+    pub Header: FfiAcpiTableHeader,
     pub NodeCount: u32,
     pub NodeOffset: u32,
     pub Reserved: u32,
@@ -18,7 +18,7 @@ pub struct acpi_table_iort {
 ///  Conforms to \"IO Remapping Table System Software on ARM Platforms\",
 ///  Document number: ARM DEN 0049E.b, Feb 2021
 /// 
-pub type ACPI_TABLE_IORT = acpi_table_iort;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_iort_node {
@@ -30,7 +30,7 @@ pub struct acpi_iort_node {
     pub MappingOffset: u32,
     pub NodeData: [i8; 1usize],
 }
-pub type ACPI_IORT_NODE = acpi_iort_node;
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum AcpiIortNodeType {
@@ -51,7 +51,7 @@ pub struct acpi_iort_id_mapping {
     pub OutputReference: u32,
     pub Flags: u32,
 }
-pub type ACPI_IORT_ID_MAPPING = acpi_iort_id_mapping;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_iort_memory_access {
@@ -60,14 +60,14 @@ pub struct acpi_iort_memory_access {
     pub Reserved: u16,
     pub MemoryFlags: u8,
 }
-pub type ACPI_IORT_MEMORY_ACCESS = acpi_iort_memory_access;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_iort_its_group {
     pub ItsCount: u32,
     pub Identifiers: [u32; 1usize],
 }
-pub type ACPI_IORT_ITS_GROUP = acpi_iort_its_group;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_iort_named_component {
@@ -76,7 +76,7 @@ pub struct acpi_iort_named_component {
     pub MemoryAddressLimit: u8,
     pub DeviceName: [i8; 1usize],
 }
-pub type ACPI_IORT_NAMED_COMPONENT = acpi_iort_named_component;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_iort_root_complex {
@@ -86,7 +86,7 @@ pub struct acpi_iort_root_complex {
     pub MemoryAddressLimit: u8,
     pub Reserved: [u8; 3usize],
 }
-pub type ACPI_IORT_ROOT_COMPLEX = acpi_iort_root_complex;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_iort_smmu {
@@ -101,7 +101,7 @@ pub struct acpi_iort_smmu {
     pub PmuInterruptOffset: u32,
     pub Interrupts: [u64; 1usize],
 }
-pub type ACPI_IORT_SMMU = acpi_iort_smmu;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_iort_smmu_gsi {
@@ -110,7 +110,7 @@ pub struct acpi_iort_smmu_gsi {
     pub NSgCfgIrpt: u32,
     pub NSgCfgIrptFlags: u32,
 }
-pub type ACPI_IORT_SMMU_GSI = acpi_iort_smmu_gsi;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_iort_smmu_v3 {
@@ -126,7 +126,7 @@ pub struct acpi_iort_smmu_v3 {
     pub Pxm: u32,
     pub IdMappingIndex: u32,
 }
-pub type ACPI_IORT_SMMU_V3 = acpi_iort_smmu_v3;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_iort_pmcg {
@@ -135,7 +135,7 @@ pub struct acpi_iort_pmcg {
     pub NodeReference: u32,
     pub Page1BaseAddress: u64,
 }
-pub type ACPI_IORT_PMCG = acpi_iort_pmcg;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_iort_rmr {
@@ -143,7 +143,7 @@ pub struct acpi_iort_rmr {
     pub RmrCount: u32,
     pub RmrOffset: u32,
 }
-pub type ACPI_IORT_RMR = acpi_iort_rmr;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_iort_rmr_desc {
@@ -151,4 +151,3 @@ pub struct acpi_iort_rmr_desc {
     pub Length: u64,
     pub Reserved: u32,
 }
-pub type ACPI_IORT_RMR_DESC = acpi_iort_rmr_desc;

@@ -38,20 +38,15 @@ impl<T> ::core::fmt::Debug for __IncompleteArrayField<T> {
         fmt.write_str("__IncompleteArrayField")
     }
 }
-pub(crate) type FfiAcpiNativeInt = core::ffi::c_int;
 pub(crate) type FfiAcpiSize = u64;
 pub(crate) type FfiAcpiIoAddress = u64;
-pub(crate) type FfiAcpiPhysicalAddress = u64;
+pub(crate) type FfiAcpiPhysicalAddress = usize;
 pub(crate) type FfiAcpiName = u32;
 pub(crate) type FfiAcpiString = *mut i8;
 pub(crate) type FfiAcpiHandle = *mut ::core::ffi::c_void;
 pub(crate) type FfiAcpiOwnerId = u16;
-pub(crate) type FfiAcpiInteger = u64;
-pub(crate) type FfiAcpiEventType = u32;
 pub(crate) type FfiAcpiEventStatus = u32;
 pub(crate) type FfiAcpiAdtSpaceType = u8;
-pub(crate) type FfiAcpiSleepFunction =
-    ::core::option::Option<unsafe extern "C" fn(SleepState: u8) -> AcpiStatus>;
 
 ///  GAS - Generic Address Structure (ACPI 2.0+)
 /// 
@@ -62,66 +57,47 @@ pub(crate) type FfiAcpiSleepFunction =
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiGenericAddress {
-    pub(crate) SpaceId: u8,
-    pub(crate) BitWidth: u8,
-    pub(crate) BitOffset: u8,
-    pub(crate) AccessWidth: u8,
-    pub(crate) Address: u64,
-}
-
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub(crate) struct FfiAcpiSleepFunctions {
-    pub(crate) LegacyFunction: FfiAcpiSleepFunction,
-    pub(crate) ExtendedFunction: FfiAcpiSleepFunction,
+    pub(crate) space_id: u8,
+    pub(crate) bit_width: u8,
+    pub(crate) bit_offset: u8,
+    pub(crate) access_width: u8,
+    pub(crate) address: u64,
 }
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct acpi_object_list {
-    pub(crate) Count: u32,
-    pub(crate) Pointer: *mut FfiAcpiObject,
+    pub(crate) count: u32,
+    pub(crate) pointer: *mut FfiAcpiObject,
 }
 pub(crate) type ACPI_OBJECT_LIST = acpi_object_list;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct acpi_buffer {
-    pub(crate) Length: FfiAcpiSize,
-    pub(crate) Pointer: *mut ::core::ffi::c_void,
+    pub(crate) length: FfiAcpiSize,
+    pub(crate) pointer: *mut ::core::ffi::c_void,
 }
 pub(crate) type ACPI_BUFFER = acpi_buffer;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub(crate) struct acpi_predefined_names {
-    pub(crate) Name: *const i8,
-    pub(crate) Type: u8,
-    pub(crate) Val: *mut i8,
+pub(crate) struct FfiAcpiPredefinedNames {
+    pub(crate) name: *const i8,
+    pub(crate) object_type: u8,
+    pub(crate) val: *mut i8,
 }
-pub(crate) type ACPI_PREDEFINED_NAMES = acpi_predefined_names;
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub(crate) struct acpi_system_info {
-    pub(crate) AcpiCaVersion: u32,
-    pub(crate) Flags: u32,
-    pub(crate) TimerResolution: u32,
-    pub(crate) Reserved1: u32,
-    pub(crate) Reserved2: u32,
-    pub(crate) DebugLevel: u32,
-    pub(crate) DebugLayer: u32,
-}
-pub(crate) type ACPI_SYSTEM_INFO = acpi_system_info;
+
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct acpi_statistics {
-    pub(crate) SciCount: u32,
-    pub(crate) GpeCount: u32,
+    pub(crate) sci_count: u32,
+    pub(crate) gpe_count: u32,
     pub(crate) FixedEventCount: [u32; 5usize],
-    pub(crate) MethodCount: u32,
+    pub(crate) method_count: u32,
 }
 pub(crate) type ACPI_STATISTICS = acpi_statistics;
-pub(crate) type ACPI_OSD_HANDLER =
+pub(crate) type FfiAcpiOsdHandler =
     ::core::option::Option<unsafe extern "C" fn(Context: *mut ::core::ffi::c_void) -> u32>;
-pub(crate) type ACPI_OSD_EXEC_CALLBACK =
+pub(crate) type FfiAcpiOsdExecCallback =
     ::core::option::Option<unsafe extern "C" fn(Context: *mut ::core::ffi::c_void)>;
 pub(crate) type ACPI_SCI_HANDLER =
     ::core::option::Option<unsafe extern "C" fn(Context: *mut ::core::ffi::c_void) -> u32>;
@@ -176,14 +152,6 @@ pub(crate) type ACPI_ADR_SPACE_HANDLER = ::core::option::Option<
         RegionContext: *mut ::core::ffi::c_void,
     ) -> AcpiStatus,
 >;
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub(crate) struct acpi_connection_info {
-    pub(crate) Connection: *mut u8,
-    pub(crate) Length: u16,
-    pub(crate) AccessLength: u8,
-}
-pub(crate) type ACPI_CONNECTION_INFO = acpi_connection_info;
 pub(crate) type ACPI_ADR_SPACE_SETUP = ::core::option::Option<
     unsafe extern "C" fn(
         RegionHandle: FfiAcpiHandle,
@@ -213,63 +181,61 @@ pub(crate) type ACPI_INTERFACE_HANDLER =
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct acpi_pnp_device_id {
-    pub(crate) Length: u32,
-    pub(crate) String: *mut i8,
+    pub(crate) length: u32,
+    pub(crate) string: *mut i8,
 }
 pub(crate) type ACPI_PNP_DEVICE_ID = acpi_pnp_device_id;
 #[repr(C)]
 #[derive(Debug)]
 pub(crate) struct acpi_pnp_device_id_list {
-    pub(crate) Count: u32,
-    pub(crate) ListSize: u32,
-    pub(crate) Ids: __IncompleteArrayField<ACPI_PNP_DEVICE_ID>,
+    pub(crate) count: u32,
+    pub(crate) list_size: u32,
+    pub(crate) ids: __IncompleteArrayField<ACPI_PNP_DEVICE_ID>,
 }
 pub(crate) type ACPI_PNP_DEVICE_ID_LIST = acpi_pnp_device_id_list;
 #[repr(C)]
 #[derive(Debug)]
 pub(crate) struct acpi_device_info {
-    pub(crate) InfoSize: u32,
-    pub(crate) Name: u32,
-    pub(crate) Type: AcpiObjectType,
-    pub(crate) ParamCount: u8,
-    pub(crate) Valid: u16,
-    pub(crate) Flags: u8,
-    pub(crate) HighestDstates: [u8; 4usize],
-    pub(crate) LowestDstates: [u8; 5usize],
-    pub(crate) Address: u64,
-    pub(crate) HardwareId: ACPI_PNP_DEVICE_ID,
-    pub(crate) UniqueId: ACPI_PNP_DEVICE_ID,
-    pub(crate) ClassCode: ACPI_PNP_DEVICE_ID,
-    pub(crate) CompatibleIdList: ACPI_PNP_DEVICE_ID_LIST,
+    pub(crate) info_size: u32,
+    pub(crate) name: u32,
+    pub(crate) object_type: AcpiObjectType,
+    pub(crate) param_count: u8,
+    pub(crate) valid: u16,
+    pub(crate) flags: u8,
+    pub(crate) highest_dstates: [u8; 4usize],
+    pub(crate) lowest_dstates: [u8; 5usize],
+    pub(crate) address: u64,
+    pub(crate) hardware_id: ACPI_PNP_DEVICE_ID,
+    pub(crate) unique_id: ACPI_PNP_DEVICE_ID,
+    pub(crate) class_code: ACPI_PNP_DEVICE_ID,
+    pub(crate) compatible_id_list: ACPI_PNP_DEVICE_ID_LIST,
 }
 pub(crate) type ACPI_DEVICE_INFO = acpi_device_info;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub(crate) struct acpi_pci_id {
+pub(crate) struct FfiAcpiPciId {
     pub(crate) Segment: u16,
     pub(crate) Bus: u16,
     pub(crate) Device: u16,
     pub(crate) Function: u16,
 }
-pub(crate) type ACPI_PCI_ID = acpi_pci_id;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct acpi_mem_mapping {
-    pub(crate) PhysicalAddress: FfiAcpiPhysicalAddress,
-    pub(crate) LogicalAddress: *mut u8,
-    pub(crate) Length: FfiAcpiSize,
-    pub(crate) NextMm: *mut acpi_mem_mapping,
+    pub(crate) physical_address: FfiAcpiPhysicalAddress,
+    pub(crate) logical_address: *mut u8,
+    pub(crate) length: FfiAcpiSize,
+    pub(crate) next_mm: *mut acpi_mem_mapping,
 }
 pub(crate) type ACPI_MEM_MAPPING = acpi_mem_mapping;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct acpi_mem_space_context {
-    pub(crate) Length: u32,
-    pub(crate) Address: FfiAcpiPhysicalAddress,
-    pub(crate) CurMm: *mut ACPI_MEM_MAPPING,
-    pub(crate) FirstMm: *mut ACPI_MEM_MAPPING,
+    pub(crate) length: u32,
+    pub(crate) address: FfiAcpiPhysicalAddress,
+    pub(crate) cur_mm: *mut ACPI_MEM_MAPPING,
+    pub(crate) first_mm: *mut ACPI_MEM_MAPPING,
 }
-pub(crate) type ACPI_MEM_SPACE_CONTEXT = acpi_mem_space_context;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct acpi_memory_list {
@@ -279,34 +245,20 @@ pub(crate) struct acpi_memory_list {
     pub(crate) MaxDepth: u16,
     pub(crate) CurrentDepth: u16,
 }
-pub(crate) type ACPI_MEMORY_LIST = acpi_memory_list;
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub(crate) enum ACPI_TRACE_EVENT_TYPE {
-    ACPI_TRACE_AML_METHOD = 0,
-    ACPI_TRACE_AML_OPCODE = 1,
-    ACPI_TRACE_AML_REGION = 2,
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
+pub(crate) enum FfiAcpiTraceEventType {
+    Method = 0,
+    Opcode = 1,
+    Region = 2,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct acpi_exception_info {
-    pub(crate) Name: *mut i8,
+    pub(crate) name: *mut i8,
 }
-pub(crate) type ACPI_EXCEPTION_INFO = acpi_exception_info;
 
-#[repr(u32)]
-#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub(crate) enum AcpiPreferredPmProfiles {
-    PM_UNSPECIFIED = 0,
-    PM_DESKTOP = 1,
-    PM_MOBILE = 2,
-    PM_WORKSTATION = 3,
-    PM_ENTERPRISE_SERVER = 4,
-    PM_SOHO_SERVER = 5,
-    PM_APPLIANCE_PC = 6,
-    PM_PERFORMANCE_SERVER = 7,
-    PM_TABLET = 8,
-}
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub(crate) union acpi_name_union {
@@ -340,14 +292,11 @@ pub(crate) struct acpi_whea_header {
 }
 pub(crate) type ACPI_WHEA_HEADER = acpi_whea_header;
 
-pub(crate) type ACPI_RS_LENGTH = u16;
-pub(crate) type ACPI_RSDESC_SIZE = u32;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct acpi_uuid {
     pub(crate) Data: [u8; 16usize],
 }
-pub(crate) type ACPI_UUID = acpi_uuid;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct acpi_vendor_uuid {
@@ -855,17 +804,17 @@ pub(crate) struct acpi_pci_routing_table {
     pub(crate) SourceIndex: u32,
     pub(crate) Source: [i8; 4usize],
 }
-pub(crate) type ACPI_PCI_ROUTING_TABLE = acpi_pci_routing_table;
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub(crate) enum ACPI_EXECUTE_TYPE {
-    OSL_GLOBAL_LOCK_HANDLER = 0,
-    OSL_NOTIFY_HANDLER = 1,
-    OSL_GPE_HANDLER = 2,
-    OSL_DEBUGGER_MAIN_THREAD = 3,
-    OSL_DEBUGGER_EXEC_THREAD = 4,
-    OSL_EC_POLL_HANDLER = 5,
-    OSL_EC_BURST_HANDLER = 6,
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
+pub(crate) enum FfiAcpiExecuteType {
+    GlobalLockHandler = 0,
+    NotifyHandler = 1,
+    GpeHandler = 2,
+    DebuggerMainThread = 3,
+    DebuggerExecThread = 4,
+    EcPollHandler = 5,
+    EcBurstHandler = 6,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -874,7 +823,6 @@ pub(crate) struct acpi_signal_fatal_info {
     pub(crate) Code: u32,
     pub(crate) Argument: u32,
 }
-pub(crate) type ACPI_SIGNAL_FATAL_INFO = acpi_signal_fatal_info;
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -885,7 +833,6 @@ pub(crate) struct acpi_fde_info {
     pub(crate) Floppy3: u32,
     pub(crate) Tape: u32,
 }
-pub(crate) type ACPI_FDE_INFO = acpi_fde_info;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct acpi_grt_info {
@@ -901,7 +848,6 @@ pub(crate) struct acpi_grt_info {
     pub(crate) Daylight: u8,
     pub(crate) Reserved: [u8; 3usize],
 }
-pub(crate) type ACPI_GRT_INFO = acpi_grt_info;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct acpi_gtm_info {
@@ -911,7 +857,6 @@ pub(crate) struct acpi_gtm_info {
     pub(crate) DmaSpeed1: u32,
     pub(crate) Flags: u32,
 }
-pub(crate) type ACPI_GTM_INFO = acpi_gtm_info;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct acpi_pld_info {

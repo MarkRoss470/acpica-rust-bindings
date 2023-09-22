@@ -1,6 +1,6 @@
-use alloc::{vec::Vec, boxed::Box};
+use alloc::{vec::Vec, boxed::Box, string::String};
 
-use crate::{interface::status::AcpiError, types::{AcpiPhysicalAddress, AcpiPredefinedNames, AcpiString, AcpiTableHeader, AcpiSpinLock, AcpiSize, AcpiSemaphore, AcpiAllocationError, AcpiCache, AcpiCallback, AcpiExecuteType}};
+use crate::{interface::status::AcpiError, types::{AcpiPhysicalAddress, AcpiPredefinedNames, AcpiTableHeader,  AcpiSize, AcpiAllocationError, AcpiCallback, AcpiExecuteType}};
 
 /// The interface between ACPICA and the host OS. Each method in this trait is mapped to an `AcpiOs...` function,
 /// which will be called on the object registered with [`register_interface`]. 
@@ -37,14 +37,18 @@ pub unsafe trait AcpiHandler {
     fn get_root_pointer(&mut self) -> AcpiPhysicalAddress;
 
     /// Allows the OS to specify an override for a predefined object in the ACPI namespace.
+    /// The returned string will be converted to a [`CString`], so the FFI handler for this 
+    /// method will panic if it contains null bytes.
     /// 
     /// # Safety
     /// * This function is only called from `AcpiOsPredefinedOverride`
+    /// 
+    /// [`CString`]: alloc::ffi::CString
     #[allow(unused_variables)]
     unsafe fn predefined_override(
         &mut self,
         predefined_object: &AcpiPredefinedNames,
-    ) -> Result<Option<AcpiString>, AcpiError> {
+    ) -> Result<Option<String>, AcpiError> {
         Ok(None)
     }
 
@@ -62,7 +66,7 @@ pub unsafe trait AcpiHandler {
     unsafe fn table_override(
         &mut self,
         table: &AcpiTableHeader,
-    ) -> Result<Option<&'static mut AcpiTableHeader>, AcpiError> {
+    ) -> Result<Option<AcpiTableHeader>, AcpiError> {
         Ok(None)
     }
 
@@ -84,30 +88,30 @@ pub unsafe trait AcpiHandler {
         Ok(None)
     }
 
-    fn create_lock(&mut self) -> Result<AcpiSpinLock, AcpiError>;
+    // fn create_lock(&mut self) -> Result<AcpiSpinLock, AcpiError>;
 
-    fn delete_lock(&mut self, hock: AcpiSpinLock);
+    // fn delete_lock(&mut self, hock: AcpiSpinLock);
 
-    fn acquire_lock(&mut self, handle: AcpiSpinLock) -> AcpiSize;
+    // fn acquire_lock(&mut self, handle: AcpiSpinLock) -> AcpiSize;
 
-    fn release_lock(&mut self, handle: AcpiSpinLock, flags: AcpiSize);
+    // fn release_lock(&mut self, handle: AcpiSpinLock, flags: AcpiSize);
 
-    fn create_semaphore(
-        &mut self,
-        max_units: u32,
-        initial_units: u32,
-    ) -> Result<AcpiSemaphore, AcpiError>;
+    // fn create_semaphore(
+    //     &mut self,
+    //     max_units: u32,
+    //     initial_units: u32,
+    // ) -> Result<AcpiSemaphore, AcpiError>;
 
-    fn delete_semaphore(&mut self) -> Result<AcpiSemaphore, AcpiError>;
+    // fn delete_semaphore(&mut self) -> Result<AcpiSemaphore, AcpiError>;
 
-    fn wait_semaphore(
-        &mut self,
-        handle: AcpiSemaphore,
-        units: u32,
-        timeout: u16,
-    ) -> Result<(), AcpiError>;
+    // fn wait_semaphore(
+    //     &mut self,
+    //     handle: AcpiSemaphore,
+    //     units: u32,
+    //     timeout: u16,
+    // ) -> Result<(), AcpiError>;
 
-    fn signal_semaphore(&mut self, handle: AcpiSemaphore, units: u32) -> Result<(), AcpiError>;
+    // fn signal_semaphore(&mut self, handle: AcpiSemaphore, units: u32) -> Result<(), AcpiError>;
 
     /// Allocate `size` bytes of memory.
     /// The default implementation of this method uses the global heap allocator.
@@ -184,20 +188,20 @@ pub unsafe trait AcpiHandler {
         logical_address: *mut u8,
     ) -> Result<AcpiPhysicalAddress, AcpiError>;
 
-    fn create_cache(
-        &mut self,
-        cache_name: AcpiString,
-        object_size: u16,
-        max_depth: u16,
-    ) -> Result<AcpiCache, AcpiError>;
+    // fn create_cache(
+    //     &mut self,
+    //     cache_name: &str,
+    //     object_size: u16,
+    //     max_depth: u16,
+    // ) -> Result<AcpiCache, AcpiError>;
 
-    fn delete_cache(&mut self, cache: &mut AcpiCache) -> Result<(), AcpiError>;
+    // fn delete_cache(&mut self, cache: &mut AcpiCache) -> Result<(), AcpiError>;
 
-    fn purge_cache(&mut self, cache: &mut AcpiCache) -> Result<(), AcpiError>;
+    // fn purge_cache(&mut self, cache: &mut AcpiCache) -> Result<(), AcpiError>;
 
-    fn acquire_object(&mut self, cache: &mut AcpiCache) -> *mut u8;
+    // fn acquire_object(&mut self, cache: &mut AcpiCache) -> *mut u8;
 
-    fn release_object(&mut self, cache: &mut AcpiCache, object: *mut u8) -> Result<(), AcpiError>;
+    // fn release_object(&mut self, cache: &mut AcpiCache, object: *mut u8) -> Result<(), AcpiError>;
 
     fn install_interrupt_handler(
         &mut self,

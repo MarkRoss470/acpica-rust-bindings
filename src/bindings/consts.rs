@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 pub const ACPI_BINARY_SEMAPHORE: u32 = 0;
 pub const ACPI_OSL_MUTEX: u32 = 1;
 pub const ACPI_SRC_OS_LF_ONLY: u32 = 0;

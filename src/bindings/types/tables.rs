@@ -59,9 +59,6 @@ pub struct acpi_subtable_header {
     pub Type: u8,
     pub Length: u8,
 }
-///  Common subtable headers
-/// 
-pub type ACPI_SUBTABLE_HEADER = acpi_subtable_header;
 
 ///  RSDP - Root System Description Pointer (Signature is \"RSD PTR \")
 ///         Version 2
@@ -82,7 +79,6 @@ pub struct acpi_table_rsdp {
 ///  RSDP - Root System Description Pointer (Signature is \"RSD PTR \")
 ///         Version 2
 /// 
-pub type ACPI_TABLE_RSDP = acpi_table_rsdp;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_rsdp_common {
@@ -92,7 +88,6 @@ pub struct acpi_rsdp_common {
     pub Revision: u8,
     pub RsdtPhysicalAddress: u32,
 }
-pub type ACPI_RSDP_COMMON = acpi_rsdp_common;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_rsdp_extension {
@@ -101,4 +96,3 @@ pub struct acpi_rsdp_extension {
     pub ExtendedChecksum: u8,
     pub Reserved: [u8; 3usize],
 }
-pub type ACPI_RSDP_EXTENSION = acpi_rsdp_extension;

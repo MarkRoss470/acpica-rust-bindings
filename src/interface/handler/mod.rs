@@ -3,26 +3,54 @@ mod handler_trait;
 
 pub use handler_trait::AcpiHandler;
 
-use core::sync::atomic::{AtomicBool, Ordering};
+use core::{
+    ops::{Deref, DerefMut},
+    sync::atomic::{AtomicBool, Ordering},
+};
 
-use alloc::boxed::Box;
+use alloc::{boxed::Box, string::String, vec::Vec, ffi::CString};
 use spin::Mutex;
 
 use crate::bindings::{
     consts::ACPI_FULL_INITIALIZATION,
     functions::{
-        AcpiEnableSubsystem, AcpiInitializeSubsystem, AcpiInitializeTables, AcpiLoadTables, AcpiInitializeObjects,
+        AcpiEnableSubsystem, AcpiInitializeObjects, AcpiInitializeSubsystem, AcpiInitializeTables,
+        AcpiLoadTables,
     },
 };
 
 use super::status::AcpiError;
 
-static OS_INTERFACE: Mutex<Option<Box<dyn AcpiHandler + Send>>> = Mutex::new(None);
+static OS_INTERFACE: Mutex<Option<OsInterface>> = Mutex::new(None);
 
 pub(crate) static SUBSYSTEM_IS_INITIALIZED: AtomicBool = AtomicBool::new(false);
 pub(crate) static TABLES_ARE_INITIALIZED: AtomicBool = AtomicBool::new(false);
 pub(crate) static SUBSYSTEM_IS_ENABLED: AtomicBool = AtomicBool::new(false);
 pub(crate) static OBJECTS_ARE_INITIALIZED: AtomicBool = AtomicBool::new(false);
+
+#[derive(Debug)]
+enum DropOnTerminate {
+    CString(CString),
+}
+
+struct OsInterface {
+    handler: Box<dyn AcpiHandler + Send>,
+    objects_to_drop: Vec<DropOnTerminate>,
+}
+
+impl Deref for OsInterface {
+    type Target = Box<dyn AcpiHandler + Send>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.handler
+    }
+}
+
+impl DerefMut for OsInterface {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.handler
+    }
+}
 
 /// Registers `interface` as the handler for ACPICA functions, and starts the initialization of ACPICA.
 ///
@@ -37,7 +65,10 @@ pub fn register_interface<T: AcpiHandler + Send + 'static>(
         panic!("Interface is already initialized");
     }
 
-    *lock = Some(Box::new(interface));
+    *lock = Some(OsInterface {
+        handler: Box::new(interface),
+        objects_to_drop: Vec::new(),
+    });
     SUBSYSTEM_IS_INITIALIZED.store(true, Ordering::Relaxed);
 
     // AcpiInitializeSubsystem calls functions which need this lock
@@ -81,7 +112,7 @@ impl AcpicaInitialization<true, true> {
         unsafe { AcpiInitializeObjects(ACPI_FULL_INITIALIZATION).as_result()? };
 
         OBJECTS_ARE_INITIALIZED.store(true, Ordering::Relaxed);
-        
+
         Ok(())
     }
 }

@@ -1,6 +1,4 @@
-use crate::{types::AcpiTableHeader, bindings::types::ACPI_WHEA_HEADER};
-
-
+use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::ACPI_WHEA_HEADER};
 
 ///  ERST - Error Record Serialization Table (ACPI 4.0)
 ///         Version 1
@@ -8,21 +6,16 @@ use crate::{types::AcpiTableHeader, bindings::types::ACPI_WHEA_HEADER};
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_erst {
-    pub Header: AcpiTableHeader,
+    pub Header: FfiAcpiTableHeader,
     pub HeaderLength: u32,
     pub Reserved: u32,
     pub Entries: u32,
 }
-///  ERST - Error Record Serialization Table (ACPI 4.0)
-///         Version 1
-/// 
-pub type ACPI_TABLE_ERST = acpi_table_erst;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_erst_entry {
     WheaHeader: ACPI_WHEA_HEADER,
 }
-pub type ACPI_ERST_ENTRY = acpi_erst_entry;
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum AcpiErstActions {
@@ -86,4 +79,3 @@ pub struct acpi_erst_info {
     pub Signature: u16,
     pub Data: [u8; 48usize],
 }
-pub type ACPI_ERST_INFO = acpi_erst_info;

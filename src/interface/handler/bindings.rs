@@ -1,44 +1,53 @@
+use core::ffi::c_void;
+
+use alloc::{ffi::CString, string::String};
+
 use crate::{
-    interface::status::{AcpiErrorAsStatusExt, AcpiStatus},
-    types::{
-        AcpiExecuteType, AcpiIoAddress, AcpiOsdExecCallback, AcpiOsdHandler, AcpiPciId,
-        AcpiPhysicalAddress, AcpiPredefinedNames, AcpiSemaphore, AcpiSize, AcpiSpinLock,
-        AcpiString, AcpiTableHeader, AcpiTraceEventType,
+    bindings::types::{
+        tables::FfiAcpiTableHeader, FfiAcpiExecuteType, FfiAcpiIoAddress, FfiAcpiOsdExecCallback,
+        FfiAcpiOsdHandler, FfiAcpiPciId, FfiAcpiPhysicalAddress, FfiAcpiPredefinedNames,
+        FfiAcpiSize, FfiAcpiString, FfiAcpiTraceEventType,
     },
+    interface::status::{AcpiErrorAsStatusExt, AcpiStatus},
+    types::{AcpiPredefinedNames, AcpiTableHeader},
 };
 
-macro_rules! interface {
-    () => {{
-        use super::OS_INTERFACE;
-        OS_INTERFACE.lock().as_mut().unwrap().as_mut()
-    }};
-}
+use super::{DropOnTerminate, OS_INTERFACE};
 
 #[export_name = "AcpiOsInitialize"]
 extern "C" fn acpi_os_initialize() -> AcpiStatus {
-    unsafe { interface!().initialize().as_acpi_status() }
+    let mut lock = OS_INTERFACE.lock();
+    let lock = lock.as_mut().unwrap();
+    unsafe { lock.initialize().as_acpi_status() }
 }
 
 #[export_name = "AcpiOsTerminate"]
 extern "C" fn acpi_os_terminate() -> AcpiStatus {
-    unsafe { interface!().terminate().as_acpi_status() }
+    let mut lock = OS_INTERFACE.lock();
+    let lock = lock.as_mut().unwrap();
+    unsafe { lock.terminate().as_acpi_status() }
 }
 
 #[export_name = "AcpiOsGetRootPointer"]
-extern "C" fn acpi_os_get_root_pointer() -> AcpiPhysicalAddress {
-    interface!().get_root_pointer()
+extern "C" fn acpi_os_get_root_pointer() -> FfiAcpiPhysicalAddress {
+    let mut lock = OS_INTERFACE.lock();
+    let lock = lock.as_mut().unwrap();
+
+    lock.get_root_pointer().as_ffi()
 }
 
 #[export_name = "AcpiOsPredefinedOverride"]
 extern "C" fn acpi_os_predefined_override(
-    init_val: *const AcpiPredefinedNames,
-    new_val_ptr: *mut AcpiString,
+    init_val: *const FfiAcpiPredefinedNames,
+    new_val_ptr: *mut FfiAcpiString,
 ) -> AcpiStatus {
     // SAFETY: `init_val` is valid for reads
     let init_val = unsafe { &*init_val };
+    let mut lock = OS_INTERFACE.lock();
+    let lock = lock.as_mut().unwrap();
 
     // SAFETY: This is `AcpiOsPredefinedOverride`
-    let result = unsafe { interface!().predefined_override(init_val) };
+    let result = unsafe { lock.predefined_override(&AcpiPredefinedNames::from_ffi(init_val)) };
     let new_val = match result {
         Ok(new_val) => new_val,
         Err(e) => return e.as_acpi_status(),
@@ -46,7 +55,17 @@ extern "C" fn acpi_os_predefined_override(
 
     // SAFETY: `new_val_ptr` is valid for writes
     unsafe {
-        core::ptr::write_unaligned(new_val_ptr, new_val.unwrap_or(AcpiString::NULL));
+        core::ptr::write_unaligned(
+            new_val_ptr,
+            new_val
+                .map(|s| {
+                    let s = CString::new(s).unwrap();
+                    let ptr = s.as_ptr() as *mut _;
+                    lock.objects_to_drop.push(DropOnTerminate::CString(s));
+                    ptr
+                })
+                .unwrap_or(core::ptr::null_mut()),
+        );
     }
 
     AcpiStatus::OK
@@ -54,14 +73,16 @@ extern "C" fn acpi_os_predefined_override(
 
 #[export_name = "AcpiOsTableOverride"]
 extern "C" fn acpi_os_table_override(
-    existing_table: *mut AcpiTableHeader,
-    new_table_ptr: *mut *mut AcpiTableHeader,
+    existing_table: *mut FfiAcpiTableHeader,
+    new_table_ptr: *mut *mut FfiAcpiTableHeader,
 ) -> AcpiStatus {
     // SAFETY: `existing_table` is valid for reads
-    let existing_table = unsafe { &*existing_table };
+    let existing_table = unsafe { &mut *existing_table };
+    let mut lock = OS_INTERFACE.lock();
+    let lock = lock.as_mut().unwrap();
 
     // SAFETY: This is `AcpiOsTableOverride`
-    let result = unsafe { interface!().table_override(existing_table) };
+    let result = unsafe { lock.table_override(&AcpiTableHeader::from_ffi(existing_table)) };
     let new_table = match result {
         Ok(new_table) => new_table,
         Err(e) => return e.as_acpi_status(),
@@ -72,7 +93,7 @@ extern "C" fn acpi_os_table_override(
         core::ptr::write_unaligned(
             new_table_ptr,
             new_table
-                .map(|new_table| new_table as *mut _)
+                .map(|new_table| new_table.as_ffi() as *mut _)
                 .unwrap_or(core::ptr::null_mut()),
         );
     }
@@ -82,15 +103,18 @@ extern "C" fn acpi_os_table_override(
 
 #[export_name = "AcpiOsPhysicalTableOverride"]
 extern "C" fn acpi_os_physical_table_override(
-    existing_table: *mut AcpiTableHeader,
-    new_table_address_ptr: *mut AcpiPhysicalAddress,
+    existing_table: *mut FfiAcpiTableHeader,
+    new_table_address_ptr: *mut FfiAcpiPhysicalAddress,
     new_table_length_ptr: *mut u32,
 ) -> AcpiStatus {
     // SAFETY: `existing_table` is valid for reads
-    let existing_table = unsafe { &*existing_table };
+    let existing_table = unsafe { &mut *existing_table };
+    let mut lock = OS_INTERFACE.lock();
+    let lock = lock.as_mut().unwrap();
 
     // SAFETY: This is `AcpiOsPhysicalTableOverride`
-    let result = unsafe { interface!().physical_table_override(existing_table) };
+    let result =
+        unsafe { lock.physical_table_override(&AcpiTableHeader::from_ffi(existing_table)) };
     let new_table = match result {
         Ok(new_table) => new_table,
         Err(e) => return e.as_acpi_status(),
@@ -99,17 +123,30 @@ extern "C" fn acpi_os_physical_table_override(
     match new_table {
         // SAFETY: `new_table_address_ptr` and `new_table_length_ptr` are valid for writes
         Some((address, length)) => unsafe {
-            core::ptr::write(new_table_address_ptr, address);
+            core::ptr::write(new_table_address_ptr, address.as_usize());
             core::ptr::write(new_table_length_ptr, length);
         },
+        // Write null to `new_table_address_ptr` to indicate the table should not be updated
         // SAFETY: `new_table_address_ptr` is valid for writes
         None => unsafe {
-            core::ptr::write(new_table_address_ptr, AcpiPhysicalAddress::NULL);
+            core::ptr::write(new_table_address_ptr, 0);
         },
     }
 
     AcpiStatus::OK
 }
+
+#[derive(Debug)]
+#[repr(transparent)]
+pub struct AcpiSpinLock(*mut c_void);
+
+#[derive(Debug)]
+#[repr(transparent)]
+pub struct AcpiSemaphore(*mut c_void);
+
+#[derive(Debug)]
+#[repr(transparent)]
+pub struct AcpiCache(*mut u8);
 
 #[export_name = "AcpiOsCreateLock"]
 extern "C" fn acpi_os_create_lock(_out_handle: *mut AcpiSpinLock) -> AcpiStatus {
@@ -122,12 +159,12 @@ extern "C" fn acpi_os_delete_lock(_handle: AcpiSpinLock) {
 }
 
 #[export_name = "AcpiOsAcquireLock"]
-extern "C" fn acpi_os_acquire_lock(_handle: AcpiSpinLock) -> AcpiSize {
+extern "C" fn acpi_os_acquire_lock(_handle: AcpiSpinLock) -> FfiAcpiSize {
     todo!()
 }
 
 #[export_name = "AcpiOsReleaseLock"]
-extern "C" fn acpi_os_release_lock(_handle: AcpiSpinLock, _flags: AcpiSize) {
+extern "C" fn acpi_os_release_lock(_handle: AcpiSpinLock, _flags: FfiAcpiSize) {
     todo!()
 }
 
@@ -160,13 +197,13 @@ extern "C" fn acpi_os_signal_semaphore(_handle: AcpiSemaphore, _units: u32) -> A
 }
 
 #[export_name = "AcpiOsAllocate"]
-extern "C" fn acpi_os_allocate(_size: AcpiSize) -> *mut ::core::ffi::c_void {
+extern "C" fn acpi_os_allocate(_size: FfiAcpiSize) -> *mut ::core::ffi::c_void {
     todo!()
 }
 
 // TODO: allow native allocate zeroed (set USE_NATIVE_ALLOCATE_ZEROED build flag)
 // #[export_name = "AcpiOsAllocateZeroed"]
-// extern "C" fn acpi_os_allocate_zeroed(_size: AcpiSize) -> *mut ::core::ffi::c_void {
+// extern "C" fn acpi_os_allocate_zeroed(_size: FfiAcpiSize) -> *mut ::core::ffi::c_void {
 //     todo!()
 // }
 
@@ -177,21 +214,21 @@ extern "C" fn acpi_os_free(_memory: *mut ::core::ffi::c_void) {
 
 #[export_name = "AcpiOsMapMemory"]
 extern "C" fn acpi_os_map_memory(
-    _where: AcpiPhysicalAddress,
-    _length: AcpiSize,
+    _where: FfiAcpiPhysicalAddress,
+    _length: FfiAcpiSize,
 ) -> *mut ::core::ffi::c_void {
     todo!()
 }
 
 #[export_name = "AcpiOsUnmapMemory"]
-extern "C" fn acpi_os_unmap_memory(_logical_address: *mut ::core::ffi::c_void, _size: AcpiSize) {
+extern "C" fn acpi_os_unmap_memory(_logical_address: *mut ::core::ffi::c_void, _size: FfiAcpiSize) {
     todo!()
 }
 
 #[export_name = "AcpiOsGetPhysicalAddress"]
 extern "C" fn acpi_os_get_physical_address(
     _logical_address: *mut ::core::ffi::c_void,
-    _physical_address: *mut AcpiPhysicalAddress,
+    _physical_address: *mut FfiAcpiPhysicalAddress,
 ) -> AcpiStatus {
     todo!()
 }
@@ -234,7 +271,7 @@ extern "C" fn acpi_os_release_object(
 #[export_name = "AcpiOsInstallInterruptHandler"]
 extern "C" fn acpi_os_install_interrupt_handler(
     _interrupt_number: u32,
-    _service_routine: AcpiOsdHandler,
+    _service_routine: FfiAcpiOsdHandler,
     _context: *mut ::core::ffi::c_void,
 ) -> AcpiStatus {
     todo!()
@@ -243,7 +280,7 @@ extern "C" fn acpi_os_install_interrupt_handler(
 #[export_name = "AcpiOsRemoveInterruptHandler"]
 extern "C" fn acpi_os_remove_interrupt_handler(
     _interrupt_number: u32,
-    _service_routine: AcpiOsdHandler,
+    _service_routine: FfiAcpiOsdHandler,
 ) -> AcpiStatus {
     todo!()
 }
@@ -255,8 +292,8 @@ extern "C" fn acpi_os_get_thread_id() -> u64 {
 
 #[export_name = "AcpiOsExecute"]
 extern "C" fn acpi_os_execute(
-    _type: AcpiExecuteType,
-    _function: AcpiOsdExecCallback,
+    _type: FfiAcpiExecuteType,
+    _function: FfiAcpiOsdExecCallback,
     _context: *mut ::core::ffi::c_void,
 ) -> AcpiStatus {
     todo!()
@@ -279,7 +316,7 @@ extern "C" fn acpi_os_stall(_microseconds: u32) {
 
 #[export_name = "AcpiOsReadPort"]
 extern "C" fn acpi_os_read_port(
-    _address: AcpiIoAddress,
+    _address: FfiAcpiIoAddress,
     _value: *mut u32,
     _width: u32,
 ) -> AcpiStatus {
@@ -287,13 +324,17 @@ extern "C" fn acpi_os_read_port(
 }
 
 #[export_name = "AcpiOsWritePort"]
-extern "C" fn acpi_os_write_port(_address: AcpiIoAddress, _value: u32, _width: u32) -> AcpiStatus {
+extern "C" fn acpi_os_write_port(
+    _address: FfiAcpiIoAddress,
+    _value: u32,
+    _width: u32,
+) -> AcpiStatus {
     todo!()
 }
 
 #[export_name = "AcpiOsReadMemory"]
 extern "C" fn acpi_os_read_memory(
-    _address: AcpiPhysicalAddress,
+    _address: FfiAcpiPhysicalAddress,
     _value: *mut u64,
     _width: u32,
 ) -> AcpiStatus {
@@ -302,7 +343,7 @@ extern "C" fn acpi_os_read_memory(
 
 #[export_name = "AcpiOsWriteMemory"]
 extern "C" fn acpi_os_write_memory(
-    _address: AcpiPhysicalAddress,
+    _address: FfiAcpiPhysicalAddress,
     _value: u64,
     _width: u32,
 ) -> AcpiStatus {
@@ -311,7 +352,7 @@ extern "C" fn acpi_os_write_memory(
 
 #[export_name = "AcpiOsReadPciConfiguration"]
 extern "C" fn acpi_os_read_pci_configuration(
-    _pci_id: *mut AcpiPciId,
+    _pci_id: *mut FfiAcpiPciId,
     _reg: u32,
     _value: *mut u64,
     _width: u32,
@@ -321,7 +362,7 @@ extern "C" fn acpi_os_read_pci_configuration(
 
 #[export_name = "AcpiOsWritePciConfiguration"]
 extern "C" fn acpi_os_write_pci_configuration(
-    _pci_id: *mut AcpiPciId,
+    _pci_id: *mut FfiAcpiPciId,
     _reg: u32,
     _value: u64,
     _width: u32,
@@ -330,12 +371,12 @@ extern "C" fn acpi_os_write_pci_configuration(
 }
 
 #[export_name = "AcpiOsReadable"]
-extern "C" fn acpi_os_readable(_pointer: *mut ::core::ffi::c_void, _length: AcpiSize) -> bool {
+extern "C" fn acpi_os_readable(_pointer: *mut ::core::ffi::c_void, _length: FfiAcpiSize) -> bool {
     todo!()
 }
 
 #[export_name = "AcpiOsWritable"]
-extern "C" fn acpi_os_writable(_pointer: *mut ::core::ffi::c_void, _length: AcpiSize) -> bool {
+extern "C" fn acpi_os_writable(_pointer: *mut ::core::ffi::c_void, _length: FfiAcpiSize) -> bool {
     todo!()
 }
 
@@ -399,7 +440,7 @@ extern "C" fn acpi_os_notify_command_complete() -> AcpiStatus {
 
 #[export_name = "AcpiOsTracePoint"]
 extern "C" fn acpi_os_trace_point(
-    _type: AcpiTraceEventType,
+    _type: FfiAcpiTraceEventType,
     _begin: bool,
     _aml: *mut u8,
     _pathname: *mut i8,
@@ -411,8 +452,8 @@ extern "C" fn acpi_os_trace_point(
 extern "C" fn acpi_os_get_table_by_name(
     _signature: *mut i8,
     _instance: u32,
-    _table: *mut *mut AcpiTableHeader,
-    _address: *mut AcpiPhysicalAddress,
+    _table: *mut *mut FfiAcpiTableHeader,
+    _address: *mut FfiAcpiPhysicalAddress,
 ) -> AcpiStatus {
     todo!()
 }
@@ -420,17 +461,17 @@ extern "C" fn acpi_os_get_table_by_name(
 #[export_name = "AcpiOsGetTableByIndex"]
 extern "C" fn acpi_os_get_table_by_index(
     _index: u32,
-    _table: *mut *mut AcpiTableHeader,
+    _table: *mut *mut FfiAcpiTableHeader,
     _instance: *mut u32,
-    _address: *mut AcpiPhysicalAddress,
+    _address: *mut FfiAcpiPhysicalAddress,
 ) -> AcpiStatus {
     todo!()
 }
 
 #[export_name = "AcpiOsGetTableByAddress"]
 extern "C" fn acpi_os_get_table_by_address(
-    _address: AcpiPhysicalAddress,
-    _table: *mut *mut AcpiTableHeader,
+    _address: FfiAcpiPhysicalAddress,
+    _table: *mut *mut FfiAcpiTableHeader,
 ) -> AcpiStatus {
     todo!()
 }

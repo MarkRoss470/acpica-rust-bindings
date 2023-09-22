@@ -1,4 +1,4 @@
-use crate::{types::AcpiTableHeader, interface::AcpiGenericAddress};
+use crate::{bindings::types::FfiAcpiTableHeader, interface::AcpiGenericAddress};
 
 ///  HEST - Hardware Error Source Table (ACPI 4.0)
 ///         Version 1
@@ -6,20 +6,15 @@ use crate::{types::AcpiTableHeader, interface::AcpiGenericAddress};
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_hest {
-    pub Header: AcpiTableHeader,
+    pub Header: FfiAcpiTableHeader,
     pub ErrorSourceCount: u32,
 }
-///  HEST - Hardware Error Source Table (ACPI 4.0)
-///         Version 1
-/// 
-pub type ACPI_TABLE_HEST = acpi_table_hest;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_hest_header {
     pub Type: u16,
     pub SourceId: u16,
 }
-pub type ACPI_HEST_HEADER = acpi_hest_header;
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum AcpiHestTypes {
@@ -50,7 +45,6 @@ pub struct acpi_hest_ia_error_bank {
     pub AddressRegister: u32,
     pub MiscRegister: u32,
 }
-pub type ACPI_HEST_IA_ERROR_BANK = acpi_hest_ia_error_bank;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_hest_aer_common {
@@ -69,7 +63,6 @@ pub struct acpi_hest_aer_common {
     pub CorrectableMask: u32,
     pub AdvancedCapabilities: u32,
 }
-pub type ACPI_HEST_AER_COMMON = acpi_hest_aer_common;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_hest_notify {
@@ -83,28 +76,27 @@ pub struct acpi_hest_notify {
     pub ErrorThresholdValue: u32,
     pub ErrorThresholdWindow: u32,
 }
-pub type ACPI_HEST_NOTIFY = acpi_hest_notify;
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum AcpiHestNotifyTypes {
-    ACPI_HEST_NOTIFY_POLLED = 0,
-    ACPI_HEST_NOTIFY_EXTERNAL = 1,
-    ACPI_HEST_NOTIFY_LOCAL = 2,
-    ACPI_HEST_NOTIFY_SCI = 3,
-    ACPI_HEST_NOTIFY_NMI = 4,
-    ACPI_HEST_NOTIFY_CMCI = 5,
-    ACPI_HEST_NOTIFY_MCE = 6,
-    ACPI_HEST_NOTIFY_GPIO = 7,
-    ACPI_HEST_NOTIFY_SEA = 8,
-    ACPI_HEST_NOTIFY_SEI = 9,
-    ACPI_HEST_NOTIFY_GSIV = 10,
-    ACPI_HEST_NOTIFY_SOFTWARE_DELEGATED = 11,
-    ACPI_HEST_NOTIFY_RESERVED = 12,
+    acpi_hest_notify_POLLED = 0,
+    acpi_hest_notify_EXTERNAL = 1,
+    acpi_hest_notify_LOCAL = 2,
+    acpi_hest_notify_SCI = 3,
+    acpi_hest_notify_NMI = 4,
+    acpi_hest_notify_CMCI = 5,
+    acpi_hest_notify_MCE = 6,
+    acpi_hest_notify_GPIO = 7,
+    acpi_hest_notify_SEA = 8,
+    acpi_hest_notify_SEI = 9,
+    acpi_hest_notify_GSIV = 10,
+    acpi_hest_notify_SOFTWARE_DELEGATED = 11,
+    acpi_hest_notify_RESERVED = 12,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_hest_ia_machine_check {
-    pub Header: ACPI_HEST_HEADER,
+    pub Header: acpi_hest_header,
     pub Reserved1: u16,
     pub Flags: u8,
     pub Enabled: u8,
@@ -115,60 +107,54 @@ pub struct acpi_hest_ia_machine_check {
     pub NumHardwareBanks: u8,
     pub Reserved3: [u8; 7usize],
 }
-pub type ACPI_HEST_IA_MACHINE_CHECK = acpi_hest_ia_machine_check;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_hest_ia_corrected {
-    pub Header: ACPI_HEST_HEADER,
+    pub Header: acpi_hest_header,
     pub Reserved1: u16,
     pub Flags: u8,
     pub Enabled: u8,
     pub RecordsToPreallocate: u32,
     pub MaxSectionsPerRecord: u32,
-    pub Notify: ACPI_HEST_NOTIFY,
+    pub Notify: acpi_hest_notify,
     pub NumHardwareBanks: u8,
     pub Reserved2: [u8; 3usize],
 }
-pub type ACPI_HEST_IA_CORRECTED = acpi_hest_ia_corrected;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_hest_ia_nmi {
-    pub Header: ACPI_HEST_HEADER,
+    pub Header: acpi_hest_header,
     pub Reserved: u32,
     pub RecordsToPreallocate: u32,
     pub MaxSectionsPerRecord: u32,
     pub MaxRawDataLength: u32,
 }
-pub type ACPI_HEST_IA_NMI = acpi_hest_ia_nmi;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_hest_aer_root {
-    pub Header: ACPI_HEST_HEADER,
-    pub Aer: ACPI_HEST_AER_COMMON,
+    pub Header: acpi_hest_header,
+    pub Aer: acpi_hest_aer_common,
     pub RootErrorCommand: u32,
 }
-pub type ACPI_HEST_AER_ROOT = acpi_hest_aer_root;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_hest_aer {
-    pub Header: ACPI_HEST_HEADER,
-    pub Aer: ACPI_HEST_AER_COMMON,
+    pub Header: acpi_hest_header,
+    pub Aer: acpi_hest_aer_common,
 }
-pub type ACPI_HEST_AER = acpi_hest_aer;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_hest_aer_bridge {
-    pub Header: ACPI_HEST_HEADER,
-    pub Aer: ACPI_HEST_AER_COMMON,
+    pub Header: acpi_hest_header,
+    pub Aer: acpi_hest_aer_common,
     pub UncorrectableMask2: u32,
     pub UncorrectableSeverity2: u32,
     pub AdvancedCapabilities2: u32,
 }
-pub type ACPI_HEST_AER_BRIDGE = acpi_hest_aer_bridge;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_hest_generic {
-    pub Header: ACPI_HEST_HEADER,
+    pub Header: acpi_hest_header,
     pub RelatedSourceId: u16,
     pub Reserved: u8,
     pub Enabled: u8,
@@ -176,14 +162,13 @@ pub struct acpi_hest_generic {
     pub MaxSectionsPerRecord: u32,
     pub MaxRawDataLength: u32,
     pub ErrorStatusAddress: AcpiGenericAddress,
-    pub Notify: ACPI_HEST_NOTIFY,
+    pub Notify: acpi_hest_notify,
     pub ErrorBlockLength: u32,
 }
-pub type ACPI_HEST_GENERIC = acpi_hest_generic;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_hest_generic_v2 {
-    pub Header: ACPI_HEST_HEADER,
+    pub Header: acpi_hest_header,
     pub RelatedSourceId: u16,
     pub Reserved: u8,
     pub Enabled: u8,
@@ -191,13 +176,12 @@ pub struct acpi_hest_generic_v2 {
     pub MaxSectionsPerRecord: u32,
     pub MaxRawDataLength: u32,
     pub ErrorStatusAddress: AcpiGenericAddress,
-    pub Notify: ACPI_HEST_NOTIFY,
+    pub Notify: acpi_hest_notify,
     pub ErrorBlockLength: u32,
     pub ReadAckRegister: AcpiGenericAddress,
     pub ReadAckPreserve: u64,
     pub ReadAckWrite: u64,
 }
-pub type ACPI_HEST_GENERIC_V2 = acpi_hest_generic_v2;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_hest_generic_status {
@@ -207,7 +191,6 @@ pub struct acpi_hest_generic_status {
     pub DataLength: u32,
     pub ErrorSeverity: u32,
 }
-pub type ACPI_HEST_GENERIC_STATUS = acpi_hest_generic_status;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_hest_generic_data {
@@ -220,7 +203,6 @@ pub struct acpi_hest_generic_data {
     pub FruId: [u8; 16usize],
     pub FruText: [u8; 20usize],
 }
-pub type ACPI_HEST_GENERIC_DATA = acpi_hest_generic_data;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_hest_generic_data_v300 {
@@ -234,18 +216,16 @@ pub struct acpi_hest_generic_data_v300 {
     pub FruText: [u8; 20usize],
     pub TimeStamp: u64,
 }
-pub type ACPI_HEST_GENERIC_DATA_V300 = acpi_hest_generic_data_v300;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_hest_ia_deferred_check {
-    pub Header: ACPI_HEST_HEADER,
+    pub Header: acpi_hest_header,
     pub Reserved1: u16,
     pub Flags: u8,
     pub Enabled: u8,
     pub RecordsToPreallocate: u32,
     pub MaxSectionsPerRecord: u32,
-    pub Notify: ACPI_HEST_NOTIFY,
+    pub Notify: acpi_hest_notify,
     pub NumHardwareBanks: u8,
     pub Reserved2: [u8; 3usize],
 }
-pub type ACPI_HEST_IA_DEFERRED_CHECK = acpi_hest_ia_deferred_check;

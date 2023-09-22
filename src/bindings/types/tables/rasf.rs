@@ -1,4 +1,4 @@
-use crate::types::AcpiTableHeader;
+use crate::bindings::types::FfiAcpiTableHeader;
 
 
 ///  RASF - RAS Feature Table (ACPI 5.0)
@@ -7,13 +7,13 @@ use crate::types::AcpiTableHeader;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_rasf {
-    pub Header: AcpiTableHeader,
+    pub Header: FfiAcpiTableHeader,
     pub ChannelId: [u8; 12usize],
 }
 ///  RASF - RAS Feature Table (ACPI 5.0)
 ///         Version 1
 /// 
-pub type ACPI_TABLE_RASF = acpi_table_rasf;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_rasf_shared_memory {
@@ -26,7 +26,7 @@ pub struct acpi_rasf_shared_memory {
     pub NumParameterBlocks: u16,
     pub SetCapabilitiesStatus: u32,
 }
-pub type ACPI_RASF_SHARED_MEMORY = acpi_rasf_shared_memory;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_rasf_parameter_block {
@@ -34,18 +34,18 @@ pub struct acpi_rasf_parameter_block {
     pub Version: u16,
     pub Length: u16,
 }
-pub type ACPI_RASF_PARAMETER_BLOCK = acpi_rasf_parameter_block;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_rasf_patrol_scrub_parameter {
-    pub Header: ACPI_RASF_PARAMETER_BLOCK,
+    pub Header: acpi_rasf_parameter_block,
     pub PatrolScrubCommand: u16,
     pub RequestedAddressRange: [u64; 2usize],
     pub ActualAddressRange: [u64; 2usize],
     pub Flags: u16,
     pub RequestedSpeed: u8,
 }
-pub type ACPI_RASF_PATROL_SCRUB_PARAMETER = acpi_rasf_patrol_scrub_parameter;
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum AcpiRasfCommands {

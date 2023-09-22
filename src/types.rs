@@ -1,68 +1,94 @@
-use core::{fmt::Debug, ffi::c_void};
+use core::{ffi::c_void, fmt::Debug};
 
+use crate::{
+    bindings::types::{tables::FfiAcpiTableHeader, FfiAcpiPhysicalAddress, FfiAcpiPredefinedNames},
+    interface::object::AcpiObject,
+};
 
-
-#[repr(transparent)]
-#[derive(Debug)]
-pub struct AcpiPhysicalAddress(u64);
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub struct AcpiPhysicalAddress(usize);
 
 impl AcpiPhysicalAddress {
     pub const NULL: Self = Self(0);
-}
 
-#[derive(Debug)]
-pub struct AcpiString(*mut u8);
+    /// Converts a [`usize`] to an [`AcpiPhysicalAddress`].
+    pub const fn from_usize(v: usize) -> Self {
+        Self(v)
+    }
 
-impl AcpiString {
-    pub const NULL: Self = Self(core::ptr::null_mut());
+    pub const fn as_usize(self) -> usize {
+        self.0
+    }
+
+    pub const fn as_ffi(self) -> FfiAcpiPhysicalAddress {
+        self.0
+    }
 }
 
 ///  Master ACPI Table Header. This common header is used by all ACPI tables
 ///  except the RSDP and FACS.
-/// 
-#[repr(C, packed)]
-#[derive(Debug, Copy, Clone)]
-pub struct AcpiTableHeader {
-    pub Signature: [i8; 4usize],
-    pub Length: u32,
-    pub Revision: u8,
-    pub Checksum: u8,
-    pub OemId: [i8; 6usize],
-    pub OemTableId: [i8; 8usize],
-    pub OemRevision: u32,
-    pub AslCompilerId: [i8; 4usize],
-    pub AslCompilerRevision: u32,
+///
+pub struct AcpiTableHeader<'a>(&'a mut FfiAcpiTableHeader);
+
+impl<'a> AcpiTableHeader<'a> {
+    pub(crate) fn from_ffi(ffi_header: &'a mut FfiAcpiTableHeader) -> Self {
+        Self(ffi_header)
+    }
+
+    pub(crate) fn as_ffi(self) -> &'a mut FfiAcpiTableHeader {
+        self.0
+    }
 }
 
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct AcpiPredefinedNames {
-    pub Name: *const i8,
-    pub Type: u8,
-    pub Val: *mut i8,
+impl<'a> Debug for AcpiTableHeader<'a> {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        f.debug_tuple("AcpiTableHeader").field(&self.0).finish()
+    }
 }
 
-#[repr(transparent)]
+#[derive(Debug)]
+pub struct AcpiPredefinedNames<'a>(&'a FfiAcpiPredefinedNames);
+
+impl<'a> AcpiPredefinedNames<'a> {
+    pub(crate) fn from_ffi(ffi_predefined_names: &'a FfiAcpiPredefinedNames) -> Self {
+        Self(ffi_predefined_names)
+    }
+
+    pub(crate) fn as_ffi(&self) -> &'a FfiAcpiPredefinedNames {
+        self.0
+    }
+
+    pub fn name(&self) -> &str {
+        todo!()
+    }
+
+    pub fn object_type(&self) -> AcpiObject {
+        todo!()
+    }
+}
+
 #[derive(Debug, Clone, Copy)]
 pub struct AcpiSize(usize);
 
 impl AcpiSize {
+    pub fn from_usize(v: usize) -> Self {
+        Self(v)
+    }
+
     pub fn as_usize(&self) -> usize {
         self.0
     }
 }
 
-impl Into<usize> for AcpiSize {
-    fn into(self) -> usize {
-        self.0
+impl From<AcpiSize> for usize {
+    fn from(val: AcpiSize) -> Self {
+        val.0
     }
 }
 
-#[repr(transparent)]
 #[derive(Debug, Clone, Copy)]
 pub struct AcpiIoAddress(usize);
 
-#[repr(transparent)]
 #[derive(Debug)]
 pub(crate) struct AcpiOsdHandler(unsafe extern "C" fn(Context: *mut c_void) -> u32);
 
@@ -89,10 +115,8 @@ impl AcpiCallback {
     }
 }
 
-#[repr(transparent)]
 pub struct AcpiOsdExecCallback(Option<unsafe extern "C" fn(Context: *mut c_void)>);
 
-#[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum AcpiExecuteType {
     OSL_GLOBAL_LOCK_HANDLER = 0,
@@ -104,7 +128,6 @@ pub enum AcpiExecuteType {
     OSL_EC_BURST_HANDLER = 6,
 }
 
-#[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct AcpiPciId {
     pub Segment: u16,
@@ -113,7 +136,6 @@ pub struct AcpiPciId {
     pub Function: u16,
 }
 
-#[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum AcpiTraceEventType {
     ACPI_TRACE_AML_METHOD = 0,
@@ -121,17 +143,5 @@ pub enum AcpiTraceEventType {
     ACPI_TRACE_AML_REGION = 2,
 }
 
-#[repr(transparent)]
-#[derive(Debug)]
-pub struct AcpiSpinLock(*mut c_void);
-
-#[repr(transparent)]
-#[derive(Debug)]
-pub struct AcpiSemaphore(*mut c_void);
-
 #[derive(Debug)]
 pub struct AcpiAllocationError;
-
-#[repr(transparent)]
-#[derive(Debug)]
-pub struct AcpiCache(*mut u8);

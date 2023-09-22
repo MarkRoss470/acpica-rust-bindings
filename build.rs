@@ -1,6 +1,6 @@
 use std::{
     env,
-    ffi::{OsStr, OsString},
+    ffi::OsString,
     fs::{self, DirEntry},
     path::{PathBuf, Path},
     process::Command,

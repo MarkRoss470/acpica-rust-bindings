@@ -1,6 +1,6 @@
-use crate::types::AcpiTableHeader;
+use crate::bindings::types::FfiAcpiTableHeader;
 
-use super::ACPI_SUBTABLE_HEADER;
+use super::acpi_subtable_header;
 
 ///  MADT - Multiple APIC Description Table
 ///         Version 3
@@ -8,14 +8,14 @@ use super::ACPI_SUBTABLE_HEADER;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_madt {
-    pub Header: AcpiTableHeader,
+    pub Header: FfiAcpiTableHeader,
     pub Address: u32,
     pub Flags: u32,
 }
 ///  MADT - Multiple APIC Description Table
 ///         Version 3
 /// 
-pub type ACPI_TABLE_MADT = acpi_table_madt;
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum AcpiMadtType {
@@ -41,71 +41,71 @@ pub enum AcpiMadtType {
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_madt_local_apic {
-    pub Header: ACPI_SUBTABLE_HEADER,
+    pub Header: acpi_subtable_header,
     pub ProcessorId: u8,
     pub Id: u8,
     pub LapicFlags: u32,
 }
-pub type ACPI_MADT_LOCAL_APIC = acpi_madt_local_apic;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_madt_io_apic {
-    pub Header: ACPI_SUBTABLE_HEADER,
+    pub Header: acpi_subtable_header,
     pub Id: u8,
     pub Reserved: u8,
     pub Address: u32,
     pub GlobalIrqBase: u32,
 }
-pub type ACPI_MADT_IO_APIC = acpi_madt_io_apic;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_madt_interrupt_override {
-    pub Header: ACPI_SUBTABLE_HEADER,
+    pub Header: acpi_subtable_header,
     pub Bus: u8,
     pub SourceIrq: u8,
     pub GlobalIrq: u32,
     pub IntiFlags: u16,
 }
-pub type ACPI_MADT_INTERRUPT_OVERRIDE = acpi_madt_interrupt_override;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_madt_nmi_source {
-    pub Header: ACPI_SUBTABLE_HEADER,
+    pub Header: acpi_subtable_header,
     pub IntiFlags: u16,
     pub GlobalIrq: u32,
 }
-pub type ACPI_MADT_NMI_SOURCE = acpi_madt_nmi_source;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_madt_local_apic_nmi {
-    pub Header: ACPI_SUBTABLE_HEADER,
+    pub Header: acpi_subtable_header,
     pub ProcessorId: u8,
     pub IntiFlags: u16,
     pub Lint: u8,
 }
-pub type ACPI_MADT_LOCAL_APIC_NMI = acpi_madt_local_apic_nmi;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_madt_local_apic_override {
-    pub Header: ACPI_SUBTABLE_HEADER,
+    pub Header: acpi_subtable_header,
     pub Reserved: u16,
     pub Address: u64,
 }
-pub type ACPI_MADT_LOCAL_APIC_OVERRIDE = acpi_madt_local_apic_override;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_madt_io_sapic {
-    pub Header: ACPI_SUBTABLE_HEADER,
+    pub Header: acpi_subtable_header,
     pub Id: u8,
     pub Reserved: u8,
     pub GlobalIrqBase: u32,
     pub Address: u64,
 }
-pub type ACPI_MADT_IO_SAPIC = acpi_madt_io_sapic;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_madt_local_sapic {
-    pub Header: ACPI_SUBTABLE_HEADER,
+    pub Header: acpi_subtable_header,
     pub ProcessorId: u8,
     pub Id: u8,
     pub Eid: u8,
@@ -114,11 +114,11 @@ pub struct acpi_madt_local_sapic {
     pub Uid: u32,
     pub UidString: [i8; 1usize],
 }
-pub type ACPI_MADT_LOCAL_SAPIC = acpi_madt_local_sapic;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_madt_interrupt_source {
-    pub Header: ACPI_SUBTABLE_HEADER,
+    pub Header: acpi_subtable_header,
     pub IntiFlags: u16,
     pub Type: u8,
     pub Id: u8,
@@ -127,31 +127,31 @@ pub struct acpi_madt_interrupt_source {
     pub GlobalIrq: u32,
     pub Flags: u32,
 }
-pub type ACPI_MADT_INTERRUPT_SOURCE = acpi_madt_interrupt_source;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_madt_local_x2apic {
-    pub Header: ACPI_SUBTABLE_HEADER,
+    pub Header: acpi_subtable_header,
     pub Reserved: u16,
     pub LocalApicId: u32,
     pub LapicFlags: u32,
     pub Uid: u32,
 }
-pub type ACPI_MADT_LOCAL_X2APIC = acpi_madt_local_x2apic;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_madt_local_x2apic_nmi {
-    pub Header: ACPI_SUBTABLE_HEADER,
+    pub Header: acpi_subtable_header,
     pub IntiFlags: u16,
     pub Uid: u32,
     pub Lint: u8,
     pub Reserved: [u8; 3usize],
 }
-pub type ACPI_MADT_LOCAL_X2APIC_NMI = acpi_madt_local_x2apic_nmi;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_madt_generic_interrupt {
-    pub Header: ACPI_SUBTABLE_HEADER,
+    pub Header: acpi_subtable_header,
     pub Reserved: u16,
     pub CpuInterfaceNumber: u32,
     pub Uid: u32,
@@ -169,11 +169,11 @@ pub struct acpi_madt_generic_interrupt {
     pub Reserved2: [u8; 1usize],
     pub SpeInterrupt: u16,
 }
-pub type ACPI_MADT_GENERIC_INTERRUPT = acpi_madt_generic_interrupt;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_madt_generic_distributor {
-    pub Header: ACPI_SUBTABLE_HEADER,
+    pub Header: acpi_subtable_header,
     pub Reserved: u16,
     pub GicId: u32,
     pub BaseAddress: u64,
@@ -181,7 +181,7 @@ pub struct acpi_madt_generic_distributor {
     pub Version: u8,
     pub Reserved2: [u8; 3usize],
 }
-pub type ACPI_MADT_GENERIC_DISTRIBUTOR = acpi_madt_generic_distributor;
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum AcpiMadtGicVersion {
@@ -195,7 +195,7 @@ pub enum AcpiMadtGicVersion {
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_madt_generic_msi_frame {
-    pub Header: ACPI_SUBTABLE_HEADER,
+    pub Header: acpi_subtable_header,
     pub Reserved: u16,
     pub MsiFrameId: u32,
     pub BaseAddress: u64,
@@ -203,35 +203,35 @@ pub struct acpi_madt_generic_msi_frame {
     pub SpiCount: u16,
     pub SpiBase: u16,
 }
-pub type ACPI_MADT_GENERIC_MSI_FRAME = acpi_madt_generic_msi_frame;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_madt_generic_redistributor {
-    pub Header: ACPI_SUBTABLE_HEADER,
+    pub Header: acpi_subtable_header,
     pub Reserved: u16,
     pub BaseAddress: u64,
     pub Length: u32,
 }
-pub type ACPI_MADT_GENERIC_REDISTRIBUTOR = acpi_madt_generic_redistributor;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_madt_generic_translator {
-    pub Header: ACPI_SUBTABLE_HEADER,
+    pub Header: acpi_subtable_header,
     pub Reserved: u16,
     pub TranslationId: u32,
     pub BaseAddress: u64,
     pub Reserved2: u32,
 }
-pub type ACPI_MADT_GENERIC_TRANSLATOR = acpi_madt_generic_translator;
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_madt_multiproc_wakeup {
-    pub Header: ACPI_SUBTABLE_HEADER,
+    pub Header: acpi_subtable_header,
     pub MailboxVersion: u16,
     pub Reserved: u32,
     pub BaseAddress: u64,
 }
-pub type ACPI_MADT_MULTIPROC_WAKEUP = acpi_madt_multiproc_wakeup;
+
 #[repr(C, packed)]
 #[derive(Copy, Clone)]
 pub struct acpi_madt_multiproc_wakeup_mailbox {
@@ -242,4 +242,3 @@ pub struct acpi_madt_multiproc_wakeup_mailbox {
     pub ReservedOs: [u8; 2032usize],
     pub ReservedFirmware: [u8; 2048usize],
 }
-pub type ACPI_MADT_MULTIPROC_WAKEUP_MAILBOX = acpi_madt_multiproc_wakeup_mailbox;

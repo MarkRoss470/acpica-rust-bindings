@@ -1,4 +1,4 @@
-use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
+use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteArrayField};
 
 
 ///  DMAR - DMA Remapping table
@@ -10,25 +10,17 @@ use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_dmar {
-    pub Header: AcpiTableHeader,
+    pub Header: FfiAcpiTableHeader,
     pub Width: u8,
     pub Flags: u8,
     pub Reserved: [u8; 10usize],
 }
-///  DMAR - DMA Remapping table
-///         Version 1
-/// 
-///  Conforms to \"Intel Virtualization Technology for Directed I/O\",
-///  Version 2.3, October 2014
-/// 
-pub type ACPI_TABLE_DMAR = acpi_table_dmar;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_dmar_header {
     pub Type: u16,
     pub Length: u16,
 }
-pub type ACPI_DMAR_HEADER = acpi_dmar_header;
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum AcpiDmarType {
@@ -48,7 +40,6 @@ pub struct acpi_dmar_device_scope {
     pub EnumerationId: u8,
     pub Bus: u8,
 }
-pub type ACPI_DMAR_DEVICE_SCOPE = acpi_dmar_device_scope;
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum AcpiDmarScopeType {
@@ -66,51 +57,45 @@ pub struct acpi_dmar_pci_path {
     pub Device: u8,
     pub Function: u8,
 }
-pub type ACPI_DMAR_PCI_PATH = acpi_dmar_pci_path;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_dmar_hardware_unit {
-    pub Header: ACPI_DMAR_HEADER,
+    pub Header: acpi_dmar_header,
     pub Flags: u8,
     pub Reserved: u8,
     pub Segment: u16,
     pub Address: u64,
 }
-pub type ACPI_DMAR_HARDWARE_UNIT = acpi_dmar_hardware_unit;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_dmar_reserved_memory {
-    pub Header: ACPI_DMAR_HEADER,
+    pub Header: acpi_dmar_header,
     pub Reserved: u16,
     pub Segment: u16,
     pub BaseAddress: u64,
     pub EndAddress: u64,
 }
-pub type ACPI_DMAR_RESERVED_MEMORY = acpi_dmar_reserved_memory;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_dmar_atsr {
-    pub Header: ACPI_DMAR_HEADER,
+    pub Header: acpi_dmar_header,
     pub Flags: u8,
     pub Reserved: u8,
     pub Segment: u16,
 }
-pub type ACPI_DMAR_ATSR = acpi_dmar_atsr;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_dmar_rhsa {
-    pub Header: ACPI_DMAR_HEADER,
+    pub Header: acpi_dmar_header,
     pub Reserved: u32,
     pub BaseAddress: u64,
     pub ProximityDomain: u32,
 }
-pub type ACPI_DMAR_RHSA = acpi_dmar_rhsa;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_dmar_andd {
-    pub Header: ACPI_DMAR_HEADER,
+    pub Header: acpi_dmar_header,
     pub Reserved: [u8; 3usize],
     pub DeviceNumber: u8,
     pub DeviceName: [i8; 1usize],
 }
-pub type ACPI_DMAR_ANDD = acpi_dmar_andd;

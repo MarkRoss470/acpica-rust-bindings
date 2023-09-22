@@ -1,5 +1,6 @@
 use super::types::tables::fadt::AcpiTableFadt;
 
+#[allow(dead_code)]
 extern "C" {
     pub static mut AcpiGbl_EnableInterpreterSlack: u8;
 

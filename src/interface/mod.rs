@@ -30,11 +30,11 @@ pub struct AcpiGenericAddress {
 impl From<FfiAcpiGenericAddress> for AcpiGenericAddress {
     fn from(value: FfiAcpiGenericAddress) -> Self {
         Self {
-            space_id: value.SpaceId,
-            bit_width: value.BitWidth,
-            bit_offset: value.BitOffset,
-            access_width: value.AccessWidth,
-            address: value.Address,
+            space_id: value.space_id,
+            bit_width: value.bit_width,
+            bit_offset: value.bit_offset,
+            access_width: value.access_width,
+            address: value.address,
         }
     }
 }

@@ -11,8 +11,13 @@
 // #![warn(clippy::pedantic)]
 #![deny(improper_ctypes, improper_ctypes_definitions)]
 
+#![allow(unused_imports, clippy::redundant_static_lifetimes, unsafe_op_in_unsafe_fn)]
+#![allow(non_snake_case, non_camel_case_types, non_upper_case_globals)]
+
+use interface::debug_trace;
+
 extern crate alloc;
 
 mod bindings;
-pub mod interface;
 pub mod types;
+pub mod interface;

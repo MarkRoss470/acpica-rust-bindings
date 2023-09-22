@@ -1,4 +1,4 @@
-use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
+use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteArrayField};
 
 
 ///  CSRT - Core System Resource Table
@@ -9,14 +9,8 @@ use crate::{types::AcpiTableHeader, bindings::types::__IncompleteArrayField};
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_csrt {
-    pub Header: AcpiTableHeader,
+    pub Header: FfiAcpiTableHeader,
 }
-///  CSRT - Core System Resource Table
-///         Version 0
-/// 
-///  Conforms to the \"Core System Resource Table (CSRT)\", November 14, 2011
-/// 
-pub type ACPI_TABLE_CSRT = acpi_table_csrt;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_csrt_group {
@@ -29,7 +23,6 @@ pub struct acpi_csrt_group {
     pub Reserved: u16,
     pub SharedInfoLength: u32,
 }
-pub type ACPI_CSRT_GROUP = acpi_csrt_group;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_csrt_shared_info {
@@ -46,7 +39,6 @@ pub struct acpi_csrt_shared_info {
     pub NumHandshakeSignals: u16,
     pub MaxBlockSize: u32,
 }
-pub type ACPI_CSRT_SHARED_INFO = acpi_csrt_shared_info;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_csrt_descriptor {
@@ -55,4 +47,3 @@ pub struct acpi_csrt_descriptor {
     pub Subtype: u16,
     pub Uid: u32,
 }
-pub type ACPI_CSRT_DESCRIPTOR = acpi_csrt_descriptor;

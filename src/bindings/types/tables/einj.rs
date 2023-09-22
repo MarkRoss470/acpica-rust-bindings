@@ -1,4 +1,4 @@
-use crate::{types::AcpiTableHeader, bindings::types::{__IncompleteArrayField, ACPI_WHEA_HEADER}};
+use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::{__IncompleteArrayField, ACPI_WHEA_HEADER}};
 
 ///  EINJ - Error Injection Table (ACPI 4.0)
 ///         Version 1
@@ -6,23 +6,18 @@ use crate::{types::AcpiTableHeader, bindings::types::{__IncompleteArrayField, AC
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_table_einj {
-    pub Header: AcpiTableHeader,
+    pub Header: FfiAcpiTableHeader,
     pub HeaderLength: u32,
     pub Flags: u8,
     pub Reserved: [u8; 3usize],
     pub Entries: u32,
 }
 
-///  EINJ - Error Injection Table (ACPI 4.0)
-///         Version 1
-/// 
-pub type ACPI_TABLE_EINJ = acpi_table_einj;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_einj_entry {
     WheaHeader: ACPI_WHEA_HEADER,
 }
-pub type ACPI_EINJ_ENTRY = acpi_einj_entry;
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum AcpiEinjActions {
@@ -61,7 +56,6 @@ pub struct acpi_einj_error_type_with_addr {
     pub Range: u64,
     pub PcieId: u32,
 }
-pub type ACPI_EINJ_ERROR_TYPE_WITH_ADDR = acpi_einj_error_type_with_addr;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_einj_vendor {
@@ -72,7 +66,6 @@ pub struct acpi_einj_vendor {
     pub RevisionId: u8,
     pub Reserved: [u8; 3usize],
 }
-pub type ACPI_EINJ_VENDOR = acpi_einj_vendor;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct acpi_einj_trigger {
@@ -81,7 +74,6 @@ pub struct acpi_einj_trigger {
     pub TableSize: u32,
     pub EntryCount: u32,
 }
-pub type ACPI_EINJ_TRIGGER = acpi_einj_trigger;
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum AcpiEinjCommandStatus {
