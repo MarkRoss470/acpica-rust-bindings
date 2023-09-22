@@ -14,10 +14,10 @@ pub struct FfiAcpiTablePptt {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiPpttType {
-    ACPI_PPTT_TYPE_PROCESSOR = 0,
-    ACPI_PPTT_TYPE_CACHE = 1,
-    ACPI_PPTT_TYPE_ID = 2,
-    ACPI_PPTT_TYPE_RESERVED = 3,
+    Processor = 0,
+    Cache = 1,
+    Id = 2,
+    Reserved = 3,
 }
 
 #[repr(C, packed)]

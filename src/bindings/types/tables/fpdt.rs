@@ -20,8 +20,8 @@ pub struct FfiAcpiFpdtHeader {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiFpdtType {
-    ACPI_FPDT_TYPE_BOOT = 0,
-    ACPI_FPDT_TYPE_S3PERF = 1,
+    Boot = 0,
+    S3perf = 1,
 }
 
 #[repr(C, packed)]
@@ -50,9 +50,9 @@ pub struct FfiAcpiTableS3pt {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiS3ptType {
-    ACPI_S3PT_TYPE_RESUME = 0,
-    ACPI_S3PT_TYPE_SUSPEND = 1,
-    ACPI_FPDT_BOOT_PERFORMANCE = 2,
+    S3ptTypeResume = 0,
+    S3ptTypeSuspend = 1,
+    FpdtBootPerformance = 2,
 }
 
 #[repr(C, packed)]

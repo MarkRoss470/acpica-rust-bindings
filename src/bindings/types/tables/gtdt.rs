@@ -40,9 +40,9 @@ pub struct FfiAcpiGtdtHeader {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiGtdtType {
-    ACPI_GTDT_TYPE_TIMER_BLOCK = 0,
-    ACPI_GTDT_TYPE_WATCHDOG = 1,
-    ACPI_GTDT_TYPE_RESERVED = 2,
+    TimerBlock = 0,
+    Watchdog = 1,
+    Reserved = 2,
 }
 
 #[repr(C, packed)]

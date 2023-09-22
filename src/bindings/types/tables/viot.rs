@@ -23,11 +23,11 @@ pub struct FfiAcpiViotHeader {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiViotNodeType {
-    ACPI_VIOT_NODE_PCI_RANGE = 1,
-    ACPI_VIOT_NODE_MMIO = 2,
-    ACPI_VIOT_NODE_VIRTIO_IOMMU_PCI = 3,
-    ACPI_VIOT_NODE_VIRTIO_IOMMU_MMIO = 4,
-    ACPI_VIOT_RESERVED = 5,
+    PciRange = 1,
+    Mmio = 2,
+    VirtioIommuPci = 3,
+    VirtioIommuMmio = 4,
+    Reserved = 5,
 }
 
 #[repr(C, packed)]

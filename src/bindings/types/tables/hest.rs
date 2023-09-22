@@ -20,19 +20,19 @@ pub struct FfiAcpiHestHeader {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiHestTypes {
-    ACPI_HEST_TYPE_IA32_CHECK = 0,
-    ACPI_HEST_TYPE_IA32_CORRECTED_CHECK = 1,
-    ACPI_HEST_TYPE_IA32_NMI = 2,
-    ACPI_HEST_TYPE_NOT_USED3 = 3,
-    ACPI_HEST_TYPE_NOT_USED4 = 4,
-    ACPI_HEST_TYPE_NOT_USED5 = 5,
-    ACPI_HEST_TYPE_AER_ROOT_PORT = 6,
-    ACPI_HEST_TYPE_AER_ENDPOINT = 7,
-    ACPI_HEST_TYPE_AER_BRIDGE = 8,
-    ACPI_HEST_TYPE_GENERIC_ERROR = 9,
-    ACPI_HEST_TYPE_GENERIC_ERROR_V2 = 10,
-    ACPI_HEST_TYPE_IA32_DEFERRED_CHECK = 11,
-    ACPI_HEST_TYPE_RESERVED = 12,
+    TypeIa32Check = 0,
+    TypeIa32CorrectedCheck = 1,
+    TypeIa32Nmi = 2,
+    TypeNotUsed3 = 3,
+    TypeNotUsed4 = 4,
+    TypeNotUsed5 = 5,
+    TypeAerRootPort = 6,
+    TypeAerEndpoint = 7,
+    TypeAerBridge = 8,
+    TypeGenericError = 9,
+    TypeGenericErrorV2 = 10,
+    TypeIa32DeferredCheck = 11,
+    TypeReserved = 12,
 }
 
 #[repr(C, packed)]
@@ -85,19 +85,19 @@ pub struct FfiAcpiHestNotify {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiHestNotifyTypes {
-    acpi_hest_notify_POLLED = 0,
-    acpi_hest_notify_EXTERNAL = 1,
-    acpi_hest_notify_LOCAL = 2,
-    acpi_hest_notify_SCI = 3,
-    acpi_hest_notify_NMI = 4,
-    acpi_hest_notify_CMCI = 5,
-    acpi_hest_notify_MCE = 6,
-    acpi_hest_notify_GPIO = 7,
-    acpi_hest_notify_SEA = 8,
-    acpi_hest_notify_SEI = 9,
-    acpi_hest_notify_GSIV = 10,
-    acpi_hest_notify_SOFTWARE_DELEGATED = 11,
-    acpi_hest_notify_RESERVED = 12,
+    Polled = 0,
+    External = 1,
+    Local = 2,
+    Sci = 3,
+    Nmi = 4,
+    Cmci = 5,
+    Mce = 6,
+    Gpio = 7,
+    Sea = 8,
+    Sei = 9,
+    Gsiv = 10,
+    SoftwareDelegated = 11,
+    Reserved = 12,
 }
 
 #[repr(C, packed)]

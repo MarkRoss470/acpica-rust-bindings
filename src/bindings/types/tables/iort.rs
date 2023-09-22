@@ -29,13 +29,13 @@ pub struct FfiAcpiIortNode {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiIortNodeType {
-    ACPI_IORT_NODE_ITS_GROUP = 0,
-    ACPI_IORT_NODE_NAMED_COMPONENT = 1,
-    ACPI_IORT_NODE_PCI_ROOT_COMPLEX = 2,
-    ACPI_IORT_NODE_SMMU = 3,
-    ACPI_IORT_NODE_SMMU_V3 = 4,
-    ACPI_IORT_NODE_PMCG = 5,
-    ACPI_IORT_NODE_RMR = 6,
+    ItsGroup = 0,
+    NamedComponent = 1,
+    PciRootComplex = 2,
+    Smmu = 3,
+    SmmuV3 = 4,
+    Pmcg = 5,
+    Rmr = 6,
 }
 
 #[repr(C, packed)]

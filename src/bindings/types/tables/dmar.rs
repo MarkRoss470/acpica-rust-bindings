@@ -26,12 +26,12 @@ pub struct FfiAcpiDmarHeader {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiDmarType {
-    ACPI_DMAR_TYPE_HARDWARE_UNIT = 0,
-    ACPI_DMAR_TYPE_RESERVED_MEMORY = 1,
-    ACPI_DMAR_TYPE_ROOT_ATS = 2,
-    ACPI_DMAR_TYPE_HARDWARE_AFFINITY = 3,
-    ACPI_DMAR_TYPE_NAMESPACE = 4,
-    ACPI_DMAR_TYPE_RESERVED = 5,
+    HardwareUnit = 0,
+    ReservedMemory = 1,
+    RootAts = 2,
+    HardwareAffinity = 3,
+    Namespace = 4,
+    Reserved = 5,
 }
 
 #[repr(C, packed)]
@@ -47,13 +47,13 @@ pub struct FfiAcpiDmarDeviceScope {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiDmarScopeType {
-    ACPI_DMAR_SCOPE_TYPE_NOT_USED = 0,
-    ACPI_DMAR_SCOPE_TYPE_ENDPOINT = 1,
-    ACPI_DMAR_SCOPE_TYPE_BRIDGE = 2,
-    ACPI_DMAR_SCOPE_TYPE_IOAPIC = 3,
-    ACPI_DMAR_SCOPE_TYPE_HPET = 4,
-    ACPI_DMAR_SCOPE_TYPE_NAMESPACE = 5,
-    ACPI_DMAR_SCOPE_TYPE_RESERVED = 6,
+    NotUsed = 0,
+    Endpoint = 1,
+    Bridge = 2,
+    Ioapic = 3,
+    Hpet = 4,
+    Namespace = 5,
+    Reserved = 6,
 }
 
 #[repr(C)]

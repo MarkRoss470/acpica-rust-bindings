@@ -29,13 +29,13 @@ pub struct FfiAcpiIbftHeader {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiIbftType {
-    ACPI_IBFT_TYPE_NOT_USED = 0,
-    ACPI_IBFT_TYPE_CONTROL = 1,
-    ACPI_IBFT_TYPE_INITIATOR = 2,
-    ACPI_IBFT_TYPE_NIC = 3,
-    ACPI_IBFT_TYPE_TARGET = 4,
-    ACPI_IBFT_TYPE_EXTENSIONS = 5,
-    ACPI_IBFT_TYPE_RESERVED = 6,
+    NotUsed = 0,
+    Control = 1,
+    Initiator = 2,
+    Nic = 3,
+    Target = 4,
+    Extensions = 5,
+    Reserved = 6,
 }
 
 #[repr(C, packed)]

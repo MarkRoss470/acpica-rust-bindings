@@ -26,12 +26,12 @@ pub struct FfiAcpiIvrsHeader {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiIvrsType {
-    ACPI_IVRS_TYPE_HARDWARE1 = 16,
-    ACPI_IVRS_TYPE_HARDWARE2 = 17,
-    ACPI_IVRS_TYPE_HARDWARE3 = 64,
-    ACPI_IVRS_TYPE_MEMORY1 = 32,
-    ACPI_IVRS_TYPE_MEMORY2 = 33,
-    ACPI_IVRS_TYPE_MEMORY3 = 34,
+    Hardware1 = 16,
+    Hardware2 = 17,
+    Hardware3 = 64,
+    Memory1 = 32,
+    Memory2 = 33,
+    Memory3 = 34,
 }
 
 #[repr(C, packed)]
@@ -69,19 +69,19 @@ pub struct FfiAcpiIvrsDeHeader {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiIvrsDeviceEntryType {
-    ACPI_IVRS_TYPE_PAD4 = 0,
-    ACPI_IVRS_TYPE_ALL = 1,
-    ACPI_IVRS_TYPE_SELECT = 2,
-    ACPI_IVRS_TYPE_START = 3,
-    ACPI_IVRS_TYPE_END = 4,
-    ACPI_IVRS_TYPE_PAD8 = 64,
-    ACPI_IVRS_TYPE_NOT_USED = 65,
-    ACPI_IVRS_TYPE_ALIAS_SELECT = 66,
-    ACPI_IVRS_TYPE_ALIAS_START = 67,
-    ACPI_IVRS_TYPE_EXT_SELECT = 70,
-    ACPI_IVRS_TYPE_EXT_START = 71,
-    ACPI_IVRS_TYPE_SPECIAL = 72,
-    ACPI_IVRS_TYPE_HID = 240,
+    Pad4 = 0,
+    All = 1,
+    Select = 2,
+    Start = 3,
+    End = 4,
+    Pad8 = 64,
+    NotUsed = 65,
+    AliasSelect = 66,
+    AliasStart = 67,
+    ExtSelect = 70,
+    ExtStart = 71,
+    Special = 72,
+    Hid = 240,
 }
 
 #[repr(C)]

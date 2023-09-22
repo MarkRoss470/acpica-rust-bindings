@@ -27,12 +27,12 @@ pub struct FfiAcpiAsfHeader {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiAsfType {
-    ACPI_ASF_TYPE_INFO = 0,
-    ACPI_ASF_TYPE_ALERT = 1,
-    ACPI_ASF_TYPE_CONTROL = 2,
-    ACPI_ASF_TYPE_BOOT = 3,
-    ACPI_ASF_TYPE_ADDRESS = 4,
-    ACPI_ASF_TYPE_RESERVED = 5,
+    Info = 0,
+    Alert = 1,
+    Control = 2,
+    Boot = 3,
+    Address = 4,
+    Reserved = 5,
 }
 
 #[repr(C, packed)]
@@ -137,11 +137,11 @@ pub struct FfiAcpiBertRegion {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiBertErrorSeverity {
-    ACPI_BERT_ERROR_CORRECTABLE = 0,
-    ACPI_BERT_ERROR_FATAL = 1,
-    ACPI_BERT_ERROR_CORRECTED = 2,
-    ACPI_BERT_ERROR_NONE = 3,
-    ACPI_BERT_ERROR_RESERVED = 4,
+    Correctable = 0,
+    Fatal = 1,
+    Corrected = 2,
+    None = 3,
+    Reserved = 4,
 }
 
 ///  BGRT - Boot Graphics Resource Table (ACPI 5.0)
@@ -254,8 +254,8 @@ pub struct FfiAcpiLpitHeader {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiLpitType {
-    ACPI_LPIT_TYPE_NATIVE_CSTATE = 0,
-    ACPI_LPIT_TYPE_RESERVED = 1,
+    NativeCstate = 0,
+    Reserved = 1,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
@@ -386,9 +386,9 @@ pub struct FfiAcpiTableRgrt {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiRgrtImageType {
-    ACPI_RGRT_TYPE_RESERVED0 = 0,
-    ACPI_RGRT_IMAGE_TYPE_PNG = 1,
-    ACPI_RGRT_TYPE_RESERVED = 2,
+    TypeReserved0 = 0,
+    ImageTypePng = 1,
+    TypeReserved = 2,
 }
 
 ///  SBST - Smart Battery Specification Table
@@ -438,15 +438,15 @@ pub struct FfiAcpiSvklKey {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiSvklType {
-    ACPI_SVKL_TYPE_MAIN_STORAGE = 0,
-    ACPI_SVKL_TYPE_RESERVED = 1,
+    MainStorage = 0,
+    Reserved = 1,
 }
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiSvklFormat {
-    ACPI_SVKL_FORMAT_RAW_BINARY = 0,
-    ACPI_SVKL_FORMAT_RESERVED = 1,
+    RawBinary = 0,
+    Reserved = 1,
 }
 
 ///  SLIC - Software Licensing Description Table
@@ -532,12 +532,12 @@ pub struct FfiAcpiTableSpmi {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiSpmiInterfaceTypes {
-    ACPI_SPMI_NOT_USED = 0,
-    ACPI_SPMI_KEYBOARD = 1,
-    ACPI_SPMI_SMI = 2,
-    ACPI_SPMI_BLOCK_TRANSFER = 3,
-    ACPI_SPMI_SMBUS = 4,
-    ACPI_SPMI_RESERVED = 5,
+    NotUsed = 0,
+    Keyboard = 1,
+    Smi = 2,
+    BlockTransfer = 3,
+    Smbus = 4,
+    Reserved = 5,
 }
 
 ///  STAO - Status Override Table (_STA override) - ACPI 6.0

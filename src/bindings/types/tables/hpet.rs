@@ -20,7 +20,7 @@ pub struct FfiAcpiTableHpet {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiHpetPageProtect {
-    ACPI_HPET_NO_PAGE_PROTECT = 0,
-    ACPI_HPET_PAGE_PROTECT4 = 1,
-    ACPI_HPET_PAGE_PROTECT64 = 2,
+    NoPageProtect = 0,
+    PageProtect4 = 1,
+    PageProtect64 = 2,
 }

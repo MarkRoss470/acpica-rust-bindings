@@ -12,10 +12,10 @@ pub struct FfiAcpiTableHmat {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiHmatType {
-    ACPI_HMAT_TYPE_ADDRESS_RANGE = 0,
-    ACPI_HMAT_TYPE_LOCALITY = 1,
-    ACPI_HMAT_TYPE_CACHE = 2,
-    ACPI_HMAT_TYPE_RESERVED = 3,
+    AddressRange = 0,
+    Locality = 1,
+    Cache = 2,
+    Reserved = 3,
 }
 
 #[repr(C, packed)]

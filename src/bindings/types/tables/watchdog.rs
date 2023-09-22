@@ -38,31 +38,31 @@ pub struct FfiAcpiWdatEntry {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiWdatActions {
-    ACPI_WDAT_RESET = 1,
-    ACPI_WDAT_GET_CURRENT_COUNTDOWN = 4,
-    ACPI_WDAT_GET_COUNTDOWN = 5,
-    ACPI_WDAT_SET_COUNTDOWN = 6,
-    ACPI_WDAT_GET_RUNNING_STATE = 8,
-    ACPI_WDAT_SET_RUNNING_STATE = 9,
-    ACPI_WDAT_GET_STOPPED_STATE = 10,
-    ACPI_WDAT_SET_STOPPED_STATE = 11,
-    ACPI_WDAT_GET_REBOOT = 16,
-    ACPI_WDAT_SET_REBOOT = 17,
-    ACPI_WDAT_GET_SHUTDOWN = 18,
-    ACPI_WDAT_SET_SHUTDOWN = 19,
-    ACPI_WDAT_GET_STATUS = 32,
-    ACPI_WDAT_SET_STATUS = 33,
-    ACPI_WDAT_ACTION_RESERVED = 34,
+    Reset = 1,
+    GetCurrentCountdown = 4,
+    GetCountdown = 5,
+    SetCountdown = 6,
+    GetRunningState = 8,
+    SetRunningState = 9,
+    GetStoppedState = 10,
+    SetStoppedState = 11,
+    GetReboot = 16,
+    SetReboot = 17,
+    GetShutdown = 18,
+    SetShutdown = 19,
+    GetStatus = 32,
+    SetStatus = 33,
+    ActionReserved = 34,
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiWdatInstructions {
-    ACPI_WDAT_READ_VALUE = 0,
-    ACPI_WDAT_READ_COUNTDOWN = 1,
-    ACPI_WDAT_WRITE_VALUE = 2,
-    ACPI_WDAT_WRITE_COUNTDOWN = 3,
-    ACPI_WDAT_INSTRUCTION_RESERVED = 4,
-    ACPI_WDAT_PRESERVE_REGISTER = 128,
+    ReadValue = 0,
+    ReadCountdown = 1,
+    WriteValue = 2,
+    WriteCountdown = 3,
+    InstructionReserved = 4,
+    PreserveRegister = 128,
 }
 
 ///  WDDT - Watchdog Descriptor Table

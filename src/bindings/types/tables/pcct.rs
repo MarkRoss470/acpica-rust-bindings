@@ -16,13 +16,13 @@ pub struct FfiAcpiTablePcct {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiPcctType {
-    ACPI_PCCT_TYPE_GENERIC_SUBSPACE = 0,
-    ACPI_PCCT_TYPE_HW_REDUCED_SUBSPACE = 1,
-    ACPI_PCCT_TYPE_HW_REDUCED_SUBSPACE_TYPE2 = 2,
-    ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE = 3,
-    ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE = 4,
-    ACPI_PCCT_TYPE_HW_REG_COMM_SUBSPACE = 5,
-    ACPI_PCCT_TYPE_RESERVED = 6,
+    GenericSubspace = 0,
+    HwReducedSubspace = 1,
+    HwReducedSubspaceType2 = 2,
+    ExtPccMasterSubspace = 3,
+    ExtPccSlaveSubspace = 4,
+    HwRegCommSubspace = 5,
+    Reserved = 6,
 }
 
 #[repr(C, packed)]

@@ -17,13 +17,13 @@ pub struct FfiAcpiTableSrat {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiSratType {
-    ACPI_SRAT_TYPE_CPU_AFFINITY = 0,
-    ACPI_SRAT_TYPE_MEMORY_AFFINITY = 1,
-    ACPI_SRAT_TYPE_X2APIC_CPU_AFFINITY = 2,
-    ACPI_SRAT_TYPE_GICC_AFFINITY = 3,
-    ACPI_SRAT_TYPE_GIC_ITS_AFFINITY = 4,
-    ACPI_SRAT_TYPE_GENERIC_AFFINITY = 5,
-    ACPI_SRAT_TYPE_RESERVED = 6,
+    CpuAffinity = 0,
+    MemoryAffinity = 1,
+    X2apicCpuAffinity = 2,
+    GiccAffinity = 3,
+    GicItsAffinity = 4,
+    GenericAffinity = 5,
+    Reserved = 6,
 }
 
 #[repr(C, packed)]

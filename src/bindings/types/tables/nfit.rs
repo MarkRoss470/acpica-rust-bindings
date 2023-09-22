@@ -20,15 +20,15 @@ pub struct FfiAcpiNfitHeader {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiNfitType {
-    ACPI_NFIT_TYPE_SYSTEM_ADDRESS = 0,
-    ACPI_NFIT_TYPE_MEMORY_MAP = 1,
-    ACPI_NFIT_TYPE_INTERLEAVE = 2,
-    ACPI_NFIT_TYPE_SMBIOS = 3,
-    ACPI_NFIT_TYPE_CONTROL_REGION = 4,
-    ACPI_NFIT_TYPE_DATA_REGION = 5,
-    ACPI_NFIT_TYPE_FLUSH_ADDRESS = 6,
-    ACPI_NFIT_TYPE_CAPABILITIES = 7,
-    ACPI_NFIT_TYPE_RESERVED = 8,
+    SystemAddress = 0,
+    MemoryMap = 1,
+    Interleave = 2,
+    Smbios = 3,
+    ControlRegion = 4,
+    DataRegion = 5,
+    FlushAddress = 6,
+    Capabilities = 7,
+    Reserved = 8,
 }
 
 #[repr(C, packed)]

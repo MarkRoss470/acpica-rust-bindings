@@ -22,30 +22,30 @@ pub struct FfiAcpiEinjEntry {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiEinjActions {
-    ACPI_EINJ_BEGIN_OPERATION = 0,
-    ACPI_EINJ_GET_TRIGGER_TABLE = 1,
-    ACPI_EINJ_SET_ERROR_TYPE = 2,
-    ACPI_EINJ_GET_ERROR_TYPE = 3,
-    ACPI_EINJ_END_OPERATION = 4,
-    ACPI_EINJ_EXECUTE_OPERATION = 5,
-    ACPI_EINJ_CHECK_BUSY_STATUS = 6,
-    ACPI_EINJ_GET_COMMAND_STATUS = 7,
-    ACPI_EINJ_SET_ERROR_TYPE_WITH_ADDRESS = 8,
-    ACPI_EINJ_GET_EXECUTE_TIMINGS = 9,
-    ACPI_EINJ_ACTION_RESERVED = 10,
-    ACPI_EINJ_TRIGGER_ERROR = 255,
+    BeginOperation = 0,
+    GetTriggerTable = 1,
+    SetErrorType = 2,
+    GetErrorType = 3,
+    EndOperation = 4,
+    ExecuteOperation = 5,
+    CheckBusyStatus = 6,
+    GetCommandStatus = 7,
+    SetErrorTypeWithAddress = 8,
+    GetExecuteTimings = 9,
+    ActionReserved = 10,
+    TriggerError = 255,
 }
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiEinjInstructions {
-    ACPI_EINJ_READ_REGISTER = 0,
-    ACPI_EINJ_READ_REGISTER_VALUE = 1,
-    ACPI_EINJ_WRITE_REGISTER = 2,
-    ACPI_EINJ_WRITE_REGISTER_VALUE = 3,
-    ACPI_EINJ_NOOP = 4,
-    ACPI_EINJ_FLUSH_CACHELINE = 5,
-    ACPI_EINJ_INSTRUCTION_RESERVED = 6,
+    ReadRegister = 0,
+    ReadRegisterValue = 1,
+    WriteRegister = 2,
+    WriteRegisterValue = 3,
+    Noop = 4,
+    FlushCacheline = 5,
+    InstructionReserved = 6,
 }
 
 #[repr(C, packed)]
@@ -83,8 +83,8 @@ pub struct FfiAcpiEinjTrigger {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiEinjCommandStatus {
-    ACPI_EINJ_SUCCESS = 0,
-    ACPI_EINJ_FAILURE = 1,
-    ACPI_EINJ_INVALID_ACCESS = 2,
-    ACPI_EINJ_STATUS_RESERVED = 3,
+    Success = 0,
+    Failure = 1,
+    InvalidAccess = 2,
+    StatusReserved = 3,
 }

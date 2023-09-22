@@ -21,9 +21,9 @@ pub struct FfiAcpiSdevHeader {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiSdevType {
-    ACPI_SDEV_TYPE_NAMESPACE_DEVICE = 0,
-    ACPI_SDEV_TYPE_PCIE_ENDPOINT_DEVICE = 1,
-    ACPI_SDEV_TYPE_RESERVED = 2,
+    NamespaceDevice = 0,
+    PcieEndpointDevice = 1,
+    Reserved = 2,
 }
 
 #[repr(C, packed)]
@@ -52,8 +52,8 @@ pub struct FfiAcpiSdevComponent {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiSacType {
-    ACPI_SDEV_TYPE_ID_COMPONENT = 0,
-    ACPI_SDEV_TYPE_MEM_COMPONENT = 1,
+    IdComponent = 0,
+    MemComponent = 1,
 }
 
 #[repr(C, packed)]

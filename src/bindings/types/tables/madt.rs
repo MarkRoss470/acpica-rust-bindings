@@ -16,24 +16,24 @@ pub struct FfiAcpiTableMadt {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiMadtType {
-    ACPI_MADT_TYPE_LOCAL_APIC = 0,
-    ACPI_MADT_TYPE_IO_APIC = 1,
-    ACPI_MADT_TYPE_INTERRUPT_OVERRIDE = 2,
-    ACPI_MADT_TYPE_NMI_SOURCE = 3,
-    ACPI_MADT_TYPE_LOCAL_APIC_NMI = 4,
-    ACPI_MADT_TYPE_LOCAL_APIC_OVERRIDE = 5,
-    ACPI_MADT_TYPE_IO_SAPIC = 6,
-    ACPI_MADT_TYPE_LOCAL_SAPIC = 7,
-    ACPI_MADT_TYPE_INTERRUPT_SOURCE = 8,
-    ACPI_MADT_TYPE_LOCAL_X2APIC = 9,
-    ACPI_MADT_TYPE_LOCAL_X2APIC_NMI = 10,
-    ACPI_MADT_TYPE_GENERIC_INTERRUPT = 11,
-    ACPI_MADT_TYPE_GENERIC_DISTRIBUTOR = 12,
-    ACPI_MADT_TYPE_GENERIC_MSI_FRAME = 13,
-    ACPI_MADT_TYPE_GENERIC_REDISTRIBUTOR = 14,
-    ACPI_MADT_TYPE_GENERIC_TRANSLATOR = 15,
-    ACPI_MADT_TYPE_MULTIPROC_WAKEUP = 16,
-    ACPI_MADT_TYPE_RESERVED = 17,
+    LocalApic = 0,
+    IoApic = 1,
+    InterruptOverride = 2,
+    NmiSource = 3,
+    LocalApicNmi = 4,
+    LocalApicOverride = 5,
+    IoSapic = 6,
+    LocalSapic = 7,
+    InterruptSource = 8,
+    LocalX2apic = 9,
+    LocalX2apicNmi = 10,
+    GenericInterrupt = 11,
+    GenericDistributor = 12,
+    GenericMsiFrame = 13,
+    GenericRedistributor = 14,
+    GenericTranslator = 15,
+    MultiprocWakeup = 16,
+    Reserved = 17,
 }
 
 #[repr(C, packed)]
@@ -183,12 +183,12 @@ pub struct FfiAcpiMadtGenericDistributor {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiMadtGicVersion {
-    ACPI_MADT_GIC_VERSION_NONE = 0,
-    ACPI_MADT_GIC_VERSION_V1 = 1,
-    ACPI_MADT_GIC_VERSION_V2 = 2,
-    ACPI_MADT_GIC_VERSION_V3 = 3,
-    ACPI_MADT_GIC_VERSION_V4 = 4,
-    ACPI_MADT_GIC_VERSION_RESERVED = 5,
+    VersionNone = 0,
+    VersionV1 = 1,
+    VersionV2 = 2,
+    VersionV3 = 3,
+    VersionV4 = 4,
+    VersionReserved = 5,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]

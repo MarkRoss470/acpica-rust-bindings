@@ -46,32 +46,32 @@ pub struct FfiAcpiRasfPatrolScrubParameter {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiRasfCommands {
-    ACPI_RASF_EXECUTE_RASF_COMMAND = 1,
+    ExecuteRasfCommand = 1,
 }
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiRasfCapabiliities {
-    ACPI_HW_PATROL_SCRUB_SUPPORTED = 0,
-    ACPI_SW_PATROL_SCRUB_EXPOSED = 1,
+    HwPatrolScrubSupported = 0,
+    SwPatrolScrubExposed = 1,
 }
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiRasfPatrolScrubCommands {
-    ACPI_RASF_GET_PATROL_PARAMETERS = 1,
-    ACPI_RASF_START_PATROL_SCRUBBER = 2,
-    ACPI_RASF_STOP_PATROL_SCRUBBER = 3,
+    GetPatrolParameters = 1,
+    StartPatrolScrubber = 2,
+    StopPatrolScrubber = 3,
 }
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiRasfStatus {
-    ACPI_RASF_SUCCESS = 0,
-    ACPI_RASF_NOT_VALID = 1,
-    ACPI_RASF_NOT_SUPPORTED = 2,
-    ACPI_RASF_BUSY = 3,
-    ACPI_RASF_FAILED = 4,
-    ACPI_RASF_ABORTED = 5,
-    ACPI_RASF_INVALID_DATA = 6,
+    Success = 0,
+    NotValid = 1,
+    NotSupported = 2,
+    Busy = 3,
+    Failed = 4,
+    Aborted = 5,
+    InvalidData = 6,
 }

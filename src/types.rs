@@ -119,13 +119,13 @@ pub struct AcpiOsdExecCallback(Option<unsafe extern "C" fn(Context: *mut c_void)
 
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum AcpiExecuteType {
-    OSL_GLOBAL_LOCK_HANDLER = 0,
-    OSL_NOTIFY_HANDLER = 1,
-    OSL_GPE_HANDLER = 2,
-    OSL_DEBUGGER_MAIN_THREAD = 3,
-    OSL_DEBUGGER_EXEC_THREAD = 4,
-    OSL_EC_POLL_HANDLER = 5,
-    OSL_EC_BURST_HANDLER = 6,
+    GlobalLockHandler = 0,
+    NotifyHandler = 1,
+    GpeHandler = 2,
+    DebuggerMainThread = 3,
+    DebuggerExecThread = 4,
+    EcPollHandler = 5,
+    EcBurstHandler = 6,
 }
 
 #[derive(Debug, Copy, Clone)]
@@ -138,9 +138,9 @@ pub struct AcpiPciId {
 
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum AcpiTraceEventType {
-    ACPI_TRACE_AML_METHOD = 0,
-    ACPI_TRACE_AML_OPCODE = 1,
-    ACPI_TRACE_AML_REGION = 2,
+    Method = 0,
+    Opcode = 1,
+    Region = 2,
 }
 
 #[derive(Debug)]
