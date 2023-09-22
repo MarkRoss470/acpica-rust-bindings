@@ -5,7 +5,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_nfit {
+pub struct FfiAcpiTableNfit {
     pub Header: FfiAcpiTableHeader,
     pub Reserved: u32,
 }
@@ -15,14 +15,14 @@ pub struct acpi_table_nfit {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_nfit_header {
+pub struct FfiAcpiNfitHeader {
     pub Type: u16,
     pub Length: u16,
 }
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiNfitType {
+pub enum FfiAcpiNfitType {
     ACPI_NFIT_TYPE_SYSTEM_ADDRESS = 0,
     ACPI_NFIT_TYPE_MEMORY_MAP = 1,
     ACPI_NFIT_TYPE_INTERLEAVE = 2,
@@ -35,8 +35,8 @@ pub enum AcpiNfitType {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_nfit_system_address {
-    pub Header: acpi_nfit_header,
+pub struct FfiAcpiNfitSystemAddress {
+    pub Header: FfiAcpiNfitHeader,
     pub RangeIndex: u16,
     pub Flags: u16,
     pub Reserved: u32,
@@ -50,8 +50,8 @@ pub struct acpi_nfit_system_address {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_nfit_memory_map {
-    pub Header: acpi_nfit_header,
+pub struct FfiAcpiNfitMemoryMap {
+    pub Header: FfiAcpiNfitHeader,
     pub DeviceHandle: u32,
     pub PhysicalId: u16,
     pub RegionId: u16,
@@ -68,8 +68,8 @@ pub struct acpi_nfit_memory_map {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_nfit_interleave {
-    pub Header: acpi_nfit_header,
+pub struct FfiAcpiNfitInterleave {
+    pub Header: FfiAcpiNfitHeader,
     pub InterleaveIndex: u16,
     pub Reserved: u16,
     pub LineCount: u32,
@@ -79,16 +79,16 @@ pub struct acpi_nfit_interleave {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_nfit_smbios {
-    pub Header: acpi_nfit_header,
+pub struct FfiAcpiNfitSmbios {
+    pub Header: FfiAcpiNfitHeader,
     pub Reserved: u32,
     pub Data: [u8; 1usize],
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_nfit_control_region {
-    pub Header: acpi_nfit_header,
+pub struct FfiAcpiNfitControlRegion {
+    pub Header: FfiAcpiNfitHeader,
     pub RegionIndex: u16,
     pub VendorId: u16,
     pub DeviceId: u16,
@@ -114,8 +114,8 @@ pub struct acpi_nfit_control_region {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_nfit_data_region {
-    pub Header: acpi_nfit_header,
+pub struct FfiAcpiNfitDataRegion {
+    pub Header: FfiAcpiNfitHeader,
     pub RegionIndex: u16,
     pub Windows: u16,
     pub Offset: u64,
@@ -126,8 +126,8 @@ pub struct acpi_nfit_data_region {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_nfit_flush_address {
-    pub Header: acpi_nfit_header,
+pub struct FfiAcpiNfitFlushAddress {
+    pub Header: FfiAcpiNfitHeader,
     pub DeviceHandle: u32,
     pub HintCount: u16,
     pub Reserved: [u8; 6usize],
@@ -136,8 +136,8 @@ pub struct acpi_nfit_flush_address {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_nfit_capabilities {
-    pub Header: acpi_nfit_header,
+pub struct FfiAcpiNfitCapabilities {
+    pub Header: FfiAcpiNfitHeader,
     pub HighestCapability: u8,
     pub Reserved: [u8; 3usize],
     pub Capabilities: u32,

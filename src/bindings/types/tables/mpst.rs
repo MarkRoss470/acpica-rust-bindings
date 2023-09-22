@@ -2,7 +2,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_mpst {
+pub struct FfiAcpiTableMpst {
     pub Header: FfiAcpiTableHeader,
     pub ChannelId: u8,
     pub Reserved1: [u8; 3usize],
@@ -12,7 +12,7 @@ pub struct acpi_table_mpst {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_mpst_channel {
+pub struct FfiAcpiMpstChannel {
     pub ChannelId: u8,
     pub Reserved1: [u8; 3usize],
     pub PowerNodeCount: u16,
@@ -21,7 +21,7 @@ pub struct acpi_mpst_channel {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_mpst_power_node {
+pub struct FfiAcpiMpstPowerNode {
     pub Flags: u8,
     pub Reserved1: u8,
     pub NodeId: u16,
@@ -34,27 +34,27 @@ pub struct acpi_mpst_power_node {
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_mpst_power_state {
+pub struct FfiAcpiMpstPowerState {
     pub PowerState: u8,
     pub InfoIndex: u8,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_mpst_component {
+pub struct FfiAcpiMpstComponent {
     pub ComponentId: u16,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_mpst_data_hdr {
+pub struct FfiAcpiMpstDataHdr {
     pub CharacteristicsCount: u16,
     pub Reserved: u16,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_mpst_power_data {
+pub struct FfiAcpiMpstPowerData {
     pub StructureId: u8,
     pub Flags: u8,
     pub Reserved1: u16,
@@ -66,7 +66,7 @@ pub struct acpi_mpst_power_data {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_mpst_shared {
+pub struct FfiAcpiMpstShared {
     pub Signature: u32,
     pub PccCommand: u16,
     pub PccStatus: u16,

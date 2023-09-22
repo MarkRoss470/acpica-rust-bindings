@@ -11,7 +11,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_ibft {
+pub struct FfiAcpiTableIbft {
     pub Header: FfiAcpiTableHeader,
     pub Reserved: [u8; 12usize],
 }
@@ -27,7 +27,7 @@ pub struct acpi_table_ibft {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_ibft_header {
+pub struct FfiAcpiIbftHeader {
     pub Type: u8,
     pub Version: u8,
     pub Length: u16,
@@ -37,7 +37,7 @@ pub struct acpi_ibft_header {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiIbftType {
+pub enum FfiAcpiIbftType {
     ACPI_IBFT_TYPE_NOT_USED = 0,
     ACPI_IBFT_TYPE_CONTROL = 1,
     ACPI_IBFT_TYPE_INITIATOR = 2,
@@ -48,8 +48,8 @@ pub enum AcpiIbftType {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_ibft_control {
-    pub Header: acpi_ibft_header,
+pub struct FfiAcpiIbftControl {
+    pub Header: FfiAcpiIbftHeader,
     pub Extensions: u16,
     pub InitiatorOffset: u16,
     pub Nic0Offset: u16,
@@ -60,8 +60,8 @@ pub struct acpi_ibft_control {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_ibft_initiator {
-    pub Header: acpi_ibft_header,
+pub struct FfiAcpiIbftInitiator {
+    pub Header: FfiAcpiIbftHeader,
     pub SnsServer: [u8; 16usize],
     pub SlpServer: [u8; 16usize],
     pub PrimaryServer: [u8; 16usize],
@@ -72,8 +72,8 @@ pub struct acpi_ibft_initiator {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_ibft_nic {
-    pub Header: acpi_ibft_header,
+pub struct FfiAcpiIbftNic {
+    pub Header: FfiAcpiIbftHeader,
     pub IpAddress: [u8; 16usize],
     pub SubnetMaskPrefix: u8,
     pub Origin: u8,
@@ -90,8 +90,8 @@ pub struct acpi_ibft_nic {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_ibft_target {
-    pub Header: acpi_ibft_header,
+pub struct FfiAcpiIbftTarget {
+    pub Header: FfiAcpiIbftHeader,
     pub TargetIpAddress: [u8; 16usize],
     pub TargetIpSocket: u16,
     pub TargetBootLun: [u8; 8usize],

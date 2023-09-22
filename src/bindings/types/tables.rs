@@ -55,7 +55,7 @@ pub struct FfiAcpiTableHeader {
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_subtable_header {
+pub struct FfiAcpiSubtableHeader {
     pub Type: u8,
     pub Length: u8,
 }
@@ -65,7 +65,7 @@ pub struct acpi_subtable_header {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_rsdp {
+pub struct FfiAcpiTableRsdp {
     pub Signature: [i8; 8usize],
     pub Checksum: u8,
     pub OemId: [i8; 6usize],
@@ -81,7 +81,7 @@ pub struct acpi_table_rsdp {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_rsdp_common {
+pub struct FfiAcpiRsdpCommon {
     pub Signature: [i8; 8usize],
     pub Checksum: u8,
     pub OemId: [i8; 6usize],
@@ -90,7 +90,7 @@ pub struct acpi_rsdp_common {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_rsdp_extension {
+pub struct FfiAcpiRsdpExtension {
     pub Length: u32,
     pub XsdtPhysicalAddress: u64,
     pub ExtendedChecksum: u8,

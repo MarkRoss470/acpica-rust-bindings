@@ -1,13 +1,13 @@
 use crate::bindings::types::FfiAcpiTableHeader;
 
-use super::acpi_subtable_header;
+use super::FfiAcpiSubtableHeader;
 
 ///  PPTT - Processor Properties Topology Table (ACPI 6.2)
 ///         Version 1
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_pptt {
+pub struct FfiAcpiTablePptt {
     pub Header: FfiAcpiTableHeader,
 }
 ///  PPTT - Processor Properties Topology Table (ACPI 6.2)
@@ -16,7 +16,7 @@ pub struct acpi_table_pptt {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiPpttType {
+pub enum FfiAcpiPpttType {
     ACPI_PPTT_TYPE_PROCESSOR = 0,
     ACPI_PPTT_TYPE_CACHE = 1,
     ACPI_PPTT_TYPE_ID = 2,
@@ -24,8 +24,8 @@ pub enum AcpiPpttType {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_pptt_processor {
-    pub Header: acpi_subtable_header,
+pub struct FfiAcpiPpttProcessor {
+    pub Header: FfiAcpiSubtableHeader,
     pub Reserved: u16,
     pub Flags: u32,
     pub Parent: u32,
@@ -35,8 +35,8 @@ pub struct acpi_pptt_processor {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_pptt_cache {
-    pub Header: acpi_subtable_header,
+pub struct FfiAcpiPpttCache {
+    pub Header: FfiAcpiSubtableHeader,
     pub Reserved: u16,
     pub Flags: u32,
     pub NextLevelOfCache: u32,
@@ -49,14 +49,14 @@ pub struct acpi_pptt_cache {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_pptt_cache_v1 {
+pub struct FfiAcpiPpttCacheV1 {
     pub CacheId: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_pptt_id {
-    pub Header: acpi_subtable_header,
+pub struct FfiAcpiPpttId {
+    pub Header: FfiAcpiSubtableHeader,
     pub Reserved: u16,
     pub VendorId: u32,
     pub Level1Id: u64,

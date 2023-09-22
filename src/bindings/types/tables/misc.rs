@@ -1,6 +1,6 @@
 use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteArrayField, interface::AcpiGenericAddress};
 
-use super::acpi_subtable_header;
+use super::FfiAcpiSubtableHeader;
 
 ///  ASF - Alert Standard Format table (Signature \"ASF!\")
 ///        Revision 0x10
@@ -9,7 +9,7 @@ use super::acpi_subtable_header;
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_asf {
+pub struct FfiAcpiTableAsf {
     pub Header: FfiAcpiTableHeader,
 }
 ///  ASF - Alert Standard Format table (Signature \"ASF!\")
@@ -20,7 +20,7 @@ pub struct acpi_table_asf {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_asf_header {
+pub struct FfiAcpiAsfHeader {
     pub Type: u8,
     pub Reserved: u8,
     pub Length: u16,
@@ -28,7 +28,7 @@ pub struct acpi_asf_header {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiAsfType {
+pub enum FfiAcpiAsfType {
     ACPI_ASF_TYPE_INFO = 0,
     ACPI_ASF_TYPE_ALERT = 1,
     ACPI_ASF_TYPE_CONTROL = 2,
@@ -38,8 +38,8 @@ pub enum AcpiAsfType {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_asf_info {
-    pub Header: acpi_asf_header,
+pub struct FfiAcpiAsfInfo {
+    pub Header: FfiAcpiAsfHeader,
     pub MinResetValue: u8,
     pub MinPollInterval: u8,
     pub SystemId: u16,
@@ -50,8 +50,8 @@ pub struct acpi_asf_info {
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_asf_alert {
-    pub Header: acpi_asf_header,
+pub struct FfiAcpiAsfAlert {
+    pub Header: FfiAcpiAsfHeader,
     pub AssertMask: u8,
     pub DeassertMask: u8,
     pub Alerts: u8,
@@ -60,7 +60,7 @@ pub struct acpi_asf_alert {
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_asf_alert_data {
+pub struct FfiAcpiAsfAlertData {
     pub Address: u8,
     pub Command: u8,
     pub Mask: u8,
@@ -77,8 +77,8 @@ pub struct acpi_asf_alert_data {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_asf_remote {
-    pub Header: acpi_asf_header,
+pub struct FfiAcpiAsfRemote {
+    pub Header: FfiAcpiAsfHeader,
     pub Controls: u8,
     pub DataLength: u8,
     pub Reserved2: u16,
@@ -86,7 +86,7 @@ pub struct acpi_asf_remote {
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_asf_control_data {
+pub struct FfiAcpiAsfControlData {
     pub Function: u8,
     pub Address: u8,
     pub Command: u8,
@@ -95,8 +95,8 @@ pub struct acpi_asf_control_data {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_asf_rmcp {
-    pub Header: acpi_asf_header,
+pub struct FfiAcpiAsfRmcp {
+    pub Header: FfiAcpiAsfHeader,
     pub Capabilities: [u8; 7usize],
     pub CompletionCode: u8,
     pub EnterpriseId: u32,
@@ -108,8 +108,8 @@ pub struct acpi_asf_rmcp {
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_asf_address {
-    pub Header: acpi_asf_header,
+pub struct FfiAcpiAsfAddress {
+    pub Header: FfiAcpiAsfHeader,
     pub EpromAddress: u8,
     pub Devices: u8,
 }
@@ -119,7 +119,7 @@ pub struct acpi_asf_address {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_bert {
+pub struct FfiAcpiTableBert {
     pub Header: FfiAcpiTableHeader,
     pub RegionLength: u32,
     pub Address: u64,
@@ -130,7 +130,7 @@ pub struct acpi_table_bert {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_bert_region {
+pub struct FfiAcpiBertRegion {
     pub BlockStatus: u32,
     pub RawDataOffset: u32,
     pub RawDataLength: u32,
@@ -140,7 +140,7 @@ pub struct acpi_bert_region {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiBertErrorSeverity {
+pub enum FfiAcpiBertErrorSeverity {
     ACPI_BERT_ERROR_CORRECTABLE = 0,
     ACPI_BERT_ERROR_FATAL = 1,
     ACPI_BERT_ERROR_CORRECTED = 2,
@@ -152,7 +152,7 @@ pub enum AcpiBertErrorSeverity {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_bgrt {
+pub struct FfiAcpiTableBgrt {
     pub Header: FfiAcpiTableHeader,
     pub Version: u16,
     pub Status: u8,
@@ -172,7 +172,7 @@ pub struct acpi_table_bgrt {
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_boot {
+pub struct FfiAcpiTableBoot {
     pub Header: FfiAcpiTableHeader,
     pub CmosIndex: u8,
     pub Reserved: [u8; 3usize],
@@ -189,7 +189,7 @@ pub struct acpi_table_boot {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_cpep {
+pub struct FfiAcpiTableCpep {
     pub Header: FfiAcpiTableHeader,
     pub Reserved: u64,
 }
@@ -199,8 +199,8 @@ pub struct acpi_table_cpep {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_cpep_polling {
-    pub Header: acpi_subtable_header,
+pub struct FfiAcpiCpepPolling {
+    pub Header: FfiAcpiSubtableHeader,
     pub Id: u8,
     pub Eid: u8,
     pub Interval: u32,
@@ -215,7 +215,7 @@ pub struct acpi_cpep_polling {
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_dbgp {
+pub struct FfiAcpiTableDbgp {
     pub Header: FfiAcpiTableHeader,
     pub Type: u8,
     pub Reserved: [u8; 3usize],
@@ -234,7 +234,7 @@ pub struct acpi_table_dbgp {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_ecdt {
+pub struct FfiAcpiTableEcdt {
     pub Header: FfiAcpiTableHeader,
     pub Control: AcpiGenericAddress,
     pub Data: AcpiGenericAddress,
@@ -255,7 +255,7 @@ pub struct acpi_table_ecdt {
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_bdat {
+pub struct FfiAcpiTableBdat {
     pub Header: FfiAcpiTableHeader,
     pub Gas: AcpiGenericAddress,
 }
@@ -274,7 +274,7 @@ pub struct acpi_table_bdat {
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_lpit {
+pub struct FfiAcpiTableLpit {
     pub Header: FfiAcpiTableHeader,
 }
 ///  LPIT - Low Power Idle Table
@@ -284,7 +284,7 @@ pub struct acpi_table_lpit {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_lpit_header {
+pub struct FfiAcpiLpitHeader {
     pub Type: u32,
     pub Length: u32,
     pub UniqueId: u16,
@@ -294,14 +294,14 @@ pub struct acpi_lpit_header {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiLpitType {
+pub enum FfiAcpiLpitType {
     ACPI_LPIT_TYPE_NATIVE_CSTATE = 0,
     ACPI_LPIT_TYPE_RESERVED = 1,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_lpit_native {
-    pub Header: acpi_lpit_header,
+pub struct FfiAcpiLpitNative {
+    pub Header: FfiAcpiLpitHeader,
     pub EntryTrigger: AcpiGenericAddress,
     pub Residency: u32,
     pub Latency: u32,
@@ -317,7 +317,7 @@ pub struct acpi_lpit_native {
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_mcfg {
+pub struct FfiAcpiTableMcfg {
     pub Header: FfiAcpiTableHeader,
     pub Reserved: [u8; 8usize],
 }
@@ -329,7 +329,7 @@ pub struct acpi_table_mcfg {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_mcfg_allocation {
+pub struct FfiAcpiMcfgAllocation {
     pub Address: u64,
     pub PciSegment: u16,
     pub StartBusNumber: u8,
@@ -345,7 +345,7 @@ pub struct acpi_mcfg_allocation {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_mchi {
+pub struct FfiAcpiTableMchi {
     pub Header: FfiAcpiTableHeader,
     pub InterfaceType: u8,
     pub Protocol: u8,
@@ -373,7 +373,7 @@ pub struct acpi_table_mchi {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_msct {
+pub struct FfiAcpiTableMsct {
     pub Header: FfiAcpiTableHeader,
     pub ProximityOffset: u32,
     pub MaxProximityDomains: u32,
@@ -386,7 +386,7 @@ pub struct acpi_table_msct {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_msct_proximity {
+pub struct FfiAcpiMsctProximity {
     pub Revision: u8,
     pub Length: u8,
     pub RangeStart: u32,
@@ -402,7 +402,7 @@ pub struct acpi_msct_proximity {
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_msdm {
+pub struct FfiAcpiTableMsdm {
     pub Header: FfiAcpiTableHeader,
 }
 ///  MSDM - Microsoft Data Management table
@@ -419,7 +419,7 @@ pub struct acpi_table_msdm {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_pdtt {
+pub struct FfiAcpiTablePdtt {
     pub Header: FfiAcpiTableHeader,
     pub TriggerCount: u8,
     pub Reserved: [u8; 3usize],
@@ -431,7 +431,7 @@ pub struct acpi_table_pdtt {
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_pdtt_channel {
+pub struct FfiAcpiPdttChannel {
     pub SubchannelId: u8,
     pub Flags: u8,
 }
@@ -445,7 +445,7 @@ pub struct acpi_pdtt_channel {
 ///  https://microsoft.github.io/mu/dyn/mu_plus/MsCorePkg/AcpiRGRT/feature_acpi_rgrt/
 /// 
 #[repr(C, packed)]
-pub struct acpi_table_rgrt {
+pub struct FfiAcpiTableRgrt {
     pub Header: FfiAcpiTableHeader,
     pub Version: u16,
     pub ImageType: u8,
@@ -461,7 +461,7 @@ pub struct acpi_table_rgrt {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiRgrtImageType {
+pub enum FfiAcpiRgrtImageType {
     ACPI_RGRT_TYPE_RESERVED0 = 0,
     ACPI_RGRT_IMAGE_TYPE_PNG = 1,
     ACPI_RGRT_TYPE_RESERVED = 2,
@@ -471,7 +471,7 @@ pub enum AcpiRgrtImageType {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_sbst {
+pub struct FfiAcpiTableSbst {
     pub Header: FfiAcpiTableHeader,
     pub WarningLevel: u32,
     pub LowLevel: u32,
@@ -488,7 +488,7 @@ pub struct acpi_table_sbst {
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_sdei {
+pub struct FfiAcpiTableSdei {
     pub Header: FfiAcpiTableHeader,
 }
 ///  SDEI - Software Delegated Exception Interface Descriptor Table
@@ -506,7 +506,7 @@ pub struct acpi_table_sdei {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_svkl {
+pub struct FfiAcpiTableSvkl {
     pub Header: FfiAcpiTableHeader,
     pub Count: u32,
 }
@@ -518,7 +518,7 @@ pub struct acpi_table_svkl {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_svkl_key {
+pub struct FfiAcpiSvklKey {
     pub Type: u16,
     pub Format: u16,
     pub Size: u32,
@@ -527,13 +527,13 @@ pub struct acpi_svkl_key {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum acpi_svkl_type {
+pub enum FfiAcpiSvklType {
     ACPI_SVKL_TYPE_MAIN_STORAGE = 0,
     ACPI_SVKL_TYPE_RESERVED = 1,
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum acpi_svkl_format {
+pub enum FfiAcpiSvklFormat {
     ACPI_SVKL_FORMAT_RAW_BINARY = 0,
     ACPI_SVKL_FORMAT_RESERVED = 1,
 }
@@ -544,7 +544,7 @@ pub enum acpi_svkl_format {
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_slic {
+pub struct FfiAcpiTableSlic {
     pub Header: FfiAcpiTableHeader,
 }
 ///  SLIC - Software Licensing Description Table
@@ -558,7 +558,7 @@ pub struct acpi_table_slic {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_slit {
+pub struct FfiAcpiTableSlit {
     pub Header: FfiAcpiTableHeader,
     pub LocalityCount: u64,
     pub Entry: [u8; 1usize],
@@ -575,7 +575,7 @@ pub struct acpi_table_slit {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_spcr {
+pub struct FfiAcpiTableSpcr {
     pub Header: FfiAcpiTableHeader,
     pub InterfaceType: u8,
     pub Reserved: [u8; 3usize],
@@ -614,7 +614,7 @@ pub struct acpi_table_spcr {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_spmi {
+pub struct FfiAcpiTableSpmi {
     pub Header: FfiAcpiTableHeader,
     pub InterfaceType: u8,
     pub Reserved: u8,
@@ -641,7 +641,7 @@ pub struct acpi_table_spmi {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiSpmiInterfaceTypes {
+pub enum FfiAcpiSpmiInterfaceTypes {
     ACPI_SPMI_NOT_USED = 0,
     ACPI_SPMI_KEYBOARD = 1,
     ACPI_SPMI_SMI = 2,
@@ -659,7 +659,7 @@ pub enum AcpiSpmiInterfaceTypes {
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_stao {
+pub struct FfiAcpiTableStao {
     pub Header: FfiAcpiTableHeader,
     pub IgnoreUart: u8,
 }
@@ -673,14 +673,14 @@ pub struct acpi_table_stao {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_tcpa_client {
+pub struct FfiAcpiTableTcpaClient {
     pub MinimumLogLength: u32,
     pub LogAddress: u64,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_tcpa_server {
+pub struct FfiAcpiTableTcpaServer {
     pub Reserved: u16,
     pub MinimumLogLength: u64,
     pub LogAddress: u64,
@@ -708,7 +708,7 @@ pub struct acpi_table_tcpa_server {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_uefi {
+pub struct FfiAcpiTableUefi {
     pub Header: FfiAcpiTableHeader,
     pub Identifier: [u8; 16usize],
     pub DataOffset: u16,
@@ -729,7 +729,7 @@ pub struct acpi_table_uefi {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_xenv {
+pub struct FfiAcpiTableXenv {
     pub Header: FfiAcpiTableHeader,
     pub GrantTableAddress: u64,
     pub GrantTableSize: u64,

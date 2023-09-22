@@ -6,7 +6,7 @@ use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteAr
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_pmtt {
+pub struct FfiAcpiTablePmtt {
     pub Header: FfiAcpiTableHeader,
     pub MemoryDeviceCount: u32,
 }
@@ -16,7 +16,7 @@ pub struct acpi_table_pmtt {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_pmtt_header {
+pub struct FfiAcpiPmttHeader {
     pub Type: u8,
     pub Reserved1: u8,
     pub Length: u16,
@@ -27,31 +27,31 @@ pub struct acpi_pmtt_header {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_pmtt_socket {
-    pub Header: acpi_pmtt_header,
+pub struct FfiAcpiPmttSocket {
+    pub Header: FfiAcpiPmttHeader,
     pub SocketId: u16,
     pub Reserved: u16,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_pmtt_controller {
-    pub Header: acpi_pmtt_header,
+pub struct FfiAcpiPmttController {
+    pub Header: FfiAcpiPmttHeader,
     pub ControllerId: u16,
     pub Reserved: u16,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_pmtt_physical_component {
-    pub Header: acpi_pmtt_header,
+pub struct FfiAcpiPmttPhysicalComponent {
+    pub Header: FfiAcpiPmttHeader,
     pub BiosHandle: u32,
 }
 
 #[repr(C)]
 #[derive(Debug)]
-pub struct acpi_pmtt_vendor_specific {
-    pub Header: acpi_pmtt_header,
+pub struct FfiAcpiPmttVendorSpecific {
+    pub Header: FfiAcpiPmttHeader,
     pub TypeUuid: [u8; 16usize],
     Specific: __IncompleteArrayField<u8>,
 }

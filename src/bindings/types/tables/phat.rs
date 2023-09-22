@@ -5,7 +5,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_phat {
+pub struct FfiAcpiTablePhat {
     pub Header: FfiAcpiTableHeader,
 }
 ///  PHAT - Platform Health Assessment Table (ACPI 6.4)
@@ -14,7 +14,7 @@ pub struct acpi_table_phat {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_phat_header {
+pub struct FfiAcpiPhatHeader {
     pub Type: u16,
     pub Length: u16,
     pub Revision: u8,
@@ -22,15 +22,15 @@ pub struct acpi_phat_header {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_phat_version_data {
-    pub Header: acpi_phat_header,
+pub struct FfiAcpiPhatVersionData {
+    pub Header: FfiAcpiPhatHeader,
     pub Reserved: [u8; 3usize],
     pub ElementCount: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_phat_version_element {
+pub struct FfiAcpiPhatVersionElement {
     pub Guid: [u8; 16usize],
     pub VersionValue: u64,
     pub ProducerId: u32,
@@ -38,8 +38,8 @@ pub struct acpi_phat_version_element {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_phat_health_data {
-    pub Header: acpi_phat_header,
+pub struct FfiAcpiPhatHealthData {
+    pub Header: FfiAcpiPhatHeader,
     pub Reserved: [u8; 2usize],
     pub Health: u8,
     pub DeviceGuid: [u8; 16usize],

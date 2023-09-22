@@ -5,7 +5,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_viot {
+pub struct FfiAcpiTableViot {
     pub Header: FfiAcpiTableHeader,
     pub NodeCount: u16,
     pub NodeOffset: u16,
@@ -17,7 +17,7 @@ pub struct acpi_table_viot {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_viot_header {
+pub struct FfiAcpiViotHeader {
     pub Type: u8,
     pub Reserved: u8,
     pub Length: u16,
@@ -25,7 +25,7 @@ pub struct acpi_viot_header {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiViotNodeType {
+pub enum FfiAcpiViotNodeType {
     ACPI_VIOT_NODE_PCI_RANGE = 1,
     ACPI_VIOT_NODE_MMIO = 2,
     ACPI_VIOT_NODE_VIRTIO_IOMMU_PCI = 3,
@@ -34,8 +34,8 @@ pub enum AcpiViotNodeType {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_viot_pci_range {
-    pub Header: acpi_viot_header,
+pub struct FfiAcpiViotPciRange {
+    pub Header: FfiAcpiViotHeader,
     pub EndpointStart: u32,
     pub SegmentStart: u16,
     pub SegmentEnd: u16,
@@ -47,8 +47,8 @@ pub struct acpi_viot_pci_range {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_viot_mmio {
-    pub Header: acpi_viot_header,
+pub struct FfiAcpiViotMmio {
+    pub Header: FfiAcpiViotHeader,
     pub Endpoint: u32,
     pub BaseAddress: u64,
     pub OutputNode: u16,
@@ -57,8 +57,8 @@ pub struct acpi_viot_mmio {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_viot_virtio_iommu_pci {
-    pub Header: acpi_viot_header,
+pub struct FfiAcpiViotVirtioIommuPci {
+    pub Header: FfiAcpiViotHeader,
     pub Segment: u16,
     pub Bdf: u16,
     pub Reserved: [u8; 8usize],
@@ -66,8 +66,8 @@ pub struct acpi_viot_virtio_iommu_pci {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_viot_virtio_iommu_mmio {
-    pub Header: acpi_viot_header,
+pub struct FfiAcpiViotVirtioIommuMmio {
+    pub Header: FfiAcpiViotHeader,
     pub Reserved: [u8; 4usize],
     pub BaseAddress: u64,
 }

@@ -1,4 +1,4 @@
-use super::types::tables::fadt::AcpiTableFadt;
+use super::types::tables::fadt::FfiAcpiTableFadt;
 
 #[allow(dead_code)]
 extern "C" {
@@ -52,7 +52,7 @@ extern "C" {
 
     pub static mut AcpiGbl_DisplayDebugTimer: u8;
 
-    pub static mut AcpiGbl_FADT: AcpiTableFadt;
+    pub static mut AcpiGbl_FADT: FfiAcpiTableFadt;
 
     pub static mut AcpiCurrentGpeCount: u32;
 

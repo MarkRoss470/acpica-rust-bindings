@@ -1,13 +1,13 @@
 use crate::{interface::AcpiGenericAddress, types::AcpiTableHeader};
 
-use super::{acpi_subtable_header, FfiAcpiTableHeader};
+use super::{FfiAcpiSubtableHeader, FfiAcpiTableHeader};
 
 ///  PCCT - Platform Communications Channel Table (ACPI 5.0)
 ///         Version 2 (ACPI 6.2)
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_pcct {
+pub struct FfiAcpiTablePcct {
     pub Header: FfiAcpiTableHeader,
     pub Flags: u32,
     pub Reserved: u64,
@@ -18,7 +18,7 @@ pub struct acpi_table_pcct {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiPcctType {
+pub enum FfiAcpiPcctType {
     ACPI_PCCT_TYPE_GENERIC_SUBSPACE = 0,
     ACPI_PCCT_TYPE_HW_REDUCED_SUBSPACE = 1,
     ACPI_PCCT_TYPE_HW_REDUCED_SUBSPACE_TYPE2 = 2,
@@ -29,8 +29,8 @@ pub enum AcpiPcctType {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_pcct_subspace {
-    pub Header: acpi_subtable_header,
+pub struct FfiAcpiPcctSubspace {
+    pub Header: FfiAcpiSubtableHeader,
     pub Reserved: [u8; 6usize],
     pub BaseAddress: u64,
     pub Length: u64,
@@ -44,8 +44,8 @@ pub struct acpi_pcct_subspace {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_pcct_hw_reduced {
-    pub Header: acpi_subtable_header,
+pub struct FfiAcpiPcctHwReduced {
+    pub Header: FfiAcpiSubtableHeader,
     pub PlatformInterrupt: u32,
     pub Flags: u8,
     pub Reserved: u8,
@@ -61,8 +61,8 @@ pub struct acpi_pcct_hw_reduced {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_pcct_hw_reduced_type2 {
-    pub Header: acpi_subtable_header,
+pub struct FfiAcpiPcctHwReducedType2 {
+    pub Header: FfiAcpiSubtableHeader,
     pub PlatformInterrupt: u32,
     pub Flags: u8,
     pub Reserved: u8,
@@ -81,8 +81,8 @@ pub struct acpi_pcct_hw_reduced_type2 {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_pcct_ext_pcc_master {
-    pub Header: acpi_subtable_header,
+pub struct FfiAcpiPcctExtPccMaster {
+    pub Header: FfiAcpiSubtableHeader,
     pub PlatformInterrupt: u32,
     pub Flags: u8,
     pub Reserved1: u8,
@@ -109,8 +109,8 @@ pub struct acpi_pcct_ext_pcc_master {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_pcct_ext_pcc_slave {
-    pub Header: acpi_subtable_header,
+pub struct FfiAcpiPcctExtPccSlave {
+    pub Header: FfiAcpiSubtableHeader,
     pub PlatformInterrupt: u32,
     pub Flags: u8,
     pub Reserved1: u8,
@@ -137,8 +137,8 @@ pub struct acpi_pcct_ext_pcc_slave {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_pcct_hw_reg {
-    pub Header: acpi_subtable_header,
+pub struct FfiAcpiPcctHwReg {
+    pub Header: FfiAcpiSubtableHeader,
     pub Version: u16,
     pub BaseAddress: u64,
     pub Length: u64,
@@ -155,7 +155,7 @@ pub struct acpi_pcct_hw_reg {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_pcct_shared_memory {
+pub struct FfiAcpiPcctSharedMemory {
     pub Signature: u32,
     pub Command: u16,
     pub Status: u16,
@@ -163,7 +163,7 @@ pub struct acpi_pcct_shared_memory {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_pcct_ext_pcc_shared_memory {
+pub struct FfiAcpiPcctExtPccSharedMemory {
     pub Signature: u32,
     pub Flags: u32,
     pub Length: u32,

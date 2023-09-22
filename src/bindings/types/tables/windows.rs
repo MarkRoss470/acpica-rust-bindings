@@ -7,7 +7,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_waet {
+pub struct FfiAcpiTableWaet {
     pub Header: FfiAcpiTableHeader,
     pub Flags: u32,
 }
@@ -25,7 +25,7 @@ pub struct acpi_table_waet {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_wpbt {
+pub struct FfiAcpiTableWpbt {
     pub Header: FfiAcpiTableHeader,
     pub HandoffSize: u32,
     pub HandoffAddress: u64,
@@ -41,7 +41,7 @@ pub struct acpi_table_wpbt {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_wpbt_unicode {
+pub struct FfiAcpiWpbtUnicode {
     pub UnicodeString: *mut u16,
 }
 
@@ -53,7 +53,7 @@ pub struct acpi_wpbt_unicode {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_wsmt {
+pub struct FfiAcpiTableWsmt {
     pub Header: FfiAcpiTableHeader,
     pub ProtectionFlags: u32,
 }

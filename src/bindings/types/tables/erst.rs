@@ -5,7 +5,7 @@ use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::ACPI_WHEA_HEAD
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_erst {
+pub struct FfiAcpiTableErst {
     pub Header: FfiAcpiTableHeader,
     pub HeaderLength: u32,
     pub Reserved: u32,
@@ -13,12 +13,12 @@ pub struct acpi_table_erst {
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_erst_entry {
+pub struct FfiAcpiErstEntry {
     WheaHeader: ACPI_WHEA_HEADER,
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiErstActions {
+pub enum FfiAcpiErstActions {
     ACPI_ERST_BEGIN_WRITE = 0,
     ACPI_ERST_BEGIN_READ = 1,
     ACPI_ERST_BEGIN_CLEAR = 2,
@@ -40,7 +40,7 @@ pub enum AcpiErstActions {
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiErstInstructions {
+pub enum FfiAcpiErstInstructions {
     ACPI_ERST_READ_REGISTER = 0,
     ACPI_ERST_READ_REGISTER_VALUE = 1,
     ACPI_ERST_WRITE_REGISTER = 2,
@@ -64,7 +64,7 @@ pub enum AcpiErstInstructions {
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiErstCommandStatus {
+pub enum FfiAcpiErstCommandStatus {
     ACPI_ERST_SUCCESS = 0,
     ACPI_ERST_NO_SPACE = 1,
     ACPI_ERST_NOT_AVAILABLE = 2,
@@ -75,7 +75,7 @@ pub enum AcpiErstCommandStatus {
 }
 #[repr(C, packed)]
 #[derive(Copy, Clone)]
-pub struct acpi_erst_info {
+pub struct FfiAcpiErstInfo {
     pub Signature: u16,
     pub Data: [u8; 48usize],
 }

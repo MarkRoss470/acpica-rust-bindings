@@ -6,7 +6,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_prmt {
+pub struct FfiAcpiTablePrmt {
     pub Header: FfiAcpiTableHeader,
 }
 ///  PRMT - Platform Runtime Mechanism Table
@@ -15,7 +15,7 @@ pub struct acpi_table_prmt {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_prmt_header {
+pub struct FfiAcpiTablePrmtHeader {
     pub PlatformGuid: [u8; 16usize],
     pub ModuleInfoOffset: u32,
     pub ModuleInfoCount: u32,
@@ -23,14 +23,14 @@ pub struct acpi_table_prmt_header {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_prmt_module_header {
+pub struct FfiAcpiPrmtModuleHeader {
     pub Revision: u16,
     pub Length: u16,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_prmt_module_info {
+pub struct FfiAcpiPrmtModuleInfo {
     pub Revision: u16,
     pub Length: u16,
     pub ModuleGuid: [u8; 16usize],
@@ -43,7 +43,7 @@ pub struct acpi_prmt_module_info {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_prmt_handler_info {
+pub struct FfiAcpiPrmtHandlerInfo {
     pub Revision: u16,
     pub Length: u16,
     pub HandlerGuid: [u8; 16usize],

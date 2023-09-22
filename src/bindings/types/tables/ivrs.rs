@@ -8,7 +8,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_ivrs {
+pub struct FfiAcpiTableIvrs {
     pub Header: FfiAcpiTableHeader,
     pub Info: u32,
     pub Reserved: u64,
@@ -23,7 +23,7 @@ pub struct acpi_table_ivrs {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_ivrs_header {
+pub struct FfiAcpiIvrsHeader {
     pub Type: u8,
     pub Flags: u8,
     pub Length: u16,
@@ -32,7 +32,7 @@ pub struct acpi_ivrs_header {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiIvrsType {
+pub enum FfiAcpiIvrsType {
     ACPI_IVRS_TYPE_HARDWARE1 = 16,
     ACPI_IVRS_TYPE_HARDWARE2 = 17,
     ACPI_IVRS_TYPE_HARDWARE3 = 64,
@@ -42,8 +42,8 @@ pub enum AcpiIvrsType {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_ivrs_hardware_10 {
-    pub Header: acpi_ivrs_header,
+pub struct FfiAcpiIvrsHardware10 {
+    pub Header: FfiAcpiIvrsHeader,
     pub CapabilityOffset: u16,
     pub BaseAddress: u64,
     pub PciSegmentGroup: u16,
@@ -53,8 +53,8 @@ pub struct acpi_ivrs_hardware_10 {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_ivrs_hardware_11 {
-    pub Header: acpi_ivrs_header,
+pub struct FfiAcpiIvrsHardware11 {
+    pub Header: FfiAcpiIvrsHeader,
     pub CapabilityOffset: u16,
     pub BaseAddress: u64,
     pub PciSegmentGroup: u16,
@@ -66,7 +66,7 @@ pub struct acpi_ivrs_hardware_11 {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_ivrs_de_header {
+pub struct FfiAcpiIvrsDeHeader {
     pub Type: u8,
     pub Id: u16,
     pub DataSetting: u8,
@@ -74,7 +74,7 @@ pub struct acpi_ivrs_de_header {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiIvrsDeviceEntryType {
+pub enum FfiAcpiIvrsDeviceEntryType {
     ACPI_IVRS_TYPE_PAD4 = 0,
     ACPI_IVRS_TYPE_ALL = 1,
     ACPI_IVRS_TYPE_SELECT = 2,
@@ -91,14 +91,14 @@ pub enum AcpiIvrsDeviceEntryType {
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_ivrs_device4 {
-    pub Header: acpi_ivrs_de_header,
+pub struct FfiAcpiIvrsDevice4 {
+    pub Header: FfiAcpiIvrsDeHeader,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_ivrs_device8a {
-    pub Header: acpi_ivrs_de_header,
+pub struct FfiAcpiIvrsDevice8a {
+    pub Header: FfiAcpiIvrsDeHeader,
     pub Reserved1: u8,
     pub UsedId: u16,
     pub Reserved2: u8,
@@ -106,15 +106,15 @@ pub struct acpi_ivrs_device8a {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_ivrs_device8b {
-    pub Header: acpi_ivrs_de_header,
+pub struct FfiAcpiIvrsDevice8b {
+    pub Header: FfiAcpiIvrsDeHeader,
     pub ExtendedData: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_ivrs_device8c {
-    pub Header: acpi_ivrs_de_header,
+pub struct FfiAcpiIvrsDevice8c {
+    pub Header: FfiAcpiIvrsDeHeader,
     pub Handle: u8,
     pub UsedId: u16,
     pub Variety: u8,
@@ -122,8 +122,8 @@ pub struct acpi_ivrs_device8c {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_ivrs_device_hid {
-    pub Header: acpi_ivrs_de_header,
+pub struct FfiAcpiIvrsDeviceHid {
+    pub Header: FfiAcpiIvrsDeHeader,
     pub AcpiHid: u64,
     pub AcpiCid: u64,
     pub UidType: u8,
@@ -132,8 +132,8 @@ pub struct acpi_ivrs_device_hid {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_ivrs_memory {
-    pub Header: acpi_ivrs_de_header,
+pub struct FfiAcpiIvrsMemory {
+    pub Header: FfiAcpiIvrsDeHeader,
     pub AuxData: u16,
     pub Reserved: u64,
     pub StartAddress: u64,

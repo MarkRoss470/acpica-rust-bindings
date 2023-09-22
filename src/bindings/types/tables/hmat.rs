@@ -4,13 +4,13 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_hmat {
+pub struct FfiAcpiTableHmat {
     pub Header: FfiAcpiTableHeader,
     pub Reserved: u32,
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiHmatType {
+pub enum FfiAcpiHmatType {
     ACPI_HMAT_TYPE_ADDRESS_RANGE = 0,
     ACPI_HMAT_TYPE_LOCALITY = 1,
     ACPI_HMAT_TYPE_CACHE = 2,
@@ -18,15 +18,15 @@ pub enum AcpiHmatType {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_hmat_structure {
+pub struct FfiAcpiHmatStructure {
     pub Type: u16,
     pub Reserved: u16,
     pub Length: u32,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_hmat_proximity_domain {
-    pub Header: acpi_hmat_structure,
+pub struct FfiAcpiHmatProximityDomain {
+    pub Header: FfiAcpiHmatStructure,
     pub Flags: u16,
     pub Reserved1: u16,
     pub InitiatorPD: u32,
@@ -37,8 +37,8 @@ pub struct acpi_hmat_proximity_domain {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_hmat_locality {
-    pub Header: acpi_hmat_structure,
+pub struct FfiAcpiHmatLocality {
+    pub Header: FfiAcpiHmatStructure,
     pub Flags: u8,
     pub DataType: u8,
     pub MinTransferSize: u8,
@@ -50,8 +50,8 @@ pub struct acpi_hmat_locality {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_hmat_cache {
-    pub Header: acpi_hmat_structure,
+pub struct FfiAcpiHmatCache {
+    pub Header: FfiAcpiHmatStructure,
     pub MemoryPD: u32,
     pub Reserved1: u32,
     pub CacheSize: u64,

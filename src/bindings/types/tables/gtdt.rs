@@ -6,7 +6,7 @@ use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteAr
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_gtdt {
+pub struct FfiAcpiTableGtdt {
     pub Header: FfiAcpiTableHeader,
     pub CounterBlockAddresss: u64,
     pub Reserved: u32,
@@ -24,27 +24,27 @@ pub struct acpi_table_gtdt {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_gtdt_el2 {
+pub struct FfiAcpiGtdtEl2 {
     pub VirtualEL2TimerGsiv: u32,
     pub VirtualEL2TimerFlags: u32,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_gtdt_header {
+pub struct FfiAcpiGtdtHeader {
     pub Type: u8,
     pub Length: u16,
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiGtdtType {
+pub enum FfiAcpiGtdtType {
     ACPI_GTDT_TYPE_TIMER_BLOCK = 0,
     ACPI_GTDT_TYPE_WATCHDOG = 1,
     ACPI_GTDT_TYPE_RESERVED = 2,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_gtdt_timer_block {
-    pub Header: acpi_gtdt_header,
+pub struct FfiAcpiGtdtTimerBlock {
+    pub Header: FfiAcpiGtdtHeader,
     pub Reserved: u8,
     pub BlockAddress: u64,
     pub TimerCount: u32,
@@ -52,7 +52,7 @@ pub struct acpi_gtdt_timer_block {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_gtdt_timer_entry {
+pub struct FfiAcpiGtdtTimerEntry {
     pub FrameNumber: u8,
     pub Reserved: [u8; 3usize],
     pub BaseAddress: u64,
@@ -65,8 +65,8 @@ pub struct acpi_gtdt_timer_entry {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_gtdt_watchdog {
-    pub Header: acpi_gtdt_header,
+pub struct FfiAcpiGtdtWatchdog {
+    pub Header: FfiAcpiGtdtHeader,
     pub Reserved: u8,
     pub RefreshFrameAddress: u64,
     pub ControlFrameAddress: u64,

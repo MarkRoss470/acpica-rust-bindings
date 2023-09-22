@@ -15,7 +15,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_tcpa_hdr {
+pub struct FfiAcpiTableTcpaHdr {
     pub Header: FfiAcpiTableHeader,
     pub PlatformClass: u16,
 }
@@ -45,7 +45,7 @@ pub struct acpi_table_tcpa_hdr {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_tpm23 {
+pub struct FfiAcpiTableTpm23 {
     pub Header: FfiAcpiTableHeader,
     pub Reserved: u32,
     pub ControlAddress: u64,
@@ -63,13 +63,13 @@ pub struct acpi_table_tpm23 {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_tmp23_trailer {
+pub struct FfiAcpiTmp23Trailer {
     pub Reserved: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_tpm2 {
+pub struct FfiAcpiTableTpm2 {
     pub Header: FfiAcpiTableHeader,
     pub PlatformClass: u16,
     pub Reserved: u16,
@@ -79,7 +79,7 @@ pub struct acpi_table_tpm2 {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_tpm2_trailer {
+pub struct FfiAcpiTpm2Trailer {
     pub MethodParameters: [u8; 12usize],
     pub MinimumLogLength: u32,
     pub LogAddress: u64,
@@ -87,7 +87,7 @@ pub struct acpi_tpm2_trailer {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_tpm2_arm_smc {
+pub struct FfiAcpiTpm2ArmSmc {
     pub GlobalInterrupt: u32,
     pub InterruptFlags: u8,
     pub OperationFlags: u8,

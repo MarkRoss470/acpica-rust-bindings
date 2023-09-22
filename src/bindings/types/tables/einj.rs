@@ -5,7 +5,7 @@ use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::{__IncompleteA
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_einj {
+pub struct FfiAcpiTableEinj {
     pub Header: FfiAcpiTableHeader,
     pub HeaderLength: u32,
     pub Flags: u8,
@@ -15,12 +15,12 @@ pub struct acpi_table_einj {
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_einj_entry {
+pub struct FfiAcpiEinjEntry {
     WheaHeader: ACPI_WHEA_HEADER,
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiEinjActions {
+pub enum FfiAcpiEinjActions {
     ACPI_EINJ_BEGIN_OPERATION = 0,
     ACPI_EINJ_GET_TRIGGER_TABLE = 1,
     ACPI_EINJ_SET_ERROR_TYPE = 2,
@@ -36,7 +36,7 @@ pub enum AcpiEinjActions {
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiEinjInstructions {
+pub enum FfiAcpiEinjInstructions {
     ACPI_EINJ_READ_REGISTER = 0,
     ACPI_EINJ_READ_REGISTER_VALUE = 1,
     ACPI_EINJ_WRITE_REGISTER = 2,
@@ -47,7 +47,7 @@ pub enum AcpiEinjInstructions {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_einj_error_type_with_addr {
+pub struct FfiAcpiEinjErrorTypeWithAddr {
     pub ErrorType: u32,
     pub VendorStructOffset: u32,
     pub Flags: u32,
@@ -58,7 +58,7 @@ pub struct acpi_einj_error_type_with_addr {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_einj_vendor {
+pub struct FfiAcpiEinjVendor {
     pub Length: u32,
     pub PcieId: u32,
     pub VendorId: u16,
@@ -68,7 +68,7 @@ pub struct acpi_einj_vendor {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_einj_trigger {
+pub struct FfiAcpiEinjTrigger {
     pub HeaderSize: u32,
     pub Revision: u32,
     pub TableSize: u32,
@@ -76,7 +76,7 @@ pub struct acpi_einj_trigger {
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiEinjCommandStatus {
+pub enum FfiAcpiEinjCommandStatus {
     ACPI_EINJ_SUCCESS = 0,
     ACPI_EINJ_FAILURE = 1,
     ACPI_EINJ_INVALID_ACCESS = 2,

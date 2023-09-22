@@ -6,14 +6,14 @@ use crate::bindings::types::{__IncompleteArrayField, FfiAcpiTableHeader};
 ///  September 2020.
 /// 
 #[repr(C, packed)]
-pub struct acpi_table_aest {
+pub struct FfiAcpiTableAest {
     pub Header: FfiAcpiTableHeader,
     NodeArray: __IncompleteArrayField<*mut ::core::ffi::c_void>,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_aest_hdr {
+pub struct FfiAcpiAestHdr {
     pub Type: u8,
     pub Length: u16,
     pub Reserved: u8,
@@ -27,7 +27,7 @@ pub struct acpi_aest_hdr {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_aest_processor {
+pub struct FfiAcpiAestProcessor {
     pub ProcessorId: u32,
     pub ResourceType: u8,
     pub Reserved: u8,
@@ -37,48 +37,48 @@ pub struct acpi_aest_processor {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_aest_processor_cache {
+pub struct FfiAcpiAestProcessorCache {
     pub CacheReference: u32,
     pub Reserved: u32,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_aest_processor_tlb {
+pub struct FfiAcpiAestProcessorTlb {
     pub TlbLevel: u32,
     pub Reserved: u32,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_aest_processor_generic {
+pub struct FfiAcpiAestProcessorGeneric {
     pub Resource: *mut u8,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_aest_memory {
+pub struct FfiAcpiAestMemory {
     pub SratProximityDomain: u32,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_aest_smmu {
+pub struct FfiAcpiAestSmmu {
     pub IortNodeReference: u32,
     pub SubcomponentReference: u32,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_aest_vendor {
+pub struct FfiAcpiAestVendor {
     pub AcpiHid: u32,
     pub AcpiUid: u32,
     pub VendorSpecificData: [u8; 16usize],
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_aest_gic {
+pub struct FfiAcpiAestGic {
     pub InterfaceType: u32,
     pub InstanceId: u32,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_aest_node_interface {
+pub struct FfiAcpiAestNodeInterface {
     pub Type: u8,
     pub Reserved: [u8; 3usize],
     pub Flags: u32,
@@ -91,7 +91,7 @@ pub struct acpi_aest_node_interface {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_aest_node_interrupt {
+pub struct FfiAcpiAestNodeInterrupt {
     pub Type: u8,
     pub Reserved: [u8; 2usize],
     pub Flags: u8,

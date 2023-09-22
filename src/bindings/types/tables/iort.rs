@@ -7,7 +7,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_iort {
+pub struct FfiAcpiTableIort {
     pub Header: FfiAcpiTableHeader,
     pub NodeCount: u32,
     pub NodeOffset: u32,
@@ -21,7 +21,7 @@ pub struct acpi_table_iort {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_iort_node {
+pub struct FfiAcpiIortNode {
     pub Type: u8,
     pub Length: u16,
     pub Revision: u8,
@@ -33,7 +33,7 @@ pub struct acpi_iort_node {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiIortNodeType {
+pub enum FfiAcpiIortNodeType {
     ACPI_IORT_NODE_ITS_GROUP = 0,
     ACPI_IORT_NODE_NAMED_COMPONENT = 1,
     ACPI_IORT_NODE_PCI_ROOT_COMPLEX = 2,
@@ -44,7 +44,7 @@ pub enum AcpiIortNodeType {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_iort_id_mapping {
+pub struct FfiAcpiIortIdMapping {
     pub InputBase: u32,
     pub IdCount: u32,
     pub OutputBase: u32,
@@ -54,7 +54,7 @@ pub struct acpi_iort_id_mapping {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_iort_memory_access {
+pub struct FfiAcpiIortMemoryAccess {
     pub CacheCoherency: u32,
     pub Hints: u8,
     pub Reserved: u16,
@@ -63,14 +63,14 @@ pub struct acpi_iort_memory_access {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_iort_its_group {
+pub struct FfiAcpiIortItsGroup {
     pub ItsCount: u32,
     pub Identifiers: [u32; 1usize],
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_iort_named_component {
+pub struct FfiAcpiIortNamedComponent {
     pub NodeFlags: u32,
     pub MemoryProperties: u64,
     pub MemoryAddressLimit: u8,
@@ -79,7 +79,7 @@ pub struct acpi_iort_named_component {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_iort_root_complex {
+pub struct FfiAcpiIortRootComplex {
     pub MemoryProperties: u64,
     pub AtsAttribute: u32,
     pub PciSegmentNumber: u32,
@@ -89,7 +89,7 @@ pub struct acpi_iort_root_complex {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_iort_smmu {
+pub struct FfiAcpiIortSmmu {
     pub BaseAddress: u64,
     pub Span: u64,
     pub Model: u32,
@@ -104,7 +104,7 @@ pub struct acpi_iort_smmu {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_iort_smmu_gsi {
+pub struct FfiAcpiIortSmmuGsi {
     pub NSgIrpt: u32,
     pub NSgIrptFlags: u32,
     pub NSgCfgIrpt: u32,
@@ -113,7 +113,7 @@ pub struct acpi_iort_smmu_gsi {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_iort_smmu_v3 {
+pub struct FfiAcpiIortSmmuV3 {
     pub BaseAddress: u64,
     pub Flags: u32,
     pub Reserved: u32,
@@ -129,7 +129,7 @@ pub struct acpi_iort_smmu_v3 {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_iort_pmcg {
+pub struct FfiAcpiIortPmcg {
     pub Page0BaseAddress: u64,
     pub OverflowGsiv: u32,
     pub NodeReference: u32,
@@ -138,7 +138,7 @@ pub struct acpi_iort_pmcg {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_iort_rmr {
+pub struct FfiAcpiIortRmr {
     pub Flags: u32,
     pub RmrCount: u32,
     pub RmrOffset: u32,
@@ -146,7 +146,7 @@ pub struct acpi_iort_rmr {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_iort_rmr_desc {
+pub struct FfiAcpiIortRmrDesc {
     pub BaseAddress: u64,
     pub Length: u64,
     pub Reserved: u32,

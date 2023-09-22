@@ -8,20 +8,20 @@ use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteAr
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_dbg2 {
+pub struct FfiAcpiTableDbg2 {
     pub Header: FfiAcpiTableHeader,
     pub InfoOffset: u32,
     pub InfoCount: u32,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_dbg2_header {
+pub struct FfiAcpiDbg2Header {
     pub InfoOffset: u32,
     pub InfoCount: u32,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_dbg2_device {
+pub struct FfiAcpiDbg2Device {
     pub Revision: u8,
     pub Length: u16,
     pub RegisterCount: u8,

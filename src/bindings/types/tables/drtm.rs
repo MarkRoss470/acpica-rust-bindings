@@ -7,7 +7,7 @@ use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteAr
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_drtm {
+pub struct FfiAcpiTableDrtm {
     pub Header: FfiAcpiTableHeader,
     pub EntryBaseAddress: u64,
     pub EntryLength: u64,
@@ -22,26 +22,26 @@ pub struct acpi_table_drtm {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_drtm_vtable_list {
+pub struct FfiAcpiDrtmVtableList {
     pub ValidatedTableCount: u32,
     pub ValidatedTables: [u64; 1usize],
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_drtm_resource {
+pub struct FfiAcpiDrtmResource {
     pub Size: [u8; 7usize],
     pub Type: u8,
     pub Address: u64,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_drtm_resource_list {
+pub struct FfiAcpiDrtmResourceList {
     pub ResourceCount: u32,
-    pub Resources: [acpi_drtm_resource; 1usize],
+    pub Resources: [FfiAcpiDrtmResource; 1usize],
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_drtm_dps_id {
+pub struct FfiAcpiDrtmDpsId {
     pub DpsIdLength: u32,
     pub DpsId: [u8; 16usize],
 }

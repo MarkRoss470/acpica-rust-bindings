@@ -1,6 +1,6 @@
 use crate::bindings::types::FfiAcpiTableHeader;
 
-use super::acpi_subtable_header;
+use super::FfiAcpiSubtableHeader;
 
 
 ///  SRAT - System Resource Affinity Table
@@ -8,7 +8,7 @@ use super::acpi_subtable_header;
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_srat {
+pub struct FfiAcpiTableSrat {
     pub Header: FfiAcpiTableHeader,
     pub TableRevision: u32,
     pub Reserved: u64,
@@ -19,7 +19,7 @@ pub struct acpi_table_srat {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiSratType {
+pub enum FfiAcpiSratType {
     ACPI_SRAT_TYPE_CPU_AFFINITY = 0,
     ACPI_SRAT_TYPE_MEMORY_AFFINITY = 1,
     ACPI_SRAT_TYPE_X2APIC_CPU_AFFINITY = 2,
@@ -30,8 +30,8 @@ pub enum AcpiSratType {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_srat_cpu_affinity {
-    pub Header: acpi_subtable_header,
+pub struct FfiAcpiSratCpuAffinity {
+    pub Header: FfiAcpiSubtableHeader,
     pub ProximityDomainLo: u8,
     pub ApicId: u8,
     pub Flags: u32,
@@ -42,8 +42,8 @@ pub struct acpi_srat_cpu_affinity {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_srat_mem_affinity {
-    pub Header: acpi_subtable_header,
+pub struct FfiAcpiSratMemAffinity {
+    pub Header: FfiAcpiSubtableHeader,
     pub ProximityDomain: u32,
     pub Reserved: u16,
     pub BaseAddress: u64,
@@ -55,8 +55,8 @@ pub struct acpi_srat_mem_affinity {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_srat_x2apic_cpu_affinity {
-    pub Header: acpi_subtable_header,
+pub struct FfiAcpiSratX2apicCpuAffinity {
+    pub Header: FfiAcpiSubtableHeader,
     pub Reserved: u16,
     pub ProximityDomain: u32,
     pub ApicId: u32,
@@ -67,8 +67,8 @@ pub struct acpi_srat_x2apic_cpu_affinity {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_srat_gicc_affinity {
-    pub Header: acpi_subtable_header,
+pub struct FfiAcpiSratGiccAffinity {
+    pub Header: FfiAcpiSubtableHeader,
     pub ProximityDomain: u32,
     pub AcpiProcessorUid: u32,
     pub Flags: u32,
@@ -77,8 +77,8 @@ pub struct acpi_srat_gicc_affinity {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_srat_gic_its_affinity {
-    pub Header: acpi_subtable_header,
+pub struct FfiAcpiSratGicItsAffinity {
+    pub Header: FfiAcpiSubtableHeader,
     pub ProximityDomain: u32,
     pub Reserved: u16,
     pub ItsId: u32,
@@ -86,8 +86,8 @@ pub struct acpi_srat_gic_its_affinity {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_srat_generic_affinity {
-    pub Header: acpi_subtable_header,
+pub struct FfiAcpiSratGenericAffinity {
+    pub Header: FfiAcpiSubtableHeader,
     pub Reserved: u8,
     pub DeviceHandleType: u8,
     pub ProximityDomain: u32,

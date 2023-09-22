@@ -8,12 +8,12 @@ use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteAr
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_csrt {
+pub struct FfiAcpiTableCsrt {
     pub Header: FfiAcpiTableHeader,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_csrt_group {
+pub struct FfiAcpiCsrtGroup {
     pub Length: u32,
     pub VendorId: u32,
     pub SubvendorId: u32,
@@ -25,7 +25,7 @@ pub struct acpi_csrt_group {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_csrt_shared_info {
+pub struct FfiAcpiCsrtSharedInfo {
     pub MajorVersion: u16,
     pub MinorVersion: u16,
     pub MmioBaseLow: u32,
@@ -41,7 +41,7 @@ pub struct acpi_csrt_shared_info {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_csrt_descriptor {
+pub struct FfiAcpiCsrtDescriptor {
     pub Length: u32,
     pub Type: u16,
     pub Subtype: u16,

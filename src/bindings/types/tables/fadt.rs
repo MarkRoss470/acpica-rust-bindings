@@ -1,11 +1,11 @@
 use crate::{bindings::types::FfiAcpiGenericAddress, interface::AcpiGenericAddress};
 
-use super::{FfiAcpiTableHeader};
+use super::FfiAcpiTableHeader;
 
 /// FACS - Firmware ACPI Control Structure (FACS)
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct AcpiTableFacs {
+pub struct FfiAcpiTableFacs {
     pub signature: [i8; 4usize],
     pub length: u32,
     pub hardware_signature: u32,
@@ -24,7 +24,7 @@ pub struct AcpiTableFacs {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct AcpiTableFadt {
+pub struct FfiAcpiTableFadt {
     pub header: FfiAcpiTableHeader,
     pub facs: u32,
     pub dsdt: u32,
@@ -32,8 +32,8 @@ pub struct AcpiTableFadt {
     pub preferred_profile: u8,
     pub sci_interrupt: u16,
     pub smi_command: u32,
-    pub acpi_enable: u8,
-    pub acpi_disable: u8,
+    pub FfiAcpiEnable: u8,
+    pub FfiAcpiDisable: u8,
     pub s4_bios_request: u8,
     pub pstate_control: u8,
     pub pm1a_event_block: u32,
@@ -83,6 +83,16 @@ pub struct AcpiTableFadt {
     pub hypervisor_id: u64,
 }
 
-impl AcpiTableFadt {
+impl FfiAcpiTableFadt {
     pub fn reset_register(&self) -> AcpiGenericAddress { self.reset_register.into() }
+    pub fn x_pm1a_event_block(&self)-> AcpiGenericAddress {self.x_pm1a_event_block.into()}
+    pub fn x_pm1b_event_block(&self)-> AcpiGenericAddress {self.x_pm1b_event_block.into()}
+    pub fn x_pm1a_control_block(&self)-> AcpiGenericAddress {self.x_pm1a_control_block.into()}
+    pub fn x_pm1b_control_block(&self)-> AcpiGenericAddress {self.x_pm1b_control_block.into()}
+    pub fn x_pm2_control_block(&self)-> AcpiGenericAddress {self.x_pm2_control_block.into()}
+    pub fn x_pm_timer_block(&self)-> AcpiGenericAddress {self.x_pm_timer_block.into()}
+    pub fn x_gpe0_block(&self)-> AcpiGenericAddress {self.x_gpe0_block.into()}
+    pub fn x_gpe1_block(&self)-> AcpiGenericAddress {self.x_gpe1_block.into()}
+    pub fn sleep_control(&self)-> AcpiGenericAddress {self.sleep_control.into()}
+    pub fn sleep_status(&self)-> AcpiGenericAddress {self.sleep_status.into()}
 }

@@ -8,7 +8,7 @@ use crate::{bindings::types::FfiAcpiTableHeader, interface::AcpiGenericAddress};
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_hpet {
+pub struct FfiAcpiTableHpet {
     pub Header: FfiAcpiTableHeader,
     pub Id: u32,
     pub Address: AcpiGenericAddress,
@@ -25,7 +25,7 @@ pub struct acpi_table_hpet {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiHpetPageProtect {
+pub enum FfiAcpiHpetPageProtect {
     ACPI_HPET_NO_PAGE_PROTECT = 0,
     ACPI_HPET_PAGE_PROTECT4 = 1,
     ACPI_HPET_PAGE_PROTECT64 = 2,

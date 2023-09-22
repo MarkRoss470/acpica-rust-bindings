@@ -8,7 +8,7 @@ use crate::{bindings::types::FfiAcpiTableHeader, interface::AcpiGenericAddress};
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_wdat {
+pub struct FfiAcpiTableWdat {
     pub Header: FfiAcpiTableHeader,
     pub HeaderLength: u32,
     pub PciSegment: u16,
@@ -32,7 +32,7 @@ pub struct acpi_table_wdat {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_wdat_entry {
+pub struct FfiAcpiWdatEntry {
     pub Action: u8,
     pub Instruction: u8,
     pub Reserved: u16,
@@ -43,7 +43,7 @@ pub struct acpi_wdat_entry {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiWdatActions {
+pub enum FfiAcpiWdatActions {
     ACPI_WDAT_RESET = 1,
     ACPI_WDAT_GET_CURRENT_COUNTDOWN = 4,
     ACPI_WDAT_GET_COUNTDOWN = 5,
@@ -62,7 +62,7 @@ pub enum AcpiWdatActions {
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiWdatInstructions {
+pub enum FfiAcpiWdatInstructions {
     ACPI_WDAT_READ_VALUE = 0,
     ACPI_WDAT_READ_COUNTDOWN = 1,
     ACPI_WDAT_WRITE_VALUE = 2,
@@ -78,7 +78,7 @@ pub enum AcpiWdatInstructions {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_wddt {
+pub struct FfiAcpiTableWddt {
     pub Header: FfiAcpiTableHeader,
     pub SpecVersion: u16,
     pub TableVersion: u16,
@@ -105,7 +105,7 @@ pub struct acpi_table_wddt {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_wdrt {
+pub struct FfiAcpiTableWdrt {
     pub Header: FfiAcpiTableHeader,
     pub ControlRegister: AcpiGenericAddress,
     pub CountRegister: AcpiGenericAddress,

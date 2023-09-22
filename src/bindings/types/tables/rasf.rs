@@ -6,7 +6,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_table_rasf {
+pub struct FfiAcpiTableRasf {
     pub Header: FfiAcpiTableHeader,
     pub ChannelId: [u8; 12usize],
 }
@@ -16,7 +16,7 @@ pub struct acpi_table_rasf {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_rasf_shared_memory {
+pub struct FfiAcpiRasfSharedMemory {
     pub Signature: u32,
     pub Command: u16,
     pub Status: u16,
@@ -29,7 +29,7 @@ pub struct acpi_rasf_shared_memory {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_rasf_parameter_block {
+pub struct FfiAcpiRasfParameterBlock {
     pub Type: u16,
     pub Version: u16,
     pub Length: u16,
@@ -37,8 +37,8 @@ pub struct acpi_rasf_parameter_block {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct acpi_rasf_patrol_scrub_parameter {
-    pub Header: acpi_rasf_parameter_block,
+pub struct FfiAcpiRasfPatrolScrubParameter {
+    pub Header: FfiAcpiRasfParameterBlock,
     pub PatrolScrubCommand: u16,
     pub RequestedAddressRange: [u64; 2usize],
     pub ActualAddressRange: [u64; 2usize],
@@ -48,25 +48,25 @@ pub struct acpi_rasf_patrol_scrub_parameter {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiRasfCommands {
+pub enum FfiAcpiRasfCommands {
     ACPI_RASF_EXECUTE_RASF_COMMAND = 1,
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiRasfCapabiliities {
+pub enum FfiAcpiRasfCapabiliities {
     ACPI_HW_PATROL_SCRUB_SUPPORTED = 0,
     ACPI_SW_PATROL_SCRUB_EXPOSED = 1,
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiRasfPatrolScrubCommands {
+pub enum FfiAcpiRasfPatrolScrubCommands {
     ACPI_RASF_GET_PATROL_PARAMETERS = 1,
     ACPI_RASF_START_PATROL_SCRUBBER = 2,
     ACPI_RASF_STOP_PATROL_SCRUBBER = 3,
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
-pub enum AcpiRasfStatus {
+pub enum FfiAcpiRasfStatus {
     ACPI_RASF_SUCCESS = 0,
     ACPI_RASF_NOT_VALID = 1,
     ACPI_RASF_NOT_SUPPORTED = 2,
