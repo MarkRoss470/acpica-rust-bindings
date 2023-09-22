@@ -19,6 +19,7 @@ pub struct FfiAcpiFpdtHeader {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiFpdtType {
     Boot = 0,
     S3perf = 1,
@@ -49,6 +50,7 @@ pub struct FfiAcpiTableS3pt {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiS3ptType {
     S3ptTypeResume = 0,
     S3ptTypeSuspend = 1,

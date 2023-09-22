@@ -37,6 +37,7 @@ pub struct FfiAcpiWdatEntry {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiWdatActions {
     Reset = 1,
     GetCurrentCountdown = 4,
@@ -56,6 +57,7 @@ pub enum FfiAcpiWdatActions {
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiWdatInstructions {
     ReadValue = 0,
     ReadCountdown = 1,

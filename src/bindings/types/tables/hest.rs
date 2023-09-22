@@ -19,6 +19,7 @@ pub struct FfiAcpiHestHeader {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiHestTypes {
     TypeIa32Check = 0,
     TypeIa32CorrectedCheck = 1,
@@ -84,6 +85,7 @@ pub struct FfiAcpiHestNotify {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiHestNotifyTypes {
     Polled = 0,
     External = 1,

@@ -19,6 +19,7 @@ pub struct FfiAcpiNfitHeader {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiNfitType {
     SystemAddress = 0,
     MemoryMap = 1,

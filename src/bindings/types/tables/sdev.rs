@@ -20,6 +20,7 @@ pub struct FfiAcpiSdevHeader {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiSdevType {
     NamespaceDevice = 0,
     PcieEndpointDevice = 1,
@@ -51,6 +52,7 @@ pub struct FfiAcpiSdevComponent {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiSacType {
     IdComponent = 0,
     MemComponent = 1,

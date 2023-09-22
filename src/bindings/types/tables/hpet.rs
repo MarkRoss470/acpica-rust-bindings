@@ -19,6 +19,7 @@ pub struct FfiAcpiTableHpet {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiHpetPageProtect {
     NoPageProtect = 0,
     PageProtect4 = 1,

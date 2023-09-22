@@ -11,6 +11,7 @@ pub struct FfiAcpiTableHmat {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiHmatType {
     AddressRange = 0,
     Locality = 1,

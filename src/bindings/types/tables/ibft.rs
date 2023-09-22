@@ -28,6 +28,7 @@ pub struct FfiAcpiIbftHeader {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiIbftType {
     NotUsed = 0,
     Control = 1,

@@ -26,6 +26,7 @@ pub struct FfiAcpiAsfHeader {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiAsfType {
     Info = 0,
     Alert = 1,
@@ -136,6 +137,7 @@ pub struct FfiAcpiBertRegion {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiBertErrorSeverity {
     Correctable = 0,
     Fatal = 1,
@@ -253,6 +255,7 @@ pub struct FfiAcpiLpitHeader {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiLpitType {
     NativeCstate = 0,
     Reserved = 1,
@@ -384,6 +387,7 @@ pub struct FfiAcpiTableRgrt {
 }
 
 #[repr(u32)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiRgrtImageType {
     TypeReserved0 = 0,
@@ -437,6 +441,7 @@ pub struct FfiAcpiSvklKey {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiSvklType {
     MainStorage = 0,
     Reserved = 1,
@@ -444,6 +449,7 @@ pub enum FfiAcpiSvklType {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiSvklFormat {
     RawBinary = 0,
     Reserved = 1,
@@ -531,6 +537,7 @@ pub struct FfiAcpiTableSpmi {
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiSpmiInterfaceTypes {
     NotUsed = 0,
     Keyboard = 1,

@@ -15,6 +15,7 @@ pub struct FfiAcpiTableMadt {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiMadtType {
     LocalApic = 0,
     IoApic = 1,
@@ -182,6 +183,7 @@ pub struct FfiAcpiMadtGenericDistributor {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiMadtGicVersion {
     VersionNone = 0,
     VersionV1 = 1,

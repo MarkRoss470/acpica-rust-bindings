@@ -45,12 +45,14 @@ pub struct FfiAcpiRasfPatrolScrubParameter {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiRasfCommands {
     ExecuteRasfCommand = 1,
 }
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiRasfCapabiliities {
     HwPatrolScrubSupported = 0,
     SwPatrolScrubExposed = 1,
@@ -58,6 +60,7 @@ pub enum FfiAcpiRasfCapabiliities {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiRasfPatrolScrubCommands {
     GetPatrolParameters = 1,
     StartPatrolScrubber = 2,
@@ -66,6 +69,7 @@ pub enum FfiAcpiRasfPatrolScrubCommands {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiRasfStatus {
     Success = 0,
     NotValid = 1,

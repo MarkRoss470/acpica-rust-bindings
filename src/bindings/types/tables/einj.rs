@@ -21,6 +21,7 @@ pub struct FfiAcpiEinjEntry {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiEinjActions {
     BeginOperation = 0,
     GetTriggerTable = 1,
@@ -38,6 +39,7 @@ pub enum FfiAcpiEinjActions {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiEinjInstructions {
     ReadRegister = 0,
     ReadRegisterValue = 1,
@@ -82,6 +84,7 @@ pub struct FfiAcpiEinjTrigger {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiEinjCommandStatus {
     Success = 0,
     Failure = 1,

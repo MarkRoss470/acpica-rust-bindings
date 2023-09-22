@@ -25,6 +25,7 @@ pub struct FfiAcpiDmarHeader {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiDmarType {
     HardwareUnit = 0,
     ReservedMemory = 1,
@@ -46,6 +47,7 @@ pub struct FfiAcpiDmarDeviceScope {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiDmarScopeType {
     NotUsed = 0,
     Endpoint = 1,

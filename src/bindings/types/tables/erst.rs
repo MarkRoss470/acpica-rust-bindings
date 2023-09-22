@@ -20,6 +20,7 @@ pub struct FfiAcpiErstEntry {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiErstActions {
     BeginWrite = 0,
     BeginRead = 1,
@@ -43,6 +44,7 @@ pub enum FfiAcpiErstActions {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiErstInstructions {
     ReadRegister = 0,
     ReadRegisterValue = 1,
@@ -68,6 +70,7 @@ pub enum FfiAcpiErstInstructions {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiErstCommandStatus {
     Success = 0,
     NoSpace = 1,

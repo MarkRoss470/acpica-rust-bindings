@@ -25,6 +25,7 @@ pub struct FfiAcpiIvrsHeader {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiIvrsType {
     Hardware1 = 16,
     Hardware2 = 17,
@@ -68,6 +69,7 @@ pub struct FfiAcpiIvrsDeHeader {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiIvrsDeviceEntryType {
     Pad4 = 0,
     All = 1,

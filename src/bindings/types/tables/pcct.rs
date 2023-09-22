@@ -15,6 +15,7 @@ pub struct FfiAcpiTablePcct {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiPcctType {
     GenericSubspace = 0,
     HwReducedSubspace = 1,

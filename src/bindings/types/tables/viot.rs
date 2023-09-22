@@ -22,6 +22,7 @@ pub struct FfiAcpiViotHeader {
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+#[allow(dead_code)] // FFI type so variants are not explicitly constructed
 pub enum FfiAcpiViotNodeType {
     PciRange = 1,
     Mmio = 2,
