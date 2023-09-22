@@ -35,7 +35,7 @@ impl<'a> AcpiTableHeader<'a> {
         Self(ffi_header)
     }
 
-    pub(crate) fn as_ffi(self) -> &'a mut FfiAcpiTableHeader {
+    pub(crate) fn as_ffi(&mut self) -> &mut FfiAcpiTableHeader {
         self.0
     }
 }
@@ -105,16 +105,23 @@ pub enum AcpiInterruptHandledStatus {
 }
 
 impl AcpiCallback {
+    /// Calls the callback
+    /// 
+    /// # Safety
+    /// This method may only be called in the manner specified by the producer of the [`AcpiCallback`],
+    /// for instance if the callback is an interrupt handler then this method may only be called from the relevant interrupt.
     pub unsafe fn call(&mut self) -> AcpiInterruptHandledStatus {
-        let call_result = self.function.0(self.context);
+        // SAFETY: 
+        let call_result = unsafe { self.function.0(self.context) };
         match call_result {
             0 => AcpiInterruptHandledStatus::Handled,
             1 => AcpiInterruptHandledStatus::NotHandled,
-            _ => panic!("Acpi callback returned an invalid value"),
+            _ => unreachable!("Acpi callback returned an invalid value"),
         }
     }
 }
 
+#[derive(Debug)]
 pub struct AcpiOsdExecCallback(Option<unsafe extern "C" fn(Context: *mut c_void)>);
 
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]

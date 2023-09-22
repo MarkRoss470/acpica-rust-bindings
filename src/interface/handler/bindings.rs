@@ -1,6 +1,6 @@
 use core::ffi::c_void;
 
-use alloc::{ffi::CString, string::String};
+use alloc::ffi::CString;
 
 use crate::{
     bindings::types::{
@@ -93,7 +93,7 @@ extern "C" fn acpi_os_table_override(
         core::ptr::write_unaligned(
             new_table_ptr,
             new_table
-                .map(|new_table| new_table.as_ffi() as *mut _)
+                .map(|mut new_table| new_table.as_ffi() as *mut _)
                 .unwrap_or(core::ptr::null_mut()),
         );
     }
