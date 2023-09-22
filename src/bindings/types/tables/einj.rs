@@ -1,4 +1,4 @@
-use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::{__IncompleteArrayField, FfiAcpiWheaHeader}};
+use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::FfiAcpiWheaHeader};
 
 ///  EINJ - Error Injection Table (ACPI 4.0)
 ///         Version 1

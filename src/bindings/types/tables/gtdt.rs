@@ -1,4 +1,4 @@
-use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteArrayField};
+use crate::bindings::types::FfiAcpiTableHeader;
 
 
 ///  GTDT - Generic Timer Description Table (ACPI 5.1)

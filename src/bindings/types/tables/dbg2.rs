@@ -1,4 +1,4 @@
-use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteArrayField};
+use crate::bindings::types::FfiAcpiTableHeader;
 
 
 ///  DBG2 - Debug Port Table 2

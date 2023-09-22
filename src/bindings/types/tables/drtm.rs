@@ -1,4 +1,4 @@
-use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteArrayField};
+use crate::bindings::types::FfiAcpiTableHeader;
 
 
 ///  DRTM - Dynamic Root of Trust for Measurement table

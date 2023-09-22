@@ -1,4 +1,4 @@
-use crate::{interface::AcpiGenericAddress, types::AcpiTableHeader};
+use crate::interface::AcpiGenericAddress;
 
 use super::{FfiAcpiSubtableHeader, FfiAcpiTableHeader};
 
