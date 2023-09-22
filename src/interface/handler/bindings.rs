@@ -4,9 +4,9 @@ use alloc::{ffi::CString, string::String};
 
 use crate::{
     bindings::types::{
-        tables::FfiAcpiTableHeader, FfiAcpiExecuteType, FfiAcpiIoAddress, FfiAcpiOsdExecCallback,
-        FfiAcpiOsdHandler, FfiAcpiPciId, FfiAcpiPhysicalAddress, FfiAcpiPredefinedNames,
-        FfiAcpiSize, FfiAcpiString, FfiAcpiTraceEventType,
+        tables::FfiAcpiTableHeader, FfiAcpiExecuteType, FfiAcpiIoAddress,
+        FfiAcpiPciId, FfiAcpiPhysicalAddress, FfiAcpiPredefinedNames,
+        FfiAcpiSize, FfiAcpiString, FfiAcpiTraceEventType, functions::{FfiAcpiOsdHandler, FfiAcpiOsdExecCallback},
     },
     interface::status::{AcpiErrorAsStatusExt, AcpiStatus},
     types::{AcpiPredefinedNames, AcpiTableHeader},

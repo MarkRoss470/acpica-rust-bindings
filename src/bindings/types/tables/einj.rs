@@ -1,4 +1,4 @@
-use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::{__IncompleteArrayField, ACPI_WHEA_HEADER}};
+use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::{__IncompleteArrayField, FfiAcpiWheaHeader}};
 
 ///  EINJ - Error Injection Table (ACPI 4.0)
 ///         Version 1
@@ -16,7 +16,7 @@ pub struct FfiAcpiTableEinj {
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiEinjEntry {
-    WheaHeader: ACPI_WHEA_HEADER,
+    WheaHeader: FfiAcpiWheaHeader,
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]

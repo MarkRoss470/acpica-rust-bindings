@@ -1,4 +1,5 @@
 pub(crate) mod tables;
+pub mod functions;
 pub mod object;
 
 // pub(crate) use tables::*;
@@ -6,7 +7,7 @@ use tables::FfiAcpiTableHeader;
 
 use crate::interface::status::AcpiStatus;
 
-use self::object::{FfiAcpiObject, AcpiObjectType};
+use self::object::{FfiAcpiObject, FfiAcpiObjectType};
 
 #[repr(C)]
 #[derive(Default)]
@@ -70,14 +71,12 @@ pub(crate) struct FfiAcpiObjectList {
     pub(crate) count: u32,
     pub(crate) pointer: *mut FfiAcpiObject,
 }
-pub(crate) type ACPI_OBJECT_LIST = FfiAcpiObjectList;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiBuffer {
     pub(crate) length: FfiAcpiSize,
     pub(crate) pointer: *mut ::core::ffi::c_void,
 }
-pub(crate) type ACPI_BUFFER = FfiAcpiBuffer;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiPredefinedNames {
@@ -94,123 +93,37 @@ pub(crate) struct FfiAcpiStatistics {
     pub(crate) FixedEventCount: [u32; 5usize],
     pub(crate) method_count: u32,
 }
-pub(crate) type ACPI_STATISTICS = FfiAcpiStatistics;
-pub(crate) type FfiAcpiOsdHandler =
-    ::core::option::Option<unsafe extern "C" fn(Context: *mut ::core::ffi::c_void) -> u32>;
-pub(crate) type FfiAcpiOsdExecCallback =
-    ::core::option::Option<unsafe extern "C" fn(Context: *mut ::core::ffi::c_void)>;
-pub(crate) type ACPI_SCI_HANDLER =
-    ::core::option::Option<unsafe extern "C" fn(Context: *mut ::core::ffi::c_void) -> u32>;
-pub(crate) type ACPI_GBL_EVENT_HANDLER = ::core::option::Option<
-    unsafe extern "C" fn(
-        EventType: u32,
-        Device: FfiAcpiHandle,
-        EventNumber: u32,
-        Context: *mut ::core::ffi::c_void,
-    ),
->;
-pub(crate) type ACPI_EVENT_HANDLER =
-    ::core::option::Option<unsafe extern "C" fn(Context: *mut ::core::ffi::c_void) -> u32>;
-pub(crate) type ACPI_GPE_HANDLER = ::core::option::Option<
-    unsafe extern "C" fn(
-        GpeDevice: FfiAcpiHandle,
-        GpeNumber: u32,
-        Context: *mut ::core::ffi::c_void,
-    ) -> u32,
->;
-pub(crate) type ACPI_NOTIFY_HANDLER = ::core::option::Option<
-    unsafe extern "C" fn(Device: FfiAcpiHandle, Value: u32, Context: *mut ::core::ffi::c_void),
->;
-pub(crate) type ACPI_OBJECT_HANDLER = ::core::option::Option<
-    unsafe extern "C" fn(Object: FfiAcpiHandle, Data: *mut ::core::ffi::c_void),
->;
-pub(crate) type ACPI_INIT_HANDLER =
-    ::core::option::Option<unsafe extern "C" fn(Object: FfiAcpiHandle, Function: u32) -> AcpiStatus>;
-pub(crate) type ACPI_EXCEPTION_HANDLER = ::core::option::Option<
-    unsafe extern "C" fn(
-        AmlStatus: AcpiStatus,
-        Name: FfiAcpiName,
-        Opcode: u16,
-        AmlOffset: u32,
-        Context: *mut ::core::ffi::c_void,
-    ) -> AcpiStatus,
->;
-pub(crate) type ACPI_TABLE_HANDLER = ::core::option::Option<
-    unsafe extern "C" fn(
-        Event: u32,
-        Table: *mut ::core::ffi::c_void,
-        Context: *mut ::core::ffi::c_void,
-    ) -> AcpiStatus,
->;
-pub(crate) type ACPI_ADR_SPACE_HANDLER = ::core::option::Option<
-    unsafe extern "C" fn(
-        Function: u32,
-        Address: FfiAcpiPhysicalAddress,
-        BitWidth: u32,
-        Value: *mut u64,
-        HandlerContext: *mut ::core::ffi::c_void,
-        RegionContext: *mut ::core::ffi::c_void,
-    ) -> AcpiStatus,
->;
-pub(crate) type ACPI_ADR_SPACE_SETUP = ::core::option::Option<
-    unsafe extern "C" fn(
-        RegionHandle: FfiAcpiHandle,
-        Function: u32,
-        HandlerContext: *mut ::core::ffi::c_void,
-        RegionContext: *mut *mut ::core::ffi::c_void,
-    ) -> AcpiStatus,
->;
-pub(crate) type ACPI_WALK_CALLBACK = ::core::option::Option<
-    unsafe extern "C" fn(
-        Object: FfiAcpiHandle,
-        NestingLevel: u32,
-        Context: *mut ::core::ffi::c_void,
-        ReturnValue: *mut *mut ::core::ffi::c_void,
-    ) -> AcpiStatus,
->;
-///  ACPICA public interface prototypes
-/// 
-pub(crate) type ACPI_WALK_RESOURCE_CALLBACK = ::core::option::Option<
-    unsafe extern "C" fn(
-        Resource: *mut ACPI_RESOURCE,
-        Context: *mut ::core::ffi::c_void,
-    ) -> AcpiStatus,
->;
-pub(crate) type ACPI_INTERFACE_HANDLER =
-    ::core::option::Option<unsafe extern "C" fn(InterfaceName: FfiAcpiString, Supported: u32) -> u32>;
+
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiPnpDeviceId {
     pub(crate) length: u32,
     pub(crate) string: *mut i8,
 }
-pub(crate) type ACPI_PNP_DEVICE_ID = FfiAcpiPnpDeviceId;
 #[repr(C)]
 #[derive(Debug)]
 pub(crate) struct FfiAcpiPnpDeviceIdList {
     pub(crate) count: u32,
     pub(crate) list_size: u32,
-    pub(crate) ids: __IncompleteArrayField<ACPI_PNP_DEVICE_ID>,
+    pub(crate) ids: __IncompleteArrayField<FfiAcpiPnpDeviceId>,
 }
-pub(crate) type ACPI_PNP_DEVICE_ID_LIST = FfiAcpiPnpDeviceIdList;
 #[repr(C)]
 #[derive(Debug)]
 pub(crate) struct FfiAcpiDeviceInfo {
     pub(crate) info_size: u32,
     pub(crate) name: u32,
-    pub(crate) object_type: AcpiObjectType,
+    pub(crate) object_type: FfiAcpiObjectType,
     pub(crate) param_count: u8,
     pub(crate) valid: u16,
     pub(crate) flags: u8,
     pub(crate) highest_dstates: [u8; 4usize],
     pub(crate) lowest_dstates: [u8; 5usize],
     pub(crate) address: u64,
-    pub(crate) hardware_id: ACPI_PNP_DEVICE_ID,
-    pub(crate) unique_id: ACPI_PNP_DEVICE_ID,
-    pub(crate) class_code: ACPI_PNP_DEVICE_ID,
-    pub(crate) compatible_id_list: ACPI_PNP_DEVICE_ID_LIST,
+    pub(crate) hardware_id: FfiAcpiPnpDeviceId,
+    pub(crate) unique_id: FfiAcpiPnpDeviceId,
+    pub(crate) class_code: FfiAcpiPnpDeviceId,
+    pub(crate) compatible_id_list: FfiAcpiPnpDeviceIdList,
 }
-pub(crate) type ACPI_DEVICE_INFO = FfiAcpiDeviceInfo;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiPciId {
@@ -227,14 +140,13 @@ pub(crate) struct FfiAcpiMemMapping {
     pub(crate) length: FfiAcpiSize,
     pub(crate) next_mm: *mut FfiAcpiMemMapping,
 }
-pub(crate) type ACPI_MEM_MAPPING = FfiAcpiMemMapping;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiMemSpaceContext {
     pub(crate) length: u32,
     pub(crate) address: FfiAcpiPhysicalAddress,
-    pub(crate) cur_mm: *mut ACPI_MEM_MAPPING,
-    pub(crate) first_mm: *mut ACPI_MEM_MAPPING,
+    pub(crate) cur_mm: *mut FfiAcpiMemMapping,
+    pub(crate) first_mm: *mut FfiAcpiMemMapping,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -265,19 +177,17 @@ pub(crate) union FfiAcpiNameUnion {
     pub(crate) Integer: u32,
     pub(crate) Ascii: [i8; 4usize],
 }
-pub(crate) type ACPI_NAME_UNION = FfiAcpiNameUnion;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub(crate) struct FfiAcpiTableDesc {
     pub(crate) Address: FfiAcpiPhysicalAddress,
     pub(crate) Pointer: *mut FfiAcpiTableHeader,
     pub(crate) Length: u32,
-    pub(crate) Signature: ACPI_NAME_UNION,
+    pub(crate) Signature: FfiAcpiNameUnion,
     pub(crate) OwnerId: FfiAcpiOwnerId,
     pub(crate) Flags: u8,
     pub(crate) ValidationCount: u16,
 }
-pub(crate) type ACPI_TABLE_DESC = FfiAcpiTableDesc;
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
@@ -290,7 +200,6 @@ pub(crate) struct FfiAcpiWheaHeader {
     pub(crate) Value: u64,
     pub(crate) Mask: u64,
 }
-pub(crate) type ACPI_WHEA_HEADER = FfiAcpiWheaHeader;
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -303,7 +212,6 @@ pub(crate) struct FfiAcpiVendorUuid {
     pub(crate) Subtype: u8,
     pub(crate) Data: [u8; 16usize],
 }
-pub(crate) type ACPI_VENDOR_UUID = FfiAcpiVendorUuid;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceIrq {
@@ -315,7 +223,6 @@ pub(crate) struct FfiAcpiResourceIrq {
     pub(crate) InterruptCount: u8,
     pub(crate) Interrupts: [u8; 1usize],
 }
-pub(crate) type ACPI_RESOURCE_IRQ = FfiAcpiResourceIrq;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceDma {
@@ -325,7 +232,6 @@ pub(crate) struct FfiAcpiResourceDma {
     pub(crate) ChannelCount: u8,
     pub(crate) Channels: [u8; 1usize],
 }
-pub(crate) type ACPI_RESOURCE_DMA = FfiAcpiResourceDma;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceStartDependent {
@@ -333,7 +239,6 @@ pub(crate) struct FfiAcpiResourceStartDependent {
     pub(crate) CompatibilityPriority: u8,
     pub(crate) PerformanceRobustness: u8,
 }
-pub(crate) type ACPI_RESOURCE_START_DEPENDENT = FfiAcpiResourceStartDependent;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceIo {
@@ -343,14 +248,12 @@ pub(crate) struct FfiAcpiResourceIo {
     pub(crate) Minimum: u16,
     pub(crate) Maximum: u16,
 }
-pub(crate) type ACPI_RESOURCE_IO = FfiAcpiResourceIo;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceFixedIo {
     pub(crate) Address: u16,
     pub(crate) AddressLength: u8,
 }
-pub(crate) type ACPI_RESOURCE_FIXED_IO = FfiAcpiResourceFixedIo;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceFixedDma {
@@ -358,14 +261,12 @@ pub(crate) struct FfiAcpiResourceFixedDma {
     pub(crate) Channels: u16,
     pub(crate) Width: u8,
 }
-pub(crate) type ACPI_RESOURCE_FIXED_DMA = FfiAcpiResourceFixedDma;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceVendor {
     pub(crate) ByteLength: u16,
     pub(crate) ByteData: [u8; 1usize],
 }
-pub(crate) type ACPI_RESOURCE_VENDOR = FfiAcpiResourceVendor;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceVendorTyped {
@@ -374,13 +275,11 @@ pub(crate) struct FfiAcpiResourceVendorTyped {
     pub(crate) Uuid: [u8; 16usize],
     pub(crate) ByteData: [u8; 1usize],
 }
-pub(crate) type ACPI_RESOURCE_VENDOR_TYPED = FfiAcpiResourceVendorTyped;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceEndTag {
     pub(crate) Checksum: u8,
 }
-pub(crate) type ACPI_RESOURCE_END_TAG = FfiAcpiResourceEndTag;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceMemory24 {
@@ -390,7 +289,6 @@ pub(crate) struct FfiAcpiResourceMemory24 {
     pub(crate) Alignment: u16,
     pub(crate) AddressLength: u16,
 }
-pub(crate) type ACPI_RESOURCE_MEMORY24 = FfiAcpiResourceMemory24;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceMemory32 {
@@ -400,7 +298,6 @@ pub(crate) struct FfiAcpiResourceMemory32 {
     pub(crate) Alignment: u32,
     pub(crate) AddressLength: u32,
 }
-pub(crate) type ACPI_RESOURCE_MEMORY32 = FfiAcpiResourceMemory32;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceFixedMemory32 {
@@ -408,7 +305,6 @@ pub(crate) struct FfiAcpiResourceFixedMemory32 {
     pub(crate) Address: u32,
     pub(crate) AddressLength: u32,
 }
-pub(crate) type ACPI_RESOURCE_FIXED_MEMORY32 = FfiAcpiResourceFixedMemory32;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiMemoryAttribute {
@@ -417,7 +313,6 @@ pub(crate) struct FfiAcpiMemoryAttribute {
     pub(crate) RangeType: u8,
     pub(crate) Translation: u8,
 }
-pub(crate) type ACPI_MEMORY_ATTRIBUTE = FfiAcpiMemoryAttribute;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiIoAttribute {
@@ -426,22 +321,19 @@ pub(crate) struct FfiAcpiIoAttribute {
     pub(crate) TranslationType: u8,
     pub(crate) Reserved1: u8,
 }
-pub(crate) type ACPI_IO_ATTRIBUTE = FfiAcpiIoAttribute;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub(crate) union FfiAcpiResourceAttribute {
-    pub(crate) Mem: ACPI_MEMORY_ATTRIBUTE,
-    pub(crate) Io: ACPI_IO_ATTRIBUTE,
+    pub(crate) Mem: FfiAcpiMemoryAttribute,
+    pub(crate) Io: FfiAcpiIoAttribute,
     pub(crate) TypeSpecific: u8,
 }
-pub(crate) type ACPI_RESOURCE_ATTRIBUTE = FfiAcpiResourceAttribute;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceLabel {
     pub(crate) StringLength: u16,
     pub(crate) StringPtr: *mut i8,
 }
-pub(crate) type ACPI_RESOURCE_LABEL = FfiAcpiResourceLabel;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceSource {
@@ -449,7 +341,6 @@ pub(crate) struct FfiAcpiResourceSource {
     pub(crate) StringLength: u16,
     pub(crate) StringPtr: *mut i8,
 }
-pub(crate) type ACPI_RESOURCE_SOURCE = FfiAcpiResourceSource;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiAddress16Attribute {
@@ -459,7 +350,6 @@ pub(crate) struct FfiAcpiAddress16Attribute {
     pub(crate) TranslationOffset: u16,
     pub(crate) AddressLength: u16,
 }
-pub(crate) type ACPI_ADDRESS16_ATTRIBUTE = FfiAcpiAddress16Attribute;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiAddress32Attribute {
@@ -469,7 +359,6 @@ pub(crate) struct FfiAcpiAddress32Attribute {
     pub(crate) TranslationOffset: u32,
     pub(crate) AddressLength: u32,
 }
-pub(crate) type ACPI_ADDRESS32_ATTRIBUTE = FfiAcpiAddress32Attribute;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiAddress64Attribute {
@@ -479,7 +368,6 @@ pub(crate) struct FfiAcpiAddress64Attribute {
     pub(crate) TranslationOffset: u64,
     pub(crate) AddressLength: u64,
 }
-pub(crate) type ACPI_ADDRESS64_ATTRIBUTE = FfiAcpiAddress64Attribute;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub(crate) struct FfiAcpiResourceAddress {
@@ -488,9 +376,8 @@ pub(crate) struct FfiAcpiResourceAddress {
     pub(crate) Decode: u8,
     pub(crate) MinAddressFixed: u8,
     pub(crate) MaxAddressFixed: u8,
-    pub(crate) Info: ACPI_RESOURCE_ATTRIBUTE,
+    pub(crate) Info: FfiAcpiResourceAttribute,
 }
-pub(crate) type ACPI_RESOURCE_ADDRESS = FfiAcpiResourceAddress;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub(crate) struct FfiAcpiResourceAddress16 {
@@ -499,11 +386,10 @@ pub(crate) struct FfiAcpiResourceAddress16 {
     pub(crate) Decode: u8,
     pub(crate) MinAddressFixed: u8,
     pub(crate) MaxAddressFixed: u8,
-    pub(crate) Info: ACPI_RESOURCE_ATTRIBUTE,
-    pub(crate) Address: ACPI_ADDRESS16_ATTRIBUTE,
-    pub(crate) ResourceSource: ACPI_RESOURCE_SOURCE,
+    pub(crate) Info: FfiAcpiResourceAttribute,
+    pub(crate) Address: FfiAcpiAddress16Attribute,
+    pub(crate) ResourceSource: FfiAcpiResourceSource,
 }
-pub(crate) type ACPI_RESOURCE_ADDRESS16 = FfiAcpiResourceAddress16;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub(crate) struct FfiAcpiResourceAddress32 {
@@ -512,11 +398,10 @@ pub(crate) struct FfiAcpiResourceAddress32 {
     pub(crate) Decode: u8,
     pub(crate) MinAddressFixed: u8,
     pub(crate) MaxAddressFixed: u8,
-    pub(crate) Info: ACPI_RESOURCE_ATTRIBUTE,
-    pub(crate) Address: ACPI_ADDRESS32_ATTRIBUTE,
-    pub(crate) ResourceSource: ACPI_RESOURCE_SOURCE,
+    pub(crate) Info: FfiAcpiResourceAttribute,
+    pub(crate) Address: FfiAcpiAddress32Attribute,
+    pub(crate) ResourceSource: FfiAcpiResourceSource,
 }
-pub(crate) type ACPI_RESOURCE_ADDRESS32 = FfiAcpiResourceAddress32;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub(crate) struct FfiAcpiResourceAddress64 {
@@ -525,11 +410,10 @@ pub(crate) struct FfiAcpiResourceAddress64 {
     pub(crate) Decode: u8,
     pub(crate) MinAddressFixed: u8,
     pub(crate) MaxAddressFixed: u8,
-    pub(crate) Info: ACPI_RESOURCE_ATTRIBUTE,
-    pub(crate) Address: ACPI_ADDRESS64_ATTRIBUTE,
-    pub(crate) ResourceSource: ACPI_RESOURCE_SOURCE,
+    pub(crate) Info: FfiAcpiResourceAttribute,
+    pub(crate) Address: FfiAcpiAddress64Attribute,
+    pub(crate) ResourceSource: FfiAcpiResourceSource,
 }
-pub(crate) type ACPI_RESOURCE_ADDRESS64 = FfiAcpiResourceAddress64;
 #[repr(C, packed)]
 #[derive(Copy, Clone)]
 pub(crate) struct FfiAcpiResourceExtendedAddress64 {
@@ -538,12 +422,11 @@ pub(crate) struct FfiAcpiResourceExtendedAddress64 {
     pub(crate) Decode: u8,
     pub(crate) MinAddressFixed: u8,
     pub(crate) MaxAddressFixed: u8,
-    pub(crate) Info: ACPI_RESOURCE_ATTRIBUTE,
+    pub(crate) Info: FfiAcpiResourceAttribute,
     pub(crate) RevisionID: u8,
-    pub(crate) Address: ACPI_ADDRESS64_ATTRIBUTE,
+    pub(crate) Address: FfiAcpiAddress64Attribute,
     pub(crate) TypeSpecific: u64,
 }
-pub(crate) type ACPI_RESOURCE_EXTENDED_ADDRESS64 = FfiAcpiResourceExtendedAddress64;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceExtendedIrq {
@@ -553,10 +436,9 @@ pub(crate) struct FfiAcpiResourceExtendedIrq {
     pub(crate) Shareable: u8,
     pub(crate) WakeCapable: u8,
     pub(crate) InterruptCount: u8,
-    pub(crate) ResourceSource: ACPI_RESOURCE_SOURCE,
+    pub(crate) ResourceSource: FfiAcpiResourceSource,
     pub(crate) Interrupts: [u32; 1usize],
 }
-pub(crate) type ACPI_RESOURCE_EXTENDED_IRQ = FfiAcpiResourceExtendedIrq;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceGenericRegister {
@@ -566,7 +448,6 @@ pub(crate) struct FfiAcpiResourceGenericRegister {
     pub(crate) AccessSize: u8,
     pub(crate) Address: u64,
 }
-pub(crate) type ACPI_RESOURCE_GENERIC_REGISTER = FfiAcpiResourceGenericRegister;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceGpio {
@@ -583,11 +464,10 @@ pub(crate) struct FfiAcpiResourceGpio {
     pub(crate) DebounceTimeout: u16,
     pub(crate) PinTableLength: u16,
     pub(crate) VendorLength: u16,
-    pub(crate) ResourceSource: ACPI_RESOURCE_SOURCE,
+    pub(crate) ResourceSource: FfiAcpiResourceSource,
     pub(crate) PinTable: *mut u16,
     pub(crate) VendorData: *mut u8,
 }
-pub(crate) type ACPI_RESOURCE_GPIO = FfiAcpiResourceGpio;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceCommonSerialbus {
@@ -599,10 +479,9 @@ pub(crate) struct FfiAcpiResourceCommonSerialbus {
     pub(crate) TypeRevisionId: u8,
     pub(crate) TypeDataLength: u16,
     pub(crate) VendorLength: u16,
-    pub(crate) ResourceSource: ACPI_RESOURCE_SOURCE,
+    pub(crate) ResourceSource: FfiAcpiResourceSource,
     pub(crate) VendorData: *mut u8,
 }
-pub(crate) type ACPI_RESOURCE_COMMON_SERIALBUS = FfiAcpiResourceCommonSerialbus;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceI2cSerialbus {
@@ -614,13 +493,12 @@ pub(crate) struct FfiAcpiResourceI2cSerialbus {
     pub(crate) TypeRevisionId: u8,
     pub(crate) TypeDataLength: u16,
     pub(crate) VendorLength: u16,
-    pub(crate) ResourceSource: ACPI_RESOURCE_SOURCE,
+    pub(crate) ResourceSource: FfiAcpiResourceSource,
     pub(crate) VendorData: *mut u8,
     pub(crate) AccessMode: u8,
     pub(crate) SlaveAddress: u16,
     pub(crate) ConnectionSpeed: u32,
 }
-pub(crate) type ACPI_RESOURCE_I2C_SERIALBUS = FfiAcpiResourceI2cSerialbus;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceSpiSerialbus {
@@ -632,7 +510,7 @@ pub(crate) struct FfiAcpiResourceSpiSerialbus {
     pub(crate) TypeRevisionId: u8,
     pub(crate) TypeDataLength: u16,
     pub(crate) VendorLength: u16,
-    pub(crate) ResourceSource: ACPI_RESOURCE_SOURCE,
+    pub(crate) ResourceSource: FfiAcpiResourceSource,
     pub(crate) VendorData: *mut u8,
     pub(crate) WireMode: u8,
     pub(crate) DevicePolarity: u8,
@@ -642,7 +520,6 @@ pub(crate) struct FfiAcpiResourceSpiSerialbus {
     pub(crate) DeviceSelection: u16,
     pub(crate) ConnectionSpeed: u32,
 }
-pub(crate) type ACPI_RESOURCE_SPI_SERIALBUS = FfiAcpiResourceSpiSerialbus;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceUartSerialbus {
@@ -654,7 +531,7 @@ pub(crate) struct FfiAcpiResourceUartSerialbus {
     pub(crate) TypeRevisionId: u8,
     pub(crate) TypeDataLength: u16,
     pub(crate) VendorLength: u16,
-    pub(crate) ResourceSource: ACPI_RESOURCE_SOURCE,
+    pub(crate) ResourceSource: FfiAcpiResourceSource,
     pub(crate) VendorData: *mut u8,
     pub(crate) Endian: u8,
     pub(crate) DataBits: u8,
@@ -666,7 +543,6 @@ pub(crate) struct FfiAcpiResourceUartSerialbus {
     pub(crate) TxFifoSize: u16,
     pub(crate) DefaultBaudRate: u32,
 }
-pub(crate) type ACPI_RESOURCE_UART_SERIALBUS = FfiAcpiResourceUartSerialbus;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourceCsi2Serialbus {
@@ -678,12 +554,11 @@ pub(crate) struct FfiAcpiResourceCsi2Serialbus {
     pub(crate) TypeRevisionId: u8,
     pub(crate) TypeDataLength: u16,
     pub(crate) VendorLength: u16,
-    pub(crate) ResourceSource: ACPI_RESOURCE_SOURCE,
+    pub(crate) ResourceSource: FfiAcpiResourceSource,
     pub(crate) VendorData: *mut u8,
     pub(crate) LocalPortInstance: u8,
     pub(crate) PhyType: u8,
 }
-pub(crate) type ACPI_RESOURCE_CSI2_SERIALBUS = FfiAcpiResourceCsi2Serialbus;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourcePinFunction {
@@ -693,11 +568,10 @@ pub(crate) struct FfiAcpiResourcePinFunction {
     pub(crate) FunctionNumber: u16,
     pub(crate) PinTableLength: u16,
     pub(crate) VendorLength: u16,
-    pub(crate) ResourceSource: ACPI_RESOURCE_SOURCE,
+    pub(crate) ResourceSource: FfiAcpiResourceSource,
     pub(crate) PinTable: *mut u16,
     pub(crate) VendorData: *mut u8,
 }
-pub(crate) type ACPI_RESOURCE_PIN_FUNCTION = FfiAcpiResourcePinFunction;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourcePinConfig {
@@ -708,11 +582,10 @@ pub(crate) struct FfiAcpiResourcePinConfig {
     pub(crate) PinConfigValue: u32,
     pub(crate) PinTableLength: u16,
     pub(crate) VendorLength: u16,
-    pub(crate) ResourceSource: ACPI_RESOURCE_SOURCE,
+    pub(crate) ResourceSource: FfiAcpiResourceSource,
     pub(crate) PinTable: *mut u16,
     pub(crate) VendorData: *mut u8,
 }
-pub(crate) type ACPI_RESOURCE_PIN_CONFIG = FfiAcpiResourcePinConfig;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourcePinGroup {
@@ -721,10 +594,9 @@ pub(crate) struct FfiAcpiResourcePinGroup {
     pub(crate) PinTableLength: u16,
     pub(crate) VendorLength: u16,
     pub(crate) PinTable: *mut u16,
-    pub(crate) ResourceLabel: ACPI_RESOURCE_LABEL,
+    pub(crate) ResourceLabel: FfiAcpiResourceLabel,
     pub(crate) VendorData: *mut u8,
 }
-pub(crate) type ACPI_RESOURCE_PIN_GROUP = FfiAcpiResourcePinGroup;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourcePinGroupFunction {
@@ -733,11 +605,10 @@ pub(crate) struct FfiAcpiResourcePinGroupFunction {
     pub(crate) Shareable: u8,
     pub(crate) FunctionNumber: u16,
     pub(crate) VendorLength: u16,
-    pub(crate) ResourceSource: ACPI_RESOURCE_SOURCE,
-    pub(crate) ResourceSourceLabel: ACPI_RESOURCE_LABEL,
+    pub(crate) ResourceSource: FfiAcpiResourceSource,
+    pub(crate) ResourceSourceLabel: FfiAcpiResourceLabel,
     pub(crate) VendorData: *mut u8,
 }
-pub(crate) type ACPI_RESOURCE_PIN_GROUP_FUNCTION = FfiAcpiResourcePinGroupFunction;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiResourcePinGroupConfig {
@@ -747,54 +618,51 @@ pub(crate) struct FfiAcpiResourcePinGroupConfig {
     pub(crate) PinConfigType: u8,
     pub(crate) PinConfigValue: u32,
     pub(crate) VendorLength: u16,
-    pub(crate) ResourceSource: ACPI_RESOURCE_SOURCE,
-    pub(crate) ResourceSourceLabel: ACPI_RESOURCE_LABEL,
+    pub(crate) ResourceSource: FfiAcpiResourceSource,
+    pub(crate) ResourceSourceLabel: FfiAcpiResourceLabel,
     pub(crate) VendorData: *mut u8,
 }
-pub(crate) type ACPI_RESOURCE_PIN_GROUP_CONFIG = FfiAcpiResourcePinGroupConfig;
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub(crate) union FfiAcpiResourceData {
-    pub(crate) Irq: ACPI_RESOURCE_IRQ,
-    pub(crate) Dma: ACPI_RESOURCE_DMA,
-    pub(crate) StartDpf: ACPI_RESOURCE_START_DEPENDENT,
-    pub(crate) Io: ACPI_RESOURCE_IO,
-    pub(crate) FixedIo: ACPI_RESOURCE_FIXED_IO,
-    pub(crate) FixedDma: ACPI_RESOURCE_FIXED_DMA,
-    pub(crate) Vendor: ACPI_RESOURCE_VENDOR,
-    pub(crate) VendorTyped: ACPI_RESOURCE_VENDOR_TYPED,
-    pub(crate) EndTag: ACPI_RESOURCE_END_TAG,
-    pub(crate) Memory24: ACPI_RESOURCE_MEMORY24,
-    pub(crate) Memory32: ACPI_RESOURCE_MEMORY32,
-    pub(crate) FixedMemory32: ACPI_RESOURCE_FIXED_MEMORY32,
-    pub(crate) Address16: ACPI_RESOURCE_ADDRESS16,
-    pub(crate) Address32: ACPI_RESOURCE_ADDRESS32,
-    pub(crate) Address64: ACPI_RESOURCE_ADDRESS64,
-    pub(crate) ExtAddress64: ACPI_RESOURCE_EXTENDED_ADDRESS64,
-    pub(crate) ExtendedIrq: ACPI_RESOURCE_EXTENDED_IRQ,
-    pub(crate) GenericReg: ACPI_RESOURCE_GENERIC_REGISTER,
-    pub(crate) Gpio: ACPI_RESOURCE_GPIO,
-    pub(crate) I2cSerialBus: ACPI_RESOURCE_I2C_SERIALBUS,
-    pub(crate) SpiSerialBus: ACPI_RESOURCE_SPI_SERIALBUS,
-    pub(crate) UartSerialBus: ACPI_RESOURCE_UART_SERIALBUS,
-    pub(crate) Csi2SerialBus: ACPI_RESOURCE_CSI2_SERIALBUS,
-    pub(crate) CommonSerialBus: ACPI_RESOURCE_COMMON_SERIALBUS,
-    pub(crate) PinFunction: ACPI_RESOURCE_PIN_FUNCTION,
-    pub(crate) PinConfig: ACPI_RESOURCE_PIN_CONFIG,
-    pub(crate) PinGroup: ACPI_RESOURCE_PIN_GROUP,
-    pub(crate) PinGroupFunction: ACPI_RESOURCE_PIN_GROUP_FUNCTION,
-    pub(crate) PinGroupConfig: ACPI_RESOURCE_PIN_GROUP_CONFIG,
-    pub(crate) Address: ACPI_RESOURCE_ADDRESS,
+    pub(crate) Irq: FfiAcpiResourceIrq,
+    pub(crate) Dma: FfiAcpiResourceDma,
+    pub(crate) StartDpf: FfiAcpiResourceStartDependent,
+    pub(crate) Io: FfiAcpiResourceIo,
+    pub(crate) FixedIo: FfiAcpiResourceFixedIo,
+    pub(crate) FixedDma: FfiAcpiResourceFixedDma,
+    pub(crate) Vendor: FfiAcpiResourceVendor,
+    pub(crate) VendorTyped: FfiAcpiResourceVendorTyped,
+    pub(crate) EndTag: FfiAcpiResourceEndTag,
+    pub(crate) Memory24: FfiAcpiResourceMemory24,
+    pub(crate) Memory32: FfiAcpiResourceMemory32,
+    pub(crate) FixedMemory32: FfiAcpiResourceFixedMemory32,
+    pub(crate) Address16: FfiAcpiResourceAddress16,
+    pub(crate) Address32: FfiAcpiResourceAddress32,
+    pub(crate) Address64: FfiAcpiResourceAddress64,
+    pub(crate) ExtAddress64: FfiAcpiResourceExtendedAddress64,
+    pub(crate) ExtendedIrq: FfiAcpiResourceExtendedIrq,
+    pub(crate) GenericReg: FfiAcpiResourceGenericRegister,
+    pub(crate) Gpio: FfiAcpiResourceGpio,
+    pub(crate) I2cSerialBus: FfiAcpiResourceI2cSerialbus,
+    pub(crate) SpiSerialBus: FfiAcpiResourceSpiSerialbus,
+    pub(crate) UartSerialBus: FfiAcpiResourceUartSerialbus,
+    pub(crate) Csi2SerialBus: FfiAcpiResourceCsi2Serialbus,
+    pub(crate) CommonSerialBus: FfiAcpiResourceCommonSerialbus,
+    pub(crate) PinFunction: FfiAcpiResourcePinFunction,
+    pub(crate) PinConfig: FfiAcpiResourcePinConfig,
+    pub(crate) PinGroup: FfiAcpiResourcePinGroup,
+    pub(crate) PinGroupFunction: FfiAcpiResourcePinGroupFunction,
+    pub(crate) PinGroupConfig: FfiAcpiResourcePinGroupConfig,
+    pub(crate) Address: FfiAcpiResourceAddress,
 }
-pub(crate) type ACPI_RESOURCE_DATA = FfiAcpiResourceData;
 #[repr(C, packed)]
 #[derive(Copy, Clone)]
 pub(crate) struct FfiAcpiResource {
     pub(crate) Type: u32,
     pub(crate) Length: u32,
-    pub(crate) Data: ACPI_RESOURCE_DATA,
+    pub(crate) Data: FfiAcpiResourceData,
 }
-pub(crate) type ACPI_RESOURCE = FfiAcpiResource;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiPciRoutingTable {
@@ -889,5 +757,3 @@ pub(crate) struct FfiAcpiPldInfo {
     pub(crate) VerticalOffset: u16,
     pub(crate) HorizontalOffset: u16,
 }
-
-pub(crate) type ACPI_PLD_INFO = FfiAcpiPldInfo;

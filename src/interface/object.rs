@@ -1,5 +1,5 @@
 use crate::bindings::types::{
-    object::{AcpiObjectType, FfiAcpiObject},
+    object::{FfiAcpiObjectType, FfiAcpiObject},
     FfiAcpiHandle, FfiAcpiIoAddress,
 };
 
@@ -22,7 +22,7 @@ pub enum AcpiObject {
     },
     Package(AcpiObjectPackage),
     Reference {
-        actual_type: AcpiObjectType,
+        actual_type: FfiAcpiObjectType,
         handle: FfiAcpiHandle,
     },
     Processor {

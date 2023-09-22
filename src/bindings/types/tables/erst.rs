@@ -1,4 +1,4 @@
-use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::ACPI_WHEA_HEADER};
+use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::FfiAcpiWheaHeader};
 
 ///  ERST - Error Record Serialization Table (ACPI 4.0)
 ///         Version 1
@@ -14,7 +14,7 @@ pub struct FfiAcpiTableErst {
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiErstEntry {
-    WheaHeader: ACPI_WHEA_HEADER,
+    WheaHeader: FfiAcpiWheaHeader,
 }
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
