@@ -11,7 +11,7 @@
 // #![warn(clippy::pedantic)]
 #![deny(improper_ctypes, improper_ctypes_definitions)]
 
-#![allow(clippy::redundant_static_lifetimes, unsafe_op_in_unsafe_fn)]
+#![allow(unsafe_op_in_unsafe_fn)]
 
 extern crate alloc;
 
