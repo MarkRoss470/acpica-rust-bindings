@@ -9,41 +9,44 @@ use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteAr
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableCsrt {
-    pub Header: FfiAcpiTableHeader,
+    pub header: FfiAcpiTableHeader,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiCsrtGroup {
-    pub Length: u32,
-    pub VendorId: u32,
-    pub SubvendorId: u32,
-    pub DeviceId: u16,
-    pub SubdeviceId: u16,
-    pub Revision: u16,
-    pub Reserved: u16,
-    pub SharedInfoLength: u32,
+    pub length: u32,
+    pub vendor_id: u32,
+    pub subvendor_id: u32,
+    pub device_id: u16,
+    pub subdevice_id: u16,
+    pub revision: u16,
+    pub reserved: u16,
+    pub shared_info_length: u32,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiCsrtSharedInfo {
-    pub MajorVersion: u16,
-    pub MinorVersion: u16,
-    pub MmioBaseLow: u32,
-    pub MmioBaseHigh: u32,
-    pub GsiInterrupt: u32,
-    pub InterruptPolarity: u8,
-    pub InterruptMode: u8,
-    pub NumChannels: u8,
-    pub DmaAddressWidth: u8,
-    pub BaseRequestLine: u16,
-    pub NumHandshakeSignals: u16,
-    pub MaxBlockSize: u32,
+    pub major_version: u16,
+    pub minor_version: u16,
+    pub mmio_base_low: u32,
+    pub mmio_base_high: u32,
+    pub gsi_interrupt: u32,
+    pub interrupt_polarity: u8,
+    pub interrupt_mode: u8,
+    pub num_channels: u8,
+    pub dma_address_width: u8,
+    pub base_request_line: u16,
+    pub num_handshake_signals: u16,
+    pub max_block_size: u32,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiCsrtDescriptor {
-    pub Length: u32,
-    pub Type: u16,
-    pub Subtype: u16,
-    pub Uid: u32,
+    pub length: u32,
+    pub descriptor_type: u16,
+    pub subtype: u16,
+    pub uid: u32,
 }

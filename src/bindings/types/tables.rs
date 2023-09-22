@@ -1,4 +1,3 @@
-// use super::*;
 pub mod aest;
 pub mod cedt;
 pub mod csrt;
@@ -40,15 +39,15 @@ pub mod windows;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableHeader {
-    pub Signature: [i8; 4usize],
-    pub Length: u32,
-    pub Revision: u8,
-    pub Checksum: u8,
-    pub OemId: [i8; 6usize],
-    pub OemTableId: [i8; 8usize],
-    pub OemRevision: u32,
-    pub AslCompilerId: [i8; 4usize],
-    pub AslCompilerRevision: u32,
+    pub signature: [i8; 4usize],
+    pub length: u32,
+    pub revision: u8,
+    pub checksum: u8,
+    pub oem_id: [i8; 6usize],
+    pub oem_table_id: [i8; 8usize],
+    pub oem_revision: u32,
+    pub asl_compiler_id: [i8; 4usize],
+    pub asl_compiler_revision: u32,
 }
 
 ///  Common subtable headers
@@ -56,8 +55,8 @@ pub struct FfiAcpiTableHeader {
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiSubtableHeader {
-    pub Type: u8,
-    pub Length: u8,
+    pub subtable_type: u8,
+    pub length: u8,
 }
 
 ///  RSDP - Root System Description Pointer (Signature is \"RSD PTR \")
@@ -66,15 +65,15 @@ pub struct FfiAcpiSubtableHeader {
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableRsdp {
-    pub Signature: [i8; 8usize],
-    pub Checksum: u8,
-    pub OemId: [i8; 6usize],
-    pub Revision: u8,
-    pub RsdtPhysicalAddress: u32,
-    pub Length: u32,
-    pub XsdtPhysicalAddress: u64,
-    pub ExtendedChecksum: u8,
-    pub Reserved: [u8; 3usize],
+    pub signature: [i8; 8usize],
+    pub checksum: u8,
+    pub oem_id: [i8; 6usize],
+    pub revision: u8,
+    pub rsdt_physical_address: u32,
+    pub length: u32,
+    pub xsdt_physical_address: u64,
+    pub extended_checksum: u8,
+    pub reserved: [u8; 3usize],
 }
 ///  RSDP - Root System Description Pointer (Signature is \"RSD PTR \")
 ///         Version 2
@@ -82,17 +81,17 @@ pub struct FfiAcpiTableRsdp {
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiRsdpCommon {
-    pub Signature: [i8; 8usize],
-    pub Checksum: u8,
-    pub OemId: [i8; 6usize],
-    pub Revision: u8,
-    pub RsdtPhysicalAddress: u32,
+    pub signature: [i8; 8usize],
+    pub checksum: u8,
+    pub oem_id: [i8; 6usize],
+    pub revision: u8,
+    pub rsdt_physical_address: u32,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiRsdpExtension {
-    pub Length: u32,
-    pub XsdtPhysicalAddress: u64,
-    pub ExtendedChecksum: u8,
-    pub Reserved: [u8; 3usize],
+    pub length: u32,
+    pub xsdt_physical_address: u64,
+    pub extended_checksum: u8,
+    pub reserved: [u8; 3usize],
 }

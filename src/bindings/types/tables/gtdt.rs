@@ -7,33 +7,36 @@ use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteAr
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableGtdt {
-    pub Header: FfiAcpiTableHeader,
-    pub CounterBlockAddresss: u64,
-    pub Reserved: u32,
-    pub SecureEl1Interrupt: u32,
-    pub SecureEl1Flags: u32,
-    pub NonSecureEl1Interrupt: u32,
-    pub NonSecureEl1Flags: u32,
-    pub VirtualTimerInterrupt: u32,
-    pub VirtualTimerFlags: u32,
-    pub NonSecureEl2Interrupt: u32,
-    pub NonSecureEl2Flags: u32,
-    pub CounterReadBlockAddress: u64,
-    pub PlatformTimerCount: u32,
-    pub PlatformTimerOffset: u32,
+    pub header: FfiAcpiTableHeader,
+    pub counter_block_addresss: u64,
+    pub reserved: u32,
+    pub secure_el1_interrupt: u32,
+    pub secure_el1_flags: u32,
+    pub non_secure_el1_interrupt: u32,
+    pub non_secure_el1_flags: u32,
+    pub virtual_timer_interrupt: u32,
+    pub virtual_timer_flags: u32,
+    pub non_secure_el2_interrupt: u32,
+    pub non_secure_el2_flags: u32,
+    pub counter_read_block_address: u64,
+    pub platform_timer_count: u32,
+    pub platform_timer_offset: u32,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiGtdtEl2 {
-    pub VirtualEL2TimerGsiv: u32,
-    pub VirtualEL2TimerFlags: u32,
+    pub virtual_el2_timer_gsiv: u32,
+    pub virtual_el2_timer_flags: u32,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiGtdtHeader {
-    pub Type: u8,
-    pub Length: u16,
+    pub header_type: u8,
+    pub length: u16,
 }
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiGtdtType {
@@ -41,35 +44,38 @@ pub enum FfiAcpiGtdtType {
     ACPI_GTDT_TYPE_WATCHDOG = 1,
     ACPI_GTDT_TYPE_RESERVED = 2,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiGtdtTimerBlock {
-    pub Header: FfiAcpiGtdtHeader,
-    pub Reserved: u8,
-    pub BlockAddress: u64,
-    pub TimerCount: u32,
-    pub TimerOffset: u32,
+    pub header: FfiAcpiGtdtHeader,
+    pub reserved: u8,
+    pub block_address: u64,
+    pub timer_count: u32,
+    pub timer_offset: u32,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiGtdtTimerEntry {
-    pub FrameNumber: u8,
-    pub Reserved: [u8; 3usize],
-    pub BaseAddress: u64,
-    pub El0BaseAddress: u64,
-    pub TimerInterrupt: u32,
-    pub TimerFlags: u32,
-    pub VirtualTimerInterrupt: u32,
-    pub VirtualTimerFlags: u32,
-    pub CommonFlags: u32,
+    pub frame_number: u8,
+    pub reserved: [u8; 3usize],
+    pub base_address: u64,
+    pub el0_base_address: u64,
+    pub timer_interrupt: u32,
+    pub timer_flags: u32,
+    pub virtual_timer_interrupt: u32,
+    pub virtual_timer_flags: u32,
+    pub common_flags: u32,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiGtdtWatchdog {
-    pub Header: FfiAcpiGtdtHeader,
-    pub Reserved: u8,
-    pub RefreshFrameAddress: u64,
-    pub ControlFrameAddress: u64,
-    pub TimerInterrupt: u32,
-    pub TimerFlags: u32,
+    pub header: FfiAcpiGtdtHeader,
+    pub reserved: u8,
+    pub refresh_frame_address: u64,
+    pub control_frame_address: u64,
+    pub timer_interrupt: u32,
+    pub timer_flags: u32,
 }

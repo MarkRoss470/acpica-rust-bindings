@@ -16,23 +16,9 @@ use crate::bindings::types::FfiAcpiTableHeader;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableTcpaHdr {
-    pub Header: FfiAcpiTableHeader,
-    pub PlatformClass: u16,
+    pub header: FfiAcpiTableHeader,
+    pub platform_class: u16,
 }
-///  TCPA - Trusted Computing Platform Alliance table
-///         Version 2
-/// 
-///  TCG Hardware Interface Table for TPM 1.2 Clients and Servers
-/// 
-///  Conforms to \"TCG ACPI Specification, Family 1.2 and 2.0\",
-///  Version 1.2, Revision 8
-///  February 27, 2017
-/// 
-///  NOTE: There are two versions of the table with the same signature --
-///  the client version and the server version. The common PlatformClass
-///  field is used to differentiate the two types of tables.
-/// 
-
 
 ///  TPM2 - Trusted Platform Module (TPM) 2.0 Hardware Interface Table
 ///         Version 4
@@ -46,51 +32,42 @@ pub struct FfiAcpiTableTcpaHdr {
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableTpm23 {
-    pub Header: FfiAcpiTableHeader,
-    pub Reserved: u32,
-    pub ControlAddress: u64,
-    pub StartMethod: u32,
+    pub header: FfiAcpiTableHeader,
+    pub reserved: u32,
+    pub control_address: u64,
+    pub start_method: u32,
 }
-///  TPM2 - Trusted Platform Module (TPM) 2.0 Hardware Interface Table
-///         Version 4
-/// 
-///  TCG Hardware Interface Table for TPM 2.0 Clients and Servers
-/// 
-///  Conforms to \"TCG ACPI Specification, Family 1.2 and 2.0\",
-///  Version 1.2, Revision 8
-///  February 27, 2017
-/// 
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTmp23Trailer {
-    pub Reserved: u32,
+    pub reserved: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableTpm2 {
-    pub Header: FfiAcpiTableHeader,
-    pub PlatformClass: u16,
-    pub Reserved: u16,
-    pub ControlAddress: u64,
-    pub StartMethod: u32,
+    pub header: FfiAcpiTableHeader,
+    pub platform_class: u16,
+    pub reserved: u16,
+    pub control_address: u64,
+    pub start_method: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTpm2Trailer {
-    pub MethodParameters: [u8; 12usize],
-    pub MinimumLogLength: u32,
-    pub LogAddress: u64,
+    pub method_parameters: [u8; 12usize],
+    pub minimum_log_length: u32,
+    pub log_address: u64,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTpm2ArmSmc {
-    pub GlobalInterrupt: u32,
-    pub InterruptFlags: u8,
-    pub OperationFlags: u8,
-    pub Reserved: u16,
-    pub FunctionId: u32,
+    pub global_interrupt: u32,
+    pub interrupt_flags: u8,
+    pub operation_flags: u8,
+    pub reserved: u16,
+    pub function_id: u32,
 }

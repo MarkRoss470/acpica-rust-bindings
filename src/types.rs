@@ -130,10 +130,10 @@ pub enum AcpiExecuteType {
 
 #[derive(Debug, Copy, Clone)]
 pub struct AcpiPciId {
-    pub Segment: u16,
-    pub Bus: u16,
-    pub Device: u16,
-    pub Function: u16,
+    pub segment: u16,
+    pub bus: u16,
+    pub device: u16,
+    pub function: u16,
 }
 
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]

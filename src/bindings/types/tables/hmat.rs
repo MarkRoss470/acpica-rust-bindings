@@ -5,9 +5,10 @@ use crate::bindings::types::FfiAcpiTableHeader;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableHmat {
-    pub Header: FfiAcpiTableHeader,
-    pub Reserved: u32,
+    pub header: FfiAcpiTableHeader,
+    pub reserved: u32,
 }
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiHmatType {
@@ -16,46 +17,50 @@ pub enum FfiAcpiHmatType {
     ACPI_HMAT_TYPE_CACHE = 2,
     ACPI_HMAT_TYPE_RESERVED = 3,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiHmatStructure {
-    pub Type: u16,
-    pub Reserved: u16,
-    pub Length: u32,
+    pub structure_type: u16,
+    pub reserved: u16,
+    pub length: u32,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiHmatProximityDomain {
-    pub Header: FfiAcpiHmatStructure,
-    pub Flags: u16,
-    pub Reserved1: u16,
-    pub InitiatorPD: u32,
-    pub MemoryPD: u32,
-    pub Reserved2: u32,
-    pub Reserved3: u64,
-    pub Reserved4: u64,
+    pub header: FfiAcpiHmatStructure,
+    pub flags: u16,
+    pub reserved1: u16,
+    pub initiator_pd: u32,
+    pub memory_pd: u32,
+    pub reserved2: u32,
+    pub reserved3: u64,
+    pub reserved4: u64,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiHmatLocality {
-    pub Header: FfiAcpiHmatStructure,
-    pub Flags: u8,
-    pub DataType: u8,
-    pub MinTransferSize: u8,
-    pub Reserved1: u8,
-    pub NumberOfInitiatorPDs: u32,
-    pub NumberOfTargetPDs: u32,
-    pub Reserved2: u32,
-    pub EntryBaseUnit: u64,
+    pub header: FfiAcpiHmatStructure,
+    pub flags: u8,
+    pub data_type: u8,
+    pub min_transfer_size: u8,
+    pub reserved1: u8,
+    pub number_of_initiator_p_ds: u32,
+    pub number_of_target_p_ds: u32,
+    pub reserved2: u32,
+    pub entry_base_unit: u64,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiHmatCache {
-    pub Header: FfiAcpiHmatStructure,
-    pub MemoryPD: u32,
-    pub Reserved1: u32,
-    pub CacheSize: u64,
-    pub CacheAttributes: u32,
-    pub Reserved2: u16,
-    pub NumberOfSMBIOSHandles: u16,
+    pub header: FfiAcpiHmatStructure,
+    pub memory_pd: u32,
+    pub reserved1: u32,
+    pub cache_size: u64,
+    pub cache_attributes: u32,
+    pub reserved2: u16,
+    pub number_of_smbios_handles: u16,
 }

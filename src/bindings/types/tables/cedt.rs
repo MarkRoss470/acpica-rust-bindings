@@ -8,15 +8,17 @@ use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteAr
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableCedt {
-    pub Header: FfiAcpiTableHeader,
+    pub header: FfiAcpiTableHeader,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiCedtHeader {
-    pub Type: u8,
-    pub Reserved: u8,
-    pub Length: u16,
+    pub header_type: u8,
+    pub reserved: u8,
+    pub length: u16,
 }
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiCedtType {
@@ -24,28 +26,29 @@ pub enum FfiAcpiCedtType {
     Cfmws = 1,
     Reserved = 2,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiCedtChbs {
-    pub Header: FfiAcpiCedtHeader,
-    pub Uid: u32,
-    pub CxlVersion: u32,
-    pub Reserved: u32,
-    pub Base: u64,
-    pub Length: u64,
+    pub header: FfiAcpiCedtHeader,
+    pub uid: u32,
+    pub cxl_version: u32,
+    pub reserved: u32,
+    pub base: u64,
+    pub length: u64,
 }
 
 #[repr(C, packed)]
 pub struct FfiAcpiCedtCfmws {
-    pub Header: FfiAcpiCedtHeader,
-    pub Reserved1: u32,
-    pub BaseHpa: u64,
-    pub WindowSize: u64,
-    pub InterleaveWays: u8,
-    pub InterleaveArithmetic: u8,
-    pub Reserved2: u16,
-    pub Granularity: u32,
-    pub Restrictions: u16,
-    pub QtgId: u16,
-    InterleaveTargets: __IncompleteArrayField<u32>,
+    pub header: FfiAcpiCedtHeader,
+    pub reserved1: u32,
+    pub base_hpa: u64,
+    pub window_size: u64,
+    pub interleave_ways: u8,
+    pub interleave_arithmetic: u8,
+    pub reserved2: u16,
+    pub granularity: u32,
+    pub restrictions: u16,
+    pub qtg_id: u16,
+    interleave_targets: __IncompleteArrayField<u32>,
 }

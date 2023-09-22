@@ -8,27 +8,22 @@ use crate::bindings::types::FfiAcpiTableHeader;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableIort {
-    pub Header: FfiAcpiTableHeader,
-    pub NodeCount: u32,
-    pub NodeOffset: u32,
-    pub Reserved: u32,
+    pub header: FfiAcpiTableHeader,
+    pub node_count: u32,
+    pub node_offset: u32,
+    pub reserved: u32,
 }
-///  IORT - IO Remapping Table
-/// 
-///  Conforms to \"IO Remapping Table System Software on ARM Platforms\",
-///  Document number: ARM DEN 0049E.b, Feb 2021
-/// 
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiIortNode {
-    pub Type: u8,
-    pub Length: u16,
-    pub Revision: u8,
-    pub Identifier: u32,
-    pub MappingCount: u32,
-    pub MappingOffset: u32,
-    pub NodeData: [i8; 1usize],
+    pub node_type: u8,
+    pub length: u16,
+    pub revision: u8,
+    pub identifier: u32,
+    pub mapping_count: u32,
+    pub mapping_offset: u32,
+    pub node_data: [i8; 1usize],
 }
 
 #[repr(u32)]
@@ -42,112 +37,113 @@ pub enum FfiAcpiIortNodeType {
     ACPI_IORT_NODE_PMCG = 5,
     ACPI_IORT_NODE_RMR = 6,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiIortIdMapping {
-    pub InputBase: u32,
-    pub IdCount: u32,
-    pub OutputBase: u32,
-    pub OutputReference: u32,
-    pub Flags: u32,
+    pub input_base: u32,
+    pub id_count: u32,
+    pub output_base: u32,
+    pub output_reference: u32,
+    pub flags: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiIortMemoryAccess {
-    pub CacheCoherency: u32,
-    pub Hints: u8,
-    pub Reserved: u16,
-    pub MemoryFlags: u8,
+    pub cache_coherency: u32,
+    pub hints: u8,
+    pub reserved: u16,
+    pub memory_flags: u8,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiIortItsGroup {
-    pub ItsCount: u32,
-    pub Identifiers: [u32; 1usize],
+    pub its_count: u32,
+    pub identifiers: [u32; 1usize],
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiIortNamedComponent {
-    pub NodeFlags: u32,
-    pub MemoryProperties: u64,
-    pub MemoryAddressLimit: u8,
-    pub DeviceName: [i8; 1usize],
+    pub node_flags: u32,
+    pub memory_properties: u64,
+    pub memory_address_limit: u8,
+    pub device_name: [i8; 1usize],
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiIortRootComplex {
-    pub MemoryProperties: u64,
-    pub AtsAttribute: u32,
-    pub PciSegmentNumber: u32,
-    pub MemoryAddressLimit: u8,
-    pub Reserved: [u8; 3usize],
+    pub memory_properties: u64,
+    pub ats_attribute: u32,
+    pub pci_segment_number: u32,
+    pub memory_address_limit: u8,
+    pub reserved: [u8; 3usize],
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiIortSmmu {
-    pub BaseAddress: u64,
-    pub Span: u64,
-    pub Model: u32,
-    pub Flags: u32,
-    pub GlobalInterruptOffset: u32,
-    pub ContextInterruptCount: u32,
-    pub ContextInterruptOffset: u32,
-    pub PmuInterruptCount: u32,
-    pub PmuInterruptOffset: u32,
-    pub Interrupts: [u64; 1usize],
+    pub base_address: u64,
+    pub span: u64,
+    pub model: u32,
+    pub flags: u32,
+    pub global_interrupt_offset: u32,
+    pub context_interrupt_count: u32,
+    pub context_interrupt_offset: u32,
+    pub pmu_interrupt_count: u32,
+    pub pmu_interrupt_offset: u32,
+    pub interrupts: [u64; 1usize],
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiIortSmmuGsi {
-    pub NSgIrpt: u32,
-    pub NSgIrptFlags: u32,
-    pub NSgCfgIrpt: u32,
-    pub NSgCfgIrptFlags: u32,
+    pub n_sg_irpt: u32,
+    pub n_sg_irpt_flags: u32,
+    pub n_sg_cfg_irpt: u32,
+    pub n_sg_cfg_irpt_flags: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiIortSmmuV3 {
-    pub BaseAddress: u64,
-    pub Flags: u32,
-    pub Reserved: u32,
-    pub VatosAddress: u64,
-    pub Model: u32,
-    pub EventGsiv: u32,
-    pub PriGsiv: u32,
-    pub GerrGsiv: u32,
-    pub SyncGsiv: u32,
-    pub Pxm: u32,
-    pub IdMappingIndex: u32,
+    pub base_address: u64,
+    pub flags: u32,
+    pub reserved: u32,
+    pub vatos_address: u64,
+    pub model: u32,
+    pub event_gsiv: u32,
+    pub pri_gsiv: u32,
+    pub gerr_gsiv: u32,
+    pub sync_gsiv: u32,
+    pub pxm: u32,
+    pub id_mapping_index: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiIortPmcg {
-    pub Page0BaseAddress: u64,
-    pub OverflowGsiv: u32,
-    pub NodeReference: u32,
-    pub Page1BaseAddress: u64,
+    pub page0_base_address: u64,
+    pub overflow_gsiv: u32,
+    pub node_reference: u32,
+    pub page1_base_address: u64,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiIortRmr {
-    pub Flags: u32,
-    pub RmrCount: u32,
-    pub RmrOffset: u32,
+    pub flags: u32,
+    pub rmr_count: u32,
+    pub rmr_offset: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiIortRmrDesc {
-    pub BaseAddress: u64,
-    pub Length: u64,
-    pub Reserved: u32,
+    pub base_address: u64,
+    pub length: u64,
+    pub reserved: u32,
 }

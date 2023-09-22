@@ -10,17 +10,19 @@ use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteAr
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableDmar {
-    pub Header: FfiAcpiTableHeader,
-    pub Width: u8,
-    pub Flags: u8,
-    pub Reserved: [u8; 10usize],
+    pub header: FfiAcpiTableHeader,
+    pub width: u8,
+    pub flags: u8,
+    pub reserved: [u8; 10usize],
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiDmarHeader {
-    pub Type: u16,
-    pub Length: u16,
+    pub header_type: u16,
+    pub length: u16,
 }
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiDmarType {
@@ -31,15 +33,17 @@ pub enum FfiAcpiDmarType {
     ACPI_DMAR_TYPE_NAMESPACE = 4,
     ACPI_DMAR_TYPE_RESERVED = 5,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiDmarDeviceScope {
-    pub EntryType: u8,
-    pub Length: u8,
-    pub Reserved: u16,
-    pub EnumerationId: u8,
-    pub Bus: u8,
+    pub entry_type: u8,
+    pub length: u8,
+    pub reserved: u16,
+    pub enumeration_id: u8,
+    pub bus: u8,
 }
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiDmarScopeType {
@@ -51,51 +55,57 @@ pub enum FfiAcpiDmarScopeType {
     ACPI_DMAR_SCOPE_TYPE_NAMESPACE = 5,
     ACPI_DMAR_SCOPE_TYPE_RESERVED = 6,
 }
+
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiDmarPciPath {
-    pub Device: u8,
-    pub Function: u8,
+    pub device: u8,
+    pub function: u8,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiDmarHardwareUnit {
-    pub Header: FfiAcpiDmarHeader,
-    pub Flags: u8,
-    pub Reserved: u8,
-    pub Segment: u16,
-    pub Address: u64,
+    pub header: FfiAcpiDmarHeader,
+    pub flags: u8,
+    pub reserved: u8,
+    pub segment: u16,
+    pub address: u64,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiDmarReservedMemory {
-    pub Header: FfiAcpiDmarHeader,
-    pub Reserved: u16,
-    pub Segment: u16,
-    pub BaseAddress: u64,
-    pub EndAddress: u64,
+    pub header: FfiAcpiDmarHeader,
+    pub reserved: u16,
+    pub segment: u16,
+    pub base_address: u64,
+    pub end_address: u64,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiDmarAtsr {
-    pub Header: FfiAcpiDmarHeader,
-    pub Flags: u8,
-    pub Reserved: u8,
-    pub Segment: u16,
+    pub header: FfiAcpiDmarHeader,
+    pub flags: u8,
+    pub reserved: u8,
+    pub segment: u16,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiDmarRhsa {
-    pub Header: FfiAcpiDmarHeader,
-    pub Reserved: u32,
-    pub BaseAddress: u64,
-    pub ProximityDomain: u32,
+    pub header: FfiAcpiDmarHeader,
+    pub reserved: u32,
+    pub base_address: u64,
+    pub proximity_domain: u32,
 }
+
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiDmarAndd {
-    pub Header: FfiAcpiDmarHeader,
-    pub Reserved: [u8; 3usize],
-    pub DeviceNumber: u8,
-    pub DeviceName: [i8; 1usize],
+    pub header: FfiAcpiDmarHeader,
+    pub reserved: [u8; 3usize],
+    pub device_number: u8,
+    pub device_name: [i8; 1usize],
 }

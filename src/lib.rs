@@ -12,7 +12,8 @@
 #![deny(improper_ctypes, improper_ctypes_definitions)]
 
 #![allow(unused_imports, clippy::redundant_static_lifetimes, unsafe_op_in_unsafe_fn)]
-#![allow(non_snake_case, non_upper_case_globals)]
+#![allow(non_upper_case_globals, dead_code, non_camel_case_types)]
+// #![allow(non_snake_case)]
 
 use interface::debug_trace;
 

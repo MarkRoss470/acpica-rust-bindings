@@ -12,27 +12,18 @@ use crate::bindings::types::FfiAcpiTableHeader;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableIbft {
-    pub Header: FfiAcpiTableHeader,
-    pub Reserved: [u8; 12usize],
+    pub header: FfiAcpiTableHeader,
+    pub reserved: [u8; 12usize],
 }
-///  IBFT - Boot Firmware Table
-///         Version 1
-/// 
-///  Conforms to \"iSCSI Boot Firmware Table (iBFT) as Defined in ACPI 3.0b
-///  Specification\", Version 1.01, March 1, 2007
-/// 
-///  Note: It appears that this table is not intended to appear in the RSDT/XSDT.
-///  Therefore, it is not currently supported by the disassembler.
-/// 
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiIbftHeader {
-    pub Type: u8,
-    pub Version: u8,
-    pub Length: u16,
-    pub Index: u8,
-    pub Flags: u8,
+    pub header_type: u8,
+    pub version: u8,
+    pub length: u16,
+    pub index: u8,
+    pub flags: u8,
 }
 
 #[repr(u32)]
@@ -46,65 +37,66 @@ pub enum FfiAcpiIbftType {
     ACPI_IBFT_TYPE_EXTENSIONS = 5,
     ACPI_IBFT_TYPE_RESERVED = 6,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiIbftControl {
-    pub Header: FfiAcpiIbftHeader,
-    pub Extensions: u16,
-    pub InitiatorOffset: u16,
-    pub Nic0Offset: u16,
-    pub Target0Offset: u16,
-    pub Nic1Offset: u16,
-    pub Target1Offset: u16,
+    pub header: FfiAcpiIbftHeader,
+    pub extensions: u16,
+    pub initiator_offset: u16,
+    pub nic0_offset: u16,
+    pub target0_offset: u16,
+    pub nic1_offset: u16,
+    pub target1_offset: u16,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiIbftInitiator {
-    pub Header: FfiAcpiIbftHeader,
-    pub SnsServer: [u8; 16usize],
-    pub SlpServer: [u8; 16usize],
-    pub PrimaryServer: [u8; 16usize],
-    pub SecondaryServer: [u8; 16usize],
-    pub NameLength: u16,
-    pub NameOffset: u16,
+    pub header: FfiAcpiIbftHeader,
+    pub sns_server: [u8; 16usize],
+    pub slp_server: [u8; 16usize],
+    pub primary_server: [u8; 16usize],
+    pub secondary_server: [u8; 16usize],
+    pub name_length: u16,
+    pub name_offset: u16,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiIbftNic {
-    pub Header: FfiAcpiIbftHeader,
-    pub IpAddress: [u8; 16usize],
-    pub SubnetMaskPrefix: u8,
-    pub Origin: u8,
-    pub Gateway: [u8; 16usize],
-    pub PrimaryDns: [u8; 16usize],
-    pub SecondaryDns: [u8; 16usize],
-    pub Dhcp: [u8; 16usize],
-    pub Vlan: u16,
-    pub MacAddress: [u8; 6usize],
-    pub PciAddress: u16,
-    pub NameLength: u16,
-    pub NameOffset: u16,
+    pub header: FfiAcpiIbftHeader,
+    pub ip_address: [u8; 16usize],
+    pub subnet_mask_prefix: u8,
+    pub origin: u8,
+    pub gateway: [u8; 16usize],
+    pub primary_dns: [u8; 16usize],
+    pub secondary_dns: [u8; 16usize],
+    pub dhcp: [u8; 16usize],
+    pub vlan: u16,
+    pub mac_address: [u8; 6usize],
+    pub pci_address: u16,
+    pub name_length: u16,
+    pub name_offset: u16,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiIbftTarget {
-    pub Header: FfiAcpiIbftHeader,
-    pub TargetIpAddress: [u8; 16usize],
-    pub TargetIpSocket: u16,
-    pub TargetBootLun: [u8; 8usize],
-    pub ChapType: u8,
-    pub NicAssociation: u8,
-    pub TargetNameLength: u16,
-    pub TargetNameOffset: u16,
-    pub ChapNameLength: u16,
-    pub ChapNameOffset: u16,
-    pub ChapSecretLength: u16,
-    pub ChapSecretOffset: u16,
-    pub ReverseChapNameLength: u16,
-    pub ReverseChapNameOffset: u16,
-    pub ReverseChapSecretLength: u16,
-    pub ReverseChapSecretOffset: u16,
+    pub header: FfiAcpiIbftHeader,
+    pub target_ip_address: [u8; 16usize],
+    pub target_ip_socket: u16,
+    pub target_boot_lun: [u8; 8usize],
+    pub chap_type: u8,
+    pub nic_association: u8,
+    pub target_name_length: u16,
+    pub target_name_offset: u16,
+    pub chap_name_length: u16,
+    pub chap_name_offset: u16,
+    pub chap_secret_length: u16,
+    pub chap_secret_offset: u16,
+    pub reverse_chap_name_length: u16,
+    pub reverse_chap_name_offset: u16,
+    pub reverse_chap_secret_length: u16,
+    pub reverse_chap_secret_offset: u16,
 }

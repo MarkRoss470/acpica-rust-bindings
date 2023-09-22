@@ -6,41 +6,47 @@ use crate::bindings::types::FfiAcpiTableHeader;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableFpdt {
-    pub Header: FfiAcpiTableHeader,
+    pub header: FfiAcpiTableHeader,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiFpdtHeader {
-    pub Type: u16,
-    pub Length: u8,
-    pub Revision: u8,
+    pub header_type: u16,
+    pub length: u8,
+    pub revision: u8,
 }
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiFpdtType {
     ACPI_FPDT_TYPE_BOOT = 0,
     ACPI_FPDT_TYPE_S3PERF = 1,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiFpdtBootPointer {
-    pub Header: FfiAcpiFpdtHeader,
-    pub Reserved: [u8; 4usize],
-    pub Address: u64,
+    pub header: FfiAcpiFpdtHeader,
+    pub reserved: [u8; 4usize],
+    pub address: u64,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiFpdtS3ptPointer {
-    pub Header: FfiAcpiFpdtHeader,
-    pub Reserved: [u8; 4usize],
-    pub Address: u64,
+    pub header: FfiAcpiFpdtHeader,
+    pub reserved: [u8; 4usize],
+    pub address: u64,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableS3pt {
-    pub Signature: [u8; 4usize],
-    pub Length: u32,
+    pub signature: [u8; 4usize],
+    pub length: u32,
 }
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiS3ptType {
@@ -48,29 +54,32 @@ pub enum FfiAcpiS3ptType {
     ACPI_S3PT_TYPE_SUSPEND = 1,
     ACPI_FPDT_BOOT_PERFORMANCE = 2,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiS3ptResume {
-    pub Header: FfiAcpiFpdtHeader,
-    pub ResumeCount: u32,
-    pub FullResume: u64,
-    pub AverageResume: u64,
+    pub header: FfiAcpiFpdtHeader,
+    pub resume_count: u32,
+    pub full_resume: u64,
+    pub average_resume: u64,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiS3ptSuspend {
-    pub Header: FfiAcpiFpdtHeader,
-    pub SuspendStart: u64,
-    pub SuspendEnd: u64,
+    pub header: FfiAcpiFpdtHeader,
+    pub suspend_start: u64,
+    pub suspend_end: u64,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiFpdtBoot {
-    pub Header: FfiAcpiFpdtHeader,
-    pub Reserved: [u8; 4usize],
-    pub ResetEnd: u64,
-    pub LoadStart: u64,
-    pub StartupStart: u64,
-    pub ExitServicesEntry: u64,
-    pub ExitServicesExit: u64,
+    pub header: FfiAcpiFpdtHeader,
+    pub reserved: [u8; 4usize],
+    pub reset_end: u64,
+    pub load_start: u64,
+    pub startup_start: u64,
+    pub exit_services_entry: u64,
+    pub exit_services_exit: u64,
 }

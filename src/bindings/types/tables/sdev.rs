@@ -7,18 +7,15 @@ use crate::bindings::types::FfiAcpiTableHeader;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableSdev {
-    pub Header: FfiAcpiTableHeader,
+    pub header: FfiAcpiTableHeader,
 }
-///  SDEV - Secure Devices Table (ACPI 6.2)
-///         Version 1
-/// 
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiSdevHeader {
-    pub Type: u8,
-    pub Flags: u8,
-    pub Length: u16,
+    pub header_type: u8,
+    pub flags: u8,
+    pub length: u16,
 }
 
 #[repr(u32)]
@@ -28,27 +25,28 @@ pub enum FfiAcpiSdevType {
     ACPI_SDEV_TYPE_PCIE_ENDPOINT_DEVICE = 1,
     ACPI_SDEV_TYPE_RESERVED = 2,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiSdevNamespace {
-    pub Header: FfiAcpiSdevHeader,
-    pub DeviceIdOffset: u16,
-    pub DeviceIdLength: u16,
-    pub VendorDataOffset: u16,
-    pub VendorDataLength: u16,
+    pub header: FfiAcpiSdevHeader,
+    pub device_id_offset: u16,
+    pub device_id_length: u16,
+    pub vendor_data_offset: u16,
+    pub vendor_data_length: u16,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiSdevSecureComponent {
-    pub SecureComponentOffset: u16,
-    pub SecureComponentLength: u16,
+    pub secure_component_offset: u16,
+    pub secure_component_length: u16,
 }
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiSdevComponent {
-    pub Header: FfiAcpiSdevHeader,
+    pub header: FfiAcpiSdevHeader,
 }
 
 #[repr(u32)]
@@ -57,46 +55,47 @@ pub enum FfiAcpiSacType {
     ACPI_SDEV_TYPE_ID_COMPONENT = 0,
     ACPI_SDEV_TYPE_MEM_COMPONENT = 1,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiSdevIdComponent {
-    pub Header: FfiAcpiSdevHeader,
-    pub HardwareIdOffset: u16,
-    pub HardwareIdLength: u16,
-    pub SubsystemIdOffset: u16,
-    pub SubsystemIdLength: u16,
-    pub HardwareRevision: u16,
-    pub HardwareRevPresent: u8,
-    pub ClassCodePresent: u8,
-    pub PciBaseClass: u8,
-    pub PciSubClass: u8,
-    pub PciProgrammingXface: u8,
+    pub header: FfiAcpiSdevHeader,
+    pub hardware_id_offset: u16,
+    pub hardware_id_length: u16,
+    pub subsystem_id_offset: u16,
+    pub subsystem_id_length: u16,
+    pub hardware_revision: u16,
+    pub hardware_rev_present: u8,
+    pub class_code_present: u8,
+    pub pci_base_class: u8,
+    pub pci_sub_class: u8,
+    pub pci_programming_xface: u8,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiSdevMemComponent {
-    pub Header: FfiAcpiSdevHeader,
-    pub Reserved: u32,
-    pub MemoryBaseAddress: u64,
-    pub MemoryLength: u64,
+    pub header: FfiAcpiSdevHeader,
+    pub reserved: u32,
+    pub memory_base_address: u64,
+    pub memory_length: u64,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiSdevPcie {
-    pub Header: FfiAcpiSdevHeader,
-    pub Segment: u16,
-    pub StartBus: u16,
-    pub PathOffset: u16,
-    pub PathLength: u16,
-    pub VendorDataOffset: u16,
-    pub VendorDataLength: u16,
+    pub header: FfiAcpiSdevHeader,
+    pub segment: u16,
+    pub start_bus: u16,
+    pub path_offset: u16,
+    pub path_length: u16,
+    pub vendor_data_offset: u16,
+    pub vendor_data_length: u16,
 }
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiSdevPciePath {
-    pub Device: u8,
-    pub Function: u8,
+    pub device: u8,
+    pub function: u8,
 }

@@ -6,21 +6,18 @@ use crate::bindings::types::FfiAcpiTableHeader;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableViot {
-    pub Header: FfiAcpiTableHeader,
-    pub NodeCount: u16,
-    pub NodeOffset: u16,
-    pub Reserved: [u8; 8usize],
+    pub header: FfiAcpiTableHeader,
+    pub node_count: u16,
+    pub node_offset: u16,
+    pub reserved: [u8; 8usize],
 }
-///  VIOT - Virtual I/O Translation Table
-///         Version 1
-/// 
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiViotHeader {
-    pub Type: u8,
-    pub Reserved: u8,
-    pub Length: u16,
+    pub header_type: u8,
+    pub reserved: u8,
+    pub length: u16,
 }
 
 #[repr(u32)]
@@ -32,42 +29,43 @@ pub enum FfiAcpiViotNodeType {
     ACPI_VIOT_NODE_VIRTIO_IOMMU_MMIO = 4,
     ACPI_VIOT_RESERVED = 5,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiViotPciRange {
-    pub Header: FfiAcpiViotHeader,
-    pub EndpointStart: u32,
-    pub SegmentStart: u16,
-    pub SegmentEnd: u16,
-    pub BdfStart: u16,
-    pub BdfEnd: u16,
-    pub OutputNode: u16,
-    pub Reserved: [u8; 6usize],
+    pub header: FfiAcpiViotHeader,
+    pub endpoint_start: u32,
+    pub segment_start: u16,
+    pub segment_end: u16,
+    pub bdf_start: u16,
+    pub bdf_end: u16,
+    pub output_node: u16,
+    pub reserved: [u8; 6usize],
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiViotMmio {
-    pub Header: FfiAcpiViotHeader,
-    pub Endpoint: u32,
-    pub BaseAddress: u64,
-    pub OutputNode: u16,
-    pub Reserved: [u8; 6usize],
+    pub header: FfiAcpiViotHeader,
+    pub endpoint: u32,
+    pub base_address: u64,
+    pub output_node: u16,
+    pub reserved: [u8; 6usize],
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiViotVirtioIommuPci {
-    pub Header: FfiAcpiViotHeader,
-    pub Segment: u16,
-    pub Bdf: u16,
-    pub Reserved: [u8; 8usize],
+    pub header: FfiAcpiViotHeader,
+    pub segment: u16,
+    pub bdf: u16,
+    pub reserved: [u8; 8usize],
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiViotVirtioIommuMmio {
-    pub Header: FfiAcpiViotHeader,
-    pub Reserved: [u8; 4usize],
-    pub BaseAddress: u64,
+    pub header: FfiAcpiViotHeader,
+    pub reserved: [u8; 4usize],
+    pub base_address: u64,
 }

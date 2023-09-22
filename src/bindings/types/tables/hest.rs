@@ -6,15 +6,17 @@ use crate::{bindings::types::FfiAcpiTableHeader, interface::AcpiGenericAddress};
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableHest {
-    pub Header: FfiAcpiTableHeader,
-    pub ErrorSourceCount: u32,
+    pub header: FfiAcpiTableHeader,
+    pub error_source_count: u32,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiHestHeader {
-    pub Type: u16,
-    pub SourceId: u16,
+    pub header_type: u16,
+    pub source_id: u16,
 }
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiHestTypes {
@@ -32,50 +34,54 @@ pub enum FfiAcpiHestTypes {
     ACPI_HEST_TYPE_IA32_DEFERRED_CHECK = 11,
     ACPI_HEST_TYPE_RESERVED = 12,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiHestIaErrorBank {
-    pub BankNumber: u8,
-    pub ClearStatusOnInit: u8,
-    pub StatusFormat: u8,
-    pub Reserved: u8,
-    pub ControlRegister: u32,
-    pub ControlData: u64,
-    pub StatusRegister: u32,
-    pub AddressRegister: u32,
-    pub MiscRegister: u32,
+    pub bank_number: u8,
+    pub clear_status_on_init: u8,
+    pub status_format: u8,
+    pub reserved: u8,
+    pub control_register: u32,
+    pub control_data: u64,
+    pub status_register: u32,
+    pub address_register: u32,
+    pub misc_register: u32,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiHestAerCommon {
-    pub Reserved1: u16,
-    pub Flags: u8,
-    pub Enabled: u8,
-    pub RecordsToPreallocate: u32,
-    pub MaxSectionsPerRecord: u32,
-    pub Bus: u32,
-    pub Device: u16,
-    pub Function: u16,
-    pub DeviceControl: u16,
-    pub Reserved2: u16,
-    pub UncorrectableMask: u32,
-    pub UncorrectableSeverity: u32,
-    pub CorrectableMask: u32,
-    pub AdvancedCapabilities: u32,
+    pub reserved1: u16,
+    pub flags: u8,
+    pub enabled: u8,
+    pub records_to_preallocate: u32,
+    pub max_sections_per_record: u32,
+    pub bus: u32,
+    pub device: u16,
+    pub function: u16,
+    pub device_control: u16,
+    pub reserved2: u16,
+    pub uncorrectable_mask: u32,
+    pub uncorrectable_severity: u32,
+    pub correctable_mask: u32,
+    pub advanced_capabilities: u32,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiHestNotify {
-    pub Type: u8,
-    pub Length: u8,
-    pub ConfigWriteEnable: u16,
-    pub PollInterval: u32,
-    pub Vector: u32,
-    pub PollingThresholdValue: u32,
-    pub PollingThresholdWindow: u32,
-    pub ErrorThresholdValue: u32,
-    pub ErrorThresholdWindow: u32,
+    pub notify_type: u8,
+    pub length: u8,
+    pub config_write_enable: u16,
+    pub poll_interval: u32,
+    pub vector: u32,
+    pub polling_threshold_value: u32,
+    pub polling_threshold_window: u32,
+    pub error_threshold_value: u32,
+    pub error_threshold_window: u32,
 }
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiHestNotifyTypes {
@@ -93,139 +99,151 @@ pub enum FfiAcpiHestNotifyTypes {
     acpi_hest_notify_SOFTWARE_DELEGATED = 11,
     acpi_hest_notify_RESERVED = 12,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiHestIaMachineCheck {
-    pub Header: FfiAcpiHestHeader,
-    pub Reserved1: u16,
-    pub Flags: u8,
-    pub Enabled: u8,
-    pub RecordsToPreallocate: u32,
-    pub MaxSectionsPerRecord: u32,
-    pub GlobalCapabilityData: u64,
-    pub GlobalControlData: u64,
-    pub NumHardwareBanks: u8,
-    pub Reserved3: [u8; 7usize],
+    pub header: FfiAcpiHestHeader,
+    pub reserved1: u16,
+    pub flags: u8,
+    pub enabled: u8,
+    pub records_to_preallocate: u32,
+    pub max_sections_per_record: u32,
+    pub global_capability_data: u64,
+    pub global_control_data: u64,
+    pub num_hardware_banks: u8,
+    pub reserved3: [u8; 7usize],
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiHestIaCorrected {
-    pub Header: FfiAcpiHestHeader,
-    pub Reserved1: u16,
-    pub Flags: u8,
-    pub Enabled: u8,
-    pub RecordsToPreallocate: u32,
-    pub MaxSectionsPerRecord: u32,
-    pub Notify: FfiAcpiHestNotify,
-    pub NumHardwareBanks: u8,
-    pub Reserved2: [u8; 3usize],
+    pub header: FfiAcpiHestHeader,
+    pub reserved1: u16,
+    pub flags: u8,
+    pub enabled: u8,
+    pub records_to_preallocate: u32,
+    pub max_sections_per_record: u32,
+    pub notify: FfiAcpiHestNotify,
+    pub num_hardware_banks: u8,
+    pub reserved2: [u8; 3usize],
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiHestIaNmi {
-    pub Header: FfiAcpiHestHeader,
-    pub Reserved: u32,
-    pub RecordsToPreallocate: u32,
-    pub MaxSectionsPerRecord: u32,
-    pub MaxRawDataLength: u32,
+    pub header: FfiAcpiHestHeader,
+    pub reserved: u32,
+    pub records_to_preallocate: u32,
+    pub max_sections_per_record: u32,
+    pub max_raw_data_length: u32,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiHestAerRoot {
-    pub Header: FfiAcpiHestHeader,
-    pub Aer: FfiAcpiHestAerCommon,
-    pub RootErrorCommand: u32,
+    pub header: FfiAcpiHestHeader,
+    pub aer: FfiAcpiHestAerCommon,
+    pub root_error_command: u32,
 }
+
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiHestAer {
-    pub Header: FfiAcpiHestHeader,
-    pub Aer: FfiAcpiHestAerCommon,
+    pub header: FfiAcpiHestHeader,
+    pub aer: FfiAcpiHestAerCommon,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiHestAerBridge {
-    pub Header: FfiAcpiHestHeader,
-    pub Aer: FfiAcpiHestAerCommon,
-    pub UncorrectableMask2: u32,
-    pub UncorrectableSeverity2: u32,
-    pub AdvancedCapabilities2: u32,
+    pub header: FfiAcpiHestHeader,
+    pub aer: FfiAcpiHestAerCommon,
+    pub uncorrectable_mask2: u32,
+    pub uncorrectable_severity2: u32,
+    pub advanced_capabilities2: u32,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiHestGeneric {
-    pub Header: FfiAcpiHestHeader,
-    pub RelatedSourceId: u16,
-    pub Reserved: u8,
-    pub Enabled: u8,
-    pub RecordsToPreallocate: u32,
-    pub MaxSectionsPerRecord: u32,
-    pub MaxRawDataLength: u32,
-    pub ErrorStatusAddress: AcpiGenericAddress,
-    pub Notify: FfiAcpiHestNotify,
-    pub ErrorBlockLength: u32,
+    pub header: FfiAcpiHestHeader,
+    pub related_source_id: u16,
+    pub reserved: u8,
+    pub enabled: u8,
+    pub records_to_preallocate: u32,
+    pub max_sections_per_record: u32,
+    pub max_raw_data_length: u32,
+    pub error_status_address: AcpiGenericAddress,
+    pub notify: FfiAcpiHestNotify,
+    pub error_block_length: u32,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiHestGenericV2 {
-    pub Header: FfiAcpiHestHeader,
-    pub RelatedSourceId: u16,
-    pub Reserved: u8,
-    pub Enabled: u8,
-    pub RecordsToPreallocate: u32,
-    pub MaxSectionsPerRecord: u32,
-    pub MaxRawDataLength: u32,
-    pub ErrorStatusAddress: AcpiGenericAddress,
-    pub Notify: FfiAcpiHestNotify,
-    pub ErrorBlockLength: u32,
-    pub ReadAckRegister: AcpiGenericAddress,
-    pub ReadAckPreserve: u64,
-    pub ReadAckWrite: u64,
+    pub header: FfiAcpiHestHeader,
+    pub related_source_id: u16,
+    pub reserved: u8,
+    pub enabled: u8,
+    pub records_to_preallocate: u32,
+    pub max_sections_per_record: u32,
+    pub max_raw_data_length: u32,
+    pub error_status_address: AcpiGenericAddress,
+    pub notify: FfiAcpiHestNotify,
+    pub error_block_length: u32,
+    pub read_ack_register: AcpiGenericAddress,
+    pub read_ack_preserve: u64,
+    pub read_ack_write: u64,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiHestGenericStatus {
-    pub BlockStatus: u32,
-    pub RawDataOffset: u32,
-    pub RawDataLength: u32,
-    pub DataLength: u32,
-    pub ErrorSeverity: u32,
+    pub block_status: u32,
+    pub raw_data_offset: u32,
+    pub raw_data_length: u32,
+    pub data_length: u32,
+    pub error_severity: u32,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiHestGenericData {
-    pub SectionType: [u8; 16usize],
-    pub ErrorSeverity: u32,
-    pub Revision: u16,
-    pub ValidationBits: u8,
-    pub Flags: u8,
-    pub ErrorDataLength: u32,
-    pub FruId: [u8; 16usize],
-    pub FruText: [u8; 20usize],
+    pub section_type: [u8; 16usize],
+    pub error_severity: u32,
+    pub revision: u16,
+    pub validation_bits: u8,
+    pub flags: u8,
+    pub error_data_length: u32,
+    pub fru_id: [u8; 16usize],
+    pub fru_text: [u8; 20usize],
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiHestGenericDataV300 {
-    pub SectionType: [u8; 16usize],
-    pub ErrorSeverity: u32,
-    pub Revision: u16,
-    pub ValidationBits: u8,
-    pub Flags: u8,
-    pub ErrorDataLength: u32,
-    pub FruId: [u8; 16usize],
-    pub FruText: [u8; 20usize],
-    pub TimeStamp: u64,
+    pub section_type: [u8; 16usize],
+    pub error_severity: u32,
+    pub revision: u16,
+    pub validation_bits: u8,
+    pub flags: u8,
+    pub error_data_length: u32,
+    pub fru_id: [u8; 16usize],
+    pub fru_text: [u8; 20usize],
+    pub time_stamp: u64,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiHestIaDeferredCheck {
-    pub Header: FfiAcpiHestHeader,
-    pub Reserved1: u16,
-    pub Flags: u8,
-    pub Enabled: u8,
-    pub RecordsToPreallocate: u32,
-    pub MaxSectionsPerRecord: u32,
-    pub Notify: FfiAcpiHestNotify,
-    pub NumHardwareBanks: u8,
-    pub Reserved2: [u8; 3usize],
+    pub header: FfiAcpiHestHeader,
+    pub reserved1: u16,
+    pub flags: u8,
+    pub enabled: u8,
+    pub records_to_preallocate: u32,
+    pub max_sections_per_record: u32,
+    pub notify: FfiAcpiHestNotify,
+    pub num_hardware_banks: u8,
+    pub reserved2: [u8; 3usize],
 }

@@ -8,11 +8,8 @@ use super::FfiAcpiSubtableHeader;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTablePptt {
-    pub Header: FfiAcpiTableHeader,
+    pub header: FfiAcpiTableHeader,
 }
-///  PPTT - Processor Properties Topology Table (ACPI 6.2)
-///         Version 1
-/// 
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
@@ -22,46 +19,47 @@ pub enum FfiAcpiPpttType {
     ACPI_PPTT_TYPE_ID = 2,
     ACPI_PPTT_TYPE_RESERVED = 3,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiPpttProcessor {
-    pub Header: FfiAcpiSubtableHeader,
-    pub Reserved: u16,
-    pub Flags: u32,
-    pub Parent: u32,
-    pub AcpiProcessorId: u32,
-    pub NumberOfPrivResources: u32,
+    pub header: FfiAcpiSubtableHeader,
+    pub reserved: u16,
+    pub flags: u32,
+    pub parent: u32,
+    pub acpi_processor_id: u32,
+    pub number_of_priv_resources: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiPpttCache {
-    pub Header: FfiAcpiSubtableHeader,
-    pub Reserved: u16,
-    pub Flags: u32,
-    pub NextLevelOfCache: u32,
-    pub Size: u32,
-    pub NumberOfSets: u32,
-    pub Associativity: u8,
-    pub Attributes: u8,
-    pub LineSize: u16,
+    pub header: FfiAcpiSubtableHeader,
+    pub reserved: u16,
+    pub flags: u32,
+    pub next_level_of_cache: u32,
+    pub size: u32,
+    pub number_of_sets: u32,
+    pub associativity: u8,
+    pub attributes: u8,
+    pub line_size: u16,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiPpttCacheV1 {
-    pub CacheId: u32,
+    pub cache_id: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiPpttId {
-    pub Header: FfiAcpiSubtableHeader,
-    pub Reserved: u16,
-    pub VendorId: u32,
-    pub Level1Id: u64,
-    pub Level2Id: u64,
-    pub MajorRev: u16,
-    pub MinorRev: u16,
-    pub SpinRev: u16,
+    pub header: FfiAcpiSubtableHeader,
+    pub reserved: u16,
+    pub vendor_id: u32,
+    pub level1_id: u64,
+    pub level2_id: u64,
+    pub major_rev: u16,
+    pub minor_rev: u16,
+    pub spin_rev: u16,
 }

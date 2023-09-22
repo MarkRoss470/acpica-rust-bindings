@@ -8,13 +8,10 @@ use super::{FfiAcpiSubtableHeader, FfiAcpiTableHeader};
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTablePcct {
-    pub Header: FfiAcpiTableHeader,
-    pub Flags: u32,
-    pub Reserved: u64,
+    pub header: FfiAcpiTableHeader,
+    pub flags: u32,
+    pub reserved: u64,
 }
-///  PCCT - Platform Communications Channel Table (ACPI 5.0)
-///         Version 2 (ACPI 6.2)
-/// 
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
@@ -27,146 +24,147 @@ pub enum FfiAcpiPcctType {
     ACPI_PCCT_TYPE_HW_REG_COMM_SUBSPACE = 5,
     ACPI_PCCT_TYPE_RESERVED = 6,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiPcctSubspace {
-    pub Header: FfiAcpiSubtableHeader,
-    pub Reserved: [u8; 6usize],
-    pub BaseAddress: u64,
-    pub Length: u64,
-    pub DoorbellRegister: AcpiGenericAddress,
-    pub PreserveMask: u64,
-    pub WriteMask: u64,
-    pub Latency: u32,
-    pub MaxAccessRate: u32,
-    pub MinTurnaroundTime: u16,
+    pub header: FfiAcpiSubtableHeader,
+    pub reserved: [u8; 6usize],
+    pub base_address: u64,
+    pub length: u64,
+    pub doorbell_register: AcpiGenericAddress,
+    pub preserve_mask: u64,
+    pub write_mask: u64,
+    pub latency: u32,
+    pub max_access_rate: u32,
+    pub min_turnaround_time: u16,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiPcctHwReduced {
-    pub Header: FfiAcpiSubtableHeader,
-    pub PlatformInterrupt: u32,
-    pub Flags: u8,
-    pub Reserved: u8,
-    pub BaseAddress: u64,
-    pub Length: u64,
-    pub DoorbellRegister: AcpiGenericAddress,
-    pub PreserveMask: u64,
-    pub WriteMask: u64,
-    pub Latency: u32,
-    pub MaxAccessRate: u32,
-    pub MinTurnaroundTime: u16,
+    pub header: FfiAcpiSubtableHeader,
+    pub platform_interrupt: u32,
+    pub flags: u8,
+    pub reserved: u8,
+    pub base_address: u64,
+    pub length: u64,
+    pub doorbell_register: AcpiGenericAddress,
+    pub preserve_mask: u64,
+    pub write_mask: u64,
+    pub latency: u32,
+    pub max_access_rate: u32,
+    pub min_turnaround_time: u16,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiPcctHwReducedType2 {
-    pub Header: FfiAcpiSubtableHeader,
-    pub PlatformInterrupt: u32,
-    pub Flags: u8,
-    pub Reserved: u8,
-    pub BaseAddress: u64,
-    pub Length: u64,
-    pub DoorbellRegister: AcpiGenericAddress,
-    pub PreserveMask: u64,
-    pub WriteMask: u64,
-    pub Latency: u32,
-    pub MaxAccessRate: u32,
-    pub MinTurnaroundTime: u16,
-    pub PlatformAckRegister: AcpiGenericAddress,
-    pub AckPreserveMask: u64,
-    pub AckWriteMask: u64,
+    pub header: FfiAcpiSubtableHeader,
+    pub platform_interrupt: u32,
+    pub flags: u8,
+    pub reserved: u8,
+    pub base_address: u64,
+    pub length: u64,
+    pub doorbell_register: AcpiGenericAddress,
+    pub preserve_mask: u64,
+    pub write_mask: u64,
+    pub latency: u32,
+    pub max_access_rate: u32,
+    pub min_turnaround_time: u16,
+    pub platform_ack_register: AcpiGenericAddress,
+    pub ack_preserve_mask: u64,
+    pub ack_write_mask: u64,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiPcctExtPccMaster {
-    pub Header: FfiAcpiSubtableHeader,
-    pub PlatformInterrupt: u32,
-    pub Flags: u8,
-    pub Reserved1: u8,
-    pub BaseAddress: u64,
-    pub Length: u32,
-    pub DoorbellRegister: AcpiGenericAddress,
-    pub PreserveMask: u64,
-    pub WriteMask: u64,
-    pub Latency: u32,
-    pub MaxAccessRate: u32,
-    pub MinTurnaroundTime: u32,
-    pub PlatformAckRegister: AcpiGenericAddress,
-    pub AckPreserveMask: u64,
-    pub AckSetMask: u64,
-    pub Reserved2: u64,
-    pub CmdCompleteRegister: AcpiGenericAddress,
-    pub CmdCompleteMask: u64,
-    pub CmdUpdateRegister: AcpiGenericAddress,
-    pub CmdUpdatePreserveMask: u64,
-    pub CmdUpdateSetMask: u64,
-    pub ErrorStatusRegister: AcpiGenericAddress,
-    pub ErrorStatusMask: u64,
+    pub header: FfiAcpiSubtableHeader,
+    pub platform_interrupt: u32,
+    pub flags: u8,
+    pub reserved1: u8,
+    pub base_address: u64,
+    pub length: u32,
+    pub doorbell_register: AcpiGenericAddress,
+    pub preserve_mask: u64,
+    pub write_mask: u64,
+    pub latency: u32,
+    pub max_access_rate: u32,
+    pub min_turnaround_time: u32,
+    pub platform_ack_register: AcpiGenericAddress,
+    pub ack_preserve_mask: u64,
+    pub ack_set_mask: u64,
+    pub reserved2: u64,
+    pub cmd_complete_register: AcpiGenericAddress,
+    pub cmd_complete_mask: u64,
+    pub cmd_update_register: AcpiGenericAddress,
+    pub cmd_update_preserve_mask: u64,
+    pub cmd_update_set_mask: u64,
+    pub error_status_register: AcpiGenericAddress,
+    pub error_status_mask: u64,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiPcctExtPccSlave {
-    pub Header: FfiAcpiSubtableHeader,
-    pub PlatformInterrupt: u32,
-    pub Flags: u8,
-    pub Reserved1: u8,
-    pub BaseAddress: u64,
-    pub Length: u32,
-    pub DoorbellRegister: AcpiGenericAddress,
-    pub PreserveMask: u64,
-    pub WriteMask: u64,
-    pub Latency: u32,
-    pub MaxAccessRate: u32,
-    pub MinTurnaroundTime: u32,
-    pub PlatformAckRegister: AcpiGenericAddress,
-    pub AckPreserveMask: u64,
-    pub AckSetMask: u64,
-    pub Reserved2: u64,
-    pub CmdCompleteRegister: AcpiGenericAddress,
-    pub CmdCompleteMask: u64,
-    pub CmdUpdateRegister: AcpiGenericAddress,
-    pub CmdUpdatePreserveMask: u64,
-    pub CmdUpdateSetMask: u64,
-    pub ErrorStatusRegister: AcpiGenericAddress,
-    pub ErrorStatusMask: u64,
+    pub header: FfiAcpiSubtableHeader,
+    pub platform_interrupt: u32,
+    pub flags: u8,
+    pub reserved1: u8,
+    pub base_address: u64,
+    pub length: u32,
+    pub doorbell_register: AcpiGenericAddress,
+    pub preserve_mask: u64,
+    pub write_mask: u64,
+    pub latency: u32,
+    pub max_access_rate: u32,
+    pub min_turnaround_time: u32,
+    pub platform_ack_register: AcpiGenericAddress,
+    pub ack_preserve_mask: u64,
+    pub ack_set_mask: u64,
+    pub reserved2: u64,
+    pub cmd_complete_register: AcpiGenericAddress,
+    pub cmd_complete_mask: u64,
+    pub cmd_update_register: AcpiGenericAddress,
+    pub cmd_update_preserve_mask: u64,
+    pub cmd_update_set_mask: u64,
+    pub error_status_register: AcpiGenericAddress,
+    pub error_status_mask: u64,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiPcctHwReg {
-    pub Header: FfiAcpiSubtableHeader,
-    pub Version: u16,
-    pub BaseAddress: u64,
-    pub Length: u64,
-    pub DoorbellRegister: AcpiGenericAddress,
-    pub DoorbellPreserve: u64,
-    pub DoorbellWrite: u64,
-    pub CmdCompleteRegister: AcpiGenericAddress,
-    pub CmdCompleteMask: u64,
-    pub ErrorStatusRegister: AcpiGenericAddress,
-    pub ErrorStatusMask: u64,
-    pub NominalLatency: u32,
-    pub MinTurnaroundTime: u32,
+    pub header: FfiAcpiSubtableHeader,
+    pub version: u16,
+    pub base_address: u64,
+    pub length: u64,
+    pub doorbell_register: AcpiGenericAddress,
+    pub doorbell_preserve: u64,
+    pub doorbell_write: u64,
+    pub cmd_complete_register: AcpiGenericAddress,
+    pub cmd_complete_mask: u64,
+    pub error_status_register: AcpiGenericAddress,
+    pub error_status_mask: u64,
+    pub nominal_latency: u32,
+    pub min_turnaround_time: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiPcctSharedMemory {
-    pub Signature: u32,
-    pub Command: u16,
-    pub Status: u16,
+    pub signature: u32,
+    pub command: u16,
+    pub status: u16,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiPcctExtPccSharedMemory {
-    pub Signature: u32,
-    pub Flags: u32,
-    pub Length: u32,
-    pub Command: u32,
+    pub signature: u32,
+    pub flags: u32,
+    pub length: u32,
+    pub command: u32,
 }
 

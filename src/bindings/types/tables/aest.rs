@@ -7,95 +7,95 @@ use crate::bindings::types::{__IncompleteArrayField, FfiAcpiTableHeader};
 /// 
 #[repr(C, packed)]
 pub struct FfiAcpiTableAest {
-    pub Header: FfiAcpiTableHeader,
-    NodeArray: __IncompleteArrayField<*mut ::core::ffi::c_void>,
+    pub header: FfiAcpiTableHeader,
+    node_array: __IncompleteArrayField<*mut ::core::ffi::c_void>,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiAestHdr {
-    pub Type: u8,
-    pub Length: u16,
-    pub Reserved: u8,
-    pub NodeSpecificOffset: u32,
-    pub NodeInterfaceOffset: u32,
-    pub NodeInterruptOffset: u32,
-    pub NodeInterruptCount: u32,
-    pub TimestampRate: u64,
-    pub Reserved1: u64,
-    pub ErrorInjectionRate: u64,
+    pub node_type: u8,
+    pub length: u16,
+    pub reserved: u8,
+    pub node_specific_offset: u32,
+    pub node_interface_offset: u32,
+    pub node_interrupt_offset: u32,
+    pub node_interrupt_count: u32,
+    pub timestamp_rate: u64,
+    pub reserved1: u64,
+    pub error_injection_rate: u64,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiAestProcessor {
-    pub ProcessorId: u32,
-    pub ResourceType: u8,
-    pub Reserved: u8,
-    pub Flags: u8,
-    pub Revision: u8,
-    pub ProcessorAffinity: u64,
+    pub processor_id: u32,
+    pub resource_type: u8,
+    pub reserved: u8,
+    pub flags: u8,
+    pub revision: u8,
+    pub processor_affinity: u64,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiAestProcessorCache {
-    pub CacheReference: u32,
-    pub Reserved: u32,
+    pub cache_reference: u32,
+    pub reserved: u32,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiAestProcessorTlb {
-    pub TlbLevel: u32,
-    pub Reserved: u32,
+    pub tlb_level: u32,
+    pub reserved: u32,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiAestProcessorGeneric {
-    pub Resource: *mut u8,
+    pub resource: *mut u8,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiAestMemory {
-    pub SratProximityDomain: u32,
+    pub srat_proximity_domain: u32,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiAestSmmu {
-    pub IortNodeReference: u32,
-    pub SubcomponentReference: u32,
+    pub iort_node_reference: u32,
+    pub subcomponent_reference: u32,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiAestVendor {
-    pub AcpiHid: u32,
-    pub AcpiUid: u32,
-    pub VendorSpecificData: [u8; 16usize],
+    pub acpi_hid: u32,
+    pub acpi_uid: u32,
+    pub vendor_specific_data: [u8; 16usize],
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiAestGic {
-    pub InterfaceType: u32,
-    pub InstanceId: u32,
+    pub interface_type: u32,
+    pub instance_id: u32,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiAestNodeInterface {
-    pub Type: u8,
-    pub Reserved: [u8; 3usize],
-    pub Flags: u32,
-    pub Address: u64,
-    pub ErrorRecordIndex: u32,
-    pub ErrorRecordCount: u32,
-    pub ErrorRecordImplemented: u64,
-    pub ErrorStatusReporting: u64,
-    pub AddressingMode: u64,
+    pub node_type: u8,
+    pub reserved: [u8; 3usize],
+    pub flags: u32,
+    pub address: u64,
+    pub error_record_index: u32,
+    pub error_record_count: u32,
+    pub error_record_implemented: u64,
+    pub error_status_reporting: u64,
+    pub addressing_mode: u64,
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiAestNodeInterrupt {
-    pub Type: u8,
-    pub Reserved: [u8; 2usize],
-    pub Flags: u8,
-    pub Gsiv: u32,
-    pub IortId: u8,
-    pub Reserved1: [u8; 3usize],
+    pub node_type: u8,
+    pub reserved: [u8; 2usize],
+    pub flags: u8,
+    pub gsiv: u32,
+    pub iort_id: u8,
+    pub reserved1: [u8; 3usize],
 }

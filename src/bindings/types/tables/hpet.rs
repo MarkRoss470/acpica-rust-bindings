@@ -9,19 +9,13 @@ use crate::{bindings::types::FfiAcpiTableHeader, interface::AcpiGenericAddress};
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableHpet {
-    pub Header: FfiAcpiTableHeader,
-    pub Id: u32,
-    pub Address: AcpiGenericAddress,
-    pub Sequence: u8,
-    pub MinimumTick: u16,
-    pub Flags: u8,
+    pub header: FfiAcpiTableHeader,
+    pub id: u32,
+    pub address: AcpiGenericAddress,
+    pub sequence: u8,
+    pub minimum_tick: u16,
+    pub flags: u8,
 }
-///  HPET - High Precision Event Timer table
-///         Version 1
-/// 
-///  Conforms to \"IA-PC HPET (High Precision Event Timers) Specification\",
-///  Version 1.0a, October 2004
-/// 
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]

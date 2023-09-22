@@ -1,29 +1,27 @@
-use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteArrayField, interface::AcpiGenericAddress};
+use crate::{
+    bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteArrayField,
+    interface::AcpiGenericAddress,
+};
 
 use super::FfiAcpiSubtableHeader;
 
 ///  ASF - Alert Standard Format table (Signature \"ASF!\")
 ///        Revision 0x10
-/// 
+///
 ///  Conforms to the Alert Standard Format Specification V2.0, 23 April 2003
-/// 
+///
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableAsf {
-    pub Header: FfiAcpiTableHeader,
+    pub header: FfiAcpiTableHeader,
 }
-///  ASF - Alert Standard Format table (Signature \"ASF!\")
-///        Revision 0x10
-/// 
-///  Conforms to the Alert Standard Format Specification V2.0, 23 April 2003
-/// 
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiAsfHeader {
-    pub Type: u8,
-    pub Reserved: u8,
-    pub Length: u16,
+    pub header_type: u8,
+    pub reserved: u8,
+    pub length: u16,
 }
 
 #[repr(u32)]
@@ -36,106 +34,104 @@ pub enum FfiAcpiAsfType {
     ACPI_ASF_TYPE_ADDRESS = 4,
     ACPI_ASF_TYPE_RESERVED = 5,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiAsfInfo {
-    pub Header: FfiAcpiAsfHeader,
-    pub MinResetValue: u8,
-    pub MinPollInterval: u8,
-    pub SystemId: u16,
-    pub MfgId: u32,
-    pub Flags: u8,
-    pub Reserved2: [u8; 3usize],
+    pub header: FfiAcpiAsfHeader,
+    pub min_reset_value: u8,
+    pub min_poll_interval: u8,
+    pub system_id: u16,
+    pub mfg_id: u32,
+    pub flags: u8,
+    pub reserved2: [u8; 3usize],
 }
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiAsfAlert {
-    pub Header: FfiAcpiAsfHeader,
-    pub AssertMask: u8,
-    pub DeassertMask: u8,
-    pub Alerts: u8,
-    pub DataLength: u8,
+    pub header: FfiAcpiAsfHeader,
+    pub assert_mask: u8,
+    pub deassert_mask: u8,
+    pub alerts: u8,
+    pub data_length: u8,
 }
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiAsfAlertData {
-    pub Address: u8,
-    pub Command: u8,
-    pub Mask: u8,
-    pub Value: u8,
-    pub SensorType: u8,
-    pub Type: u8,
-    pub Offset: u8,
-    pub SourceType: u8,
-    pub Severity: u8,
-    pub SensorNumber: u8,
-    pub Entity: u8,
-    pub Instance: u8,
+    pub address: u8,
+    pub command: u8,
+    pub mask: u8,
+    pub value: u8,
+    pub sensor_type: u8,
+    pub data_type: u8,
+    pub offset: u8,
+    pub source_type: u8,
+    pub severity: u8,
+    pub sensor_number: u8,
+    pub entity: u8,
+    pub instance: u8,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiAsfRemote {
-    pub Header: FfiAcpiAsfHeader,
-    pub Controls: u8,
-    pub DataLength: u8,
-    pub Reserved2: u16,
+    pub header: FfiAcpiAsfHeader,
+    pub controls: u8,
+    pub data_length: u8,
+    pub reserved2: u16,
 }
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiAsfControlData {
-    pub Function: u8,
-    pub Address: u8,
-    pub Command: u8,
-    pub Value: u8,
+    pub function: u8,
+    pub address: u8,
+    pub command: u8,
+    pub value: u8,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiAsfRmcp {
-    pub Header: FfiAcpiAsfHeader,
-    pub Capabilities: [u8; 7usize],
-    pub CompletionCode: u8,
-    pub EnterpriseId: u32,
-    pub Command: u8,
-    pub Parameter: u16,
-    pub BootOptions: u16,
-    pub OemParameters: u16,
+    pub header: FfiAcpiAsfHeader,
+    pub capabilities: [u8; 7usize],
+    pub completion_code: u8,
+    pub enterprise_id: u32,
+    pub command: u8,
+    pub parameter: u16,
+    pub boot_options: u16,
+    pub oem_parameters: u16,
 }
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiAsfAddress {
-    pub Header: FfiAcpiAsfHeader,
-    pub EpromAddress: u8,
-    pub Devices: u8,
+    pub header: FfiAcpiAsfHeader,
+    pub eprom_address: u8,
+    pub devices: u8,
 }
 
 ///  BERT - Boot Error Record Table (ACPI 4.0)
 ///         Version 1
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableBert {
-    pub Header: FfiAcpiTableHeader,
-    pub RegionLength: u32,
-    pub Address: u64,
+    pub header: FfiAcpiTableHeader,
+    pub region_length: u32,
+    pub address: u64,
 }
-///  BERT - Boot Error Record Table (ACPI 4.0)
-///         Version 1
-/// 
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiBertRegion {
-    pub BlockStatus: u32,
-    pub RawDataOffset: u32,
-    pub RawDataLength: u32,
-    pub DataLength: u32,
-    pub ErrorSeverity: u32,
+    pub block_status: u32,
+    pub raw_data_offset: u32,
+    pub raw_data_length: u32,
+    pub data_length: u32,
+    pub error_severity: u32,
 }
 
 #[repr(u32)]
@@ -147,149 +143,112 @@ pub enum FfiAcpiBertErrorSeverity {
     ACPI_BERT_ERROR_NONE = 3,
     ACPI_BERT_ERROR_RESERVED = 4,
 }
+
 ///  BGRT - Boot Graphics Resource Table (ACPI 5.0)
 ///         Version 1
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableBgrt {
-    pub Header: FfiAcpiTableHeader,
-    pub Version: u16,
-    pub Status: u8,
-    pub ImageType: u8,
-    pub ImageAddress: u64,
-    pub ImageOffsetX: u32,
-    pub ImageOffsetY: u32,
+    pub header: FfiAcpiTableHeader,
+    pub version: u16,
+    pub status: u8,
+    pub image_type: u8,
+    pub image_address: u64,
+    pub image_offset_x: u32,
+    pub image_offset_y: u32,
 }
-///  BGRT - Boot Graphics Resource Table (ACPI 5.0)
-///         Version 1
-/// 
 
 ///  BOOT - Simple Boot Flag Table
 ///         Version 1
-/// 
+///
 ///  Conforms to the \"Simple Boot Flag Specification\", Version 2.1
-/// 
+///
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableBoot {
-    pub Header: FfiAcpiTableHeader,
-    pub CmosIndex: u8,
-    pub Reserved: [u8; 3usize],
+    pub header: FfiAcpiTableHeader,
+    pub cmos_index: u8,
+    pub reserved: [u8; 3usize],
 }
-///  BOOT - Simple Boot Flag Table
-///         Version 1
-/// 
-///  Conforms to the \"Simple Boot Flag Specification\", Version 2.1
-/// 
-
 
 ///  CPEP - Corrected Platform Error Polling table (ACPI 4.0)
 ///         Version 1
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableCpep {
-    pub Header: FfiAcpiTableHeader,
-    pub Reserved: u64,
+    pub header: FfiAcpiTableHeader,
+    pub reserved: u64,
 }
-///  CPEP - Corrected Platform Error Polling table (ACPI 4.0)
-///         Version 1
-/// 
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiCpepPolling {
-    pub Header: FfiAcpiSubtableHeader,
-    pub Id: u8,
-    pub Eid: u8,
-    pub Interval: u32,
+    pub header: FfiAcpiSubtableHeader,
+    pub id: u8,
+    pub eid: u8,
+    pub interval: u32,
 }
-
-
 
 ///  DBGP - Debug Port table
 ///         Version 1
-/// 
+///
 ///  Conforms to the \"Debug Port Specification\", Version 1.00, 2/9/2000
-/// 
+///
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableDbgp {
-    pub Header: FfiAcpiTableHeader,
-    pub Type: u8,
-    pub Reserved: [u8; 3usize],
-    pub DebugPort: AcpiGenericAddress,
+    pub header: FfiAcpiTableHeader,
+    pub port_type: u8,
+    pub reserved: [u8; 3usize],
+    pub debug_port: AcpiGenericAddress,
 }
-///  DBGP - Debug Port table
-///         Version 1
-/// 
-///  Conforms to the \"Debug Port Specification\", Version 1.00, 2/9/2000
-/// 
-
-
 
 ///  ECDT - Embedded Controller Boot Resources Table
 ///         Version 1
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableEcdt {
-    pub Header: FfiAcpiTableHeader,
-    pub Control: AcpiGenericAddress,
-    pub Data: AcpiGenericAddress,
-    pub Uid: u32,
-    pub Gpe: u8,
-    pub Id: [u8; 1usize],
+    pub header: FfiAcpiTableHeader,
+    pub control: AcpiGenericAddress,
+    pub data: AcpiGenericAddress,
+    pub uid: u32,
+    pub gpe: u8,
+    pub id: [u8; 1usize],
 }
-///  ECDT - Embedded Controller Boot Resources Table
-///         Version 1
-/// 
-
-
 
 ///  BDAT - BIOS Data ACPI Table
-/// 
+///
 ///  Conforms to \"BIOS Data ACPI Table\", Interface Specification v4.0 Draft 5
 ///  Nov 2020
-/// 
+///
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableBdat {
-    pub Header: FfiAcpiTableHeader,
-    pub Gas: AcpiGenericAddress,
+    pub header: FfiAcpiTableHeader,
+    pub gas: AcpiGenericAddress,
 }
-///  BDAT - BIOS Data ACPI Table
-/// 
-///  Conforms to \"BIOS Data ACPI Table\", Interface Specification v4.0 Draft 5
-///  Nov 2020
-/// 
-
-
-
 
 ///  LPIT - Low Power Idle Table
-/// 
+///
 ///  Conforms to \"ACPI Low Power Idle Table (LPIT)\" July 2014.
-/// 
+///
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableLpit {
-    pub Header: FfiAcpiTableHeader,
+    pub header: FfiAcpiTableHeader,
 }
-///  LPIT - Low Power Idle Table
-/// 
-///  Conforms to \"ACPI Low Power Idle Table (LPIT)\" July 2014.
-/// 
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiLpitHeader {
-    pub Type: u32,
-    pub Length: u32,
-    pub UniqueId: u16,
-    pub Reserved: u16,
-    pub Flags: u32,
+    pub header_type: u32,
+    pub length: u32,
+    pub unique_id: u16,
+    pub reserved: u16,
+    pub flags: u32,
 }
 
 #[repr(u32)]
@@ -301,163 +260,128 @@ pub enum FfiAcpiLpitType {
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiLpitNative {
-    pub Header: FfiAcpiLpitHeader,
-    pub EntryTrigger: AcpiGenericAddress,
-    pub Residency: u32,
-    pub Latency: u32,
-    pub ResidencyCounter: AcpiGenericAddress,
-    pub CounterFrequency: u64,
+    pub header: FfiAcpiLpitHeader,
+    pub entry_trigger: AcpiGenericAddress,
+    pub residency: u32,
+    pub latency: u32,
+    pub residency_counter: AcpiGenericAddress,
+    pub counter_frequency: u64,
 }
-
 
 ///  MCFG - PCI Memory Mapped Configuration table and subtable
 ///         Version 1
-/// 
+///
 ///  Conforms to \"PCI Firmware Specification\", Revision 3.0, June 20, 2005
-/// 
+///
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableMcfg {
-    pub Header: FfiAcpiTableHeader,
-    pub Reserved: [u8; 8usize],
+    pub header: FfiAcpiTableHeader,
+    pub reserved: [u8; 8usize],
 }
-///  MCFG - PCI Memory Mapped Configuration table and subtable
-///         Version 1
-/// 
-///  Conforms to \"PCI Firmware Specification\", Revision 3.0, June 20, 2005
-/// 
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiMcfgAllocation {
-    pub Address: u64,
-    pub PciSegment: u16,
-    pub StartBusNumber: u8,
-    pub EndBusNumber: u8,
-    pub Reserved: u32,
+    pub address: u64,
+    pub pci_segment: u16,
+    pub start_bus_number: u8,
+    pub end_bus_number: u8,
+    pub reserved: u32,
 }
 
 ///  MCHI - Management Controller Host Interface Table
 ///         Version 1
-/// 
+///
 ///  Conforms to \"Management Component Transport Protocol (MCTP) Host
 ///  Interface Specification\", Revision 1.0.0a, October 13, 2009
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableMchi {
-    pub Header: FfiAcpiTableHeader,
-    pub InterfaceType: u8,
-    pub Protocol: u8,
-    pub ProtocolData: u64,
-    pub InterruptType: u8,
-    pub Gpe: u8,
-    pub PciDeviceFlag: u8,
-    pub GlobalInterrupt: u32,
-    pub ControlRegister: AcpiGenericAddress,
-    pub PciSegment: u8,
-    pub PciBus: u8,
-    pub PciDevice: u8,
-    pub PciFunction: u8,
+    pub header: FfiAcpiTableHeader,
+    pub interface_type: u8,
+    pub protocol: u8,
+    pub protocol_data: u64,
+    pub interrupt_type: u8,
+    pub gpe: u8,
+    pub pci_device_flag: u8,
+    pub global_interrupt: u32,
+    pub control_register: AcpiGenericAddress,
+    pub pci_segment: u8,
+    pub pci_bus: u8,
+    pub pci_device: u8,
+    pub pci_function: u8,
 }
-///  MCHI - Management Controller Host Interface Table
-///         Version 1
-/// 
-///  Conforms to \"Management Component Transport Protocol (MCTP) Host
-///  Interface Specification\", Revision 1.0.0a, October 13, 2009
-/// 
-
 
 ///  MSCT - Maximum System Characteristics Table (ACPI 4.0)
 ///         Version 1
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableMsct {
-    pub Header: FfiAcpiTableHeader,
-    pub ProximityOffset: u32,
-    pub MaxProximityDomains: u32,
-    pub MaxClockDomains: u32,
-    pub MaxAddress: u64,
+    pub header: FfiAcpiTableHeader,
+    pub proximity_offset: u32,
+    pub max_proximity_domains: u32,
+    pub max_clock_domains: u32,
+    pub max_address: u64,
 }
-///  MSCT - Maximum System Characteristics Table (ACPI 4.0)
-///         Version 1
-/// 
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiMsctProximity {
-    pub Revision: u8,
-    pub Length: u8,
-    pub RangeStart: u32,
-    pub RangeEnd: u32,
-    pub ProcessorCapacity: u32,
-    pub MemoryCapacity: u64,
+    pub revision: u8,
+    pub length: u8,
+    pub range_start: u32,
+    pub range_end: u32,
+    pub processor_capacity: u32,
+    pub memory_capacity: u64,
 }
 
 ///  MSDM - Microsoft Data Management table
-/// 
+///
 ///  Conforms to \"Microsoft Software Licensing Tables (SLIC and MSDM)\",
 ///  November 29, 2011. Copyright 2011 Microsoft
-/// 
+///
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableMsdm {
-    pub Header: FfiAcpiTableHeader,
+    pub header: FfiAcpiTableHeader,
 }
-///  MSDM - Microsoft Data Management table
-/// 
-///  Conforms to \"Microsoft Software Licensing Tables (SLIC and MSDM)\",
-///  November 29, 2011. Copyright 2011 Microsoft
-/// 
-
-
-
 
 ///  PDTT - Platform Debug Trigger Table (ACPI 6.2)
 ///         Version 0
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTablePdtt {
-    pub Header: FfiAcpiTableHeader,
-    pub TriggerCount: u8,
-    pub Reserved: [u8; 3usize],
-    pub ArrayOffset: u32,
+    pub header: FfiAcpiTableHeader,
+    pub trigger_count: u8,
+    pub reserved: [u8; 3usize],
+    pub array_offset: u32,
 }
-///  PDTT - Platform Debug Trigger Table (ACPI 6.2)
-///         Version 0
-/// 
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiPdttChannel {
-    pub SubchannelId: u8,
-    pub Flags: u8,
+    pub subchannel_id: u8,
+    pub flags: u8,
 }
-
-
 
 ///  RGRT - Regulatory Graphics Resource Table
 ///         Version 1
-/// 
+///
 ///  Conforms to \"ACPI RGRT\" available at:
 ///  https://microsoft.github.io/mu/dyn/mu_plus/MsCorePkg/AcpiRGRT/feature_acpi_rgrt/
-/// 
+///
 #[repr(C, packed)]
 pub struct FfiAcpiTableRgrt {
-    pub Header: FfiAcpiTableHeader,
-    pub Version: u16,
-    pub ImageType: u8,
-    pub Reserved: u8,
-    Image: __IncompleteArrayField<u8>,
+    pub header: FfiAcpiTableHeader,
+    pub version: u16,
+    pub image_type: u8,
+    pub reserved: u8,
+    image: __IncompleteArrayField<u8>,
 }
-///  RGRT - Regulatory Graphics Resource Table
-///         Version 1
-/// 
-///  Conforms to \"ACPI RGRT\" available at:
-///  https://microsoft.github.io/mu/dyn/mu_plus/MsCorePkg/AcpiRGRT/feature_acpi_rgrt/
-/// 
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
@@ -466,63 +390,49 @@ pub enum FfiAcpiRgrtImageType {
     ACPI_RGRT_IMAGE_TYPE_PNG = 1,
     ACPI_RGRT_TYPE_RESERVED = 2,
 }
+
 ///  SBST - Smart Battery Specification Table
 ///         Version 1
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableSbst {
-    pub Header: FfiAcpiTableHeader,
-    pub WarningLevel: u32,
-    pub LowLevel: u32,
-    pub CriticalLevel: u32,
+    pub header: FfiAcpiTableHeader,
+    pub warning_level: u32,
+    pub low_level: u32,
+    pub critical_level: u32,
 }
-///  SBST - Smart Battery Specification Table
-///         Version 1
-/// 
 
 ///  SDEI - Software Delegated Exception Interface Descriptor Table
-/// 
+///
 ///  Conforms to \"Software Delegated Exception Interface (SDEI)\" ARM DEN0054A,
 ///  May 8th, 2017. Copyright 2017 ARM Ltd.
-/// 
+///
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableSdei {
-    pub Header: FfiAcpiTableHeader,
+    pub header: FfiAcpiTableHeader,
 }
-///  SDEI - Software Delegated Exception Interface Descriptor Table
-/// 
-///  Conforms to \"Software Delegated Exception Interface (SDEI)\" ARM DEN0054A,
-///  May 8th, 2017. Copyright 2017 ARM Ltd.
-/// 
-
-
 
 ///  SVKL - Storage Volume Key Location Table (ACPI 6.4)
 ///         From: \"Guest-Host-Communication Interface (GHCI) for Intel
 ///         Trust Domain Extensions (Intel TDX)\".
 ///         Version 1
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableSvkl {
-    pub Header: FfiAcpiTableHeader,
-    pub Count: u32,
+    pub header: FfiAcpiTableHeader,
+    pub count: u32,
 }
-///  SVKL - Storage Volume Key Location Table (ACPI 6.4)
-///         From: \"Guest-Host-Communication Interface (GHCI) for Intel
-///         Trust Domain Extensions (Intel TDX)\".
-///         Version 1
-/// 
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiSvklKey {
-    pub Type: u16,
-    pub Format: u16,
-    pub Size: u32,
-    pub Address: u64,
+    pub key_type: u16,
+    pub format: u16,
+    pub size: u32,
+    pub address: u64,
 }
 
 #[repr(u32)]
@@ -531,114 +441,94 @@ pub enum FfiAcpiSvklType {
     ACPI_SVKL_TYPE_MAIN_STORAGE = 0,
     ACPI_SVKL_TYPE_RESERVED = 1,
 }
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiSvklFormat {
     ACPI_SVKL_FORMAT_RAW_BINARY = 0,
     ACPI_SVKL_FORMAT_RESERVED = 1,
 }
+
 ///  SLIC - Software Licensing Description Table
-/// 
+///
 ///  Conforms to \"Microsoft Software Licensing Tables (SLIC and MSDM)\",
 ///  November 29, 2011. Copyright 2011 Microsoft
-/// 
+///
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableSlic {
-    pub Header: FfiAcpiTableHeader,
+    pub header: FfiAcpiTableHeader,
 }
-///  SLIC - Software Licensing Description Table
-/// 
-///  Conforms to \"Microsoft Software Licensing Tables (SLIC and MSDM)\",
-///  November 29, 2011. Copyright 2011 Microsoft
-/// 
 
 ///  SLIT - System Locality Distance Information Table
 ///         Version 1
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableSlit {
-    pub Header: FfiAcpiTableHeader,
-    pub LocalityCount: u64,
-    pub Entry: [u8; 1usize],
+    pub header: FfiAcpiTableHeader,
+    pub locality_count: u64,
+    pub entry: [u8; 1usize],
 }
-///  SLIT - System Locality Distance Information Table
-///         Version 1
-/// 
 
 ///  SPCR - Serial Port Console Redirection table
 ///         Version 2
-/// 
+///
 ///  Conforms to \"Serial Port Console Redirection Table\",
 ///  Version 1.03, August 10, 2015
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableSpcr {
-    pub Header: FfiAcpiTableHeader,
-    pub InterfaceType: u8,
-    pub Reserved: [u8; 3usize],
-    pub SerialPort: AcpiGenericAddress,
-    pub InterruptType: u8,
-    pub PcInterrupt: u8,
-    pub Interrupt: u32,
-    pub BaudRate: u8,
-    pub Parity: u8,
-    pub StopBits: u8,
-    pub FlowControl: u8,
-    pub TerminalType: u8,
-    pub Reserved1: u8,
-    pub PciDeviceId: u16,
-    pub PciVendorId: u16,
-    pub PciBus: u8,
-    pub PciDevice: u8,
-    pub PciFunction: u8,
-    pub PciFlags: u32,
-    pub PciSegment: u8,
-    pub Reserved2: u32,
+    pub header: FfiAcpiTableHeader,
+    pub interface_type: u8,
+    pub reserved: [u8; 3usize],
+    pub serial_port: AcpiGenericAddress,
+    pub interrupt_type: u8,
+    pub pc_interrupt: u8,
+    pub interrupt: u32,
+    pub baud_rate: u8,
+    pub parity: u8,
+    pub stop_bits: u8,
+    pub flow_control: u8,
+    pub terminal_type: u8,
+    pub reserved1: u8,
+    pub pci_device_id: u16,
+    pub pci_vendor_id: u16,
+    pub pci_bus: u8,
+    pub pci_device: u8,
+    pub pci_function: u8,
+    pub pci_flags: u32,
+    pub pci_segment: u8,
+    pub reserved2: u32,
 }
-///  SPCR - Serial Port Console Redirection table
-///         Version 2
-/// 
-///  Conforms to \"Serial Port Console Redirection Table\",
-///  Version 1.03, August 10, 2015
-/// 
 
 ///  SPMI - Server Platform Management Interface table
 ///         Version 5
-/// 
+///
 ///  Conforms to \"Intelligent Platform Management Interface Specification
 ///  Second Generation v2.0\", Document Revision 1.0, February 12, 2004 with
 ///  June 12, 2009 markup.
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableSpmi {
-    pub Header: FfiAcpiTableHeader,
-    pub InterfaceType: u8,
-    pub Reserved: u8,
-    pub SpecRevision: u16,
-    pub InterruptType: u8,
-    pub GpeNumber: u8,
-    pub Reserved1: u8,
-    pub PciDeviceFlag: u8,
-    pub Interrupt: u32,
-    pub IpmiRegister: AcpiGenericAddress,
-    pub PciSegment: u8,
-    pub PciBus: u8,
-    pub PciDevice: u8,
-    pub PciFunction: u8,
-    pub Reserved2: u8,
+    pub header: FfiAcpiTableHeader,
+    pub interface_type: u8,
+    pub reserved: u8,
+    pub spec_revision: u16,
+    pub interrupt_type: u8,
+    pub gpe_number: u8,
+    pub reserved1: u8,
+    pub pci_device_flag: u8,
+    pub interrupt: u32,
+    pub ipmi_register: AcpiGenericAddress,
+    pub pci_segment: u8,
+    pub pci_bus: u8,
+    pub pci_device: u8,
+    pub pci_function: u8,
+    pub reserved2: u8,
 }
-///  SPMI - Server Platform Management Interface table
-///         Version 5
-/// 
-///  Conforms to \"Intelligent Platform Management Interface Specification
-///  Second Generation v2.0\", Document Revision 1.0, February 12, 2004 with
-///  June 12, 2009 markup.
-/// 
-
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiSpmiInterfaceTypes {
@@ -650,89 +540,72 @@ pub enum FfiAcpiSpmiInterfaceTypes {
     ACPI_SPMI_RESERVED = 5,
 }
 
-
 ///  STAO - Status Override Table (_STA override) - ACPI 6.0
 ///         Version 1
-/// 
+///
 ///  Conforms to \"ACPI Specification for Status Override Table\"
 ///  6 January 2015
-/// 
+///
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableStao {
-    pub Header: FfiAcpiTableHeader,
-    pub IgnoreUart: u8,
+    pub header: FfiAcpiTableHeader,
+    pub ignore_uart: u8,
 }
-///  STAO - Status Override Table (_STA override) - ACPI 6.0
-///         Version 1
-/// 
-///  Conforms to \"ACPI Specification for Status Override Table\"
-///  6 January 2015
-/// 
-
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableTcpaClient {
-    pub MinimumLogLength: u32,
-    pub LogAddress: u64,
+    pub minimum_log_length: u32,
+    pub log_address: u64,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableTcpaServer {
-    pub Reserved: u16,
-    pub MinimumLogLength: u64,
-    pub LogAddress: u64,
-    pub SpecRevision: u16,
-    pub DeviceFlags: u8,
-    pub InterruptFlags: u8,
-    pub GpeNumber: u8,
-    pub Reserved2: [u8; 3usize],
-    pub GlobalInterrupt: u32,
-    pub Address: AcpiGenericAddress,
-    pub Reserved3: u32,
-    pub ConfigAddress: AcpiGenericAddress,
-    pub Group: u8,
-    pub Bus: u8,
-    pub Device: u8,
-    pub Function: u8,
+    pub reserved: u16,
+    pub minimum_log_length: u64,
+    pub log_address: u64,
+    pub spec_revision: u16,
+    pub device_flags: u8,
+    pub interrupt_flags: u8,
+    pub gpe_number: u8,
+    pub reserved2: [u8; 3usize],
+    pub global_interrupt: u32,
+    pub address: AcpiGenericAddress,
+    pub reserved3: u32,
+    pub config_address: AcpiGenericAddress,
+    pub group: u8,
+    pub bus: u8,
+    pub device: u8,
+    pub function: u8,
 }
-
 
 ///  UEFI - UEFI Boot optimization Table
 ///         Version 1
-/// 
+///
 ///  Conforms to \"Unified Extensible Firmware Interface Specification\",
 ///  Version 2.3, May 8, 2009
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableUefi {
-    pub Header: FfiAcpiTableHeader,
-    pub Identifier: [u8; 16usize],
-    pub DataOffset: u16,
+    pub header: FfiAcpiTableHeader,
+    pub identifier: [u8; 16usize],
+    pub data_offset: u16,
 }
-///  UEFI - UEFI Boot optimization Table
-///         Version 1
-/// 
-///  Conforms to \"Unified Extensible Firmware Interface Specification\",
-///  Version 2.3, May 8, 2009
-/// 
-
-
 
 ///  XENV - Xen Environment Table (ACPI 6.0)
 ///         Version 1
-/// 
+///
 ///  Conforms to \"ACPI Specification for Xen Environment Table\" 4 January 2015
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableXenv {
-    pub Header: FfiAcpiTableHeader,
-    pub GrantTableAddress: u64,
-    pub GrantTableSize: u64,
-    pub EventInterrupt: u32,
-    pub EventFlags: u8,
+    pub header: FfiAcpiTableHeader,
+    pub grant_table_address: u64,
+    pub grant_table_size: u64,
+    pub event_interrupt: u32,
+    pub event_flags: u8,
 }

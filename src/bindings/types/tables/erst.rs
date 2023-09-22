@@ -6,16 +6,18 @@ use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::FfiAcpiWheaHea
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableErst {
-    pub Header: FfiAcpiTableHeader,
-    pub HeaderLength: u32,
-    pub Reserved: u32,
-    pub Entries: u32,
+    pub header: FfiAcpiTableHeader,
+    pub header_length: u32,
+    pub reserved: u32,
+    pub entries: u32,
 }
+
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiErstEntry {
-    WheaHeader: FfiAcpiWheaHeader,
+    whea_header: FfiAcpiWheaHeader,
 }
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiErstActions {
@@ -38,6 +40,7 @@ pub enum FfiAcpiErstActions {
     ACPI_ERST_EXECUTE_TIMINGS = 16,
     ACPI_ERST_ACTION_RESERVED = 17,
 }
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiErstInstructions {
@@ -62,6 +65,7 @@ pub enum FfiAcpiErstInstructions {
     ACPI_ERST_MOVE_DATA = 18,
     ACPI_ERST_INSTRUCTION_RESERVED = 19,
 }
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiErstCommandStatus {
@@ -73,9 +77,10 @@ pub enum FfiAcpiErstCommandStatus {
     ACPI_ERST_NOT_FOUND = 5,
     ACPI_ERST_STATUS_RESERVED = 6,
 }
+
 #[repr(C, packed)]
 #[derive(Copy, Clone)]
 pub struct FfiAcpiErstInfo {
-    pub Signature: u16,
-    pub Data: [u8; 48usize],
+    pub signature: u16,
+    pub data: [u8; 48usize],
 }

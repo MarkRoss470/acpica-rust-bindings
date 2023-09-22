@@ -9,29 +9,31 @@ use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteAr
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableDbg2 {
-    pub Header: FfiAcpiTableHeader,
-    pub InfoOffset: u32,
-    pub InfoCount: u32,
+    pub header: FfiAcpiTableHeader,
+    pub info_offset: u32,
+    pub info_count: u32,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiDbg2Header {
-    pub InfoOffset: u32,
-    pub InfoCount: u32,
+    pub info_offset: u32,
+    pub info_count: u32,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiDbg2Device {
-    pub Revision: u8,
-    pub Length: u16,
-    pub RegisterCount: u8,
-    pub NamepathLength: u16,
-    pub NamepathOffset: u16,
-    pub OemDataLength: u16,
-    pub OemDataOffset: u16,
-    pub PortType: u16,
-    pub PortSubtype: u16,
-    pub Reserved: u16,
-    pub BaseAddressOffset: u16,
-    pub AddressSizeOffset: u16,
+    pub revision: u8,
+    pub length: u16,
+    pub register_count: u8,
+    pub namepath_length: u16,
+    pub namepath_offset: u16,
+    pub oem_data_length: u16,
+    pub oem_data_offset: u16,
+    pub port_type: u16,
+    pub port_subtype: u16,
+    pub reserved: u16,
+    pub base_address_offset: u16,
+    pub address_size_offset: u16,
 }

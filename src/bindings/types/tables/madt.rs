@@ -8,13 +8,10 @@ use super::FfiAcpiSubtableHeader;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableMadt {
-    pub Header: FfiAcpiTableHeader,
-    pub Address: u32,
-    pub Flags: u32,
+    pub header: FfiAcpiTableHeader,
+    pub address: u32,
+    pub flags: u32,
 }
-///  MADT - Multiple APIC Description Table
-///         Version 3
-/// 
 
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
@@ -38,148 +35,149 @@ pub enum FfiAcpiMadtType {
     ACPI_MADT_TYPE_MULTIPROC_WAKEUP = 16,
     ACPI_MADT_TYPE_RESERVED = 17,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiMadtLocalApic {
-    pub Header: FfiAcpiSubtableHeader,
-    pub ProcessorId: u8,
-    pub Id: u8,
-    pub LapicFlags: u32,
+    pub header: FfiAcpiSubtableHeader,
+    pub processor_id: u8,
+    pub id: u8,
+    pub lapic_flags: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiMadtIoApic {
-    pub Header: FfiAcpiSubtableHeader,
-    pub Id: u8,
-    pub Reserved: u8,
-    pub Address: u32,
-    pub GlobalIrqBase: u32,
+    pub header: FfiAcpiSubtableHeader,
+    pub id: u8,
+    pub reserved: u8,
+    pub address: u32,
+    pub global_irq_base: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiMadtInterruptOverride {
-    pub Header: FfiAcpiSubtableHeader,
-    pub Bus: u8,
-    pub SourceIrq: u8,
-    pub GlobalIrq: u32,
-    pub IntiFlags: u16,
+    pub header: FfiAcpiSubtableHeader,
+    pub bus: u8,
+    pub source_irq: u8,
+    pub global_irq: u32,
+    pub inti_flags: u16,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiMadtNmiSource {
-    pub Header: FfiAcpiSubtableHeader,
-    pub IntiFlags: u16,
-    pub GlobalIrq: u32,
+    pub header: FfiAcpiSubtableHeader,
+    pub inti_flags: u16,
+    pub global_irq: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiMadtLocalApicNmi {
-    pub Header: FfiAcpiSubtableHeader,
-    pub ProcessorId: u8,
-    pub IntiFlags: u16,
-    pub Lint: u8,
+    pub header: FfiAcpiSubtableHeader,
+    pub processor_id: u8,
+    pub inti_flags: u16,
+    pub lint: u8,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiMadtLocalApicOverride {
-    pub Header: FfiAcpiSubtableHeader,
-    pub Reserved: u16,
-    pub Address: u64,
+    pub header: FfiAcpiSubtableHeader,
+    pub reserved: u16,
+    pub address: u64,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiMadtIoSapic {
-    pub Header: FfiAcpiSubtableHeader,
-    pub Id: u8,
-    pub Reserved: u8,
-    pub GlobalIrqBase: u32,
-    pub Address: u64,
+    pub header: FfiAcpiSubtableHeader,
+    pub id: u8,
+    pub reserved: u8,
+    pub global_irq_base: u32,
+    pub address: u64,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiMadtLocalSapic {
-    pub Header: FfiAcpiSubtableHeader,
-    pub ProcessorId: u8,
-    pub Id: u8,
-    pub Eid: u8,
-    pub Reserved: [u8; 3usize],
-    pub LapicFlags: u32,
-    pub Uid: u32,
-    pub UidString: [i8; 1usize],
+    pub header: FfiAcpiSubtableHeader,
+    pub processor_id: u8,
+    pub id: u8,
+    pub eid: u8,
+    pub reserved: [u8; 3usize],
+    pub lapic_flags: u32,
+    pub uid: u32,
+    pub uid_string: [i8; 1usize],
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiMadtInterruptSource {
-    pub Header: FfiAcpiSubtableHeader,
-    pub IntiFlags: u16,
-    pub Type: u8,
-    pub Id: u8,
-    pub Eid: u8,
-    pub IoSapicVector: u8,
-    pub GlobalIrq: u32,
-    pub Flags: u32,
+    pub header: FfiAcpiSubtableHeader,
+    pub inti_flags: u16,
+    pub source_type: u8,
+    pub id: u8,
+    pub eid: u8,
+    pub io_sapic_vector: u8,
+    pub global_irq: u32,
+    pub flags: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiMadtLocalX2apic {
-    pub Header: FfiAcpiSubtableHeader,
-    pub Reserved: u16,
-    pub LocalApicId: u32,
-    pub LapicFlags: u32,
-    pub Uid: u32,
+    pub header: FfiAcpiSubtableHeader,
+    pub reserved: u16,
+    pub local_apic_id: u32,
+    pub lapic_flags: u32,
+    pub uid: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiMadtLocalX2apicNmi {
-    pub Header: FfiAcpiSubtableHeader,
-    pub IntiFlags: u16,
-    pub Uid: u32,
-    pub Lint: u8,
-    pub Reserved: [u8; 3usize],
+    pub header: FfiAcpiSubtableHeader,
+    pub inti_flags: u16,
+    pub uid: u32,
+    pub lint: u8,
+    pub reserved: [u8; 3usize],
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiMadtGenericInterrupt {
-    pub Header: FfiAcpiSubtableHeader,
-    pub Reserved: u16,
-    pub CpuInterfaceNumber: u32,
-    pub Uid: u32,
-    pub Flags: u32,
-    pub ParkingVersion: u32,
-    pub PerformanceInterrupt: u32,
-    pub ParkedAddress: u64,
-    pub BaseAddress: u64,
-    pub GicvBaseAddress: u64,
-    pub GichBaseAddress: u64,
-    pub VgicInterrupt: u32,
-    pub GicrBaseAddress: u64,
-    pub ArmMpidr: u64,
-    pub EfficiencyClass: u8,
-    pub Reserved2: [u8; 1usize],
-    pub SpeInterrupt: u16,
+    pub header: FfiAcpiSubtableHeader,
+    pub reserved: u16,
+    pub cpu_interface_number: u32,
+    pub uid: u32,
+    pub flags: u32,
+    pub parking_version: u32,
+    pub performance_interrupt: u32,
+    pub parked_address: u64,
+    pub base_address: u64,
+    pub gicv_base_address: u64,
+    pub gich_base_address: u64,
+    pub vgic_interrupt: u32,
+    pub gicr_base_address: u64,
+    pub arm_mpidr: u64,
+    pub efficiency_class: u8,
+    pub reserved2: [u8; 1usize],
+    pub spe_interrupt: u16,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiMadtGenericDistributor {
-    pub Header: FfiAcpiSubtableHeader,
-    pub Reserved: u16,
-    pub GicId: u32,
-    pub BaseAddress: u64,
-    pub GlobalIrqBase: u32,
-    pub Version: u8,
-    pub Reserved2: [u8; 3usize],
+    pub header: FfiAcpiSubtableHeader,
+    pub reserved: u16,
+    pub gic_id: u32,
+    pub base_address: u64,
+    pub global_irq_base: u32,
+    pub version: u8,
+    pub reserved2: [u8; 3usize],
 }
 
 #[repr(u32)]
@@ -195,50 +193,50 @@ pub enum FfiAcpiMadtGicVersion {
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiMadtGenericMsiFrame {
-    pub Header: FfiAcpiSubtableHeader,
-    pub Reserved: u16,
-    pub MsiFrameId: u32,
-    pub BaseAddress: u64,
-    pub Flags: u32,
-    pub SpiCount: u16,
-    pub SpiBase: u16,
+    pub header: FfiAcpiSubtableHeader,
+    pub reserved: u16,
+    pub msi_frame_id: u32,
+    pub base_address: u64,
+    pub flags: u32,
+    pub spi_count: u16,
+    pub spi_base: u16,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiMadtGenericRedistributor {
-    pub Header: FfiAcpiSubtableHeader,
-    pub Reserved: u16,
-    pub BaseAddress: u64,
-    pub Length: u32,
+    pub header: FfiAcpiSubtableHeader,
+    pub reserved: u16,
+    pub base_address: u64,
+    pub length: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiMadtGenericTranslator {
-    pub Header: FfiAcpiSubtableHeader,
-    pub Reserved: u16,
-    pub TranslationId: u32,
-    pub BaseAddress: u64,
-    pub Reserved2: u32,
+    pub header: FfiAcpiSubtableHeader,
+    pub reserved: u16,
+    pub translation_id: u32,
+    pub base_address: u64,
+    pub reserved2: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiMadtMultiprocWakeup {
-    pub Header: FfiAcpiSubtableHeader,
-    pub MailboxVersion: u16,
-    pub Reserved: u32,
-    pub BaseAddress: u64,
+    pub header: FfiAcpiSubtableHeader,
+    pub mailbox_version: u16,
+    pub reserved: u32,
+    pub base_address: u64,
 }
 
 #[repr(C, packed)]
 #[derive(Copy, Clone)]
 pub struct FfiAcpiMadtMultiprocWakeupMailbox {
-    pub Command: u16,
-    pub Reserved: u16,
-    pub ApicId: u32,
-    pub WakeupVector: u64,
-    pub ReservedOs: [u8; 2032usize],
-    pub ReservedFirmware: [u8; 2048usize],
+    pub command: u16,
+    pub reserved: u16,
+    pub apic_id: u32,
+    pub wakeup_vector: u64,
+    pub reserved_os: [u8; 2032usize],
+    pub reserved_firmware: [u8; 2048usize],
 }

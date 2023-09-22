@@ -6,18 +6,19 @@ use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::{__IncompleteA
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableEinj {
-    pub Header: FfiAcpiTableHeader,
-    pub HeaderLength: u32,
-    pub Flags: u8,
-    pub Reserved: [u8; 3usize],
-    pub Entries: u32,
+    pub header: FfiAcpiTableHeader,
+    pub header_length: u32,
+    pub flags: u8,
+    pub reserved: [u8; 3usize],
+    pub entries: u32,
 }
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiEinjEntry {
-    WheaHeader: FfiAcpiWheaHeader,
+    whea_header: FfiAcpiWheaHeader,
 }
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiEinjActions {
@@ -34,6 +35,7 @@ pub enum FfiAcpiEinjActions {
     ACPI_EINJ_ACTION_RESERVED = 10,
     ACPI_EINJ_TRIGGER_ERROR = 255,
 }
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiEinjInstructions {
@@ -45,35 +47,39 @@ pub enum FfiAcpiEinjInstructions {
     ACPI_EINJ_FLUSH_CACHELINE = 5,
     ACPI_EINJ_INSTRUCTION_RESERVED = 6,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiEinjErrorTypeWithAddr {
-    pub ErrorType: u32,
-    pub VendorStructOffset: u32,
-    pub Flags: u32,
-    pub ApicId: u32,
-    pub Address: u64,
-    pub Range: u64,
-    pub PcieId: u32,
+    pub error_type: u32,
+    pub vendor_struct_offset: u32,
+    pub flags: u32,
+    pub apic_id: u32,
+    pub address: u64,
+    pub range: u64,
+    pub pcie_id: u32,
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiEinjVendor {
-    pub Length: u32,
-    pub PcieId: u32,
-    pub VendorId: u16,
-    pub DeviceId: u16,
-    pub RevisionId: u8,
-    pub Reserved: [u8; 3usize],
+    pub length: u32,
+    pub pcie_id: u32,
+    pub vendor_id: u16,
+    pub device_id: u16,
+    pub revision_id: u8,
+    pub reserved: [u8; 3usize],
 }
+
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiEinjTrigger {
-    pub HeaderSize: u32,
-    pub Revision: u32,
-    pub TableSize: u32,
-    pub EntryCount: u32,
+    pub header_size: u32,
+    pub revision: u32,
+    pub table_size: u32,
+    pub entry_count: u32,
 }
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum FfiAcpiEinjCommandStatus {

@@ -9,36 +9,30 @@ use crate::{bindings::types::FfiAcpiTableHeader, interface::AcpiGenericAddress};
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableWdat {
-    pub Header: FfiAcpiTableHeader,
-    pub HeaderLength: u32,
-    pub PciSegment: u16,
-    pub PciBus: u8,
-    pub PciDevice: u8,
-    pub PciFunction: u8,
-    pub Reserved: [u8; 3usize],
-    pub TimerPeriod: u32,
-    pub MaxCount: u32,
-    pub MinCount: u32,
-    pub Flags: u8,
-    pub Reserved2: [u8; 3usize],
-    pub Entries: u32,
+    pub header: FfiAcpiTableHeader,
+    pub header_length: u32,
+    pub pci_segment: u16,
+    pub pci_bus: u8,
+    pub pci_device: u8,
+    pub pci_function: u8,
+    pub reserved: [u8; 3usize],
+    pub timer_period: u32,
+    pub max_count: u32,
+    pub min_count: u32,
+    pub flags: u8,
+    pub reserved2: [u8; 3usize],
+    pub entries: u32,
 }
-///  WDAT - Watchdog Action Table
-///         Version 1
-/// 
-///  Conforms to \"Hardware Watchdog Timers Design Specification\",
-///  Copyright 2006 Microsoft Corporation.
-/// 
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiWdatEntry {
-    pub Action: u8,
-    pub Instruction: u8,
-    pub Reserved: u16,
-    pub RegisterRegion: AcpiGenericAddress,
-    pub Value: u32,
-    pub Mask: u32,
+    pub action: u8,
+    pub instruction: u8,
+    pub reserved: u16,
+    pub register_region: AcpiGenericAddress,
+    pub value: u32,
+    pub mask: u32,
 }
 
 #[repr(u32)]
@@ -70,6 +64,7 @@ pub enum FfiAcpiWdatInstructions {
     ACPI_WDAT_INSTRUCTION_RESERVED = 4,
     ACPI_WDAT_PRESERVE_REGISTER = 128,
 }
+
 ///  WDDT - Watchdog Descriptor Table
 ///         Version 1
 /// 
@@ -79,23 +74,17 @@ pub enum FfiAcpiWdatInstructions {
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableWddt {
-    pub Header: FfiAcpiTableHeader,
-    pub SpecVersion: u16,
-    pub TableVersion: u16,
-    pub PciVendorId: u16,
-    pub Address: AcpiGenericAddress,
-    pub MaxCount: u16,
-    pub MinCount: u16,
-    pub Period: u16,
-    pub Status: u16,
-    pub Capability: u16,
+    pub header: FfiAcpiTableHeader,
+    pub spec_version: u16,
+    pub table_version: u16,
+    pub pci_vendor_id: u16,
+    pub address: AcpiGenericAddress,
+    pub max_count: u16,
+    pub min_count: u16,
+    pub period: u16,
+    pub status: u16,
+    pub capability: u16,
 }
-///  WDDT - Watchdog Descriptor Table
-///         Version 1
-/// 
-///  Conforms to \"Using the Intel ICH Family Watchdog Timer (WDT)\",
-///  Version 001, September 2002
-/// 
 
 ///  WDRT - Watchdog Resource Table
 ///         Version 1
@@ -106,16 +95,16 @@ pub struct FfiAcpiTableWddt {
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub struct FfiAcpiTableWdrt {
-    pub Header: FfiAcpiTableHeader,
-    pub ControlRegister: AcpiGenericAddress,
-    pub CountRegister: AcpiGenericAddress,
-    pub PciDeviceId: u16,
-    pub PciVendorId: u16,
-    pub PciBus: u8,
-    pub PciDevice: u8,
-    pub PciFunction: u8,
-    pub PciSegment: u8,
-    pub MaxCount: u16,
-    pub Units: u8,
+    pub header: FfiAcpiTableHeader,
+    pub control_register: AcpiGenericAddress,
+    pub count_register: AcpiGenericAddress,
+    pub pci_device_id: u16,
+    pub pci_vendor_id: u16,
+    pub pci_bus: u8,
+    pub pci_device: u8,
+    pub pci_function: u8,
+    pub pci_segment: u8,
+    pub max_count: u16,
+    pub units: u8,
 }
 
