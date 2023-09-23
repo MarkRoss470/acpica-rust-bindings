@@ -1,3 +1,5 @@
+//! The [`AcpiHandler`] trait, which is the interface with which ACPICA calls OS functions.
+
 mod bindings;
 mod handler_trait;
 
@@ -8,7 +10,7 @@ use core::{
     sync::atomic::{AtomicBool, Ordering},
 };
 
-use alloc::{boxed::Box, string::String, vec::Vec, ffi::CString};
+use alloc::{boxed::Box, vec::Vec, ffi::CString};
 use spin::Mutex;
 
 use crate::bindings::{
@@ -76,17 +78,33 @@ pub fn register_interface<T: AcpiHandler + Send + 'static>(
 
     unsafe { AcpiInitializeSubsystem().as_result()? };
 
-    // unsafe { AcpiInitializeTables().as_result()? };
-    // unsafe { AcpiInitializeSubsystem().as_result()? };
-
     Ok(AcpicaInitialization)
 }
 
+/// The state of ACPICA's initialization, represented using type-state.
+/// 
+/// ACPICA is not initialized all at once - it has multiple initialization functions for different systems.
+/// This struct keeps track of the calling of these functions using the type parameters `T`, for whether ACPICA tables are initialized,
+/// and `S` for whether the ACPICA subsystem is enabled. An `AcpiInitialization<false, false>` can be obtained from [`register_interface`],
+/// which also calls `AcpiInitializeSubsystem`.
+/// 
+/// Subsystem initialization code could look like the following:
+/// ```no_run
+/// #fn main() -> Result<(), AcpiError> {
+///     let initialization = register_interface()?;
+///     let initialization = initialization.load_tables()?;
+///     let initialization = initialization.enable_subsystem()?;
+///     let initialization = initialization.initialize_objects()?;
+/// #}
+/// ```
 #[derive(Debug)]
 #[must_use]
-pub struct AcpicaInitialization<const TABLES: bool, const SUBSYSTEM_ENABLE: bool>;
+pub struct AcpicaInitialization<const T: bool, const S: bool>;
 
 impl AcpicaInitialization<false, false> {
+    /// Calls the ACPICA function `AcpiLoadTables`.
+    /// 
+    /// This function causes ACPICA to parse all the tables pointed to by the RSDT/XSDT
     pub fn load_tables(self) -> Result<AcpicaInitialization<true, false>, AcpiError> {
         unsafe { AcpiInitializeTables(core::ptr::null_mut(), 16, false).as_result()? };
         unsafe { AcpiLoadTables().as_result()? };
@@ -98,6 +116,9 @@ impl AcpicaInitialization<false, false> {
 }
 
 impl AcpicaInitialization<true, false> {
+    /// Calls the ACPICA function `AcpiEnableSubsystem`.
+    /// 
+    /// This function causes ACPICA to enter ACPI mode and start receiving ACPI interrupts.
     pub fn enable_subsystem(self) -> Result<AcpicaInitialization<true, true>, AcpiError> {
         unsafe { AcpiEnableSubsystem(ACPI_FULL_INITIALIZATION).as_result()? };
 
@@ -108,6 +129,9 @@ impl AcpicaInitialization<true, false> {
 }
 
 impl AcpicaInitialization<true, true> {
+    /// Calls the ACPICA function `AcpiEnableSubsystem`.
+    /// 
+    /// This function causes ACPICA to enter ACPI mode and start receiving ACPI interrupts.
     pub fn initialize_objects(self) -> Result<(), AcpiError> {
         unsafe { AcpiInitializeObjects(ACPI_FULL_INITIALIZATION).as_result()? };
 

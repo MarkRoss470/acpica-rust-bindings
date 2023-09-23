@@ -84,15 +84,15 @@ pub struct FfiAcpiTableFadt {
 }
 
 impl FfiAcpiTableFadt {
-    pub fn reset_register(&self) -> AcpiGenericAddress { self.reset_register.into() }
-    pub fn x_pm1a_event_block(&self)-> AcpiGenericAddress {self.x_pm1a_event_block.into()}
-    pub fn x_pm1b_event_block(&self)-> AcpiGenericAddress {self.x_pm1b_event_block.into()}
-    pub fn x_pm1a_control_block(&self)-> AcpiGenericAddress {self.x_pm1a_control_block.into()}
-    pub fn x_pm1b_control_block(&self)-> AcpiGenericAddress {self.x_pm1b_control_block.into()}
-    pub fn x_pm2_control_block(&self)-> AcpiGenericAddress {self.x_pm2_control_block.into()}
-    pub fn x_pm_timer_block(&self)-> AcpiGenericAddress {self.x_pm_timer_block.into()}
-    pub fn x_gpe0_block(&self)-> AcpiGenericAddress {self.x_gpe0_block.into()}
-    pub fn x_gpe1_block(&self)-> AcpiGenericAddress {self.x_gpe1_block.into()}
-    pub fn sleep_control(&self)-> AcpiGenericAddress {self.sleep_control.into()}
-    pub fn sleep_status(&self)-> AcpiGenericAddress {self.sleep_status.into()}
+    pub fn reset_register(&self) -> AcpiGenericAddress { AcpiGenericAddress::from_ffi(self.reset_register) }
+    pub fn x_pm1a_event_block(&self)-> AcpiGenericAddress {AcpiGenericAddress::from_ffi(self.x_pm1a_event_block) }
+    pub fn x_pm1b_event_block(&self)-> AcpiGenericAddress {AcpiGenericAddress::from_ffi(self.x_pm1b_event_block) }
+    pub fn x_pm1a_control_block(&self)-> AcpiGenericAddress {AcpiGenericAddress::from_ffi(self.x_pm1a_control_block) }
+    pub fn x_pm1b_control_block(&self)-> AcpiGenericAddress {AcpiGenericAddress::from_ffi(self.x_pm1b_control_block) }
+    pub fn x_pm2_control_block(&self)-> AcpiGenericAddress {AcpiGenericAddress::from_ffi(self.x_pm2_control_block) }
+    pub fn x_pm_timer_block(&self)-> AcpiGenericAddress {AcpiGenericAddress::from_ffi(self.x_pm_timer_block) }
+    pub fn x_gpe0_block(&self)-> AcpiGenericAddress {AcpiGenericAddress::from_ffi(self.x_gpe0_block) }
+    pub fn x_gpe1_block(&self)-> AcpiGenericAddress {AcpiGenericAddress::from_ffi(self.x_gpe1_block) }
+    pub fn sleep_control(&self)-> AcpiGenericAddress {AcpiGenericAddress::from_ffi(self.sleep_control) }
+    pub fn sleep_status(&self)-> AcpiGenericAddress {AcpiGenericAddress::from_ffi(self.sleep_status) }
 }

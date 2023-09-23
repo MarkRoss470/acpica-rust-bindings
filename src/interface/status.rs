@@ -1,3 +1,5 @@
+//! The [`AcpiError`] error type
+
 // Adapted from source/include/acexcep.h
 
 use core::fmt::Display;
@@ -5,6 +7,7 @@ use core::fmt::Display;
 #[repr(transparent)]
 pub(crate) struct AcpiStatus(u32);
 
+/// An error which ACPICA produced, or which can be given to ACPICA
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u32)]
 #[non_exhaustive]
@@ -12,122 +15,221 @@ pub enum AcpiError {
     /*
      * Environmental exceptions
      */
+    /// Unspecified error
     Error = 0x0001 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// ACPI tables could not be found
     NoAcpiTables = 0x0002 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// A namespace has not been loaded
     NoNamespace = 0x0003 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// Insufficient dynamic memory
     NoMemory = 0x0004 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// A requested entity is not found
     NotFound = 0x0005 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// A required entity does not exist
     NotExist = 0x0006 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// An entity already exists
     AlreadyExists = 0x0007 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// The object type is incorrect
     Type = 0x0008 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// A required object was missing
     NullObject = 0x0009 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// The requested object does not exist
     NullEntry = 0x000A | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// The buffer provided is too small
     BufferOverflow = 0x000B | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// An internal stack overflowed
     StackOverflow = 0x000C | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// An internal stack underflowed
     StackUnderflow = 0x000D | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// The feature is not implemented
     NotImplemented = 0x000E | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// The feature is not supported
     Support = 0x000F | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// A predefined limit was exceeded
     Limit = 0x0010 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// A time limit or timeout expired
     Time = 0x0011 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// Internal error, attempt was made to acquire a mutex in improper order
     AcquireDeadlock = 0x0012 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// Internal error, attempt was made to release a mutex in improper order
     ReleaseDeadlock = 0x0013 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// An attempt to release a mutex or Global Lock without a previous acquire
     NotAcquired = 0x0014 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// Internal error, attempt was made to acquire a mutex twice
     AlreadyAcquired = 0x0015 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// Hardware did not respond after an I/O operation
     NoHardwareResponse = 0x0016 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// There is no FACS Global Lock
     NoGlobalLock = 0x0017 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// A control method was aborted
     AbortMethod = 0x0018 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// Attempt was made to install the same handler that is already installed
     SameHandler = 0x0019 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// A handler for the operation is not installed
     NoHandler = 0x001A | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// There are no more Owner IDs available for ACPI tables or control methods
     OwnerIdLimit = 0x001B | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// The interface is not part of the current subsystem configuration
     NotConfigured = 0x001C | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// Permission denied for the requested operation
     Access = 0x001D | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// An I/O error occurred
     IoError = 0x001E | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// Overflow during string-to-integer conversion
     NumericOverflow = 0x001F | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// Overflow during ASCII hex-to-binary conversion
     HexOverflow = 0x0020 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// Overflow during ASCII decimal-to-binary conversion
     DecimalOverflow = 0x0021 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// Overflow during ASCII octal-to-binary conversion
     OctalOverflow = 0x0022 | AcpiError::AE_CODE_ENVIRONMENTAL,
+    /// Reached the end of table
     EndOfTable = 0x0023 | AcpiError::AE_CODE_ENVIRONMENTAL,
 
     /*
      * Programmer exceptions
      */
+    /// A parameter is out of range or invalid
     BadParameter = 0x0001 | AcpiError::AE_CODE_PROGRAMMER,
+    /// An invalid character was found in a name
     BadCharacter = 0x0002 | AcpiError::AE_CODE_PROGRAMMER,
+    /// An invalid character was found in a pathname
     BadPathname = 0x0003 | AcpiError::AE_CODE_PROGRAMMER,
+    /// A package or buffer contained incorrect data
     BadData = 0x0004 | AcpiError::AE_CODE_PROGRAMMER,
+    /// Invalid character in a Hex constant
     BadHexConstant = 0x0005 | AcpiError::AE_CODE_PROGRAMMER,
+    /// Invalid character in an Octal constant
     BadOctalConstant = 0x0006 | AcpiError::AE_CODE_PROGRAMMER,
+    /// Invalid character in a Decimal constant
     BadDecimalConstant = 0x0007 | AcpiError::AE_CODE_PROGRAMMER,
+    /// Too few arguments were passed to a control method
     MissingArguments = 0x0008 | AcpiError::AE_CODE_PROGRAMMER,
+    /// An illegal null I/O address
     BadAddress = 0x0009 | AcpiError::AE_CODE_PROGRAMMER,
 
     /*
      * Acpi table exceptions
      */
+    /// An ACPI table has an invalid signature
     BadSignature = 0x0001 | AcpiError::AE_CODE_ACPI_TABLES,
+    /// Invalid field in an ACPI table header
     BadHeader = 0x0002 | AcpiError::AE_CODE_ACPI_TABLES,
+    /// An ACPI table checksum is not correct
     BadChecksum = 0x0003 | AcpiError::AE_CODE_ACPI_TABLES,
+    /// An invalid value was found in a table
     BadValue = 0x0004 | AcpiError::AE_CODE_ACPI_TABLES,
+    /// The FADT or FACS has improper length
     InvalidTableLength = 0x0005 | AcpiError::AE_CODE_ACPI_TABLES,
 
     /*
      * AML exceptions. These are caused by problems with
      * the actual AML byte stream
      */
+    /// Invalid AML opcode encountered
     AmlBadOpcode = 0x0001 | AcpiError::AE_CODE_AML,
+    /// A required operand is missing
     AmlNoOperand = 0x0002 | AcpiError::AE_CODE_AML,
+    /// An operand of an incorrect type was encountered
     AmlOperandType = 0x0003 | AcpiError::AE_CODE_AML,
+    /// The operand had an inappropriate or invalid value
     AmlOperandValue = 0x0004 | AcpiError::AE_CODE_AML,
+    /// Method tried to use an uninitialized local variable
     AmlUninitializedLocal = 0x0005 | AcpiError::AE_CODE_AML,
+    /// Method tried to use an uninitialized argument
     AmlUninitializedArg = 0x0006 | AcpiError::AE_CODE_AML,
+    /// Method tried to use an empty package element
     AmlUninitializedElement = 0x0007 | AcpiError::AE_CODE_AML,
+    /// Overflow during BCD conversion or other
     AmlNumericOverflow = 0x0008 | AcpiError::AE_CODE_AML,
+    /// Tried to access beyond the end of an Operation Region
     AmlRegionLimit = 0x0009 | AcpiError::AE_CODE_AML,
+    /// Tried to access beyond the end of a buffer
     AmlBufferLimit = 0x000A | AcpiError::AE_CODE_AML,
+    /// Tried to access beyond the end of a package
     AmlPackageLimit = 0x000B | AcpiError::AE_CODE_AML,
+    /// During execution of AML Divide operator
     AmlDivideByZero = 0x000C | AcpiError::AE_CODE_AML,
+    /// An ACPI name contains invalid character(s)
     AmlBadName = 0x000D | AcpiError::AE_CODE_AML,
+    /// Could not resolve a named reference
     AmlNameNotFound = 0x000E | AcpiError::AE_CODE_AML,
+    /// An internal error within the interpreter
     AmlInternal = 0x000F | AcpiError::AE_CODE_AML,
+    /// An Operation Region SpaceID is invalid
     AmlInvalidSpaceId = 0x0010 | AcpiError::AE_CODE_AML,
+    /// String is longer than 200 characters
     AmlStringLimit = 0x0011 | AcpiError::AE_CODE_AML,
+    /// A method did not return a required value
     AmlNoReturnValue = 0x0012 | AcpiError::AE_CODE_AML,
+    /// A control method reached the maximum reentrancy limit of 255
     AmlMethodLimit = 0x0013 | AcpiError::AE_CODE_AML,
+    /// A thread tried to release a mutex that it does not own
     AmlNotOwner = 0x0014 | AcpiError::AE_CODE_AML,
+    /// Mutex SyncLevel release mismatch
     AmlMutexOrder = 0x0015 | AcpiError::AE_CODE_AML,
+    /// Attempt to release a mutex that was not previously acquired
     AmlMutexNotAcquired = 0x0016 | AcpiError::AE_CODE_AML,
+    /// Invalid resource type in resource list
     AmlInvalidResourceType = 0x0017 | AcpiError::AE_CODE_AML,
+    /// Invalid Argx or Localx (x too large)
     AmlInvalidIndex = 0x0018 | AcpiError::AE_CODE_AML,
+    /// Bank value or Index value beyond range of register
     AmlRegisterLimit = 0x0019 | AcpiError::AE_CODE_AML,
+    /// Break or Continue without a While
     AmlNoWhile = 0x001A | AcpiError::AE_CODE_AML,
+    /// Non-aligned memory transfer on platform that does not support this
     AmlAlignment = 0x001B | AcpiError::AE_CODE_AML,
+    /// No End Tag in a resource list
     AmlNoResourceEndTag = 0x001C | AcpiError::AE_CODE_AML,
+    /// Invalid value of a resource element
     AmlBadResourceValue = 0x001D | AcpiError::AE_CODE_AML,
+    /// Two references refer to each other
     AmlCircularReference = 0x001E | AcpiError::AE_CODE_AML,
+    /// The length of a Resource Descriptor in the AML is incorrect
     AmlBadResourceLength = 0x001F | AcpiError::AE_CODE_AML,
+    /// A memory, I/O, or PCI configuration address is invalid
     AmlIllegalAddress = 0x0020 | AcpiError::AE_CODE_AML,
+    /// An AML While loop exceeded the maximum execution time
     AmlLoopTimeout = 0x0021 | AcpiError::AE_CODE_AML,
+    /// A namespace node is uninitialized or unresolved
     AmlUninitializedNode = 0x0022 | AcpiError::AE_CODE_AML,
+    /// A target operand of an incorrect type was encountered
     AmlTargetType = 0x0023 | AcpiError::AE_CODE_AML,
+    /// Violation of a fixed ACPI protocol
     AmlProtocol = 0x0024 | AcpiError::AE_CODE_AML,
+    /// The length of the buffer is invalid/incorrect
     AmlBufferLength = 0x0025 | AcpiError::AE_CODE_AML,
 
     /*
      * Internal exceptions used for control
      */
+    /// A Method returned a value
     ControlReturnValue = 0x0001 | AcpiError::AE_CODE_CONTROL,
+    /// Method is calling another method
     ControlPending = 0x0002 | AcpiError::AE_CODE_CONTROL,
+    /// Terminate the executing method
     ControlTerminate = 0x0003 | AcpiError::AE_CODE_CONTROL,
+    /// An If or While predicate result
     ControlTrue = 0x0004 | AcpiError::AE_CODE_CONTROL,
+    /// An If or While predicate result
     ControlFalse = 0x0005 | AcpiError::AE_CODE_CONTROL,
+    /// Maximum search depth has been reached
     ControlDepth = 0x0006 | AcpiError::AE_CODE_CONTROL,
+    /// An If or While predicate is false
     ControlEnd = 0x0007 | AcpiError::AE_CODE_CONTROL,
+    /// Transfer control to called method
     ControlTransfer = 0x0008 | AcpiError::AE_CODE_CONTROL,
+    /// A Break has been executed
     ControlBreak = 0x0009 | AcpiError::AE_CODE_CONTROL,
+    /// A Continue has been executed
     ControlContinue = 0x000A | AcpiError::AE_CODE_CONTROL,
+    /// Used to skip over bad opcodes
     ControlParseContinue = 0x000B | AcpiError::AE_CODE_CONTROL,
+    /// Used to implement AML While loops
     ControlParsePending = 0x000C | AcpiError::AE_CODE_CONTROL,
 
+    /// Unknown error
     Unknown,
 }
 
@@ -140,21 +242,39 @@ impl AcpiError {
     const AE_CODE_MASK: u32 = 0xF000;
 }
 
+/// A general type of [`AcpiError`]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum AcpiErrorClass {
+    /// The error was either internal to ACPICA or was caused by an error in the execution environment or hardware
+    Environmental,
+    /// The error was caused by a software bug
+    Programmer,
+    /// An ACPI table was invalid
+    AcpiTables,
+    /// An error occurred while parsing or executing AML code
+    Aml,
+    /// Internal errors used for control flow within ACPICA
+    Control,
+    /// The error type was unknown to the rust bindings to ACPICA
+    Unknown,
+}
+
 impl AcpiError {
-    pub const fn is_env_exception(&self) -> bool {
-        *self as u32 & Self::AE_CODE_MASK == Self::AE_CODE_ENVIRONMENTAL
-    }
-    pub const fn is_aml_exception(&self) -> bool {
-        *self as u32 & Self::AE_CODE_MASK == Self::AE_CODE_AML
-    }
-    pub const fn is_programmer_exception(&self) -> bool {
-        *self as u32 & Self::AE_CODE_MASK == Self::AE_CODE_PROGRAMMER
-    }
-    pub const fn is_table_exception(&self) -> bool {
-        *self as u32 & Self::AE_CODE_MASK == Self::AE_CODE_ACPI_TABLES
-    }
-    pub const fn is_control_exception(&self) -> bool {
-        *self as u32 & Self::AE_CODE_MASK == Self::AE_CODE_CONTROL
+    /// Gets the general type of error
+    pub const fn class(&self) -> AcpiErrorClass {
+        if let Self::Unknown = self {
+            return AcpiErrorClass::Unknown;
+        }
+
+        match *self as u32 & Self::AE_CODE_MASK {
+            _e @ Self::AE_CODE_ENVIRONMENTAL => AcpiErrorClass::Environmental,
+            _e @ Self::AE_CODE_PROGRAMMER => AcpiErrorClass::Programmer,
+            _e @ Self::AE_CODE_ACPI_TABLES => AcpiErrorClass::AcpiTables,
+            _e @ Self::AE_CODE_AML => AcpiErrorClass::Aml,
+            _e @ Self::AE_CODE_CONTROL => AcpiErrorClass::Control,
+            _ => AcpiErrorClass::Unknown,
+        }
     }
 }
 
@@ -429,11 +549,34 @@ fn test_as_result() {
         let error = AcpiStatus(i)
             .as_result()
             .expect_err("An AcpiStatus with a non-0 value should not map to Ok");
-        
+
         if error == AcpiError::Unknown {
             continue;
         }
 
         assert_eq!(error.as_acpi_status().0, i);
     }
+}
+
+/// Tests that [`class`][`AcpiError::class`] returns correct values
+#[test]
+fn test_error_class() {
+    assert_eq!(AcpiError::Error.class(), AcpiErrorClass::Environmental);
+    assert_eq!(
+        AcpiError::StackOverflow.class(),
+        AcpiErrorClass::Environmental
+    );
+    assert_eq!(AcpiError::BadParameter.class(), AcpiErrorClass::Programmer);
+    assert_eq!(
+        AcpiError::MissingArguments.class(),
+        AcpiErrorClass::Programmer
+    );
+    assert_eq!(AcpiError::BadSignature.class(), AcpiErrorClass::AcpiTables);
+    assert_eq!(AcpiError::BadChecksum.class(), AcpiErrorClass::AcpiTables);
+    assert_eq!(AcpiError::AmlBadOpcode.class(), AcpiErrorClass::Aml);
+    assert_eq!(AcpiError::AmlInternal.class(), AcpiErrorClass::Aml);
+    assert_eq!(AcpiError::ControlPending.class(), AcpiErrorClass::Control);
+    assert_eq!(AcpiError::ControlContinue.class(), AcpiErrorClass::Control);
+
+    assert_eq!(AcpiError::Unknown.class(), AcpiErrorClass::Unknown);
 }

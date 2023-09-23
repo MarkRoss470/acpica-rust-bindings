@@ -1,21 +1,27 @@
-use alloc::{vec::Vec, boxed::Box, string::String};
+use alloc::{boxed::Box, string::String, vec::Vec};
 
-use crate::{interface::status::AcpiError, types::{AcpiPhysicalAddress, AcpiPredefinedNames, AcpiTableHeader,  AcpiSize, AcpiAllocationError, AcpiCallback, AcpiExecuteType}};
+use crate::{
+    interface::status::AcpiError,
+    types::{
+        AcpiAllocationError, AcpiInterruptCallback, AcpiPhysicalAddress, AcpiPredefinedNames,
+        AcpiTableHeader, AcpiThreadCallback, AcpiMappingError,
+    },
+};
 
 /// The interface between ACPICA and the host OS. Each method in this trait is mapped to an `AcpiOs...` function,
-/// which will be called on the object registered with [`register_interface`]. 
-/// 
-/// Some methods such as [`allocate`] which can be no-ops or which map nicely to rust concepts have default implementations, 
+/// which will be called on the object registered with [`register_interface`].
+///
+/// Some methods such as [`allocate`] which can be no-ops or which map nicely to rust concepts have default implementations,
 /// but most of the methods are very OS-specific and must be implemented uniquely for each host OS.
-/// 
+///
 /// # Safety
-/// This trait is unsafe to implement because some functions have restrictions on their 
+/// This trait is unsafe to implement because some functions have restrictions on their
 /// implementation as well as their caller. This is indicated per method under the heading "Implementation Safety".
-/// 
+///
 /// [`allocate`]: AcpiHandler::allocate
 pub unsafe trait AcpiHandler {
     /// Method called when ACPICA initialises. The default implementation of this method is a no-op.
-    /// 
+    ///
     /// # Safety
     /// This method is only called from `AcpiOsInitialize`
     unsafe fn initialize(&mut self) -> Result<(), AcpiError> {
@@ -23,7 +29,7 @@ pub unsafe trait AcpiHandler {
     }
 
     /// Method called when ACPICA shuts down. The default implementation of this method is a no-op
-    /// 
+    ///
     /// # Safety
     /// This method is only called from `AcpiOsTerminate`
     unsafe fn terminate(&mut self) -> Result<(), AcpiError> {
@@ -31,18 +37,18 @@ pub unsafe trait AcpiHandler {
     }
 
     /// Gets a physical pointer to the RSDP.
-    /// 
+    ///
     /// # Implementation Safety
     /// * The returned pointer must point to the system's RSDP.
     fn get_root_pointer(&mut self) -> AcpiPhysicalAddress;
 
     /// Allows the OS to specify an override for a predefined object in the ACPI namespace.
-    /// The returned string will be converted to a [`CString`], so the FFI handler for this 
+    /// The returned string will be converted to a [`CString`], so the FFI handler for this
     /// method will panic if it contains null bytes.
-    /// 
+    ///
     /// # Safety
     /// * This function is only called from `AcpiOsPredefinedOverride`
-    /// 
+    ///
     /// [`CString`]: alloc::ffi::CString
     #[allow(unused_variables)]
     unsafe fn predefined_override(
@@ -53,14 +59,14 @@ pub unsafe trait AcpiHandler {
     }
 
     /// Allows the OS to override an ACPI table using a logical address.
-    /// This method is called once on each ACPI table in the order they are listed in the DSDT/XSDT, 
+    /// This method is called once on each ACPI table in the order they are listed in the DSDT/XSDT,
     /// and when tables are loaded by the `Load` AML instruction. To keep the original table, return `Ok(None)`.
-    /// 
+    ///
     /// To override the table using a physical address instead, use [`physical_table_override`]
-    /// 
+    ///
     /// # Safety
     /// * This method is only called from `AcpiOsTableOverride`.
-    /// 
+    ///
     /// [`physical_table_override`]: AcpiHandler::physical_table_override
     #[allow(unused_variables)]
     unsafe fn table_override(
@@ -70,12 +76,12 @@ pub unsafe trait AcpiHandler {
         Ok(None)
     }
 
-    /// Allows the OS to override an ACPI table using a physical address. 
+    /// Allows the OS to override an ACPI table using a physical address.
     /// To keep the original table, return `Ok(None)`
-    /// 
+    ///
     /// # Safety
     /// * This method is only called from `AcpiOsPhysicalTableOverride`.
-    /// 
+    ///
     /// # Implementation Safety
     /// * The returned physical address must point to a valid new ACPI table with the returned length
     /// * The memory indicated by the returned pointer and length is now managed by ACPICA and must
@@ -92,9 +98,9 @@ pub unsafe trait AcpiHandler {
 
     // fn delete_lock(&mut self, hock: AcpiSpinLock);
 
-    // fn acquire_lock(&mut self, handle: AcpiSpinLock) -> AcpiSize;
+    // fn acquire_lock(&mut self, handle: AcpiSpinLock) -> usize;
 
-    // fn release_lock(&mut self, handle: AcpiSpinLock, flags: AcpiSize);
+    // fn release_lock(&mut self, handle: AcpiSpinLock, flags: usize);
 
     // fn create_semaphore(
     //     &mut self,
@@ -123,21 +129,22 @@ pub unsafe trait AcpiHandler {
     /// allocation and returning the rest to ACPICA.
     ///
     /// # Safety
+    /// * This method is only called from `AcpiOsAllocate`
     /// * The returned pointer must only be used to access `size` bytes.
-    /// 
+    ///
     /// # Implementation Safety
     /// * If this method is overridden, [`free`] must be as well with a matching implementation.
     /// * The pointer returned must point to at least `size` bytes of memory which is valid for reads and writes.
-    /// 
+    ///
     /// [`dealloc`]: alloc::alloc::dealloc
     /// [`Layout`]: alloc::alloc::Layout
     /// [`free`]: AcpiHandler::free
-    unsafe fn allocate(&mut self, size: AcpiSize) -> Result<*mut u8, AcpiAllocationError> {
+    unsafe fn allocate(&mut self, size: usize) -> Result<*mut u8, AcpiAllocationError> {
         let mut v = Vec::<u8>::new();
 
-        let total_allocation_size = size.as_usize() + core::mem::size_of::<usize>();
+        let total_allocation_size = size + core::mem::size_of::<usize>();
         let Ok(_) = v.try_reserve_exact(total_allocation_size) else {
-            return Err(AcpiAllocationError);
+            return Err(AcpiAllocationError::OutOfMemory);
         };
 
         assert_eq!(v.capacity(), total_allocation_size);
@@ -147,24 +154,24 @@ pub unsafe trait AcpiHandler {
 
         // SAFETY:
         // There are no references to the Vec any more, so writing to its memory is sound.
-        unsafe { core::ptr::write_unaligned(ptr as *mut usize, size.as_usize()) }
+        unsafe { core::ptr::write_unaligned(ptr as *mut usize, size) }
 
         // SAFETY: This is adding <=8 bytes so it can't exceed the size bounds
         Ok(unsafe { ptr.byte_add(core::mem::size_of::<usize>()) })
     }
 
     // TODO: native allocate zeroed (see bindings.rs)
-    // fn allocate_zeroed(&mut self, Size: AcpiSize) -> *mut ::core::ffi::c_void;
+    // fn allocate_zeroed(&mut self, Size: usize) -> *mut ::core::ffi::c_void;
 
     /// Free the allocation at `memory`.
     /// See the docs for [`allocate`] for potential problems implementing this method.
-    /// 
+    ///
     /// # Safety
     /// * `memory` must be a pointer which was allocated using [`allocate`]
-    /// 
+    ///
     /// # Implementation Safety
     /// * If this function is overridden, [`allocate`] must be as well with a matching implementation.
-    /// 
+    ///
     /// [`allocate`]: AcpiHandler::allocate
     unsafe fn free(&mut self, memory: *mut u8) {
         // SAFETY: The pointer passed to ACPICA was one usize more than the actual allocated Vec,
@@ -175,18 +182,38 @@ pub unsafe trait AcpiHandler {
         // SAFETY: This pointer was allocated by Vec with this size and capacity in `allocate`.
         let v = unsafe { Vec::from_raw_parts(real_start, size, size) };
 
-        // Explicitly drop the Vec
+        // Explicitly drop the Vec to free the memory
         drop(v);
     }
 
-    fn map_memory(&mut self, physical_address: AcpiPhysicalAddress, length: AcpiSize) -> *mut u8;
+    /// Map `length` pages (TODO: or is this bytes?) of physical memory starting at `physical_address`, and return the virtual address where they have been mapped.
+    /// 
+    /// # Safety
+    /// * This function is only called from `AcpiOsMapMemory`
+    unsafe fn map_memory(
+        &mut self,
+        physical_address: AcpiPhysicalAddress,
+        length: usize,
+    ) -> Result<*mut u8, AcpiMappingError>;
 
-    fn unmap_memory(&mut self, address: *mut u8, size: AcpiSize);
+    /// Unmap `length` pages (TODO: or is this bytes?) of memory which were previously allocated with [`map_memory`]
+    /// 
+    /// # Safety
+    /// * This function is only called from `AcpiOsUnmapMemory`
+    /// 
+    /// [`map_memory`]: AcpiHandler::map_memory
+    unsafe fn unmap_memory(&mut self, address: *mut u8, length: usize);
 
+    /// Translate a logical address to the physical address it's mapped to.
+    /// 
+    /// # Return value
+    /// * `Ok(Some(address))`: The translation was successful
+    /// * `Ok(None)`: The translation was successful but the virtual address is not mapped
+    /// * `Err(e)`: There was an error carrying out the translation
     fn get_physical_address(
         &mut self,
         logical_address: *mut u8,
-    ) -> Result<AcpiPhysicalAddress, AcpiError>;
+    ) -> Result<Option<AcpiPhysicalAddress>, AcpiError>;
 
     // fn create_cache(
     //     &mut self,
@@ -203,25 +230,49 @@ pub unsafe trait AcpiHandler {
 
     // fn release_object(&mut self, cache: &mut AcpiCache, object: *mut u8) -> Result<(), AcpiError>;
 
-    fn install_interrupt_handler(
+    /// Register the given `callback` to run in the interrupt handler for the given `interrupt_number`
+    /// 
+    /// # Safety
+    /// * This method is only called from `AcpiOsInstallInterruptHandler`.
+    /// 
+    /// 
+    unsafe fn install_interrupt_handler(
         &mut self,
         interrupt_number: u32,
-        service_routine: AcpiCallback,
-        context: *mut u8,
+        callback: AcpiInterruptCallback,
     ) -> Result<(), AcpiError>;
 
-    fn remove_interrupt_handler(
+    /// Remove an interrupt handler which was previously registered with [`install_interrupt_handler`].
+    /// 
+    /// # Safety
+    /// * This method is only called from `AcpiOsRemoveInterruptHandler`.
+    /// 
+    /// [`install_interrupt_handler`]: AcpiHandler::install_interrupt_handler
+    unsafe fn remove_interrupt_handler(
         &mut self,
         interrupt_number: u32,
-        service_routine: AcpiCallback,
+        callback: AcpiInterruptCallback,
     ) -> Result<(), AcpiError>;
 
+    /// Gets the thread ID of the kernel thread this method is called from.
+    /// 
+    /// # Implementation safety
+    /// The returned thread ID must be and must be unique to the executing thread.
+    /// The thread ID may not be 0 and may not be equal to [`u64::MAX`]
     fn get_thread_id(&mut self) -> u64;
 
-    fn execute(
+    /// Run the callback in a new kernel thread.
+    /// 
+    /// # Safety
+    /// * This method is only called from `AcpiOsExecute`
+    /// 
+    /// # Return value
+    /// * `Ok(())`: The thread is queued and ready to execute
+    /// * `Err(e)`: There was an error creating the thread 
+    unsafe fn execute(
         &mut self,
-        callback_type: AcpiExecuteType,
-        callback: Box<dyn Fn()>,
+        // callback_type: AcpiExecuteType,
+        callback: AcpiThreadCallback,
     ) -> Result<(), AcpiError>;
 
     // fn wait_events_complete(&mut self, );
@@ -264,9 +315,9 @@ pub unsafe trait AcpiHandler {
     //     Width: u32,
     // ) -> Result<(), AcpiError>;
 
-    // fn readable(&mut self, Pointer: *mut ::core::ffi::c_void, Length: AcpiSize) -> bool;
+    // fn readable(&mut self, Pointer: *mut ::core::ffi::c_void, Length: usize) -> bool;
 
-    // fn writable(&mut self, Pointer: *mut ::core::ffi::c_void, Length: AcpiSize) -> bool;
+    // fn writable(&mut self, Pointer: *mut ::core::ffi::c_void, Length: usize) -> bool;
 
     // fn get_timer(&mut self, ) -> u64;
 

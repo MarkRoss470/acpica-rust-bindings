@@ -33,7 +33,7 @@ extern "C" fn acpi_os_get_root_pointer() -> FfiAcpiPhysicalAddress {
     let mut lock = OS_INTERFACE.lock();
     let lock = lock.as_mut().unwrap();
 
-    lock.get_root_pointer().as_ffi()
+    lock.get_root_pointer().0
 }
 
 #[export_name = "AcpiOsPredefinedOverride"]
@@ -123,7 +123,7 @@ extern "C" fn acpi_os_physical_table_override(
     match new_table {
         // SAFETY: `new_table_address_ptr` and `new_table_length_ptr` are valid for writes
         Some((address, length)) => unsafe {
-            core::ptr::write(new_table_address_ptr, address.as_usize());
+            core::ptr::write(new_table_address_ptr, address.0);
             core::ptr::write(new_table_length_ptr, length);
         },
         // Write null to `new_table_address_ptr` to indicate the table should not be updated
@@ -438,15 +438,15 @@ extern "C" fn acpi_os_notify_command_complete() -> AcpiStatus {
     todo!()
 }
 
-#[export_name = "AcpiOsTracePoint"]
-extern "C" fn acpi_os_trace_point(
-    _type: FfiAcpiTraceEventType,
-    _begin: bool,
-    _aml: *mut u8,
-    _pathname: *mut i8,
-) {
-    todo!()
-}
+// #[export_name = "AcpiOsTracePoint"]
+// extern "C" fn acpi_os_trace_point(
+//     _type: FfiAcpiTraceEventType,
+//     _begin: bool,
+//     _aml: *mut u8,
+//     _pathname: *mut i8,
+// ) {
+//     todo!()
+// }
 
 #[export_name = "AcpiOsGetTableByName"]
 extern "C" fn acpi_os_get_table_by_name(

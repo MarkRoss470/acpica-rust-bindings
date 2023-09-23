@@ -12,7 +12,7 @@
 // Public API best practises
 #![deny(
     missing_debug_implementations,
-    // missing_docs,
+    missing_docs,
     clippy::missing_safety_doc,
     clippy::missing_panics_doc
 )]
@@ -23,5 +23,13 @@
 extern crate alloc;
 
 mod bindings;
-pub mod interface;
-pub mod types;
+mod interface;
+
+pub use interface::*;
+
+#[test]
+#[ignore = "This just forces the compiler to actually link in ACPICA"]
+fn force_link() {
+    panic!("This test should not be run,just compiled");
+    debug_trace("Hello world", 0, 0, 0);
+}

@@ -160,7 +160,7 @@ pub(crate) struct FfiAcpiMemoryList {
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 #[allow(dead_code)] // FFI type so variants are not explicitly constructed
-pub(crate) enum FfiAcpiTraceEventType {
+pub enum FfiAcpiTraceEventType {
     Method = 0,
     Opcode = 1,
     Region = 2,
@@ -672,6 +672,7 @@ pub(crate) struct FfiAcpiPciRoutingTable {
     pub(crate) source_index: u32,
     pub(crate) source: [i8; 4usize],
 }
+
 #[repr(u32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 #[allow(dead_code)] // FFI type so variants are not explicitly constructed
@@ -684,6 +685,7 @@ pub(crate) enum FfiAcpiExecuteType {
     EcPollHandler = 5,
     EcBurstHandler = 6,
 }
+
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiSignalFatalInfo {
