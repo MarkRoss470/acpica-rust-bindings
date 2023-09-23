@@ -7,7 +7,7 @@ use super::FfiAcpiSubtableHeader;
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTablePptt {
+pub(crate) struct FfiAcpiTablePptt {
     pub header: FfiAcpiTableHeader,
 }
 
@@ -23,7 +23,7 @@ pub enum FfiAcpiPpttType {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiPpttProcessor {
+pub(crate) struct FfiAcpiPpttProcessor {
     pub header: FfiAcpiSubtableHeader,
     pub reserved: u16,
     pub flags: u32,
@@ -34,7 +34,7 @@ pub struct FfiAcpiPpttProcessor {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiPpttCache {
+pub(crate) struct FfiAcpiPpttCache {
     pub header: FfiAcpiSubtableHeader,
     pub reserved: u16,
     pub flags: u32,
@@ -48,13 +48,13 @@ pub struct FfiAcpiPpttCache {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiPpttCacheV1 {
+pub(crate) struct FfiAcpiPpttCacheV1 {
     pub cache_id: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiPpttId {
+pub(crate) struct FfiAcpiPpttId {
     pub header: FfiAcpiSubtableHeader,
     pub reserved: u16,
     pub vendor_id: u32,

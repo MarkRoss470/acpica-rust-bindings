@@ -1,11 +1,11 @@
-use crate::{bindings::types::FfiAcpiGenericAddress, interface::AcpiGenericAddress};
+use crate::{bindings::types::FfiAcpiGenericAddress, interface::types::AcpiGenericAddress};
 
 use super::FfiAcpiTableHeader;
 
 /// FACS - Firmware ACPI Control Structure (FACS)
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableFacs {
+pub(crate) struct FfiAcpiTableFacs {
     pub signature: [i8; 4usize],
     pub length: u32,
     pub hardware_signature: u32,
@@ -24,7 +24,7 @@ pub struct FfiAcpiTableFacs {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableFadt {
+pub(crate) struct FfiAcpiTableFadt {
     pub header: FfiAcpiTableHeader,
     pub facs: u32,
     pub dsdt: u32,
@@ -64,35 +64,21 @@ pub struct FfiAcpiTableFadt {
     pub boot_flags: u16,
     pub reserved: u8,
     pub flags: u32,
-    reset_register: FfiAcpiGenericAddress,
+    pub reset_register: FfiAcpiGenericAddress,
     pub reset_value: u8,
     pub arm_boot_flags: u16,
     pub minor_revision: u8,
     pub x_facs: u64,
     pub x_dsdt: u64,
-    x_pm1a_event_block: FfiAcpiGenericAddress,
-    x_pm1b_event_block: FfiAcpiGenericAddress,
-    x_pm1a_control_block: FfiAcpiGenericAddress,
-    x_pm1b_control_block: FfiAcpiGenericAddress,
-    x_pm2_control_block: FfiAcpiGenericAddress,
-    x_pm_timer_block: FfiAcpiGenericAddress,
-    x_gpe0_block: FfiAcpiGenericAddress,
-    x_gpe1_block: FfiAcpiGenericAddress,
-    sleep_control: FfiAcpiGenericAddress,
-    sleep_status: FfiAcpiGenericAddress,
+    pub x_pm1a_event_block: FfiAcpiGenericAddress,
+    pub x_pm1b_event_block: FfiAcpiGenericAddress,
+    pub x_pm1a_control_block: FfiAcpiGenericAddress,
+    pub x_pm1b_control_block: FfiAcpiGenericAddress,
+    pub x_pm2_control_block: FfiAcpiGenericAddress,
+    pub x_pm_timer_block: FfiAcpiGenericAddress,
+    pub x_gpe0_block: FfiAcpiGenericAddress,
+    pub x_gpe1_block: FfiAcpiGenericAddress,
+    pub sleep_control: FfiAcpiGenericAddress,
+    pub sleep_status: FfiAcpiGenericAddress,
     pub hypervisor_id: u64,
-}
-
-impl FfiAcpiTableFadt {
-    pub fn reset_register(&self) -> AcpiGenericAddress { AcpiGenericAddress::from_ffi(self.reset_register) }
-    pub fn x_pm1a_event_block(&self)-> AcpiGenericAddress {AcpiGenericAddress::from_ffi(self.x_pm1a_event_block) }
-    pub fn x_pm1b_event_block(&self)-> AcpiGenericAddress {AcpiGenericAddress::from_ffi(self.x_pm1b_event_block) }
-    pub fn x_pm1a_control_block(&self)-> AcpiGenericAddress {AcpiGenericAddress::from_ffi(self.x_pm1a_control_block) }
-    pub fn x_pm1b_control_block(&self)-> AcpiGenericAddress {AcpiGenericAddress::from_ffi(self.x_pm1b_control_block) }
-    pub fn x_pm2_control_block(&self)-> AcpiGenericAddress {AcpiGenericAddress::from_ffi(self.x_pm2_control_block) }
-    pub fn x_pm_timer_block(&self)-> AcpiGenericAddress {AcpiGenericAddress::from_ffi(self.x_pm_timer_block) }
-    pub fn x_gpe0_block(&self)-> AcpiGenericAddress {AcpiGenericAddress::from_ffi(self.x_gpe0_block) }
-    pub fn x_gpe1_block(&self)-> AcpiGenericAddress {AcpiGenericAddress::from_ffi(self.x_gpe1_block) }
-    pub fn sleep_control(&self)-> AcpiGenericAddress {AcpiGenericAddress::from_ffi(self.sleep_control) }
-    pub fn sleep_status(&self)-> AcpiGenericAddress {AcpiGenericAddress::from_ffi(self.sleep_status) }
 }

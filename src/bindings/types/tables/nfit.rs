@@ -5,14 +5,14 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableNfit {
+pub(crate) struct FfiAcpiTableNfit {
     pub header: FfiAcpiTableHeader,
     pub reserved: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiNfitHeader {
+pub(crate) struct FfiAcpiNfitHeader {
     pub header_type: u16,
     pub length: u16,
 }
@@ -34,7 +34,7 @@ pub enum FfiAcpiNfitType {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiNfitSystemAddress {
+pub(crate) struct FfiAcpiNfitSystemAddress {
     pub header: FfiAcpiNfitHeader,
     pub range_index: u16,
     pub flags: u16,
@@ -49,7 +49,7 @@ pub struct FfiAcpiNfitSystemAddress {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiNfitMemoryMap {
+pub(crate) struct FfiAcpiNfitMemoryMap {
     pub header: FfiAcpiNfitHeader,
     pub device_handle: u32,
     pub physical_id: u16,
@@ -67,7 +67,7 @@ pub struct FfiAcpiNfitMemoryMap {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiNfitInterleave {
+pub(crate) struct FfiAcpiNfitInterleave {
     pub header: FfiAcpiNfitHeader,
     pub interleave_index: u16,
     pub reserved: u16,
@@ -78,7 +78,7 @@ pub struct FfiAcpiNfitInterleave {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiNfitSmbios {
+pub(crate) struct FfiAcpiNfitSmbios {
     pub header: FfiAcpiNfitHeader,
     pub reserved: u32,
     pub data: [u8; 1usize],
@@ -86,7 +86,7 @@ pub struct FfiAcpiNfitSmbios {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiNfitControlRegion {
+pub(crate) struct FfiAcpiNfitControlRegion {
     pub header: FfiAcpiNfitHeader,
     pub region_index: u16,
     pub vendor_id: u16,
@@ -113,7 +113,7 @@ pub struct FfiAcpiNfitControlRegion {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiNfitDataRegion {
+pub(crate) struct FfiAcpiNfitDataRegion {
     pub header: FfiAcpiNfitHeader,
     pub region_index: u16,
     pub windows: u16,
@@ -125,7 +125,7 @@ pub struct FfiAcpiNfitDataRegion {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiNfitFlushAddress {
+pub(crate) struct FfiAcpiNfitFlushAddress {
     pub header: FfiAcpiNfitHeader,
     pub device_handle: u32,
     pub hint_count: u16,
@@ -135,7 +135,7 @@ pub struct FfiAcpiNfitFlushAddress {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiNfitCapabilities {
+pub(crate) struct FfiAcpiNfitCapabilities {
     pub header: FfiAcpiNfitHeader,
     pub highest_capability: u8,
     pub reserved: [u8; 3usize],

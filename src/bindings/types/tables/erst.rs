@@ -5,7 +5,7 @@ use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::FfiAcpiWheaHea
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableErst {
+pub(crate) struct FfiAcpiTableErst {
     pub header: FfiAcpiTableHeader,
     pub header_length: u32,
     pub reserved: u32,
@@ -14,7 +14,7 @@ pub struct FfiAcpiTableErst {
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiErstEntry {
+pub(crate) struct FfiAcpiErstEntry {
     whea_header: FfiAcpiWheaHeader,
 }
 
@@ -83,7 +83,7 @@ pub enum FfiAcpiErstCommandStatus {
 
 #[repr(C, packed)]
 #[derive(Copy, Clone)]
-pub struct FfiAcpiErstInfo {
+pub(crate) struct FfiAcpiErstInfo {
     pub signature: u16,
     pub data: [u8; 48usize],
 }

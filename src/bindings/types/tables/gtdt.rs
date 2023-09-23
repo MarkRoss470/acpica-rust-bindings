@@ -6,7 +6,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableGtdt {
+pub(crate) struct FfiAcpiTableGtdt {
     pub header: FfiAcpiTableHeader,
     pub counter_block_addresss: u64,
     pub reserved: u32,
@@ -25,14 +25,14 @@ pub struct FfiAcpiTableGtdt {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiGtdtEl2 {
+pub(crate) struct FfiAcpiGtdtEl2 {
     pub virtual_el2_timer_gsiv: u32,
     pub virtual_el2_timer_flags: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiGtdtHeader {
+pub(crate) struct FfiAcpiGtdtHeader {
     pub header_type: u8,
     pub length: u16,
 }
@@ -48,7 +48,7 @@ pub enum FfiAcpiGtdtType {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiGtdtTimerBlock {
+pub(crate) struct FfiAcpiGtdtTimerBlock {
     pub header: FfiAcpiGtdtHeader,
     pub reserved: u8,
     pub block_address: u64,
@@ -58,7 +58,7 @@ pub struct FfiAcpiGtdtTimerBlock {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiGtdtTimerEntry {
+pub(crate) struct FfiAcpiGtdtTimerEntry {
     pub frame_number: u8,
     pub reserved: [u8; 3usize],
     pub base_address: u64,
@@ -72,7 +72,7 @@ pub struct FfiAcpiGtdtTimerEntry {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiGtdtWatchdog {
+pub(crate) struct FfiAcpiGtdtWatchdog {
     pub header: FfiAcpiGtdtHeader,
     pub reserved: u8,
     pub refresh_frame_address: u64,

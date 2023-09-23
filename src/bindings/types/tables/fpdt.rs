@@ -5,13 +5,13 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableFpdt {
+pub(crate) struct FfiAcpiTableFpdt {
     pub header: FfiAcpiTableHeader,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiFpdtHeader {
+pub(crate) struct FfiAcpiFpdtHeader {
     pub header_type: u16,
     pub length: u8,
     pub revision: u8,
@@ -27,7 +27,7 @@ pub enum FfiAcpiFpdtType {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiFpdtBootPointer {
+pub(crate) struct FfiAcpiFpdtBootPointer {
     pub header: FfiAcpiFpdtHeader,
     pub reserved: [u8; 4usize],
     pub address: u64,
@@ -35,7 +35,7 @@ pub struct FfiAcpiFpdtBootPointer {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiFpdtS3ptPointer {
+pub(crate) struct FfiAcpiFpdtS3ptPointer {
     pub header: FfiAcpiFpdtHeader,
     pub reserved: [u8; 4usize],
     pub address: u64,
@@ -43,7 +43,7 @@ pub struct FfiAcpiFpdtS3ptPointer {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableS3pt {
+pub(crate) struct FfiAcpiTableS3pt {
     pub signature: [u8; 4usize],
     pub length: u32,
 }
@@ -59,7 +59,7 @@ pub enum FfiAcpiS3ptType {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiS3ptResume {
+pub(crate) struct FfiAcpiS3ptResume {
     pub header: FfiAcpiFpdtHeader,
     pub resume_count: u32,
     pub full_resume: u64,
@@ -68,7 +68,7 @@ pub struct FfiAcpiS3ptResume {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiS3ptSuspend {
+pub(crate) struct FfiAcpiS3ptSuspend {
     pub header: FfiAcpiFpdtHeader,
     pub suspend_start: u64,
     pub suspend_end: u64,
@@ -76,7 +76,7 @@ pub struct FfiAcpiS3ptSuspend {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiFpdtBoot {
+pub(crate) struct FfiAcpiFpdtBoot {
     pub header: FfiAcpiFpdtHeader,
     pub reserved: [u8; 4usize],
     pub reset_end: u64,

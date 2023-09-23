@@ -1,4 +1,4 @@
-use crate::{bindings::types::FfiAcpiTableHeader, interface::AcpiGenericAddress};
+use crate::bindings::types::{FfiAcpiTableHeader, FfiAcpiGenericAddress};
 
 ///  WDAT - Watchdog Action Table
 ///         Version 1
@@ -8,7 +8,7 @@ use crate::{bindings::types::FfiAcpiTableHeader, interface::AcpiGenericAddress};
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableWdat {
+pub(crate) struct FfiAcpiTableWdat {
     pub header: FfiAcpiTableHeader,
     pub header_length: u32,
     pub pci_segment: u16,
@@ -26,11 +26,11 @@ pub struct FfiAcpiTableWdat {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiWdatEntry {
+pub(crate) struct FfiAcpiWdatEntry {
     pub action: u8,
     pub instruction: u8,
     pub reserved: u16,
-    pub register_region: AcpiGenericAddress,
+    pub register_region: FfiAcpiGenericAddress,
     pub value: u32,
     pub mask: u32,
 }
@@ -75,12 +75,12 @@ pub enum FfiAcpiWdatInstructions {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableWddt {
+pub(crate) struct FfiAcpiTableWddt {
     pub header: FfiAcpiTableHeader,
     pub spec_version: u16,
     pub table_version: u16,
     pub pci_vendor_id: u16,
-    pub address: AcpiGenericAddress,
+    pub address: FfiAcpiGenericAddress,
     pub max_count: u16,
     pub min_count: u16,
     pub period: u16,
@@ -96,10 +96,10 @@ pub struct FfiAcpiTableWddt {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableWdrt {
+pub(crate) struct FfiAcpiTableWdrt {
     pub header: FfiAcpiTableHeader,
-    pub control_register: AcpiGenericAddress,
-    pub count_register: AcpiGenericAddress,
+    pub control_register: FfiAcpiGenericAddress,
+    pub count_register: FfiAcpiGenericAddress,
     pub pci_device_id: u16,
     pub pci_vendor_id: u16,
     pub pci_bus: u8,

@@ -4,7 +4,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableHmat {
+pub(crate) struct FfiAcpiTableHmat {
     pub header: FfiAcpiTableHeader,
     pub reserved: u32,
 }
@@ -21,15 +21,15 @@ pub enum FfiAcpiHmatType {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiHmatStructure {
-    pub structure_type: u16,
+pub(crate) struct FfiAcpiHmatStructure {
+    pub(crate) structure_type: u16,
     pub reserved: u16,
     pub length: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiHmatProximityDomain {
+pub(crate) struct FfiAcpiHmatProximityDomain {
     pub header: FfiAcpiHmatStructure,
     pub flags: u16,
     pub reserved1: u16,
@@ -42,7 +42,7 @@ pub struct FfiAcpiHmatProximityDomain {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiHmatLocality {
+pub(crate) struct FfiAcpiHmatLocality {
     pub header: FfiAcpiHmatStructure,
     pub flags: u8,
     pub data_type: u8,
@@ -56,7 +56,7 @@ pub struct FfiAcpiHmatLocality {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiHmatCache {
+pub(crate) struct FfiAcpiHmatCache {
     pub header: FfiAcpiHmatStructure,
     pub memory_pd: u32,
     pub reserved1: u32,

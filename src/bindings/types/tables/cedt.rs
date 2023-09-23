@@ -1,4 +1,4 @@
-use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteArrayField};
+use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::IncompleteArrayField};
 
 ///  CEDT - CXL Early Discovery Table
 ///         Version 1
@@ -7,13 +7,13 @@ use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::__IncompleteAr
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableCedt {
+pub(crate) struct FfiAcpiTableCedt {
     pub header: FfiAcpiTableHeader,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiCedtHeader {
+pub(crate) struct FfiAcpiCedtHeader {
     pub header_type: u8,
     pub reserved: u8,
     pub length: u16,
@@ -30,7 +30,7 @@ pub enum FfiAcpiCedtType {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiCedtChbs {
+pub(crate) struct FfiAcpiCedtChbs {
     pub header: FfiAcpiCedtHeader,
     pub uid: u32,
     pub cxl_version: u32,
@@ -40,7 +40,7 @@ pub struct FfiAcpiCedtChbs {
 }
 
 #[repr(C, packed)]
-pub struct FfiAcpiCedtCfmws {
+pub(crate) struct FfiAcpiCedtCfmws {
     pub header: FfiAcpiCedtHeader,
     pub reserved1: u32,
     pub base_hpa: u64,
@@ -51,5 +51,5 @@ pub struct FfiAcpiCedtCfmws {
     pub granularity: u32,
     pub restrictions: u16,
     pub qtg_id: u16,
-    interleave_targets: __IncompleteArrayField<u32>,
+    interleave_targets: IncompleteArrayField<u32>,
 }

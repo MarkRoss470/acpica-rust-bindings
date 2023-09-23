@@ -6,13 +6,13 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableSdev {
+pub(crate) struct FfiAcpiTableSdev {
     pub header: FfiAcpiTableHeader,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiSdevHeader {
+pub(crate) struct FfiAcpiSdevHeader {
     pub header_type: u8,
     pub flags: u8,
     pub length: u16,
@@ -29,7 +29,7 @@ pub enum FfiAcpiSdevType {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiSdevNamespace {
+pub(crate) struct FfiAcpiSdevNamespace {
     pub header: FfiAcpiSdevHeader,
     pub device_id_offset: u16,
     pub device_id_length: u16,
@@ -39,14 +39,14 @@ pub struct FfiAcpiSdevNamespace {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiSdevSecureComponent {
+pub(crate) struct FfiAcpiSdevSecureComponent {
     pub secure_component_offset: u16,
     pub secure_component_length: u16,
 }
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiSdevComponent {
+pub(crate) struct FfiAcpiSdevComponent {
     pub header: FfiAcpiSdevHeader,
 }
 
@@ -60,7 +60,7 @@ pub enum FfiAcpiSacType {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiSdevIdComponent {
+pub(crate) struct FfiAcpiSdevIdComponent {
     pub header: FfiAcpiSdevHeader,
     pub hardware_id_offset: u16,
     pub hardware_id_length: u16,
@@ -76,7 +76,7 @@ pub struct FfiAcpiSdevIdComponent {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiSdevMemComponent {
+pub(crate) struct FfiAcpiSdevMemComponent {
     pub header: FfiAcpiSdevHeader,
     pub reserved: u32,
     pub memory_base_address: u64,
@@ -85,7 +85,7 @@ pub struct FfiAcpiSdevMemComponent {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiSdevPcie {
+pub(crate) struct FfiAcpiSdevPcie {
     pub header: FfiAcpiSdevHeader,
     pub segment: u16,
     pub start_bus: u16,
@@ -97,7 +97,7 @@ pub struct FfiAcpiSdevPcie {
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiSdevPciePath {
+pub(crate) struct FfiAcpiSdevPciePath {
     pub device: u8,
     pub function: u8,
 }

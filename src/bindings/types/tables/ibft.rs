@@ -1,24 +1,21 @@
 use crate::bindings::types::FfiAcpiTableHeader;
 
+#[allow(clippy::doc_markdown)]
 ///  IBFT - Boot Firmware Table
 ///         Version 1
 /// 
 ///  Conforms to \"iSCSI Boot Firmware Table (iBFT) as Defined in ACPI 3.0b
 ///  Specification\", Version 1.01, March 1, 2007
-/// 
-///  Note: It appears that this table is not intended to appear in the RSDT/XSDT.
-///  Therefore, it is not currently supported by the disassembler.
-/// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableIbft {
+pub(crate) struct FfiAcpiTableIbft {
     pub header: FfiAcpiTableHeader,
     pub reserved: [u8; 12usize],
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIbftHeader {
+pub(crate) struct FfiAcpiIbftHeader {
     pub header_type: u8,
     pub version: u8,
     pub length: u16,
@@ -41,7 +38,7 @@ pub enum FfiAcpiIbftType {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIbftControl {
+pub(crate) struct FfiAcpiIbftControl {
     pub header: FfiAcpiIbftHeader,
     pub extensions: u16,
     pub initiator_offset: u16,
@@ -53,7 +50,7 @@ pub struct FfiAcpiIbftControl {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIbftInitiator {
+pub(crate) struct FfiAcpiIbftInitiator {
     pub header: FfiAcpiIbftHeader,
     pub sns_server: [u8; 16usize],
     pub slp_server: [u8; 16usize],
@@ -65,7 +62,7 @@ pub struct FfiAcpiIbftInitiator {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIbftNic {
+pub(crate) struct FfiAcpiIbftNic {
     pub header: FfiAcpiIbftHeader,
     pub ip_address: [u8; 16usize],
     pub subnet_mask_prefix: u8,
@@ -83,7 +80,7 @@ pub struct FfiAcpiIbftNic {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIbftTarget {
+pub(crate) struct FfiAcpiIbftTarget {
     pub header: FfiAcpiIbftHeader,
     pub target_ip_address: [u8; 16usize],
     pub target_ip_socket: u16,

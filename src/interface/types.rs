@@ -1,5 +1,7 @@
 //! Contains rust equivalents of types used by ACPICA
 
+mod generic_address;
+
 use core::{ffi::c_void, fmt::{Debug, Display}};
 
 use crate::{
@@ -8,6 +10,8 @@ use crate::{
     },
     interface::object::AcpiObject,
 };
+
+pub use generic_address::*;
 
 /// A physical address into main memory
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]

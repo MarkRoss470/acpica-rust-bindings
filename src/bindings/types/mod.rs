@@ -1,40 +1,52 @@
-pub(crate) mod tables;
 pub mod functions;
 pub mod object;
+pub(crate) mod tables;
+
+use core::{marker::PhantomData, slice};
 
 // pub(crate) use tables::*;
 use tables::FfiAcpiTableHeader;
 
-use crate::interface::status::AcpiStatus;
-
 use self::object::{FfiAcpiObject, FfiAcpiObjectType};
 
+/// The last field of a C struct can be an array with no fixed size.
+/// This struct is the rust equivalent.
+/// The type can be cast to a slice using the [`as_slice`] and [`as_mut_slice`] methods.
+/// 
+/// [`as_slice`]: IncompleteArrayField::as_slice
+/// [`as_mut_slice`]: IncompleteArrayField::as_mut_slice
 #[repr(C)]
 #[derive(Default)]
-pub(crate) struct __IncompleteArrayField<T>(::core::marker::PhantomData<T>, [T; 0]);
-impl<T> __IncompleteArrayField<T> {
+pub(crate) struct IncompleteArrayField<T>(PhantomData<T>, [T; 0]);
+impl<T> IncompleteArrayField<T> {
     #[inline]
     pub(crate) const fn new() -> Self {
-        __IncompleteArrayField(::core::marker::PhantomData, [])
+        IncompleteArrayField(PhantomData, [])
     }
     #[inline]
     pub(crate) fn as_ptr(&self) -> *const T {
-        self as *const _ as *const T
+        (self as *const Self).cast::<T>()
     }
     #[inline]
     pub(crate) fn as_mut_ptr(&mut self) -> *mut T {
-        self as *mut _ as *mut T
+        (self as *mut Self).cast::<T>()
     }
+    /// # Safety
+    /// The [`IncompleteArrayField`] must have at least `len` elements in it
     #[inline]
     pub(crate) unsafe fn as_slice(&self, len: usize) -> &[T] {
-        ::core::slice::from_raw_parts(self.as_ptr(), len)
+        // SAFETY: The list has at least [`len`] elements, so this is sound
+        unsafe { slice::from_raw_parts(self.as_ptr(), len) }
     }
+    /// # Safety
+    /// The [`IncompleteArrayField`] must have at least `len` elements in it
     #[inline]
     pub(crate) unsafe fn as_mut_slice(&mut self, len: usize) -> &mut [T] {
-        ::core::slice::from_raw_parts_mut(self.as_mut_ptr(), len)
+        // SAFETY: The list has at least [`len`] elements, so this is sound
+        unsafe { slice::from_raw_parts_mut(self.as_mut_ptr(), len) }
     }
 }
-impl<T> ::core::fmt::Debug for __IncompleteArrayField<T> {
+impl<T> ::core::fmt::Debug for IncompleteArrayField<T> {
     fn fmt(&self, fmt: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
         fmt.write_str("__IncompleteArrayField")
     }
@@ -50,11 +62,11 @@ pub(crate) type FfiAcpiEventStatus = u32;
 pub(crate) type FfiAcpiAdtSpaceType = u8;
 
 ///  GAS - Generic Address Structure (ACPI 2.0+)
-/// 
+///
 ///  Note: Since this structure is used in the ACPI tables, it is byte aligned.
 ///  If misaligned access is not supported by the hardware, accesses to the
 ///  64-bit Address field must be performed with care.
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiGenericAddress {
@@ -105,7 +117,7 @@ pub(crate) struct FfiAcpiPnpDeviceId {
 pub(crate) struct FfiAcpiPnpDeviceIdList {
     pub(crate) count: u32,
     pub(crate) list_size: u32,
-    pub(crate) ids: __IncompleteArrayField<FfiAcpiPnpDeviceId>,
+    pub(crate) ids: IncompleteArrayField<FfiAcpiPnpDeviceId>,
 }
 #[repr(C)]
 #[derive(Debug)]

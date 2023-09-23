@@ -7,7 +7,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableIort {
+pub(crate) struct FfiAcpiTableIort {
     pub header: FfiAcpiTableHeader,
     pub node_count: u32,
     pub node_offset: u32,
@@ -16,7 +16,7 @@ pub struct FfiAcpiTableIort {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIortNode {
+pub(crate) struct FfiAcpiIortNode {
     pub node_type: u8,
     pub length: u16,
     pub revision: u8,
@@ -41,7 +41,7 @@ pub enum FfiAcpiIortNodeType {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIortIdMapping {
+pub(crate) struct FfiAcpiIortIdMapping {
     pub input_base: u32,
     pub id_count: u32,
     pub output_base: u32,
@@ -51,7 +51,7 @@ pub struct FfiAcpiIortIdMapping {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIortMemoryAccess {
+pub(crate) struct FfiAcpiIortMemoryAccess {
     pub cache_coherency: u32,
     pub hints: u8,
     pub reserved: u16,
@@ -60,14 +60,14 @@ pub struct FfiAcpiIortMemoryAccess {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIortItsGroup {
+pub(crate) struct FfiAcpiIortItsGroup {
     pub its_count: u32,
     pub identifiers: [u32; 1usize],
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIortNamedComponent {
+pub(crate) struct FfiAcpiIortNamedComponent {
     pub node_flags: u32,
     pub memory_properties: u64,
     pub memory_address_limit: u8,
@@ -76,7 +76,7 @@ pub struct FfiAcpiIortNamedComponent {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIortRootComplex {
+pub(crate) struct FfiAcpiIortRootComplex {
     pub memory_properties: u64,
     pub ats_attribute: u32,
     pub pci_segment_number: u32,
@@ -86,7 +86,7 @@ pub struct FfiAcpiIortRootComplex {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIortSmmu {
+pub(crate) struct FfiAcpiIortSmmu {
     pub base_address: u64,
     pub span: u64,
     pub model: u32,
@@ -101,7 +101,7 @@ pub struct FfiAcpiIortSmmu {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIortSmmuGsi {
+pub(crate) struct FfiAcpiIortSmmuGsi {
     pub n_sg_irpt: u32,
     pub n_sg_irpt_flags: u32,
     pub n_sg_cfg_irpt: u32,
@@ -110,7 +110,7 @@ pub struct FfiAcpiIortSmmuGsi {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIortSmmuV3 {
+pub(crate) struct FfiAcpiIortSmmuV3 {
     pub base_address: u64,
     pub flags: u32,
     pub reserved: u32,
@@ -126,7 +126,7 @@ pub struct FfiAcpiIortSmmuV3 {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIortPmcg {
+pub(crate) struct FfiAcpiIortPmcg {
     pub page0_base_address: u64,
     pub overflow_gsiv: u32,
     pub node_reference: u32,
@@ -135,7 +135,7 @@ pub struct FfiAcpiIortPmcg {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIortRmr {
+pub(crate) struct FfiAcpiIortRmr {
     pub flags: u32,
     pub rmr_count: u32,
     pub rmr_offset: u32,
@@ -143,7 +143,7 @@ pub struct FfiAcpiIortRmr {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIortRmrDesc {
+pub(crate) struct FfiAcpiIortRmrDesc {
     pub base_address: u64,
     pub length: u64,
     pub reserved: u32,

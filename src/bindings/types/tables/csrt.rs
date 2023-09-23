@@ -8,13 +8,13 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableCsrt {
+pub(crate) struct FfiAcpiTableCsrt {
     pub header: FfiAcpiTableHeader,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiCsrtGroup {
+pub(crate) struct FfiAcpiCsrtGroup {
     pub length: u32,
     pub vendor_id: u32,
     pub subvendor_id: u32,
@@ -27,7 +27,7 @@ pub struct FfiAcpiCsrtGroup {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiCsrtSharedInfo {
+pub(crate) struct FfiAcpiCsrtSharedInfo {
     pub major_version: u16,
     pub minor_version: u16,
     pub mmio_base_low: u32,
@@ -44,7 +44,7 @@ pub struct FfiAcpiCsrtSharedInfo {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiCsrtDescriptor {
+pub(crate) struct FfiAcpiCsrtDescriptor {
     pub length: u32,
     pub descriptor_type: u16,
     pub subtype: u16,

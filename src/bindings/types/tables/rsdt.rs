@@ -5,14 +5,14 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableRsdt {
+pub(crate) struct FfiAcpiTableRsdt {
     pub header: FfiAcpiTableHeader,
     pub table_offset_entry: [u32; 1usize],
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableXsdt {
+pub(crate) struct FfiAcpiTableXsdt {
     pub header: FfiAcpiTableHeader,
     pub table_offset_entry: [u64; 1usize],
 }

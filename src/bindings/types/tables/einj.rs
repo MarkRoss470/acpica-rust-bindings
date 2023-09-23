@@ -5,7 +5,7 @@ use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::FfiAcpiWheaHea
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableEinj {
+pub(crate) struct FfiAcpiTableEinj {
     pub header: FfiAcpiTableHeader,
     pub header_length: u32,
     pub flags: u8,
@@ -15,7 +15,7 @@ pub struct FfiAcpiTableEinj {
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiEinjEntry {
+pub(crate) struct FfiAcpiEinjEntry {
     whea_header: FfiAcpiWheaHeader,
 }
 
@@ -52,7 +52,7 @@ pub enum FfiAcpiEinjInstructions {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiEinjErrorTypeWithAddr {
+pub(crate) struct FfiAcpiEinjErrorTypeWithAddr {
     pub error_type: u32,
     pub vendor_struct_offset: u32,
     pub flags: u32,
@@ -64,7 +64,7 @@ pub struct FfiAcpiEinjErrorTypeWithAddr {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiEinjVendor {
+pub(crate) struct FfiAcpiEinjVendor {
     pub length: u32,
     pub pcie_id: u32,
     pub vendor_id: u16,
@@ -75,7 +75,7 @@ pub struct FfiAcpiEinjVendor {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiEinjTrigger {
+pub(crate) struct FfiAcpiEinjTrigger {
     pub header_size: u32,
     pub revision: u32,
     pub table_size: u32,

@@ -1,4 +1,4 @@
-use crate::{bindings::types::FfiAcpiTableHeader, interface::AcpiGenericAddress};
+use crate::bindings::types::{FfiAcpiTableHeader, FfiAcpiGenericAddress};
 
 ///  HPET - High Precision Event Timer table
 ///         Version 1
@@ -8,10 +8,10 @@ use crate::{bindings::types::FfiAcpiTableHeader, interface::AcpiGenericAddress};
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableHpet {
+pub(crate) struct FfiAcpiTableHpet {
     pub header: FfiAcpiTableHeader,
     pub id: u32,
-    pub address: AcpiGenericAddress,
+    pub address: FfiAcpiGenericAddress,
     pub sequence: u8,
     pub minimum_tick: u16,
     pub flags: u8,

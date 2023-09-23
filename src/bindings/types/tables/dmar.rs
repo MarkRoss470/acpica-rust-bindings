@@ -9,7 +9,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableDmar {
+pub(crate) struct FfiAcpiTableDmar {
     pub header: FfiAcpiTableHeader,
     pub width: u8,
     pub flags: u8,
@@ -18,7 +18,7 @@ pub struct FfiAcpiTableDmar {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiDmarHeader {
+pub(crate) struct FfiAcpiDmarHeader {
     pub header_type: u16,
     pub length: u16,
 }
@@ -37,7 +37,7 @@ pub enum FfiAcpiDmarType {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiDmarDeviceScope {
+pub(crate) struct FfiAcpiDmarDeviceScope {
     pub entry_type: u8,
     pub length: u8,
     pub reserved: u16,
@@ -60,14 +60,14 @@ pub enum FfiAcpiDmarScopeType {
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiDmarPciPath {
+pub(crate) struct FfiAcpiDmarPciPath {
     pub device: u8,
     pub function: u8,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiDmarHardwareUnit {
+pub(crate) struct FfiAcpiDmarHardwareUnit {
     pub header: FfiAcpiDmarHeader,
     pub flags: u8,
     pub reserved: u8,
@@ -77,7 +77,7 @@ pub struct FfiAcpiDmarHardwareUnit {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiDmarReservedMemory {
+pub(crate) struct FfiAcpiDmarReservedMemory {
     pub header: FfiAcpiDmarHeader,
     pub reserved: u16,
     pub segment: u16,
@@ -87,7 +87,7 @@ pub struct FfiAcpiDmarReservedMemory {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiDmarAtsr {
+pub(crate) struct FfiAcpiDmarAtsr {
     pub header: FfiAcpiDmarHeader,
     pub flags: u8,
     pub reserved: u8,
@@ -96,7 +96,7 @@ pub struct FfiAcpiDmarAtsr {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiDmarRhsa {
+pub(crate) struct FfiAcpiDmarRhsa {
     pub header: FfiAcpiDmarHeader,
     pub reserved: u32,
     pub base_address: u64,
@@ -105,7 +105,7 @@ pub struct FfiAcpiDmarRhsa {
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiDmarAndd {
+pub(crate) struct FfiAcpiDmarAndd {
     pub header: FfiAcpiDmarHeader,
     pub reserved: [u8; 3usize],
     pub device_number: u8,

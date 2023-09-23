@@ -7,7 +7,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableDrtm {
+pub(crate) struct FfiAcpiTableDrtm {
     pub header: FfiAcpiTableHeader,
     pub entry_base_address: u64,
     pub entry_length: u64,
@@ -22,14 +22,14 @@ pub struct FfiAcpiTableDrtm {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiDrtmVtableList {
+pub(crate) struct FfiAcpiDrtmVtableList {
     pub validated_table_count: u32,
     pub validated_tables: [u64; 1usize],
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiDrtmResource {
+pub(crate) struct FfiAcpiDrtmResource {
     pub size: [u8; 7usize],
     pub resource_type: u8,
     pub address: u64,
@@ -37,14 +37,14 @@ pub struct FfiAcpiDrtmResource {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiDrtmResourceList {
+pub(crate) struct FfiAcpiDrtmResourceList {
     pub resource_count: u32,
     pub resources: [FfiAcpiDrtmResource; 1usize],
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiDrtmDpsId {
+pub(crate) struct FfiAcpiDrtmDpsId {
     pub dps_id_length: u32,
     pub dps_id: [u8; 16usize],
 }

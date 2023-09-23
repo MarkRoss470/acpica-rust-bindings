@@ -8,7 +8,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableIvrs {
+pub(crate) struct FfiAcpiTableIvrs {
     pub header: FfiAcpiTableHeader,
     pub info: u32,
     pub reserved: u64,
@@ -16,7 +16,7 @@ pub struct FfiAcpiTableIvrs {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIvrsHeader {
+pub(crate) struct FfiAcpiIvrsHeader {
     pub header_type: u8,
     pub flags: u8,
     pub length: u16,
@@ -37,7 +37,7 @@ pub enum FfiAcpiIvrsType {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIvrsHardware10 {
+pub(crate) struct FfiAcpiIvrsHardware10 {
     pub header: FfiAcpiIvrsHeader,
     pub capability_offset: u16,
     pub base_address: u64,
@@ -48,7 +48,7 @@ pub struct FfiAcpiIvrsHardware10 {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIvrsHardware11 {
+pub(crate) struct FfiAcpiIvrsHardware11 {
     pub header: FfiAcpiIvrsHeader,
     pub capability_offset: u16,
     pub base_address: u64,
@@ -61,7 +61,7 @@ pub struct FfiAcpiIvrsHardware11 {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIvrsDeHeader {
+pub(crate) struct FfiAcpiIvrsDeHeader {
     pub header_type: u8,
     pub id: u16,
     pub data_setting: u8,
@@ -88,13 +88,13 @@ pub enum FfiAcpiIvrsDeviceEntryType {
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIvrsDevice4 {
+pub(crate) struct FfiAcpiIvrsDevice4 {
     pub header: FfiAcpiIvrsDeHeader,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIvrsDevice8a {
+pub(crate) struct FfiAcpiIvrsDevice8a {
     pub header: FfiAcpiIvrsDeHeader,
     pub reserved1: u8,
     pub used_id: u16,
@@ -103,14 +103,14 @@ pub struct FfiAcpiIvrsDevice8a {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIvrsDevice8b {
+pub(crate) struct FfiAcpiIvrsDevice8b {
     pub header: FfiAcpiIvrsDeHeader,
     pub extended_data: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIvrsDevice8c {
+pub(crate) struct FfiAcpiIvrsDevice8c {
     pub header: FfiAcpiIvrsDeHeader,
     pub handle: u8,
     pub used_id: u16,
@@ -119,7 +119,7 @@ pub struct FfiAcpiIvrsDevice8c {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIvrsDeviceHid {
+pub(crate) struct FfiAcpiIvrsDeviceHid {
     pub header: FfiAcpiIvrsDeHeader,
     pub acpi_hid: u64,
     pub acpi_cid: u64,
@@ -129,7 +129,7 @@ pub struct FfiAcpiIvrsDeviceHid {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiIvrsMemory {
+pub(crate) struct FfiAcpiIvrsMemory {
     pub header: FfiAcpiIvrsDeHeader,
     pub aux_data: u16,
     pub reserved: u64,

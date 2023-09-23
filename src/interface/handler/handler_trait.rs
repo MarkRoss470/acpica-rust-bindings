@@ -1,4 +1,4 @@
-use alloc::{boxed::Box, string::String, vec::Vec};
+use alloc::{string::String, vec::Vec};
 
 use crate::{
     interface::status::AcpiError,
@@ -18,6 +18,7 @@ use crate::{
 /// This trait is unsafe to implement because some functions have restrictions on their
 /// implementation as well as their caller. This is indicated per method under the heading "Implementation Safety".
 ///
+/// [`register_interface`]: super::register_interface
 /// [`allocate`]: AcpiHandler::allocate
 pub unsafe trait AcpiHandler {
     /// Method called when ACPICA initialises. The default implementation of this method is a no-op.
@@ -143,7 +144,7 @@ pub unsafe trait AcpiHandler {
         let mut v = Vec::<u8>::new();
 
         let total_allocation_size = size + core::mem::size_of::<usize>();
-        let Ok(_) = v.try_reserve_exact(total_allocation_size) else {
+        let Ok(()) = v.try_reserve_exact(total_allocation_size) else {
             return Err(AcpiAllocationError::OutOfMemory);
         };
 
@@ -154,7 +155,7 @@ pub unsafe trait AcpiHandler {
 
         // SAFETY:
         // There are no references to the Vec any more, so writing to its memory is sound.
-        unsafe { core::ptr::write_unaligned(ptr as *mut usize, size) }
+        unsafe { core::ptr::write_unaligned(ptr.cast::<usize>(), size) }
 
         // SAFETY: This is adding <=8 bytes so it can't exceed the size bounds
         Ok(unsafe { ptr.byte_add(core::mem::size_of::<usize>()) })

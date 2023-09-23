@@ -5,7 +5,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableViot {
+pub(crate) struct FfiAcpiTableViot {
     pub header: FfiAcpiTableHeader,
     pub node_count: u16,
     pub node_offset: u16,
@@ -14,7 +14,7 @@ pub struct FfiAcpiTableViot {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiViotHeader {
+pub(crate) struct FfiAcpiViotHeader {
     pub header_type: u8,
     pub reserved: u8,
     pub length: u16,
@@ -33,7 +33,7 @@ pub enum FfiAcpiViotNodeType {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiViotPciRange {
+pub(crate) struct FfiAcpiViotPciRange {
     pub header: FfiAcpiViotHeader,
     pub endpoint_start: u32,
     pub segment_start: u16,
@@ -46,7 +46,7 @@ pub struct FfiAcpiViotPciRange {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiViotMmio {
+pub(crate) struct FfiAcpiViotMmio {
     pub header: FfiAcpiViotHeader,
     pub endpoint: u32,
     pub base_address: u64,
@@ -56,7 +56,7 @@ pub struct FfiAcpiViotMmio {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiViotVirtioIommuPci {
+pub(crate) struct FfiAcpiViotVirtioIommuPci {
     pub header: FfiAcpiViotHeader,
     pub segment: u16,
     pub bdf: u16,
@@ -65,7 +65,7 @@ pub struct FfiAcpiViotVirtioIommuPci {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiViotVirtioIommuMmio {
+pub(crate) struct FfiAcpiViotVirtioIommuMmio {
     pub header: FfiAcpiViotHeader,
     pub reserved: [u8; 4usize],
     pub base_address: u64,

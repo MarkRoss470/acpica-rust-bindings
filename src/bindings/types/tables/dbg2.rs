@@ -8,7 +8,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableDbg2 {
+pub(crate) struct FfiAcpiTableDbg2 {
     pub header: FfiAcpiTableHeader,
     pub info_offset: u32,
     pub info_count: u32,
@@ -16,14 +16,14 @@ pub struct FfiAcpiTableDbg2 {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiDbg2Header {
+pub(crate) struct FfiAcpiDbg2Header {
     pub info_offset: u32,
     pub info_count: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiDbg2Device {
+pub(crate) struct FfiAcpiDbg2Device {
     pub revision: u8,
     pub length: u16,
     pub register_count: u8,

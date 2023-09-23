@@ -5,13 +5,13 @@ use crate::bindings::types::FfiAcpiTableHeader;
 ///
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTablePrmt {
+pub(crate) struct FfiAcpiTablePrmt {
     pub header: FfiAcpiTableHeader,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTablePrmtHeader {
+pub(crate) struct FfiAcpiTablePrmtHeader {
     pub platform_guid: [u8; 16usize],
     pub module_info_offset: u32,
     pub module_info_count: u32,
@@ -19,14 +19,14 @@ pub struct FfiAcpiTablePrmtHeader {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiPrmtModuleHeader {
+pub(crate) struct FfiAcpiPrmtModuleHeader {
     pub revision: u16,
     pub length: u16,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiPrmtModuleInfo {
+pub(crate) struct FfiAcpiPrmtModuleInfo {
     pub revision: u16,
     pub length: u16,
     pub module_guid: [u8; 16usize],
@@ -39,7 +39,7 @@ pub struct FfiAcpiPrmtModuleInfo {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiPrmtHandlerInfo {
+pub(crate) struct FfiAcpiPrmtHandlerInfo {
     pub revision: u16,
     pub length: u16,
     pub handler_guid: [u8; 16usize],

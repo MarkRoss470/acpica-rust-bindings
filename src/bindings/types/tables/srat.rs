@@ -8,7 +8,7 @@ use super::FfiAcpiSubtableHeader;
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableSrat {
+pub(crate) struct FfiAcpiTableSrat {
     pub header: FfiAcpiTableHeader,
     pub table_revision: u32,
     pub reserved: u64,
@@ -29,7 +29,7 @@ pub enum FfiAcpiSratType {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiSratCpuAffinity {
+pub(crate) struct FfiAcpiSratCpuAffinity {
     pub header: FfiAcpiSubtableHeader,
     pub proximity_domain_lo: u8,
     pub apic_id: u8,
@@ -41,7 +41,7 @@ pub struct FfiAcpiSratCpuAffinity {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiSratMemAffinity {
+pub(crate) struct FfiAcpiSratMemAffinity {
     pub header: FfiAcpiSubtableHeader,
     pub proximity_domain: u32,
     pub reserved: u16,
@@ -54,7 +54,7 @@ pub struct FfiAcpiSratMemAffinity {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiSratX2apicCpuAffinity {
+pub(crate) struct FfiAcpiSratX2apicCpuAffinity {
     pub header: FfiAcpiSubtableHeader,
     pub reserved: u16,
     pub proximity_domain: u32,
@@ -66,7 +66,7 @@ pub struct FfiAcpiSratX2apicCpuAffinity {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiSratGiccAffinity {
+pub(crate) struct FfiAcpiSratGiccAffinity {
     pub header: FfiAcpiSubtableHeader,
     pub proximity_domain: u32,
     pub acpi_processor_uid: u32,
@@ -76,7 +76,7 @@ pub struct FfiAcpiSratGiccAffinity {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiSratGicItsAffinity {
+pub(crate) struct FfiAcpiSratGicItsAffinity {
     pub header: FfiAcpiSubtableHeader,
     pub proximity_domain: u32,
     pub reserved: u16,
@@ -85,7 +85,7 @@ pub struct FfiAcpiSratGicItsAffinity {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiSratGenericAffinity {
+pub(crate) struct FfiAcpiSratGenericAffinity {
     pub header: FfiAcpiSubtableHeader,
     pub reserved: u8,
     pub device_handle_type: u8,

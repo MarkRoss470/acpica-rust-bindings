@@ -6,14 +6,14 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableRasf {
+pub(crate) struct FfiAcpiTableRasf {
     pub header: FfiAcpiTableHeader,
     pub channel_id: [u8; 12usize],
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiRasfSharedMemory {
+pub(crate) struct FfiAcpiRasfSharedMemory {
     pub signature: u32,
     pub command: u16,
     pub status: u16,
@@ -26,7 +26,7 @@ pub struct FfiAcpiRasfSharedMemory {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiRasfParameterBlock {
+pub(crate) struct FfiAcpiRasfParameterBlock {
     pub block_type: u16,
     pub version: u16,
     pub length: u16,
@@ -34,7 +34,7 @@ pub struct FfiAcpiRasfParameterBlock {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiRasfPatrolScrubParameter {
+pub(crate) struct FfiAcpiRasfPatrolScrubParameter {
     pub header: FfiAcpiRasfParameterBlock,
     pub patrol_scrub_command: u16,
     pub requested_address_range: [u64; 2usize],

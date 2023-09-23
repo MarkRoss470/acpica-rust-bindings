@@ -38,7 +38,7 @@ pub mod windows;
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableHeader {
+pub(crate) struct FfiAcpiTableHeader {
     pub signature: [i8; 4usize],
     pub length: u32,
     pub revision: u8,
@@ -54,7 +54,7 @@ pub struct FfiAcpiTableHeader {
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiSubtableHeader {
+pub(crate) struct FfiAcpiSubtableHeader {
     pub subtable_type: u8,
     pub length: u8,
 }
@@ -64,7 +64,7 @@ pub struct FfiAcpiSubtableHeader {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableRsdp {
+pub(crate) struct FfiAcpiTableRsdp {
     pub signature: [i8; 8usize],
     pub checksum: u8,
     pub oem_id: [i8; 6usize],
@@ -80,7 +80,7 @@ pub struct FfiAcpiTableRsdp {
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiRsdpCommon {
+pub(crate) struct FfiAcpiRsdpCommon {
     pub signature: [i8; 8usize],
     pub checksum: u8,
     pub oem_id: [i8; 6usize],
@@ -89,7 +89,7 @@ pub struct FfiAcpiRsdpCommon {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiRsdpExtension {
+pub(crate) struct FfiAcpiRsdpExtension {
     pub length: u32,
     pub xsdt_physical_address: u64,
     pub extended_checksum: u8,

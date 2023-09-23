@@ -1,18 +1,18 @@
-use crate::{bindings::types::FfiAcpiTableHeader, interface::AcpiGenericAddress};
+use crate::bindings::types::{FfiAcpiTableHeader, FfiAcpiGenericAddress};
 
 ///  HEST - Hardware Error Source Table (ACPI 4.0)
 ///         Version 1
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableHest {
+pub(crate) struct FfiAcpiTableHest {
     pub header: FfiAcpiTableHeader,
     pub error_source_count: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiHestHeader {
+pub(crate) struct FfiAcpiHestHeader {
     pub header_type: u16,
     pub source_id: u16,
 }
@@ -38,7 +38,7 @@ pub enum FfiAcpiHestTypes {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiHestIaErrorBank {
+pub(crate) struct FfiAcpiHestIaErrorBank {
     pub bank_number: u8,
     pub clear_status_on_init: u8,
     pub status_format: u8,
@@ -52,7 +52,7 @@ pub struct FfiAcpiHestIaErrorBank {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiHestAerCommon {
+pub(crate) struct FfiAcpiHestAerCommon {
     pub reserved1: u16,
     pub flags: u8,
     pub enabled: u8,
@@ -71,7 +71,7 @@ pub struct FfiAcpiHestAerCommon {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiHestNotify {
+pub(crate) struct FfiAcpiHestNotify {
     pub notify_type: u8,
     pub length: u8,
     pub config_write_enable: u16,
@@ -104,7 +104,7 @@ pub enum FfiAcpiHestNotifyTypes {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiHestIaMachineCheck {
+pub(crate) struct FfiAcpiHestIaMachineCheck {
     pub header: FfiAcpiHestHeader,
     pub reserved1: u16,
     pub flags: u8,
@@ -119,7 +119,7 @@ pub struct FfiAcpiHestIaMachineCheck {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiHestIaCorrected {
+pub(crate) struct FfiAcpiHestIaCorrected {
     pub header: FfiAcpiHestHeader,
     pub reserved1: u16,
     pub flags: u8,
@@ -133,7 +133,7 @@ pub struct FfiAcpiHestIaCorrected {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiHestIaNmi {
+pub(crate) struct FfiAcpiHestIaNmi {
     pub header: FfiAcpiHestHeader,
     pub reserved: u32,
     pub records_to_preallocate: u32,
@@ -143,7 +143,7 @@ pub struct FfiAcpiHestIaNmi {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiHestAerRoot {
+pub(crate) struct FfiAcpiHestAerRoot {
     pub header: FfiAcpiHestHeader,
     pub aer: FfiAcpiHestAerCommon,
     pub root_error_command: u32,
@@ -151,14 +151,14 @@ pub struct FfiAcpiHestAerRoot {
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiHestAer {
+pub(crate) struct FfiAcpiHestAer {
     pub header: FfiAcpiHestHeader,
     pub aer: FfiAcpiHestAerCommon,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiHestAerBridge {
+pub(crate) struct FfiAcpiHestAerBridge {
     pub header: FfiAcpiHestHeader,
     pub aer: FfiAcpiHestAerCommon,
     pub uncorrectable_mask2: u32,
@@ -168,7 +168,7 @@ pub struct FfiAcpiHestAerBridge {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiHestGeneric {
+pub(crate) struct FfiAcpiHestGeneric {
     pub header: FfiAcpiHestHeader,
     pub related_source_id: u16,
     pub reserved: u8,
@@ -176,14 +176,14 @@ pub struct FfiAcpiHestGeneric {
     pub records_to_preallocate: u32,
     pub max_sections_per_record: u32,
     pub max_raw_data_length: u32,
-    pub error_status_address: AcpiGenericAddress,
+    pub error_status_address: FfiAcpiGenericAddress,
     pub notify: FfiAcpiHestNotify,
     pub error_block_length: u32,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiHestGenericV2 {
+pub(crate) struct FfiAcpiHestGenericV2 {
     pub header: FfiAcpiHestHeader,
     pub related_source_id: u16,
     pub reserved: u8,
@@ -191,17 +191,17 @@ pub struct FfiAcpiHestGenericV2 {
     pub records_to_preallocate: u32,
     pub max_sections_per_record: u32,
     pub max_raw_data_length: u32,
-    pub error_status_address: AcpiGenericAddress,
+    pub error_status_address: FfiAcpiGenericAddress,
     pub notify: FfiAcpiHestNotify,
     pub error_block_length: u32,
-    pub read_ack_register: AcpiGenericAddress,
+    pub read_ack_register: FfiAcpiGenericAddress,
     pub read_ack_preserve: u64,
     pub read_ack_write: u64,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiHestGenericStatus {
+pub(crate) struct FfiAcpiHestGenericStatus {
     pub block_status: u32,
     pub raw_data_offset: u32,
     pub raw_data_length: u32,
@@ -211,7 +211,7 @@ pub struct FfiAcpiHestGenericStatus {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiHestGenericData {
+pub(crate) struct FfiAcpiHestGenericData {
     pub section_type: [u8; 16usize],
     pub error_severity: u32,
     pub revision: u16,
@@ -224,7 +224,7 @@ pub struct FfiAcpiHestGenericData {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiHestGenericDataV300 {
+pub(crate) struct FfiAcpiHestGenericDataV300 {
     pub section_type: [u8; 16usize],
     pub error_severity: u32,
     pub revision: u16,
@@ -238,7 +238,7 @@ pub struct FfiAcpiHestGenericDataV300 {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiHestIaDeferredCheck {
+pub(crate) struct FfiAcpiHestIaDeferredCheck {
     pub header: FfiAcpiHestHeader,
     pub reserved1: u16,
     pub flags: u8,

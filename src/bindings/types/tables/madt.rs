@@ -7,7 +7,7 @@ use super::FfiAcpiSubtableHeader;
 /// 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTableMadt {
+pub(crate) struct FfiAcpiTableMadt {
     pub header: FfiAcpiTableHeader,
     pub address: u32,
     pub flags: u32,
@@ -39,7 +39,7 @@ pub enum FfiAcpiMadtType {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiMadtLocalApic {
+pub(crate) struct FfiAcpiMadtLocalApic {
     pub header: FfiAcpiSubtableHeader,
     pub processor_id: u8,
     pub id: u8,
@@ -48,7 +48,7 @@ pub struct FfiAcpiMadtLocalApic {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiMadtIoApic {
+pub(crate) struct FfiAcpiMadtIoApic {
     pub header: FfiAcpiSubtableHeader,
     pub id: u8,
     pub reserved: u8,
@@ -58,7 +58,7 @@ pub struct FfiAcpiMadtIoApic {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiMadtInterruptOverride {
+pub(crate) struct FfiAcpiMadtInterruptOverride {
     pub header: FfiAcpiSubtableHeader,
     pub bus: u8,
     pub source_irq: u8,
@@ -68,7 +68,7 @@ pub struct FfiAcpiMadtInterruptOverride {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiMadtNmiSource {
+pub(crate) struct FfiAcpiMadtNmiSource {
     pub header: FfiAcpiSubtableHeader,
     pub inti_flags: u16,
     pub global_irq: u32,
@@ -76,7 +76,7 @@ pub struct FfiAcpiMadtNmiSource {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiMadtLocalApicNmi {
+pub(crate) struct FfiAcpiMadtLocalApicNmi {
     pub header: FfiAcpiSubtableHeader,
     pub processor_id: u8,
     pub inti_flags: u16,
@@ -85,7 +85,7 @@ pub struct FfiAcpiMadtLocalApicNmi {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiMadtLocalApicOverride {
+pub(crate) struct FfiAcpiMadtLocalApicOverride {
     pub header: FfiAcpiSubtableHeader,
     pub reserved: u16,
     pub address: u64,
@@ -93,7 +93,7 @@ pub struct FfiAcpiMadtLocalApicOverride {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiMadtIoSapic {
+pub(crate) struct FfiAcpiMadtIoSapic {
     pub header: FfiAcpiSubtableHeader,
     pub id: u8,
     pub reserved: u8,
@@ -103,7 +103,7 @@ pub struct FfiAcpiMadtIoSapic {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiMadtLocalSapic {
+pub(crate) struct FfiAcpiMadtLocalSapic {
     pub header: FfiAcpiSubtableHeader,
     pub processor_id: u8,
     pub id: u8,
@@ -116,7 +116,7 @@ pub struct FfiAcpiMadtLocalSapic {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiMadtInterruptSource {
+pub(crate) struct FfiAcpiMadtInterruptSource {
     pub header: FfiAcpiSubtableHeader,
     pub inti_flags: u16,
     pub source_type: u8,
@@ -129,7 +129,7 @@ pub struct FfiAcpiMadtInterruptSource {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiMadtLocalX2apic {
+pub(crate) struct FfiAcpiMadtLocalX2apic {
     pub header: FfiAcpiSubtableHeader,
     pub reserved: u16,
     pub local_apic_id: u32,
@@ -139,7 +139,7 @@ pub struct FfiAcpiMadtLocalX2apic {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiMadtLocalX2apicNmi {
+pub(crate) struct FfiAcpiMadtLocalX2apicNmi {
     pub header: FfiAcpiSubtableHeader,
     pub inti_flags: u16,
     pub uid: u32,
@@ -149,7 +149,7 @@ pub struct FfiAcpiMadtLocalX2apicNmi {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiMadtGenericInterrupt {
+pub(crate) struct FfiAcpiMadtGenericInterrupt {
     pub header: FfiAcpiSubtableHeader,
     pub reserved: u16,
     pub cpu_interface_number: u32,
@@ -171,7 +171,7 @@ pub struct FfiAcpiMadtGenericInterrupt {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiMadtGenericDistributor {
+pub(crate) struct FfiAcpiMadtGenericDistributor {
     pub header: FfiAcpiSubtableHeader,
     pub reserved: u16,
     pub gic_id: u32,
@@ -194,7 +194,7 @@ pub enum FfiAcpiMadtGicVersion {
 }
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiMadtGenericMsiFrame {
+pub(crate) struct FfiAcpiMadtGenericMsiFrame {
     pub header: FfiAcpiSubtableHeader,
     pub reserved: u16,
     pub msi_frame_id: u32,
@@ -206,7 +206,7 @@ pub struct FfiAcpiMadtGenericMsiFrame {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiMadtGenericRedistributor {
+pub(crate) struct FfiAcpiMadtGenericRedistributor {
     pub header: FfiAcpiSubtableHeader,
     pub reserved: u16,
     pub base_address: u64,
@@ -215,7 +215,7 @@ pub struct FfiAcpiMadtGenericRedistributor {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiMadtGenericTranslator {
+pub(crate) struct FfiAcpiMadtGenericTranslator {
     pub header: FfiAcpiSubtableHeader,
     pub reserved: u16,
     pub translation_id: u32,
@@ -225,7 +225,7 @@ pub struct FfiAcpiMadtGenericTranslator {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiMadtMultiprocWakeup {
+pub(crate) struct FfiAcpiMadtMultiprocWakeup {
     pub header: FfiAcpiSubtableHeader,
     pub mailbox_version: u16,
     pub reserved: u32,
@@ -234,7 +234,7 @@ pub struct FfiAcpiMadtMultiprocWakeup {
 
 #[repr(C, packed)]
 #[derive(Copy, Clone)]
-pub struct FfiAcpiMadtMultiprocWakeupMailbox {
+pub(crate) struct FfiAcpiMadtMultiprocWakeupMailbox {
     pub command: u16,
     pub reserved: u16,
     pub apic_id: u32,

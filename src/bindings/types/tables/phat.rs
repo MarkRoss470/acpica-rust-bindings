@@ -5,13 +5,13 @@ use crate::bindings::types::FfiAcpiTableHeader;
 /// 
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiTablePhat {
+pub(crate) struct FfiAcpiTablePhat {
     pub header: FfiAcpiTableHeader,
 }
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiPhatHeader {
+pub(crate) struct FfiAcpiPhatHeader {
     pub header_type: u16,
     pub length: u16,
     pub revision: u8,
@@ -19,7 +19,7 @@ pub struct FfiAcpiPhatHeader {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiPhatVersionData {
+pub(crate) struct FfiAcpiPhatVersionData {
     pub header: FfiAcpiPhatHeader,
     pub reserved: [u8; 3usize],
     pub element_count: u32,
@@ -27,7 +27,7 @@ pub struct FfiAcpiPhatVersionData {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiPhatVersionElement {
+pub(crate) struct FfiAcpiPhatVersionElement {
     pub guid: [u8; 16usize],
     pub version_value: u64,
     pub producer_id: u32,
@@ -35,7 +35,7 @@ pub struct FfiAcpiPhatVersionElement {
 
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
-pub struct FfiAcpiPhatHealthData {
+pub(crate) struct FfiAcpiPhatHealthData {
     pub header: FfiAcpiPhatHeader,
     pub reserved: [u8; 2usize],
     pub health: u8,
