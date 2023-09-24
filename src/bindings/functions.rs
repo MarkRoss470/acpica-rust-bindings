@@ -1,4 +1,4 @@
-use crate::{interface::status::AcpiStatus, types::AcpiTableHeader};
+use crate::interface::status::AcpiStatus;
 
 use super::types::{
     functions::{
@@ -9,7 +9,10 @@ use super::types::{
     },
     object::FfiAcpiObjectType,
     tables::FfiAcpiTableHeader,
-    *,
+    FfiAcpiAdtSpaceType, FfiAcpiBuffer, FfiAcpiDeviceInfo, FfiAcpiEventStatus,
+    FfiAcpiGenericAddress, FfiAcpiHandle, FfiAcpiObjectList, FfiAcpiPhysicalAddress,
+    FfiAcpiPldInfo, FfiAcpiResource, FfiAcpiResourceAddress64, FfiAcpiSize, FfiAcpiStatistics,
+    FfiAcpiString, FfiAcpiTableDesc, FfiAcpiVendorUuid,
 };
 
 #[allow(dead_code)]
@@ -136,8 +139,10 @@ extern "C" {
         Data: *mut ::core::ffi::c_void,
     ) -> AcpiStatus;
 
-    pub(crate) fn AcpiDetachData(Object: FfiAcpiHandle, Handler: FfiAcpiObjectHandler)
-        -> AcpiStatus;
+    pub(crate) fn AcpiDetachData(
+        Object: FfiAcpiHandle,
+        Handler: FfiAcpiObjectHandler,
+    ) -> AcpiStatus;
 
     pub(crate) fn AcpiGetData(
         Object: FfiAcpiHandle,
@@ -181,7 +186,8 @@ extern "C" {
         OutHandle: *mut FfiAcpiHandle,
     ) -> AcpiStatus;
 
-    pub(crate) fn AcpiGetType(Object: FfiAcpiHandle, OutType: *mut FfiAcpiObjectType) -> AcpiStatus;
+    pub(crate) fn AcpiGetType(Object: FfiAcpiHandle, OutType: *mut FfiAcpiObjectType)
+        -> AcpiStatus;
 
     pub(crate) fn AcpiGetParent(Object: FfiAcpiHandle, OutHandle: *mut FfiAcpiHandle)
         -> AcpiStatus;

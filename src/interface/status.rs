@@ -4,6 +4,7 @@
 
 use core::fmt::Display;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 #[repr(transparent)]
 pub(crate) struct AcpiStatus(u32);
 
@@ -262,6 +263,7 @@ pub enum AcpiErrorClass {
 
 impl AcpiError {
     /// Gets the general type of error
+    #[must_use]
     pub const fn class(&self) -> AcpiErrorClass {
         if let Self::Unknown = self {
             return AcpiErrorClass::Unknown;
@@ -279,20 +281,20 @@ impl AcpiError {
 }
 
 pub(crate) trait AcpiErrorAsStatusExt {
-    fn as_acpi_status(&self) -> AcpiStatus;
+    fn to_acpi_status(&self) -> AcpiStatus;
 }
 
 impl AcpiErrorAsStatusExt for Result<(), AcpiError> {
-    fn as_acpi_status(&self) -> AcpiStatus {
+    fn to_acpi_status(&self) -> AcpiStatus {
         match self {
-            Ok(_) => AcpiStatus(0),
-            Err(e) => e.as_acpi_status(),
+            Ok(()) => AcpiStatus(0),
+            Err(e) => e.to_acpi_status(),
         }
     }
 }
 
 impl AcpiErrorAsStatusExt for AcpiError {
-    fn as_acpi_status(&self) -> AcpiStatus {
+    fn to_acpi_status(&self) -> AcpiStatus {
         if let AcpiError::Unknown = self {
             AcpiStatus(Self::Error as u32)
         } else {
@@ -304,7 +306,8 @@ impl AcpiErrorAsStatusExt for AcpiError {
 impl AcpiStatus {
     pub const OK: Self = Self(0);
 
-    pub fn as_result(&self) -> Result<(), AcpiError> {
+    #[allow(clippy::too_many_lines)]
+    pub fn as_result(self) -> Result<(), AcpiError> {
         match self.0 {
             0 => Ok(()),
             e if e == 0x0001 | AcpiError::AE_CODE_ENVIRONMENTAL => Err(AcpiError::Error),
@@ -414,6 +417,7 @@ impl AcpiStatus {
 }
 
 impl Display for AcpiError {
+    #[allow(clippy::too_many_lines)]
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         let err_string = match self {
             Self::Error => "Unspecified error",
@@ -523,8 +527,7 @@ impl Display for AcpiError {
             Self::ControlReturnValue => "A Method returned a value",
             Self::ControlPending => "Method is calling another method",
             Self::ControlTerminate => "Terminate the executing method",
-            Self::ControlTrue => "An If or While predicate result",
-            Self::ControlFalse => "An If or While predicate result",
+            Self::ControlTrue | Self::ControlFalse => "An If or While predicate result",
             Self::ControlDepth => "Maximum search depth has been reached",
             Self::ControlEnd => "An If or While predicate is false",
             Self::ControlTransfer => "Transfer control to called method",
@@ -554,7 +557,7 @@ fn test_as_result() {
             continue;
         }
 
-        assert_eq!(error.as_acpi_status().0, i);
+        assert_eq!(error.to_acpi_status().0, i);
     }
 }
 

@@ -63,9 +63,7 @@ pub fn register_interface<T: AcpiHandler + Send + 'static>(
 ) -> Result<AcpicaInitialization<false, false>, AcpiError> {
     let mut lock = OS_INTERFACE.lock();
 
-    if lock.is_some() {
-        panic!("Interface is already initialized");
-    }
+    assert!(!lock.is_some(), "Interface is already initialized");
 
     *lock = Some(OsInterface {
         handler: Box::new(interface),

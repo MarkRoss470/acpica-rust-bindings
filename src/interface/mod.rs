@@ -4,7 +4,7 @@ use core::sync::atomic::Ordering;
 
 use alloc::ffi::CString;
 
-use crate::bindings::{functions::AcpiDebugTrace, types::FfiAcpiGenericAddress};
+use crate::bindings::functions::AcpiDebugTrace;
 
 use self::{handler::SUBSYSTEM_IS_INITIALIZED, status::AcpiError};
 
@@ -22,9 +22,7 @@ pub mod types;
 /// 
 /// [`register_interface`]: handler::register_interface
 pub fn debug_trace(name: &str, level: u32, layer: u32, flags: u32) -> Result<(), AcpiError> {
-    if !SUBSYSTEM_IS_INITIALIZED.load(Ordering::Relaxed) {
-        panic!("Subsystem not initialised")
-    }
+    assert!(SUBSYSTEM_IS_INITIALIZED.load(Ordering::Relaxed), "Subsystem not initialised");
 
     let ffi_name = CString::new(name).expect("name should not contain null bytes");
 

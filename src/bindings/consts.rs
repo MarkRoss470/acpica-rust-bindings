@@ -17,16 +17,18 @@ pub const ACPI_PATH_SEGMENT_LENGTH: u32 = 5;
 pub const ACPI_PATH_SEPARATOR: u8 = 46u8;
 pub const ACPI_OEM_ID_SIZE: u32 = 6;
 pub const ACPI_OEM_TABLE_ID_SIZE: u32 = 8;
-pub const ACPI_PM_TIMER_FREQUENCY: u32 = 3579545;
+pub const ACPI_PM_TIMER_FREQUENCY: u32 = 3_579_545;
+
 pub const ACPI_MSEC_PER_SEC: u32 = 1000;
 pub const ACPI_USEC_PER_MSEC: u32 = 1000;
-pub const ACPI_USEC_PER_SEC: u32 = 1000000;
+pub const ACPI_USEC_PER_SEC: u32 = 1_000_000;
 pub const ACPI_100NSEC_PER_USEC: u32 = 10;
 pub const ACPI_100NSEC_PER_MSEC: u32 = 10000;
-pub const ACPI_100NSEC_PER_SEC: u32 = 10000000;
+pub const ACPI_100NSEC_PER_SEC: u32 = 10_000_000;
 pub const ACPI_NSEC_PER_USEC: u32 = 1000;
-pub const ACPI_NSEC_PER_MSEC: u32 = 1000000;
-pub const ACPI_NSEC_PER_SEC: u32 = 1000000000;
+pub const ACPI_NSEC_PER_MSEC: u32 = 1_000_000;
+pub const ACPI_NSEC_PER_SEC: u32 = 1_000_000_000;
+
 pub const ACPI_OWNER_ID_MAX: u32 = 4095;
 pub const ACPI_INTEGER_BIT_SIZE: u32 = 64;
 pub const ACPI_MAX_DECIMAL_DIGITS: u32 = 20;
@@ -34,6 +36,7 @@ pub const ACPI_MAX64_DECIMAL_DIGITS: u32 = 20;
 pub const ACPI_MAX32_DECIMAL_DIGITS: u32 = 10;
 pub const ACPI_MAX16_DECIMAL_DIGITS: u32 = 5;
 pub const ACPI_MAX8_DECIMAL_DIGITS: u32 = 3;
+
 pub const ACPI_WAIT_FOREVER: u32 = 65535;
 pub const ACPI_DO_NOT_WAIT: u32 = 0;
 pub const ACPI_FULL_INITIALIZATION: u32 = 0;
@@ -54,6 +57,7 @@ pub const ACPI_SLEEP_TYPE_MAX: u32 = 7;
 pub const ACPI_SLEEP_TYPE_INVALID: u32 = 255;
 pub const ACPI_GENERIC_NOTIFY_MAX: u32 = 15;
 pub const ACPI_SPECIFIC_NOTIFY_MAX: u32 = 132;
+
 pub const ACPI_TYPE_ANY: u32 = 0;
 pub const ACPI_TYPE_INTEGER: u32 = 1;
 pub const ACPI_TYPE_STRING: u32 = 2;
@@ -72,7 +76,6 @@ pub const ACPI_TYPE_BUFFER_FIELD: u32 = 14;
 pub const ACPI_TYPE_DDB_HANDLE: u32 = 15;
 pub const ACPI_TYPE_DEBUG_OBJECT: u32 = 16;
 pub const ACPI_TYPE_EXTERNAL_MAX: u32 = 16;
-pub const ACPI_NUM_TYPES: u32 = 17;
 pub const ACPI_TYPE_LOCAL_REGION_FIELD: u32 = 17;
 pub const ACPI_TYPE_LOCAL_BANK_FIELD: u32 = 18;
 pub const ACPI_TYPE_LOCAL_INDEX_FIELD: u32 = 19;
@@ -91,10 +94,14 @@ pub const ACPI_TYPE_LOCAL_DATA: u32 = 29;
 pub const ACPI_TYPE_LOCAL_MAX: u32 = 29;
 pub const ACPI_TYPE_INVALID: u32 = 30;
 pub const ACPI_TYPE_NOT_FOUND: u32 = 255;
+
+pub const ACPI_NUM_TYPES: u32 = 17;
 pub const ACPI_NUM_NS_TYPES: u32 = 31;
+
 pub const ACPI_READ: u32 = 0;
 pub const ACPI_WRITE: u32 = 1;
 pub const ACPI_IO_MASK: u32 = 1;
+
 pub const ACPI_EVENT_PMTIMER: u32 = 0;
 pub const ACPI_EVENT_GLOBAL: u32 = 1;
 pub const ACPI_EVENT_POWER_BUTTON: u32 = 2;
@@ -102,6 +109,7 @@ pub const ACPI_EVENT_SLEEP_BUTTON: u32 = 3;
 pub const ACPI_EVENT_RTC: u32 = 4;
 pub const ACPI_EVENT_MAX: u32 = 4;
 pub const ACPI_NUM_FIXED_EVENTS: u32 = 5;
+
 pub const ACPI_GPE_ENABLE: u32 = 0;
 pub const ACPI_GPE_DISABLE: u32 = 1;
 pub const ACPI_GPE_CONDITIONAL_ENABLE: u32 = 2;
@@ -119,6 +127,7 @@ pub const ACPI_DEVICE_HANDLER_LIST: u32 = 1;
 pub const ACPI_NUM_PREDEFINED_REGIONS: u32 = 12;
 pub const ACPI_REG_DISCONNECT: u32 = 0;
 pub const ACPI_REG_CONNECT: u32 = 1;
+
 pub const ACPI_BITREG_TIMER_STATUS: u32 = 0;
 pub const ACPI_BITREG_BUS_MASTER_STATUS: u32 = 1;
 pub const ACPI_BITREG_GLOBAL_LOCK_STATUS: u32 = 2;
@@ -141,6 +150,7 @@ pub const ACPI_BITREG_SLEEP_ENABLE: u32 = 18;
 pub const ACPI_BITREG_ARB_DISABLE: u32 = 19;
 pub const ACPI_BITREG_MAX: u32 = 19;
 pub const ACPI_NUM_BITREG: u32 = 20;
+
 pub const ACPI_CLEAR_STATUS: u32 = 1;
 pub const ACPI_ENABLE_EVENT: u32 = 1;
 pub const ACPI_DISABLE_EVENT: u32 = 0;
@@ -156,20 +166,25 @@ pub const ACPI_SYS_MODES_MASK: u32 = 3;
 pub const ACPI_EVENT_TYPE_GPE: u32 = 0;
 pub const ACPI_EVENT_TYPE_FIXED: u32 = 1;
 pub const ACPI_INIT_DEVICE_INI: u32 = 1;
+
 pub const ACPI_TABLE_EVENT_LOAD: u32 = 0;
 pub const ACPI_TABLE_EVENT_UNLOAD: u32 = 1;
 pub const ACPI_TABLE_EVENT_INSTALL: u32 = 2;
 pub const ACPI_TABLE_EVENT_UNINSTALL: u32 = 3;
 pub const ACPI_NUM_TABLE_EVENTS: u32 = 4;
+
 pub const ACPI_REGION_ACTIVATE: u32 = 0;
 pub const ACPI_REGION_DEACTIVATE: u32 = 1;
+
 pub const ACPI_INTERRUPT_NOT_HANDLED: u32 = 0;
 pub const ACPI_INTERRUPT_HANDLED: u32 = 1;
+
 pub const ACPI_REENABLE_GPE: u32 = 128;
 pub const ACPI_EISAID_STRING_SIZE: u32 = 8;
 pub const ACPI_UUID_LENGTH: u32 = 16;
 pub const ACPI_PCICLS_STRING_SIZE: u32 = 7;
 pub const ACPI_PCI_ROOT_BRIDGE: u32 = 1;
+
 pub const ACPI_VALID_ADR: u32 = 2;
 pub const ACPI_VALID_HID: u32 = 4;
 pub const ACPI_VALID_UID: u32 = 8;
@@ -177,12 +192,14 @@ pub const ACPI_VALID_CID: u32 = 32;
 pub const ACPI_VALID_CLS: u32 = 64;
 pub const ACPI_VALID_SXDS: u32 = 256;
 pub const ACPI_VALID_SXWS: u32 = 512;
+
 pub const ACPI_STA_DEVICE_PRESENT: u32 = 1;
 pub const ACPI_STA_DEVICE_ENABLED: u32 = 2;
 pub const ACPI_STA_DEVICE_UI: u32 = 4;
 pub const ACPI_STA_DEVICE_FUNCTIONING: u32 = 8;
 pub const ACPI_STA_DEVICE_OK: u32 = 8;
 pub const ACPI_STA_BATTERY_PRESENT: u32 = 16;
+
 pub const ACPI_VENDOR_STRINGS: u32 = 1;
 pub const ACPI_FEATURE_STRINGS: u32 = 2;
 pub const ACPI_ENABLE_INTERFACES: u32 = 0;
@@ -193,6 +210,7 @@ pub const ACPI_DISABLE_ALL_STRINGS: u32 = 7;
 pub const ACPI_ENABLE_ALL_VENDOR_STRINGS: u32 = 1;
 pub const ACPI_ENABLE_ALL_FEATURE_STRINGS: u32 = 2;
 pub const ACPI_ENABLE_ALL_STRINGS: u32 = 3;
+
 pub const ACPI_OSI_WIN_2000: u32 = 1;
 pub const ACPI_OSI_WIN_XP: u32 = 2;
 pub const ACPI_OSI_WIN_XP_SP1: u32 = 3;
@@ -213,6 +231,7 @@ pub const ACPI_OSI_WIN_10_RS3: u32 = 17;
 pub const ACPI_OSI_WIN_10_RS4: u32 = 18;
 pub const ACPI_OSI_WIN_10_RS5: u32 = 19;
 pub const ACPI_OSI_WIN_10_19H1: u32 = 20;
+
 pub const ACPI_OPT_END: i32 = -1;
 pub const ACPI_ROOT_PATHNAME: &[u8; 5usize] = b"\\___\0";
 pub const ACPI_NAMESPACE_ROOT: &[u8; 15usize] = b"Namespace Root\0";
@@ -231,9 +250,11 @@ pub const ACPI_RSDP_NAME: &[u8; 5usize] = b"RSDP\0";
 pub const ACPI_OEM_NAME: &[u8; 4usize] = b"OEM\0";
 pub const ACPI_GLOCK_PENDING: u32 = 1;
 pub const ACPI_GLOCK_OWNED: u32 = 2;
+
 pub const ACPI_FACS_S4_BIOS_PRESENT: u32 = 1;
 pub const ACPI_FACS_64BIT_WAKE: u32 = 2;
 pub const ACPI_FACS_64BIT_ENVIRONMENT: u32 = 1;
+
 pub const ACPI_FADT_LEGACY_DEVICES: u32 = 1;
 pub const ACPI_FADT_8042: u32 = 2;
 pub const ACPI_FADT_NO_VGA: u32 = 4;
@@ -242,71 +263,78 @@ pub const ACPI_FADT_NO_ASPM: u32 = 16;
 pub const ACPI_FADT_NO_CMOS_RTC: u32 = 32;
 pub const ACPI_FADT_PSCI_COMPLIANT: u32 = 1;
 pub const ACPI_FADT_PSCI_USE_HVC: u32 = 2;
-pub const ACPI_FADT_WBINVD: u32 = 1;
-pub const ACPI_FADT_WBINVD_FLUSH: u32 = 2;
-pub const ACPI_FADT_C1_SUPPORTED: u32 = 4;
-pub const ACPI_FADT_C2_MP_SUPPORTED: u32 = 8;
-pub const ACPI_FADT_POWER_BUTTON: u32 = 16;
-pub const ACPI_FADT_SLEEP_BUTTON: u32 = 32;
-pub const ACPI_FADT_FIXED_RTC: u32 = 64;
-pub const ACPI_FADT_S4_RTC_WAKE: u32 = 128;
-pub const ACPI_FADT_32BIT_TIMER: u32 = 256;
-pub const ACPI_FADT_DOCKING_SUPPORTED: u32 = 512;
-pub const ACPI_FADT_RESET_REGISTER: u32 = 1024;
-pub const ACPI_FADT_SEALED_CASE: u32 = 2048;
-pub const ACPI_FADT_HEADLESS: u32 = 4096;
-pub const ACPI_FADT_SLEEP_TYPE: u32 = 8192;
-pub const ACPI_FADT_PCI_EXPRESS_WAKE: u32 = 16384;
-pub const ACPI_FADT_PLATFORM_CLOCK: u32 = 32768;
-pub const ACPI_FADT_S4_RTC_VALID: u32 = 65536;
-pub const ACPI_FADT_REMOTE_POWER_ON: u32 = 131072;
-pub const ACPI_FADT_APIC_CLUSTER: u32 = 262144;
-pub const ACPI_FADT_APIC_PHYSICAL: u32 = 524288;
-pub const ACPI_FADT_HW_REDUCED: u32 = 1048576;
-pub const ACPI_FADT_LOW_POWER_S0: u32 = 2097152;
+pub const ACPI_FADT_WBINVD: u32 = 1 << 0;
+pub const ACPI_FADT_WBINVD_FLUSH: u32 = 1 << 1;
+pub const ACPI_FADT_C1_SUPPORTED: u32 = 1 << 2;
+pub const ACPI_FADT_C2_MP_SUPPORTED: u32 = 1 << 3;
+pub const ACPI_FADT_POWER_BUTTON: u32 = 1 << 4;
+pub const ACPI_FADT_SLEEP_BUTTON: u32 = 1 << 5;
+pub const ACPI_FADT_FIXED_RTC: u32 = 1 << 6;
+pub const ACPI_FADT_S4_RTC_WAKE: u32 = 1 << 7;
+pub const ACPI_FADT_32BIT_TIMER: u32 = 1 << 8;
+pub const ACPI_FADT_DOCKING_SUPPORTED: u32 = 1 << 9;
+pub const ACPI_FADT_RESET_REGISTER: u32 = 1 << 10;
+pub const ACPI_FADT_SEALED_CASE: u32 = 1 << 11;
+pub const ACPI_FADT_HEADLESS: u32 = 1 << 12;
+pub const ACPI_FADT_SLEEP_TYPE: u32 = 1 << 13;
+pub const ACPI_FADT_PCI_EXPRESS_WAKE: u32 = 1 << 14;
+pub const ACPI_FADT_PLATFORM_CLOCK: u32 = 1 << 15;
+pub const ACPI_FADT_S4_RTC_VALID: u32 = 1 << 16;
+pub const ACPI_FADT_REMOTE_POWER_ON: u32 = 1 << 17;
+pub const ACPI_FADT_APIC_CLUSTER: u32 = 1 << 18;
+pub const ACPI_FADT_APIC_PHYSICAL: u32 = 1 << 19;
+pub const ACPI_FADT_HW_REDUCED: u32 = 1 << 20;
+pub const ACPI_FADT_LOW_POWER_S0: u32 = 1 << 21;
+
 pub const ACPI_X_WAKE_STATUS: u32 = 128;
 pub const ACPI_X_SLEEP_TYPE_MASK: u32 = 28;
 pub const ACPI_X_SLEEP_TYPE_POSITION: u32 = 2;
 pub const ACPI_X_SLEEP_ENABLE: u32 = 32;
+
 pub const ACPI_TABLE_ORIGIN_EXTERNAL_VIRTUAL: u32 = 0;
 pub const ACPI_TABLE_ORIGIN_INTERNAL_PHYSICAL: u32 = 1;
 pub const ACPI_TABLE_ORIGIN_INTERNAL_VIRTUAL: u32 = 2;
 pub const ACPI_TABLE_ORIGIN_MASK: u32 = 3;
 pub const ACPI_TABLE_IS_VERIFIED: u32 = 4;
 pub const ACPI_TABLE_IS_LOADED: u32 = 8;
-pub const ACPI_SIG_AEST: &[u8; 5usize] = b"AEST\0";
-pub const ACPI_SIG_ASF: &[u8; 5usize] = b"ASF!\0";
-pub const ACPI_SIG_BERT: &[u8; 5usize] = b"BERT\0";
-pub const ACPI_SIG_BGRT: &[u8; 5usize] = b"BGRT\0";
-pub const ACPI_SIG_BOOT: &[u8; 5usize] = b"BOOT\0";
-pub const ACPI_SIG_CEDT: &[u8; 5usize] = b"CEDT\0";
-pub const ACPI_SIG_CPEP: &[u8; 5usize] = b"CPEP\0";
-pub const ACPI_SIG_CSRT: &[u8; 5usize] = b"CSRT\0";
-pub const ACPI_SIG_DBG2: &[u8; 5usize] = b"DBG2\0";
-pub const ACPI_SIG_DBGP: &[u8; 5usize] = b"DBGP\0";
-pub const ACPI_SIG_DMAR: &[u8; 5usize] = b"DMAR\0";
-pub const ACPI_SIG_DRTM: &[u8; 5usize] = b"DRTM\0";
-pub const ACPI_SIG_ECDT: &[u8; 5usize] = b"ECDT\0";
-pub const ACPI_SIG_EINJ: &[u8; 5usize] = b"EINJ\0";
-pub const ACPI_SIG_ERST: &[u8; 5usize] = b"ERST\0";
-pub const ACPI_SIG_FPDT: &[u8; 5usize] = b"FPDT\0";
-pub const ACPI_SIG_GTDT: &[u8; 5usize] = b"GTDT\0";
-pub const ACPI_SIG_HEST: &[u8; 5usize] = b"HEST\0";
-pub const ACPI_SIG_HMAT: &[u8; 5usize] = b"HMAT\0";
-pub const ACPI_SIG_HPET: &[u8; 5usize] = b"HPET\0";
-pub const ACPI_SIG_IBFT: &[u8; 5usize] = b"IBFT\0";
-pub const ACPI_SIG_S3PT: &[u8; 5usize] = b"S3PT\0";
-pub const ACPI_SIG_PCCS: &[u8; 4usize] = b"PCC\0";
-pub const ACPI_SIG_MATR: &[u8; 5usize] = b"MATR\0";
-pub const ACPI_SIG_MSDM: &[u8; 5usize] = b"MSDM\0";
+
+pub const ACPI_SIG_AEST: &[u8; 5] = b"AEST\0";
+pub const ACPI_SIG_ASF: &[u8; 5] = b"ASF!\0";
+pub const ACPI_SIG_BERT: &[u8; 5] = b"BERT\0";
+pub const ACPI_SIG_BGRT: &[u8; 5] = b"BGRT\0";
+pub const ACPI_SIG_BOOT: &[u8; 5] = b"BOOT\0";
+pub const ACPI_SIG_CEDT: &[u8; 5] = b"CEDT\0";
+pub const ACPI_SIG_CPEP: &[u8; 5] = b"CPEP\0";
+pub const ACPI_SIG_CSRT: &[u8; 5] = b"CSRT\0";
+pub const ACPI_SIG_DBG2: &[u8; 5] = b"DBG2\0";
+pub const ACPI_SIG_DBGP: &[u8; 5] = b"DBGP\0";
+pub const ACPI_SIG_DMAR: &[u8; 5] = b"DMAR\0";
+pub const ACPI_SIG_DRTM: &[u8; 5] = b"DRTM\0";
+pub const ACPI_SIG_ECDT: &[u8; 5] = b"ECDT\0";
+pub const ACPI_SIG_EINJ: &[u8; 5] = b"EINJ\0";
+pub const ACPI_SIG_ERST: &[u8; 5] = b"ERST\0";
+pub const ACPI_SIG_FPDT: &[u8; 5] = b"FPDT\0";
+pub const ACPI_SIG_GTDT: &[u8; 5] = b"GTDT\0";
+pub const ACPI_SIG_HEST: &[u8; 5] = b"HEST\0";
+pub const ACPI_SIG_HMAT: &[u8; 5] = b"HMAT\0";
+pub const ACPI_SIG_HPET: &[u8; 5] = b"HPET\0";
+pub const ACPI_SIG_IBFT: &[u8; 5] = b"IBFT\0";
+pub const ACPI_SIG_S3PT: &[u8; 5] = b"S3PT\0";
+pub const ACPI_SIG_PCCS: &[u8; 4] = b"PCC\0";
+pub const ACPI_SIG_MATR: &[u8; 5] = b"MATR\0";
+pub const ACPI_SIG_MSDM: &[u8; 5] = b"MSDM\0";
+
 pub const ACPI_ASF_SMBUS_PROTOCOLS: u32 = 1;
+
 pub const ACPI_BERT_UNCORRECTABLE: u32 = 1;
 pub const ACPI_BERT_CORRECTABLE: u32 = 2;
 pub const ACPI_BERT_MULTIPLE_UNCORRECTABLE: u32 = 4;
 pub const ACPI_BERT_MULTIPLE_CORRECTABLE: u32 = 8;
 pub const ACPI_BERT_ERROR_ENTRY_COUNT: u32 = 4080;
+
 pub const ACPI_BGRT_DISPLAYED: u32 = 1;
 pub const ACPI_BGRT_ORIENTATION_OFFSET: u32 = 6;
+
 pub const ACPI_CEDT_CHBS_VERSION_CXL11: u32 = 0;
 pub const ACPI_CEDT_CHBS_VERSION_CXL20: u32 = 1;
 pub const ACPI_CEDT_CHBS_LENGTH_CXL11: u32 = 8192;
@@ -317,6 +345,7 @@ pub const ACPI_CEDT_CFMWS_RESTRICT_TYPE3: u32 = 2;
 pub const ACPI_CEDT_CFMWS_RESTRICT_VOLATILE: u32 = 4;
 pub const ACPI_CEDT_CFMWS_RESTRICT_PMEM: u32 = 8;
 pub const ACPI_CEDT_CFMWS_RESTRICT_FIXED: u32 = 16;
+
 pub const ACPI_CSRT_TYPE_INTERRUPT: u32 = 1;
 pub const ACPI_CSRT_TYPE_TIMER: u32 = 2;
 pub const ACPI_CSRT_TYPE_DMA: u32 = 3;
@@ -325,6 +354,7 @@ pub const ACPI_CSRT_XRUPT_CONTROLLER: u32 = 1;
 pub const ACPI_CSRT_TIMER: u32 = 0;
 pub const ACPI_CSRT_DMA_CHANNEL: u32 = 0;
 pub const ACPI_CSRT_DMA_CONTROLLER: u32 = 1;
+
 pub const ACPI_DBG2_SERIAL_PORT: u32 = 32768;
 pub const ACPI_DBG2_1394_PORT: u32 = 32769;
 pub const ACPI_DBG2_USB_PORT: u32 = 32770;
@@ -352,31 +382,36 @@ pub const ACPI_DBG2_INTEL_LPSS: u32 = 20;
 pub const ACPI_DBG2_1394_STANDARD: u32 = 0;
 pub const ACPI_DBG2_USB_XHCI: u32 = 0;
 pub const ACPI_DBG2_USB_EHCI: u32 = 1;
+
 pub const ACPI_DMAR_INTR_REMAP: u32 = 1;
 pub const ACPI_DMAR_X2APIC_OPT_OUT: u32 = 2;
 pub const ACPI_DMAR_X2APIC_MODE: u32 = 4;
 pub const ACPI_DMAR_INCLUDE_ALL: u32 = 1;
 pub const ACPI_DMAR_ALLOW_ALL: u32 = 1;
 pub const ACPI_DMAR_ALL_PORTS: u32 = 1;
+
 pub const ACPI_DRTM_ACCESS_ALLOWED: u32 = 1;
 pub const ACPI_DRTM_ENABLE_GAP_CODE: u32 = 2;
 pub const ACPI_DRTM_INCOMPLETE_MEASUREMENTS: u32 = 4;
 pub const ACPI_DRTM_AUTHORITY_ORDER: u32 = 8;
+
 pub const ACPI_EINJ_PRESERVE: u32 = 1;
-pub const ACPI_EINJ_PROCESSOR_CORRECTABLE: u32 = 1;
-pub const ACPI_EINJ_PROCESSOR_UNCORRECTABLE: u32 = 2;
-pub const ACPI_EINJ_PROCESSOR_FATAL: u32 = 4;
-pub const ACPI_EINJ_MEMORY_CORRECTABLE: u32 = 8;
-pub const ACPI_EINJ_MEMORY_UNCORRECTABLE: u32 = 16;
-pub const ACPI_EINJ_MEMORY_FATAL: u32 = 32;
-pub const ACPI_EINJ_PCIX_CORRECTABLE: u32 = 64;
-pub const ACPI_EINJ_PCIX_UNCORRECTABLE: u32 = 128;
-pub const ACPI_EINJ_PCIX_FATAL: u32 = 256;
-pub const ACPI_EINJ_PLATFORM_CORRECTABLE: u32 = 512;
-pub const ACPI_EINJ_PLATFORM_UNCORRECTABLE: u32 = 1024;
-pub const ACPI_EINJ_PLATFORM_FATAL: u32 = 2048;
-pub const ACPI_EINJ_VENDOR_DEFINED: u32 = 2147483648;
+pub const ACPI_EINJ_PROCESSOR_CORRECTABLE: u32 = 1 << 0;
+pub const ACPI_EINJ_PROCESSOR_UNCORRECTABLE: u32 = 1 << 1;
+pub const ACPI_EINJ_PROCESSOR_FATAL: u32 = 1 << 2;
+pub const ACPI_EINJ_MEMORY_CORRECTABLE: u32 = 1 << 3;
+pub const ACPI_EINJ_MEMORY_UNCORRECTABLE: u32 = 1 << 4;
+pub const ACPI_EINJ_MEMORY_FATAL: u32 = 1 << 5;
+pub const ACPI_EINJ_PCIX_CORRECTABLE: u32 = 1 << 6;
+pub const ACPI_EINJ_PCIX_UNCORRECTABLE: u32 = 1 << 7;
+pub const ACPI_EINJ_PCIX_FATAL: u32 = 1 << 8;
+pub const ACPI_EINJ_PLATFORM_CORRECTABLE: u32 = 1 << 9;
+pub const ACPI_EINJ_PLATFORM_UNCORRECTABLE: u32 = 1 << 10;
+pub const ACPI_EINJ_PLATFORM_FATAL: u32 = 1 << 11;
+pub const ACPI_EINJ_VENDOR_DEFINED: u32 = 1 << 31;
+
 pub const ACPI_ERST_PRESERVE: u32 = 1;
+
 pub const ACPI_GTDT_INTERRUPT_MODE: u32 = 1;
 pub const ACPI_GTDT_INTERRUPT_POLARITY: u32 = 2;
 pub const ACPI_GTDT_ALWAYS_ON: u32 = 4;
@@ -387,6 +422,7 @@ pub const ACPI_GTDT_GT_ALWAYS_ON: u32 = 2;
 pub const ACPI_GTDT_WATCHDOG_IRQ_MODE: u32 = 1;
 pub const ACPI_GTDT_WATCHDOG_IRQ_POLARITY: u32 = 2;
 pub const ACPI_GTDT_WATCHDOG_SECURE: u32 = 4;
+
 pub const ACPI_HEST_FIRMWARE_FIRST: u32 = 1;
 pub const ACPI_HEST_GLOBAL: u32 = 2;
 pub const ACPI_HEST_GHES_ASSIST: u32 = 4;
@@ -408,6 +444,7 @@ pub const ACPI_HEST_GEN_ERROR_NONE: u32 = 3;
 pub const ACPI_HEST_GEN_VALID_FRU_ID: u32 = 1;
 pub const ACPI_HEST_GEN_VALID_FRU_STRING: u32 = 2;
 pub const ACPI_HEST_GEN_VALID_TIMESTAMP: u32 = 4;
+
 pub const ACPI_HMAT_INITIATOR_PD_VALID: u32 = 1;
 pub const ACPI_HMAT_MEMORY_HIERARCHY: u32 = 15;
 pub const ACPI_HMAT_MEMORY: u32 = 0;
@@ -426,14 +463,16 @@ pub const ACPI_HMAT_TOTAL_CACHE_LEVEL: u32 = 15;
 pub const ACPI_HMAT_CACHE_LEVEL: u32 = 240;
 pub const ACPI_HMAT_CACHE_ASSOCIATIVITY: u32 = 3840;
 pub const ACPI_HMAT_WRITE_POLICY: u32 = 61440;
-pub const ACPI_HMAT_CACHE_LINE_SIZE: u32 = 4294901760;
+pub const ACPI_HMAT_CACHE_LINE_SIZE: u32 = 0xFFFF_0000;
 pub const ACPI_HMAT_CA_NONE: u32 = 0;
 pub const ACPI_HMAT_CA_DIRECT_MAPPED: u32 = 1;
 pub const ACPI_HMAT_CA_COMPLEX_CACHE_INDEXING: u32 = 2;
 pub const ACPI_HMAT_CP_NONE: u32 = 0;
 pub const ACPI_HMAT_CP_WB: u32 = 1;
 pub const ACPI_HMAT_CP_WT: u32 = 2;
+
 pub const ACPI_HPET_PAGE_PROTECT_MASK: u32 = 3;
+
 pub const ACPI_SIG_BDAT: &[u8; 5usize] = b"BDAT\0";
 pub const ACPI_SIG_IORT: &[u8; 5usize] = b"IORT\0";
 pub const ACPI_SIG_IVRS: &[u8; 5usize] = b"IVRS\0";
@@ -457,6 +496,7 @@ pub const ACPI_SIG_SDEI: &[u8; 5usize] = b"SDEI\0";
 pub const ACPI_SIG_SDEV: &[u8; 5usize] = b"SDEV\0";
 pub const ACPI_SIG_NHLT: &[u8; 5usize] = b"NHLT\0";
 pub const ACPI_SIG_SVKL: &[u8; 5usize] = b"SVKL\0";
+
 pub const ACPI_AEST_PROCESSOR_ERROR_NODE: u32 = 0;
 pub const ACPI_AEST_MEMORY_ERROR_NODE: u32 = 1;
 pub const ACPI_AEST_SMMU_ERROR_NODE: u32 = 2;
@@ -482,6 +522,7 @@ pub const ACPI_AEST_XFACE_RESERVED: u32 = 2;
 pub const ACPI_AEST_NODE_FAULT_HANDLING: u32 = 0;
 pub const ACPI_AEST_NODE_ERROR_RECOVERY: u32 = 1;
 pub const ACPI_AEST_XRUPT_RESERVED: u32 = 2;
+
 pub const ACPI_IORT_ID_SINGLE_MAPPING: u32 = 1;
 pub const ACPI_IORT_NODE_COHERENT: u32 = 1;
 pub const ACPI_IORT_NODE_NOT_COHERENT: u32 = 0;
@@ -510,9 +551,11 @@ pub const ACPI_IORT_SMMU_V3_CAVIUM_CN99XX: u32 = 2;
 pub const ACPI_IORT_SMMU_V3_COHACC_OVERRIDE: u32 = 1;
 pub const ACPI_IORT_SMMU_V3_HTTU_OVERRIDE: u32 = 6;
 pub const ACPI_IORT_SMMU_V3_PXM_VALID: u32 = 8;
-pub const ACPI_IVRS_PHYSICAL_SIZE: u32 = 32512;
-pub const ACPI_IVRS_VIRTUAL_SIZE: u32 = 4161536;
-pub const ACPI_IVRS_ATS_RESERVED: u32 = 4194304;
+
+pub const ACPI_IVRS_PHYSICAL_SIZE: u32 = 0x7F00;
+pub const ACPI_IVRS_VIRTUAL_SIZE: u32 = 0x3F_8000;
+pub const ACPI_IVRS_ATS_RESERVED: u32 = 0x40_0000;
+
 pub const ACPI_IVHD_TT_ENABLE: u32 = 1;
 pub const ACPI_IVHD_PASS_PW: u32 = 2;
 pub const ACPI_IVHD_RES_PASS_PW: u32 = 4;
@@ -531,14 +574,17 @@ pub const ACPI_IVHD_NMI_PASS: u32 = 4;
 pub const ACPI_IVHD_SYSTEM_MGMT: u32 = 48;
 pub const ACPI_IVHD_LINT0_PASS: u32 = 64;
 pub const ACPI_IVHD_LINT1_PASS: u32 = 128;
-pub const ACPI_IVHD_ATS_DISABLED: u32 = 2147483648;
+pub const ACPI_IVHD_ATS_DISABLED: u32 = 0x8000_0000;
 pub const ACPI_IVHD_IOAPIC: u32 = 1;
 pub const ACPI_IVHD_HPET: u32 = 2;
+
 pub const ACPI_IVRS_UID_NOT_PRESENT: u32 = 0;
 pub const ACPI_IVRS_UID_IS_INTEGER: u32 = 1;
 pub const ACPI_IVRS_UID_IS_STRING: u32 = 2;
+
 pub const ACPI_LPIT_STATE_DISABLED: u32 = 1;
 pub const ACPI_LPIT_NO_COUNTER: u32 = 2;
+
 pub const ACPI_MADT_PCAT_COMPAT: u32 = 1;
 pub const ACPI_MADT_DUAL_PIC: u32 = 1;
 pub const ACPI_MADT_MULTIPLE_APIC: u32 = 0;
@@ -560,12 +606,14 @@ pub const ACPI_MADT_TRIGGER_CONFORMS: u32 = 0;
 pub const ACPI_MADT_TRIGGER_EDGE: u32 = 4;
 pub const ACPI_MADT_TRIGGER_RESERVED: u32 = 8;
 pub const ACPI_MADT_TRIGGER_LEVEL: u32 = 12;
+
 pub const ACPI_MPST_ENABLED: u32 = 1;
 pub const ACPI_MPST_POWER_MANAGED: u32 = 2;
 pub const ACPI_MPST_HOT_PLUG_CAPABLE: u32 = 4;
 pub const ACPI_MPST_PRESERVE: u32 = 1;
 pub const ACPI_MPST_AUTOENTRY: u32 = 2;
 pub const ACPI_MPST_AUTOEXIT: u32 = 4;
+
 pub const ACPI_NFIT_ADD_ONLINE_ONLY: u32 = 1;
 pub const ACPI_NFIT_PROXIMITY_VALID: u32 = 2;
 pub const ACPI_NFIT_LOCATION_COOKIE_VALID: u32 = 4;
@@ -585,18 +633,21 @@ pub const ACPI_NFIT_DIMM_NUMBER_MASK: u32 = 15;
 pub const ACPI_NFIT_CHANNEL_NUMBER_MASK: u32 = 240;
 pub const ACPI_NFIT_MEMORY_ID_MASK: u32 = 3840;
 pub const ACPI_NFIT_SOCKET_ID_MASK: u32 = 61440;
-pub const ACPI_NFIT_NODE_ID_MASK: u32 = 268369920;
+pub const ACPI_NFIT_NODE_ID_MASK: u32 = 0xFFF_0000;
 pub const ACPI_NFIT_DIMM_NUMBER_OFFSET: u32 = 0;
 pub const ACPI_NFIT_CHANNEL_NUMBER_OFFSET: u32 = 4;
 pub const ACPI_NFIT_MEMORY_ID_OFFSET: u32 = 8;
 pub const ACPI_NFIT_SOCKET_ID_OFFSET: u32 = 12;
 pub const ACPI_NFIT_NODE_ID_OFFSET: u32 = 16;
+
 pub const ACPI_PCCT_DOORBELL: u32 = 1;
 pub const ACPI_PCCT_INTERRUPT_POLARITY: u32 = 1;
 pub const ACPI_PCCT_INTERRUPT_MODE: u32 = 2;
+
 pub const ACPI_PDTT_RUNTIME_TRIGGER: u32 = 1;
 pub const ACPI_PDTT_WAIT_COMPLETION: u32 = 2;
 pub const ACPI_PDTT_TRIGGER_ORDER: u32 = 4;
+
 pub const ACPI_PHAT_TYPE_FW_VERSION_DATA: u32 = 0;
 pub const ACPI_PHAT_TYPE_FW_HEALTH_DATA: u32 = 1;
 pub const ACPI_PHAT_TYPE_RESERVED: u32 = 2;
@@ -604,6 +655,7 @@ pub const ACPI_PHAT_ERRORS_FOUND: u32 = 0;
 pub const ACPI_PHAT_NO_ERRORS: u32 = 1;
 pub const ACPI_PHAT_UNKNOWN_ERRORS: u32 = 2;
 pub const ACPI_PHAT_ADVISORY: u32 = 3;
+
 pub const ACPI_PMTT_TYPE_SOCKET: u32 = 0;
 pub const ACPI_PMTT_TYPE_CONTROLLER: u32 = 1;
 pub const ACPI_PMTT_TYPE_DIMM: u32 = 2;
@@ -612,6 +664,7 @@ pub const ACPI_PMTT_TYPE_VENDOR: u32 = 255;
 pub const ACPI_PMTT_TOP_LEVEL: u32 = 1;
 pub const ACPI_PMTT_PHYSICAL: u32 = 2;
 pub const ACPI_PMTT_MEMORY_TYPE: u32 = 12;
+
 pub const ACPI_PPTT_PHYSICAL_PACKAGE: u32 = 1;
 pub const ACPI_PPTT_ACPI_PROCESSOR_ID_VALID: u32 = 2;
 pub const ACPI_PPTT_ACPI_PROCESSOR_IS_THREAD: u32 = 4;
@@ -638,6 +691,7 @@ pub const ACPI_PPTT_CACHE_TYPE_UNIFIED: u32 = 8;
 pub const ACPI_PPTT_CACHE_TYPE_UNIFIED_ALT: u32 = 12;
 pub const ACPI_PPTT_CACHE_POLICY_WB: u32 = 0;
 pub const ACPI_PPTT_CACHE_POLICY_WT: u32 = 16;
+
 pub const ACPI_RASF_SCRUBBER_RUNNING: u32 = 1;
 pub const ACPI_RASF_SPEED: u32 = 14;
 pub const ACPI_RASF_SPEED_SLOW: u32 = 0;
@@ -648,8 +702,10 @@ pub const ACPI_RASF_COMMAND_COMPLETE: u32 = 1;
 pub const ACPI_RASF_SCI_DOORBELL: u32 = 2;
 pub const ACPI_RASF_ERROR: u32 = 4;
 pub const ACPI_RASF_STATUS: u32 = 248;
+
 pub const ACPI_SDEV_HANDOFF_TO_UNSECURE_OS: u32 = 1;
 pub const ACPI_SDEV_SECURE_COMPONENTS_PRESENT: u32 = 2;
+
 pub const ACPI_SIG_SLIC: &[u8; 5usize] = b"SLIC\0";
 pub const ACPI_SIG_SLIT: &[u8; 5usize] = b"SLIT\0";
 pub const ACPI_SIG_SPCR: &[u8; 5usize] = b"SPCR\0";
@@ -668,7 +724,9 @@ pub const ACPI_SIG_WPBT: &[u8; 5usize] = b"WPBT\0";
 pub const ACPI_SIG_WSMT: &[u8; 5usize] = b"WSMT\0";
 pub const ACPI_SIG_XENV: &[u8; 5usize] = b"XENV\0";
 pub const ACPI_SIG_XXXX: &[u8; 5usize] = b"XXXX\0";
+
 pub const ACPI_SPCR_DO_NOT_DISABLE: u32 = 1;
+
 pub const ACPI_SRAT_CPU_USE_AFFINITY: u32 = 1;
 pub const ACPI_SRAT_MEM_ENABLED: u32 = 1;
 pub const ACPI_SRAT_MEM_HOT_PLUGGABLE: u32 = 2;
@@ -677,6 +735,7 @@ pub const ACPI_SRAT_CPU_ENABLED: u32 = 1;
 pub const ACPI_SRAT_GICC_ENABLED: u32 = 1;
 pub const ACPI_SRAT_GENERIC_AFFINITY_ENABLED: u32 = 1;
 pub const ACPI_SRAT_ARCHITECTURAL_TRANSACTIONS: u32 = 2;
+
 pub const ACPI_TCPA_CLIENT_TABLE: u32 = 0;
 pub const ACPI_TCPA_SERVER_TABLE: u32 = 1;
 pub const ACPI_TCPA_PCI_DEVICE: u32 = 1;
@@ -686,7 +745,9 @@ pub const ACPI_TCPA_INTERRUPT_MODE: u32 = 1;
 pub const ACPI_TCPA_INTERRUPT_POLARITY: u32 = 2;
 pub const ACPI_TCPA_SCI_VIA_GPE: u32 = 4;
 pub const ACPI_TCPA_GLOBAL_INTERRUPT: u32 = 8;
+
 pub const ACPI_TPM23_ACPI_START_METHOD: u32 = 2;
+
 pub const ACPI_TPM2_NOT_ALLOWED: u32 = 0;
 pub const ACPI_TPM2_RESERVED1: u32 = 1;
 pub const ACPI_TPM2_START_METHOD: u32 = 2;
@@ -702,10 +763,13 @@ pub const ACPI_TPM2_COMMAND_BUFFER_WITH_ARM_SMC: u32 = 11;
 pub const ACPI_TPM2_RESERVED: u32 = 12;
 pub const ACPI_TPM2_INTERRUPT_SUPPORT: u32 = 1;
 pub const ACPI_TPM2_IDLE_SUPPORT: u32 = 1;
+
 pub const ACPI_WAET_RTC_NO_ACK: u32 = 1;
 pub const ACPI_WAET_TIMER_ONE_READ: u32 = 2;
+
 pub const ACPI_WDAT_ENABLED: u32 = 1;
 pub const ACPI_WDAT_STOPPED: u32 = 128;
+
 pub const ACPI_WDDT_AVAILABLE: u32 = 1;
 pub const ACPI_WDDT_ACTIVE: u32 = 2;
 pub const ACPI_WDDT_TCO_OS_OWNED: u32 = 4;
@@ -715,10 +779,13 @@ pub const ACPI_WDDT_POWER_FAIL: u32 = 8192;
 pub const ACPI_WDDT_UNKNOWN_RESET: u32 = 16384;
 pub const ACPI_WDDT_AUTO_RESET: u32 = 1;
 pub const ACPI_WDDT_ALERT_SUPPORT: u32 = 2;
+
 pub const ACPI_WSMT_FIXED_COMM_BUFFERS: u32 = 1;
 pub const ACPI_WSMT_COMM_BUFFER_NESTED_PTR_PROTECTION: u32 = 2;
 pub const ACPI_WSMT_SYSTEM_RESOURCE_PROTECTION: u32 = 4;
+
 pub const ACPI_FADT_CONFORMANCE: &[u8; 26usize] = b"ACPI 6.1 (FADT version 6)\0";
+
 pub const ACPI_UTILITIES: u32 = 1;
 pub const ACPI_HARDWARE: u32 = 2;
 pub const ACPI_EVENTS: u32 = 4;
@@ -735,9 +802,10 @@ pub const ACPI_COMPILER: u32 = 4096;
 pub const ACPI_TOOLS: u32 = 8192;
 pub const ACPI_EXAMPLE: u32 = 16384;
 pub const ACPI_DRIVER: u32 = 32768;
-pub const ACPI_ALL_COMPONENTS: u32 = 131071;
-pub const ACPI_COMPONENT_DEFAULT: u32 = 131071;
-pub const ACPI_ALL_DRIVERS: u32 = 4294901760;
+pub const ACPI_ALL_COMPONENTS: u32 = 0x1_FFFF;
+pub const ACPI_COMPONENT_DEFAULT: u32 = 0x1_FFFF;
+pub const ACPI_ALL_DRIVERS: u32 = 0xFFFF_0000;
+
 pub const ACPI_LV_INIT: u32 = 1;
 pub const ACPI_LV_DEBUG_OBJECT: u32 = 2;
 pub const ACPI_LV_INFO: u32 = 4;
@@ -756,57 +824,67 @@ pub const ACPI_LV_TABLES: u32 = 8192;
 pub const ACPI_LV_VALUES: u32 = 16384;
 pub const ACPI_LV_OBJECTS: u32 = 32768;
 pub const ACPI_LV_RESOURCES: u32 = 65536;
-pub const ACPI_LV_USER_REQUESTS: u32 = 131072;
-pub const ACPI_LV_PACKAGE: u32 = 262144;
-pub const ACPI_LV_EVALUATION: u32 = 524288;
-pub const ACPI_LV_VERBOSITY1: u32 = 1048415;
-pub const ACPI_LV_ALLOCATIONS: u32 = 1048576;
-pub const ACPI_LV_FUNCTIONS: u32 = 2097152;
-pub const ACPI_LV_OPTIMIZATIONS: u32 = 4194304;
-pub const ACPI_LV_PARSE_TREES: u32 = 8388608;
-pub const ACPI_LV_VERBOSITY2: u32 = 16777055;
-pub const ACPI_LV_ALL: u32 = 16777055;
-pub const ACPI_LV_MUTEX: u32 = 16777216;
-pub const ACPI_LV_THREADS: u32 = 33554432;
-pub const ACPI_LV_IO: u32 = 67108864;
-pub const ACPI_LV_INTERRUPTS: u32 = 134217728;
-pub const ACPI_LV_VERBOSITY3: u32 = 268435295;
-pub const ACPI_LV_AML_DISASSEMBLE: u32 = 268435456;
-pub const ACPI_LV_VERBOSE_INFO: u32 = 536870912;
-pub const ACPI_LV_FULL_TABLES: u32 = 1073741824;
-pub const ACPI_LV_EVENTS: u32 = 2147483648;
-pub const ACPI_LV_VERBOSE: u32 = 4026531840;
-pub const ACPI_DEBUG_DEFAULT: u32 = 524299;
+pub const ACPI_LV_USER_REQUESTS: u32 = 0x20000;
+pub const ACPI_LV_PACKAGE: u32 = 0x40000;
+pub const ACPI_LV_EVALUATION: u32 = 0x80000;
+pub const ACPI_LV_VERBOSITY1: u32 = 0xFFF5F;
+pub const ACPI_LV_ALLOCATIONS: u32 = 0x10_0000;
+pub const ACPI_LV_FUNCTIONS: u32 = 0x20_0000;
+pub const ACPI_LV_OPTIMIZATIONS: u32 = 0x40_0000;
+pub const ACPI_LV_PARSE_TREES: u32 = 0x80_0000;
+pub const ACPI_LV_VERBOSITY2: u32 = 0xFF_FF5F;
+pub const ACPI_LV_ALL: u32 = 0xFF_FF5F;
+pub const ACPI_LV_MUTEX: u32 = 0x100_0000;
+pub const ACPI_LV_THREADS: u32 = 0x200_0000;
+pub const ACPI_LV_IO: u32 = 0x400_0000;
+pub const ACPI_LV_INTERRUPTS: u32 = 0x800_0000;
+pub const ACPI_LV_VERBOSITY3: u32 = 0xFFF_FF5F;
+pub const ACPI_LV_AML_DISASSEMBLE: u32 = 0x1000_0000;
+pub const ACPI_LV_VERBOSE_INFO: u32 = 0x2000_0000;
+pub const ACPI_LV_FULL_TABLES: u32 = 0x4000_0000;
+pub const ACPI_LV_EVENTS: u32 = 0x8000_0000;
+pub const ACPI_LV_VERBOSE: u32 = 0xF000_0000;
+
+pub const ACPI_DEBUG_DEFAULT: u32 = 0x8000B;
 pub const ACPI_NORMAL_DEFAULT: u32 = 11;
-pub const ACPI_DEBUG_ALL: u32 = 285212511;
-pub const ACPI_TRACE_LEVEL_ALL: u32 = 16777055;
-pub const ACPI_TRACE_LAYER_ALL: u32 = 511;
+pub const ACPI_DEBUG_ALL: u32 = 0x10FF_FF5F;
+
+pub const ACPI_TRACE_LEVEL_ALL: u32 = 0xFF_FF5F;
+pub const ACPI_TRACE_LAYER_ALL: u32 = 0x1FF;
 pub const ACPI_TRACE_LEVEL_DEFAULT: u32 = 16;
 pub const ACPI_TRACE_LAYER_DEFAULT: u32 = 128;
+
 pub const ACPI_DMA_WIDTH8: u32 = 0;
 pub const ACPI_DMA_WIDTH16: u32 = 1;
 pub const ACPI_DMA_WIDTH32: u32 = 2;
 pub const ACPI_DMA_WIDTH64: u32 = 3;
 pub const ACPI_DMA_WIDTH128: u32 = 4;
 pub const ACPI_DMA_WIDTH256: u32 = 5;
+
 pub const ACPI_RESOURCE_GPIO_TYPE_INT: u32 = 0;
 pub const ACPI_RESOURCE_GPIO_TYPE_IO: u32 = 1;
+
 pub const ACPI_PIN_CONFIG_DEFAULT: u32 = 0;
 pub const ACPI_PIN_CONFIG_PULLUP: u32 = 1;
 pub const ACPI_PIN_CONFIG_PULLDOWN: u32 = 2;
 pub const ACPI_PIN_CONFIG_NOPULL: u32 = 3;
+
 pub const ACPI_IO_RESTRICT_NONE: u32 = 0;
 pub const ACPI_IO_RESTRICT_INPUT: u32 = 1;
 pub const ACPI_IO_RESTRICT_OUTPUT: u32 = 2;
 pub const ACPI_IO_RESTRICT_NONE_PRESERVE: u32 = 3;
+
 pub const ACPI_RESOURCE_SERIAL_TYPE_I2C: u32 = 1;
 pub const ACPI_RESOURCE_SERIAL_TYPE_SPI: u32 = 2;
 pub const ACPI_RESOURCE_SERIAL_TYPE_UART: u32 = 3;
 pub const ACPI_RESOURCE_SERIAL_TYPE_CSI2: u32 = 4;
+
 pub const ACPI_CONTROLLER_INITIATED: u32 = 0;
 pub const ACPI_DEVICE_INITIATED: u32 = 1;
+
 pub const ACPI_I2C_7BIT_MODE: u32 = 0;
 pub const ACPI_I2C_10BIT_MODE: u32 = 1;
+
 pub const ACPI_SPI_4WIRE_MODE: u32 = 0;
 pub const ACPI_SPI_3WIRE_MODE: u32 = 1;
 pub const ACPI_SPI_ACTIVE_LOW: u32 = 0;
@@ -815,6 +893,7 @@ pub const ACPI_SPI_FIRST_PHASE: u32 = 0;
 pub const ACPI_SPI_SECOND_PHASE: u32 = 1;
 pub const ACPI_SPI_START_LOW: u32 = 0;
 pub const ACPI_SPI_START_HIGH: u32 = 1;
+
 pub const ACPI_UART_LITTLE_ENDIAN: u32 = 0;
 pub const ACPI_UART_BIG_ENDIAN: u32 = 1;
 pub const ACPI_UART_5_DATA_BITS: u32 = 0;
@@ -840,6 +919,7 @@ pub const ACPI_UART_DATA_SET_READY: u32 = 16;
 pub const ACPI_UART_DATA_TERMINAL_READY: u32 = 32;
 pub const ACPI_UART_CLEAR_TO_SEND: u32 = 64;
 pub const ACPI_UART_REQUEST_TO_SEND: u32 = 128;
+
 pub const ACPI_PIN_CONFIG_BIAS_PULL_UP: u32 = 1;
 pub const ACPI_PIN_CONFIG_BIAS_PULL_DOWN: u32 = 2;
 pub const ACPI_PIN_CONFIG_BIAS_DEFAULT: u32 = 3;
@@ -853,6 +933,7 @@ pub const ACPI_PIN_CONFIG_DRIVE_STRENGTH: u32 = 10;
 pub const ACPI_PIN_CONFIG_SLEW_RATE: u32 = 11;
 pub const ACPI_PIN_CONFIG_INPUT_DEBOUNCE: u32 = 12;
 pub const ACPI_PIN_CONFIG_INPUT_SCHMITT_TRIGGER: u32 = 13;
+
 pub const ACPI_RESOURCE_TYPE_IRQ: u32 = 0;
 pub const ACPI_RESOURCE_TYPE_DMA: u32 = 1;
 pub const ACPI_RESOURCE_TYPE_START_DEPENDENT: u32 = 2;
@@ -879,18 +960,21 @@ pub const ACPI_RESOURCE_TYPE_PIN_GROUP: u32 = 22;
 pub const ACPI_RESOURCE_TYPE_PIN_GROUP_FUNCTION: u32 = 23;
 pub const ACPI_RESOURCE_TYPE_PIN_GROUP_CONFIG: u32 = 24;
 pub const ACPI_RESOURCE_TYPE_MAX: u32 = 24;
+
 pub const ACPI_RS_SIZE_NO_DATA: u32 = 8;
 pub const ACPI_MUTEX_SEM: u32 = 1;
 pub const ACPI_SIGNAL_FATAL: u32 = 0;
 pub const ACPI_SIGNAL_BREAKPOINT: u32 = 1;
-pub const ACPI_CA_VERSION: u32 = 539035440;
+pub const ACPI_CA_VERSION: u32 = 0x2021_0730;
 pub const ACPI_OS_NAME: &[u8; 21usize] = b"Microsoft Windows NT\0";
+
 pub const ACPI_MAX_STATE_CACHE_DEPTH: u32 = 96;
 pub const ACPI_MAX_PARSE_CACHE_DEPTH: u32 = 96;
 pub const ACPI_MAX_EXTPARSE_CACHE_DEPTH: u32 = 96;
 pub const ACPI_MAX_OBJECT_CACHE_DEPTH: u32 = 96;
 pub const ACPI_MAX_NAMESPACE_CACHE_DEPTH: u32 = 96;
 pub const ACPI_MAX_COMMENT_CACHE_DEPTH: u32 = 96;
+
 pub const ACPI_CA_SUPPORT_LEVEL: u32 = 5;
 pub const ACPI_MAX_SEMAPHORE_COUNT: u32 = 256;
 pub const ACPI_MAX_REFERENCE_COUNT: u32 = 16384;
@@ -900,19 +984,25 @@ pub const ACPI_ROOT_TABLE_SIZE_INCREMENT: u32 = 4;
 pub const ACPI_MAX_SLEEP: u32 = 2000;
 pub const ACPI_ADDRESS_RANGE_MAX: u32 = 2;
 pub const ACPI_MAX_LOOP_TIMEOUT: u32 = 30;
+
 pub const ACPI_METHOD_NUM_LOCALS: u32 = 8;
 pub const ACPI_METHOD_MAX_LOCAL: u32 = 7;
 pub const ACPI_METHOD_NUM_ARGS: u32 = 7;
 pub const ACPI_METHOD_MAX_ARG: u32 = 6;
+
 pub const ACPI_OBJ_NUM_OPERANDS: u32 = 8;
 pub const ACPI_OBJ_MAX_OPERAND: u32 = 7;
+
 pub const ACPI_RESULTS_FRAME_OBJ_NUM: u32 = 8;
 pub const ACPI_RESULTS_OBJ_NUM_MAX: u32 = 255;
+
 pub const ACPI_EBDA_PTR_LOCATION: u32 = 1038;
 pub const ACPI_EBDA_PTR_LENGTH: u32 = 2;
 pub const ACPI_EBDA_WINDOW_SIZE: u32 = 1024;
-pub const ACPI_HI_RSDP_WINDOW_BASE: u32 = 917504;
-pub const ACPI_HI_RSDP_WINDOW_SIZE: u32 = 131072;
+
+pub const ACPI_HI_RSDP_WINDOW_BASE: u32 = 0xE0000;
+pub const ACPI_HI_RSDP_WINDOW_SIZE: u32 = 0x20000;
+
 pub const ACPI_RSDP_SCAN_STEP: u32 = 16;
 pub const ACPI_USER_REGION_BEGIN: u32 = 128;
 pub const ACPI_MAX_ADDRESS_SPACE: u32 = 255;
@@ -930,10 +1020,12 @@ pub const ACPI_MAX_GSBUS_BUFFER_SIZE: u32 = 257;
 pub const ACPI_PRM_INPUT_BUFFER_SIZE: u32 = 26;
 pub const ACPI_NUM_SXD_METHODS: u32 = 4;
 pub const ACPI_NUM_SXW_METHODS: u32 = 5;
+
 pub const ACPI_DEBUGGER_MAX_ARGS: u32 = 11;
 pub const ACPI_DB_LINE_BUFFER_SIZE: u32 = 512;
 pub const ACPI_DEBUGGER_COMMAND_PROMPT: u8 = 45u8;
 pub const ACPI_DEBUGGER_EXECUTE_PROMPT: u8 = 37u8;
+
 pub const ACPI_PLD_REV1_BUFFER_SIZE: u32 = 16;
 pub const ACPI_PLD_REV2_BUFFER_SIZE: u32 = 20;
 pub const ACPI_PLD_BUFFER_SIZE: u32 = 20;

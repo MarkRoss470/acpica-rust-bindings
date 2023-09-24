@@ -2,11 +2,16 @@
 
 mod generic_address;
 
-use core::{ffi::c_void, fmt::{Debug, Display}};
+use core::{
+    ffi::c_void,
+    fmt::{Debug, Display},
+};
 
 use crate::{
     bindings::types::{
-        functions::{FfiAcpiOsdHandler, FfiAcpiOsdExecCallback}, tables::FfiAcpiTableHeader, FfiAcpiPredefinedNames,
+        functions::{FfiAcpiOsdExecCallback, FfiAcpiOsdHandler},
+        tables::FfiAcpiTableHeader,
+        FfiAcpiPredefinedNames,
     },
     interface::object::AcpiObject,
 };
@@ -61,11 +66,13 @@ impl<'a> AcpiPredefinedNames<'a> {
     }
 
     /// Gets the name of the object in the namespace
+    #[must_use]
     pub fn name(&self) -> &str {
         todo!()
     }
 
     /// Gets the object which will be added to the namespace
+    #[must_use]
     pub fn object(&self) -> AcpiObject {
         todo!()
     }
@@ -102,7 +109,7 @@ impl AcpiInterruptCallback {
     ///
     /// # Safety
     /// This method may only be called from the interrupt handler this callback is for.
-    /// An interrupt vector will have been provided along with this object, and this method should only be called from the 
+    /// An interrupt vector will have been provided along with this object, and this method should only be called from the
     /// interrupt handler for that interrupt vector.
     pub unsafe fn call(&mut self) -> AcpiInterruptHandledStatus {
         // SAFETY:
@@ -132,7 +139,7 @@ impl AcpiThreadCallback {
     /// # Safety
     /// This method must be called from a new kernel thread.
     pub unsafe fn call(&mut self) {
-        // SAFETY: This is 
+        // SAFETY: This is
         unsafe { (self.function)(self.context) };
     }
 }

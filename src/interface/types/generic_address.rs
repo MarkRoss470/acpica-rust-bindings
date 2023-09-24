@@ -78,7 +78,7 @@ impl GasAddressSpace {
     }
 
     /// Gets the [`GasAddressSpace`] from its [`u8`] representation
-    fn into_u8(&self) -> u8 {
+    fn to_u8(self) -> u8 {
         match self {
             Self::SystemMemory => 0x00,
             Self::SystemIO => 0x01,
@@ -93,7 +93,7 @@ impl GasAddressSpace {
             Self::PlatformCommunicationsChannel => 0x0A,
             Self::PlatformRuntimeMechanism => 0x0B,
             Self::FunctionalFixedHardware => 0x0C,
-            Self::Other(s) => *s,
+            Self::Other(s) => s,
         }
     }
 }

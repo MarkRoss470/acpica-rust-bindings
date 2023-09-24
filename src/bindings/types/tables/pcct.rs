@@ -1,4 +1,4 @@
-use crate::{interface::types::AcpiGenericAddress, bindings::types::FfiAcpiGenericAddress};
+use crate::bindings::types::FfiAcpiGenericAddress;
 
 use super::{FfiAcpiSubtableHeader, FfiAcpiTableHeader};
 

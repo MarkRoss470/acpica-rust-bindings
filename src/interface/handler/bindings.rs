@@ -4,9 +4,10 @@ use alloc::ffi::CString;
 
 use crate::{
     bindings::types::{
-        tables::FfiAcpiTableHeader, FfiAcpiExecuteType, FfiAcpiIoAddress,
-        FfiAcpiPciId, FfiAcpiPhysicalAddress, FfiAcpiPredefinedNames,
-        FfiAcpiSize, FfiAcpiString, FfiAcpiTraceEventType, functions::{FfiAcpiOsdHandler, FfiAcpiOsdExecCallback},
+        functions::{FfiAcpiOsdExecCallback, FfiAcpiOsdHandler},
+        tables::FfiAcpiTableHeader,
+        FfiAcpiExecuteType, FfiAcpiIoAddress, FfiAcpiPciId, FfiAcpiPhysicalAddress,
+        FfiAcpiPredefinedNames, FfiAcpiSize, FfiAcpiString,
     },
     interface::status::{AcpiErrorAsStatusExt, AcpiStatus},
     types::{AcpiPredefinedNames, AcpiTableHeader},
@@ -18,14 +19,14 @@ use super::{DropOnTerminate, OS_INTERFACE};
 extern "C" fn acpi_os_initialize() -> AcpiStatus {
     let mut lock = OS_INTERFACE.lock();
     let lock = lock.as_mut().unwrap();
-    unsafe { lock.initialize().as_acpi_status() }
+    unsafe { lock.initialize().to_acpi_status() }
 }
 
 #[export_name = "AcpiOsTerminate"]
 extern "C" fn acpi_os_terminate() -> AcpiStatus {
     let mut lock = OS_INTERFACE.lock();
     let lock = lock.as_mut().unwrap();
-    unsafe { lock.terminate().as_acpi_status() }
+    unsafe { lock.terminate().to_acpi_status() }
 }
 
 #[export_name = "AcpiOsGetRootPointer"]
@@ -50,21 +51,19 @@ extern "C" fn acpi_os_predefined_override(
     let result = unsafe { lock.predefined_override(&AcpiPredefinedNames::from_ffi(init_val)) };
     let new_val = match result {
         Ok(new_val) => new_val,
-        Err(e) => return e.as_acpi_status(),
+        Err(e) => return e.to_acpi_status(),
     };
 
     // SAFETY: `new_val_ptr` is valid for writes
     unsafe {
         core::ptr::write_unaligned(
             new_val_ptr,
-            new_val
-                .map(|s| {
-                    let s = CString::new(s).unwrap();
-                    let ptr = s.as_ptr() as *mut _;
-                    lock.objects_to_drop.push(DropOnTerminate::CString(s));
-                    ptr
-                })
-                .unwrap_or(core::ptr::null_mut()),
+            new_val.map_or(core::ptr::null_mut(), |s| {
+                let s = CString::new(s).unwrap();
+                let ptr = s.as_ptr().cast_mut();
+                lock.objects_to_drop.push(DropOnTerminate::CString(s));
+                ptr
+            }),
         );
     }
 
@@ -85,16 +84,16 @@ extern "C" fn acpi_os_table_override(
     let result = unsafe { lock.table_override(&AcpiTableHeader::from_ffi(existing_table)) };
     let new_table = match result {
         Ok(new_table) => new_table,
-        Err(e) => return e.as_acpi_status(),
+        Err(e) => return e.to_acpi_status(),
     };
 
     // SAFETY: `new_table_ptr` is valid for writes
     unsafe {
         core::ptr::write_unaligned(
             new_table_ptr,
-            new_table
-                .map(|mut new_table| new_table.as_ffi() as *mut _)
-                .unwrap_or(core::ptr::null_mut()),
+            new_table.map_or(core::ptr::null_mut(), |mut new_table| {
+                new_table.as_ffi() as *mut _
+            }),
         );
     }
 
@@ -117,7 +116,7 @@ extern "C" fn acpi_os_physical_table_override(
         unsafe { lock.physical_table_override(&AcpiTableHeader::from_ffi(existing_table)) };
     let new_table = match result {
         Ok(new_table) => new_table,
-        Err(e) => return e.as_acpi_status(),
+        Err(e) => return e.to_acpi_status(),
     };
 
     match new_table {
