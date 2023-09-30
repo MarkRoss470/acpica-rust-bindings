@@ -28,6 +28,8 @@ extern crate alloc;
 
 mod bindings;
 mod interface;
+#[cfg(test)]
+pub(crate) mod testing;
 
 pub use interface::*;
 
