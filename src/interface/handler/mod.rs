@@ -87,13 +87,19 @@ pub fn register_interface<T: AcpiHandler + Send + 'static>(
 /// which also calls `AcpiInitializeSubsystem`.
 /// 
 /// Subsystem initialization code could look like the following:
-/// ```no_run
-/// #fn main() -> Result<(), AcpiError> {
-///     let initialization = register_interface()?;
+/// ```ignore
+/// # use acpica_bindings::status::AcpiError;
+/// # use acpica_bindings::handler::register_interface;
+/// # fn main() -> Result<(), AcpiError> {
+///     let interface = todo!(); // In real code this would be an object implementing the AcpiHandler trait
+/// 
+///     let initialization = register_interface(interface)?;
 ///     let initialization = initialization.load_tables()?;
 ///     let initialization = initialization.enable_subsystem()?;
 ///     let initialization = initialization.initialize_objects()?;
-/// #}
+/// 
+/// #   Ok(())
+/// # }
 /// ```
 #[derive(Debug)]
 #[must_use]

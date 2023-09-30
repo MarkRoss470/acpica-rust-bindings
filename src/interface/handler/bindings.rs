@@ -1,214 +1,45 @@
-use core::ffi::c_void;
-
-use alloc::ffi::CString;
+#[cfg(feature = "builtin_alloc")]
+mod alloc;
+#[cfg(feature = "builtin_cache")]
+mod cache;
+#[cfg(feature = "builtin_lock")]
+mod lock;
+mod overrides;
+mod printf;
+#[cfg(feature = "builtin_semaphore")]
+mod semaphore;
 
 use crate::{
     bindings::types::{
         functions::{FfiAcpiOsdExecCallback, FfiAcpiOsdHandler},
         tables::FfiAcpiTableHeader,
-        FfiAcpiExecuteType, FfiAcpiIoAddress, FfiAcpiPciId, FfiAcpiPhysicalAddress,
-        FfiAcpiPredefinedNames, FfiAcpiSize, FfiAcpiString,
+        FfiAcpiExecuteType, FfiAcpiIoAddress, FfiAcpiPciId, FfiAcpiPhysicalAddress, FfiAcpiSize,
     },
     interface::status::{AcpiErrorAsStatusExt, AcpiStatus},
-    types::{AcpiPredefinedNames, AcpiTableHeader},
 };
 
-use super::{DropOnTerminate, OS_INTERFACE};
+use super::OS_INTERFACE;
 
 #[export_name = "AcpiOsInitialize"]
 extern "C" fn acpi_os_initialize() -> AcpiStatus {
-    let mut lock = OS_INTERFACE.lock();
-    let lock = lock.as_mut().unwrap();
-    unsafe { lock.initialize().to_acpi_status() }
+    let mut interface = OS_INTERFACE.lock();
+    let interface = interface.as_mut().unwrap();
+    unsafe { interface.initialize().to_acpi_status() }
 }
 
 #[export_name = "AcpiOsTerminate"]
 extern "C" fn acpi_os_terminate() -> AcpiStatus {
-    let mut lock = OS_INTERFACE.lock();
-    let lock = lock.as_mut().unwrap();
-    unsafe { lock.terminate().to_acpi_status() }
+    let mut interface = OS_INTERFACE.lock();
+    let interface = interface.as_mut().unwrap();
+    unsafe { interface.terminate().to_acpi_status() }
 }
 
 #[export_name = "AcpiOsGetRootPointer"]
 extern "C" fn acpi_os_get_root_pointer() -> FfiAcpiPhysicalAddress {
-    let mut lock = OS_INTERFACE.lock();
-    let lock = lock.as_mut().unwrap();
+    let mut interface = OS_INTERFACE.lock();
+    let interface = interface.as_mut().unwrap();
 
-    lock.get_root_pointer().0
-}
-
-#[export_name = "AcpiOsPredefinedOverride"]
-extern "C" fn acpi_os_predefined_override(
-    init_val: *const FfiAcpiPredefinedNames,
-    new_val_ptr: *mut FfiAcpiString,
-) -> AcpiStatus {
-    // SAFETY: `init_val` is valid for reads
-    let init_val = unsafe { &*init_val };
-    let mut lock = OS_INTERFACE.lock();
-    let lock = lock.as_mut().unwrap();
-
-    // SAFETY: This is `AcpiOsPredefinedOverride`
-    let result = unsafe { lock.predefined_override(&AcpiPredefinedNames::from_ffi(init_val)) };
-    let new_val = match result {
-        Ok(new_val) => new_val,
-        Err(e) => return e.to_acpi_status(),
-    };
-
-    // SAFETY: `new_val_ptr` is valid for writes
-    unsafe {
-        core::ptr::write_unaligned(
-            new_val_ptr,
-            new_val.map_or(core::ptr::null_mut(), |s| {
-                let s = CString::new(s).unwrap();
-                let ptr = s.as_ptr().cast_mut();
-                lock.objects_to_drop.push(DropOnTerminate::CString(s));
-                ptr
-            }),
-        );
-    }
-
-    AcpiStatus::OK
-}
-
-#[export_name = "AcpiOsTableOverride"]
-extern "C" fn acpi_os_table_override(
-    existing_table: *mut FfiAcpiTableHeader,
-    new_table_ptr: *mut *mut FfiAcpiTableHeader,
-) -> AcpiStatus {
-    // SAFETY: `existing_table` is valid for reads
-    let existing_table = unsafe { &mut *existing_table };
-    let mut lock = OS_INTERFACE.lock();
-    let lock = lock.as_mut().unwrap();
-
-    // SAFETY: This is `AcpiOsTableOverride`
-    let result = unsafe { lock.table_override(&AcpiTableHeader::from_ffi(existing_table)) };
-    let new_table = match result {
-        Ok(new_table) => new_table,
-        Err(e) => return e.to_acpi_status(),
-    };
-
-    // SAFETY: `new_table_ptr` is valid for writes
-    unsafe {
-        core::ptr::write_unaligned(
-            new_table_ptr,
-            new_table.map_or(core::ptr::null_mut(), |mut new_table| {
-                new_table.as_ffi() as *mut _
-            }),
-        );
-    }
-
-    AcpiStatus::OK
-}
-
-#[export_name = "AcpiOsPhysicalTableOverride"]
-extern "C" fn acpi_os_physical_table_override(
-    existing_table: *mut FfiAcpiTableHeader,
-    new_table_address_ptr: *mut FfiAcpiPhysicalAddress,
-    new_table_length_ptr: *mut u32,
-) -> AcpiStatus {
-    // SAFETY: `existing_table` is valid for reads
-    let existing_table = unsafe { &mut *existing_table };
-    let mut lock = OS_INTERFACE.lock();
-    let lock = lock.as_mut().unwrap();
-
-    // SAFETY: This is `AcpiOsPhysicalTableOverride`
-    let result =
-        unsafe { lock.physical_table_override(&AcpiTableHeader::from_ffi(existing_table)) };
-    let new_table = match result {
-        Ok(new_table) => new_table,
-        Err(e) => return e.to_acpi_status(),
-    };
-
-    match new_table {
-        // SAFETY: `new_table_address_ptr` and `new_table_length_ptr` are valid for writes
-        Some((address, length)) => unsafe {
-            core::ptr::write(new_table_address_ptr, address.0);
-            core::ptr::write(new_table_length_ptr, length);
-        },
-        // Write null to `new_table_address_ptr` to indicate the table should not be updated
-        // SAFETY: `new_table_address_ptr` is valid for writes
-        None => unsafe {
-            core::ptr::write(new_table_address_ptr, 0);
-        },
-    }
-
-    AcpiStatus::OK
-}
-
-#[derive(Debug)]
-#[repr(transparent)]
-pub struct AcpiSpinLock(*mut c_void);
-
-#[derive(Debug)]
-#[repr(transparent)]
-pub struct AcpiSemaphore(*mut c_void);
-
-#[derive(Debug)]
-#[repr(transparent)]
-pub struct AcpiCache(*mut u8);
-
-#[export_name = "AcpiOsCreateLock"]
-extern "C" fn acpi_os_create_lock(_out_handle: *mut AcpiSpinLock) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsDeleteLock"]
-extern "C" fn acpi_os_delete_lock(_handle: AcpiSpinLock) {
-    todo!()
-}
-
-#[export_name = "AcpiOsAcquireLock"]
-extern "C" fn acpi_os_acquire_lock(_handle: AcpiSpinLock) -> FfiAcpiSize {
-    todo!()
-}
-
-#[export_name = "AcpiOsReleaseLock"]
-extern "C" fn acpi_os_release_lock(_handle: AcpiSpinLock, _flags: FfiAcpiSize) {
-    todo!()
-}
-
-#[export_name = "AcpiOsCreateSemaphore"]
-extern "C" fn acpi_os_create_semaphore(
-    _max_units: u32,
-    _initial_units: u32,
-    _out_handle: *mut AcpiSemaphore,
-) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsDeleteSemaphore"]
-extern "C" fn acpi_os_delete_semaphore(_handle: AcpiSemaphore) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsWaitSemaphore"]
-extern "C" fn acpi_os_wait_semaphore(
-    _handle: AcpiSemaphore,
-    _units: u32,
-    _timeout: u16,
-) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsSignalSemaphore"]
-extern "C" fn acpi_os_signal_semaphore(_handle: AcpiSemaphore, _units: u32) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsAllocate"]
-extern "C" fn acpi_os_allocate(_size: FfiAcpiSize) -> *mut ::core::ffi::c_void {
-    todo!()
-}
-
-// TODO: allow native allocate zeroed (set USE_NATIVE_ALLOCATE_ZEROED build flag)
-// #[export_name = "AcpiOsAllocateZeroed"]
-// extern "C" fn acpi_os_allocate_zeroed(_size: FfiAcpiSize) -> *mut ::core::ffi::c_void {
-//     todo!()
-// }
-
-#[export_name = "AcpiOsFree"]
-extern "C" fn acpi_os_free(_memory: *mut ::core::ffi::c_void) {
-    todo!()
+    interface.get_root_pointer().0
 }
 
 #[export_name = "AcpiOsMapMemory"]
@@ -232,41 +63,6 @@ extern "C" fn acpi_os_get_physical_address(
     todo!()
 }
 
-#[export_name = "AcpiOsCreateCache"]
-extern "C" fn acpi_os_create_cache(
-    _cache_name: *mut i8,
-    _object_size: u16,
-    _max_depth: u16,
-    _return_cache: *mut *mut *mut ::core::ffi::c_void,
-) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsDeleteCache"]
-extern "C" fn acpi_os_delete_cache(_cache: *mut *mut ::core::ffi::c_void) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsPurgeCache"]
-extern "C" fn acpi_os_purge_cache(_cache: *mut *mut ::core::ffi::c_void) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsAcquireObject"]
-extern "C" fn acpi_os_acquire_object(
-    _cache: *mut *mut ::core::ffi::c_void,
-) -> *mut ::core::ffi::c_void {
-    todo!()
-}
-
-#[export_name = "AcpiOsReleaseObject"]
-extern "C" fn acpi_os_release_object(
-    _cache: *mut *mut ::core::ffi::c_void,
-    _object: *mut ::core::ffi::c_void,
-) -> AcpiStatus {
-    todo!()
-}
-
 #[export_name = "AcpiOsInstallInterruptHandler"]
 extern "C" fn acpi_os_install_interrupt_handler(
     _interrupt_number: u32,
@@ -286,7 +82,10 @@ extern "C" fn acpi_os_remove_interrupt_handler(
 
 #[export_name = "AcpiOsGetThreadId"]
 extern "C" fn acpi_os_get_thread_id() -> u64 {
-    todo!()
+    let mut interface = OS_INTERFACE.lock();
+    let interface = interface.as_mut().unwrap();
+
+    interface.get_thread_id()
 }
 
 #[export_name = "AcpiOsExecute"]
@@ -398,11 +197,6 @@ extern "C" fn acpi_os_enter_sleep(
     todo!()
 }
 
-#[export_name = "AcpiOsPrintf"]
-unsafe extern "C" fn acpi_os_printf(_format: *const i8, _args: ...) {
-    todo!()
-}
-
 #[export_name = "AcpiOsRedirectOutput"]
 extern "C" fn acpi_os_redirect_output(_destination: *mut ::core::ffi::c_void) {
     todo!()
@@ -494,7 +288,165 @@ extern "C" fn acpi_os_close_directory(_dir_handle: *mut ::core::ffi::c_void) {
     todo!()
 }
 
-#[export_name = "AcpiOsVprintf"]
-unsafe extern "C" fn acpi_os_v_printf(_format: *const u8, _args: ...) {
+/*
+
+
+    Trait handlers for optional methods
+    These handlers are only used if certain features are disabled.
+    If the features are enabled, implementations provided by this crate are used instead of OS-specific implementations.
+
+
+*/
+
+// #[cfg(not(feature = "builtin_cache"))]
+
+#[cfg(not(feature = "builtin_cache"))]
+#[export_name = "AcpiOsCreateCache"]
+extern "C" fn acpi_os_create_cache(
+    cache_name: *mut i8,
+    size: u16,
+    max_depth: u16,
+    return_cache: *mut *mut ::core::ffi::c_void,
+) -> AcpiStatus {
+    todo!()
+}
+
+#[cfg(not(feature = "builtin_cache"))]
+#[export_name = "AcpiOsDeleteCache"]
+extern "C" fn acpi_os_delete_cache(cache: *mut ::core::ffi::c_void) -> AcpiStatus {
+    todo!()
+}
+
+#[cfg(not(feature = "builtin_cache"))]
+#[export_name = "AcpiOsPurgeCache"]
+extern "C" fn acpi_os_purge_cache(mut cache: *mut ::core::ffi::c_void) -> AcpiStatus {
+    todo!()
+}
+
+#[cfg(not(feature = "builtin_cache"))]
+#[export_name = "AcpiOsAcquireObject"]
+extern "C" fn acpi_os_acquire_object(
+    mut cache: *mut ::core::ffi::c_void,
+) -> *mut ::core::ffi::c_void {
+    todo!()
+}
+
+#[cfg(not(feature = "builtin_cache"))]
+#[export_name = "AcpiOsReleaseObject"]
+extern "C" fn acpi_os_release_object(
+    mut cache: *mut ::core::ffi::c_void,
+    object: *mut ::core::ffi::c_void,
+) -> AcpiStatus {
+    todo!()
+}
+
+#[cfg(not(feature = "builtin_alloc"))]
+#[export_name = "AcpiOsAllocate"]
+extern "C" fn acpi_os_allocate(size: FfiAcpiSize) -> *mut ::core::ffi::c_void {
+    let mut interface = OS_INTERFACE.lock();
+    let interface = interface.as_mut().unwrap();
+
+    unsafe {
+        interface
+            .allocate(size)
+            .unwrap_or(core::ptr::null_mut())
+            .cast()
+    }
+}
+
+// TODO: allow native allocate zeroed (set USE_NATIVE_ALLOCATE_ZEROED build flag)
+// #[cfg(not(feature = "builtin_alloc"))]
+// #[export_name = "AcpiOsAllocateZeroed"]
+// extern "C" fn acpi_os_allocate_zeroed(_size: FfiAcpiSize) -> *mut ::core::ffi::c_void {
+//     todo!()
+// }
+
+#[cfg(not(feature = "builtin_alloc"))]
+#[export_name = "AcpiOsFree"]
+extern "C" fn acpi_os_free(memory: *mut ::core::ffi::c_void) {
+    let mut interface = OS_INTERFACE.lock();
+    let interface = interface.as_mut().unwrap();
+
+    unsafe { interface.free(memory.cast()) }
+}
+
+#[cfg(not(feature = "builtin_lock"))]
+#[export_name = "AcpiOsCreateLock"]
+extern "C" fn acpi_os_create_lock(out_handle: *mut *mut ::core::ffi::c_void) -> AcpiStatus {
+    let mut interface = OS_INTERFACE.lock();
+    let interface = interface.as_mut().unwrap();
+
+    let created_lock = unsafe { interface.create_lock() };
+    match created_lock {
+        Ok(l) => unsafe {
+            *out_handle = l;
+            AcpiStatus::OK
+        },
+        Err(e) => e.to_acpi_status(),
+    }
+}
+
+#[cfg(not(feature = "builtin_lock"))]
+#[export_name = "AcpiOsDeleteLock"]
+extern "C" fn acpi_os_delete_lock(handle: *mut ::core::ffi::c_void) {
+    let mut interface = OS_INTERFACE.lock();
+    let interface = interface.as_mut().unwrap();
+
+    unsafe { interface.delete_lock(handle) }
+}
+
+#[cfg(not(feature = "builtin_lock"))]
+use crate::{bindings::types::FfiAcpiCpuFlags, types::AcpiCpuFlags};
+
+#[cfg(not(feature = "builtin_lock"))]
+#[export_name = "AcpiOsAcquireLock"]
+extern "C" fn acpi_os_acquire_lock(handle: *mut ::core::ffi::c_void) -> FfiAcpiCpuFlags {
+    let mut interface = OS_INTERFACE.lock();
+    let interface = interface.as_mut().unwrap();
+
+    unsafe { interface.acquire_lock(handle).0 }
+}
+
+#[cfg(not(feature = "builtin_lock"))]
+#[export_name = "AcpiOsReleaseLock"]
+extern "C" fn acpi_os_release_lock(handle: *mut ::core::ffi::c_void, flags: FfiAcpiCpuFlags) {
+    let mut interface = OS_INTERFACE.lock();
+    let interface = interface.as_mut().unwrap();
+
+    unsafe { interface.release_lock(handle, AcpiCpuFlags(flags)) }
+}
+
+#[cfg(not(feature = "builtin_semaphore"))]
+#[export_name = "AcpiOsCreateSemaphore"]
+extern "C" fn acpi_os_create_semaphore(
+    _max_units: u32,
+    _initial_units: u32,
+    _out_handle: *mut *mut ::core::ffi::c_void,
+) -> AcpiStatus {
+    todo!()
+}
+
+#[cfg(not(feature = "builtin_semaphore"))]
+#[export_name = "AcpiOsDeleteSemaphore"]
+extern "C" fn acpi_os_delete_semaphore(_handle: *mut ::core::ffi::c_void) -> AcpiStatus {
+    todo!()
+}
+
+#[cfg(not(feature = "builtin_semaphore"))]
+#[export_name = "AcpiOsWaitSemaphore"]
+extern "C" fn acpi_os_wait_semaphore(
+    _handle: *mut ::core::ffi::c_void,
+    _units: u32,
+    _timeout: u16,
+) -> AcpiStatus {
+    todo!()
+}
+
+#[cfg(not(feature = "builtin_semaphore"))]
+#[export_name = "AcpiOsSignalSemaphore"]
+extern "C" fn acpi_os_signal_semaphore(
+    _handle: *mut ::core::ffi::c_void,
+    _units: u32,
+) -> AcpiStatus {
     todo!()
 }

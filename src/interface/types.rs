@@ -11,7 +11,7 @@ use crate::{
     bindings::types::{
         functions::{FfiAcpiOsdExecCallback, FfiAcpiOsdHandler},
         tables::FfiAcpiTableHeader,
-        FfiAcpiPredefinedNames,
+        FfiAcpiPredefinedNames, FfiAcpiCpuFlags,
     },
     interface::object::AcpiObject,
 };
@@ -186,3 +186,9 @@ impl Display for AcpiMappingError {
         }
     }
 }
+
+/// CPU flags to be preserved after releasing a lock.
+/// 
+/// The OS passes this type to ACPICA when acquiring a lock, and they are returned when releasing the lock.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct AcpiCpuFlags(pub FfiAcpiCpuFlags);

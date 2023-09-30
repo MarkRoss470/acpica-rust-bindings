@@ -51,7 +51,7 @@ impl<T> ::core::fmt::Debug for IncompleteArrayField<T> {
         fmt.write_str("__IncompleteArrayField")
     }
 }
-pub(crate) type FfiAcpiSize = u64;
+pub(crate) type FfiAcpiSize = usize;
 pub(crate) type FfiAcpiIoAddress = u64;
 pub(crate) type FfiAcpiPhysicalAddress = usize;
 pub(crate) type FfiAcpiName = u32;
@@ -60,6 +60,7 @@ pub(crate) type FfiAcpiHandle = *mut ::core::ffi::c_void;
 pub(crate) type FfiAcpiOwnerId = u16;
 pub(crate) type FfiAcpiEventStatus = u32;
 pub(crate) type FfiAcpiAdtSpaceType = u8;
+pub(crate) type FfiAcpiCpuFlags = FfiAcpiSize;
 
 ///  GAS - Generic Address Structure (ACPI 2.0+)
 ///
