@@ -68,20 +68,20 @@ unsafe impl Send for DummyHandler<'static> {}
 impl<'a> DummyHandler<'a> {
     pub(crate) fn new() -> Self {
         Self {
-            fn_get_root_pointer: Box::new(|| todo!()),
-            fn_map_memory: Box::new(|_, _| todo!()),
-            fn_unmap_memory: Box::new(|_, _| todo!()),
-            fn_get_physical_address: Box::new(|_| todo!()),
-            fn_install_interrupt_handler: Box::new(|_, _| todo!()),
-            fn_remove_interrupt_handler: Box::new(|_, _| todo!()),
-            fn_get_thread_id: Box::new(|| todo!()),
-            fn_execute: Box::new(|_| todo!()),
-            fn_printf: Box::new(|_| todo!()),
-            fn_initialize: Box::new(||todo!()),
-            fn_terminate: Box::new(||todo!()),
-            fn_predefined_override: Box::new(|_|todo!()),
-            fn_table_override: Box::new(|_|todo!()),
-            fn_physical_table_override: Box::new(|_|todo!()),
+            fn_get_root_pointer: Box::new(|| panic!("Dummy function on test struct called")),
+            fn_map_memory: Box::new(|_, _| panic!("Dummy function on test struct called")),
+            fn_unmap_memory: Box::new(|_, _| panic!("Dummy function on test struct called")),
+            fn_get_physical_address: Box::new(|_| panic!("Dummy function on test struct called")),
+            fn_install_interrupt_handler: Box::new(|_, _| panic!("Dummy function on test struct called")),
+            fn_remove_interrupt_handler: Box::new(|_, _| panic!("Dummy function on test struct called")),
+            fn_get_thread_id: Box::new(|| panic!("Dummy function on test struct called")),
+            fn_execute: Box::new(|_| panic!("Dummy function on test struct called")),
+            fn_printf: Box::new(|_| panic!("Dummy function on test struct called")),
+            fn_initialize: Box::new(||panic!("Dummy function on test struct called")),
+            fn_terminate: Box::new(||panic!("Dummy function on test struct called")),
+            fn_predefined_override: Box::new(|_|panic!("Dummy function on test struct called")),
+            fn_table_override: Box::new(|_|panic!("Dummy function on test struct called")),
+            fn_physical_table_override: Box::new(|_|panic!("Dummy function on test struct called")),
         }
     }
 }
