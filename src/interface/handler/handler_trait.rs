@@ -1,15 +1,23 @@
-#[cfg(not(any(feature = "builtin_lock", feature = "builtin_semaphore", feature = "builtin_mutex")))]
+#[cfg(not(any(
+    feature = "builtin_lock",
+    feature = "builtin_semaphore",
+    feature = "builtin_mutex"
+)))]
+use crate::types::{AcpiAllocationError, AcpiCpuFlags};
+#[cfg(not(any(
+    feature = "builtin_lock",
+    feature = "builtin_semaphore",
+    feature = "builtin_mutex"
+)))]
 use core::ffi::c_void;
-#[cfg(not(any(feature = "builtin_lock", feature = "builtin_semaphore", feature = "builtin_mutex")))]
-use crate::types::{AcpiCpuFlags, AcpiAllocationError};
 
 use alloc::string::String;
 
 use crate::{
     interface::status::AcpiError,
     types::{
-        AcpiInterruptCallback, AcpiMappingError,
-        AcpiPhysicalAddress, AcpiPredefinedNames, AcpiTableHeader, AcpiThreadCallback,
+        AcpiInterruptCallback, AcpiMappingError, AcpiPhysicalAddress, AcpiPredefinedNames,
+        AcpiTableHeader, AcpiThreadCallback,
     },
 };
 
@@ -100,7 +108,7 @@ pub unsafe trait AcpiHandler {
         Ok(None)
     }
 
-    /// Map `length` pages (TODO: or is this bytes?) of physical memory starting at `physical_address`, and return the virtual address where they have been mapped.
+    /// Map `length` bytes of physical memory starting at `physical_address`, and return the virtual address where they have been mapped.
     ///
     /// # Safety
     /// * This function is only called from `AcpiOsMapMemory`
@@ -110,10 +118,11 @@ pub unsafe trait AcpiHandler {
         length: usize,
     ) -> Result<*mut u8, AcpiMappingError>;
 
-    /// Unmap `length` pages (TODO: or is this bytes?) of memory which were previously allocated with [`map_memory`]
+    /// Unmap `length` pages bytes of memory which were previously allocated with [`map_memory`]
     ///
     /// # Safety
     /// * This function is only called from `AcpiOsUnmapMemory`
+    /// * `address` is a pointer which was previously returned from [`map_memory`]
     ///
     /// [`map_memory`]: AcpiHandler::map_memory
     unsafe fn unmap_memory(&mut self, address: *mut u8, length: usize);
@@ -173,11 +182,11 @@ pub unsafe trait AcpiHandler {
     ) -> Result<(), AcpiError>;
 
     /// Print a message to the kernel's output.
-    /// 
+    ///
     /// Multiple calls to `printf` may be used to print a single line of output, and ACPICA will write a newline character at the end of each line.
     /// For this reason, the OS should not add its own newline characters or this could break formatting.
-    /// If your kernel has a macro which behaves like the standard `print!` macro, the implementation of this method can be as simple as 
-    /// 
+    /// If your kernel has a macro which behaves like the standard `print!` macro, the implementation of this method can be as simple as
+    ///
     /// ```
     /// fn printf(&mut self, message: core::fmt::Arguments) {
     ///     print!("{message}");
@@ -185,127 +194,40 @@ pub unsafe trait AcpiHandler {
     /// ```
     fn printf(&mut self, message: core::fmt::Arguments);
 
-    // fn wait_events_complete(&mut self, );
-
-    // fn sleep(&mut self, Milliseconds: u64);
-
-    // fn stall(&mut self, Microseconds: u32);
-
-    // fn read_port(&mut self,
-    //     Address: ACPI_IO_ADDRESS,
-    //     Value: *mut u32,
-    //     Width: u32,
+    // fn read_memory(
+    //     &mut self,
+    //     address: AcpiPhysicalAddress,
+    //     value: &mut [u64],
+    //     width: u32,
     // ) -> Result<(), AcpiError>;
 
-    // fn write_port(&mut self, Address: ACPI_IO_ADDRESS, Value: u32, Width: u32) -> Result<(), AcpiError>;
-
-    // fn read_memory(&mut self,
-    //     Address: ACPI_PHYSICAL_ADDRESS,
-    //     Value: *mut u64,
-    //     Width: u32,
-    // ) -> Result<(), AcpiError>;
-
-    // fn write_memory(&mut self,
-    //     Address: ACPI_PHYSICAL_ADDRESS,
-    //     Value: u64,
-    //     Width: u32,
-    // ) -> Result<(), AcpiError>;
-
-    // fn read_pci_configuration(&mut self,
-    //     PciId: *mut ACPI_PCI_ID,
-    //     Reg: u32,
-    //     Value: *mut u64,
-    //     Width: u32,
-    // ) -> Result<(), AcpiError>;
-
-    // fn write_pci_configuration(&mut self,
-    //     PciId: *mut ACPI_PCI_ID,
-    //     Reg: u32,
-    //     Value: u64,
-    //     Width: u32,
+    // fn write_memory(
+    //     &mut self,
+    //     address: AcpiPhysicalAddress,
+    //     value: u64,
+    //     width: u32,
     // ) -> Result<(), AcpiError>;
 
     // fn readable(&mut self, Pointer: *mut ::core::ffi::c_void, Length: usize) -> bool;
 
     // fn writable(&mut self, Pointer: *mut ::core::ffi::c_void, Length: usize) -> bool;
 
-    // fn get_timer(&mut self, ) -> u64;
-
-    // fn signal(&mut self, Function: u32, Info: *mut ::core::ffi::c_void) -> Result<(), AcpiError>;
-
-    // fn enter_sleep(&mut self, SleepState: u8, RegaValue: u32, RegbValue: u32)
-    //     -> Result<(), AcpiError>;
-
-    // fn redirect_output(&mut self, Destination: *mut ::core::ffi::c_void);
-
-    // fn get_line(&mut self,
-    //     Buffer: *mut i8,
-    //     BufferLength: u32,
-    //     BytesRead: *mut u32,
-    // ) -> Result<(), AcpiError>;
-
-    // fn initialize_debugger(&mut self, ) -> Result<(), AcpiError>;
-
-    // fn terminate_debugger(&mut self, );
-
-    // fn wait_command_ready(&mut self, ) -> Result<(), AcpiError>;
-
-    // fn notify_command_complete(&mut self, ) -> Result<(), AcpiError>;
-
-    // fn trace_point(&mut self,
-    //     Type: ACPI_TRACE_EVENT_TYPE,
-    //     Begin: bool,
-    //     Aml: *mut u8,
-    //     Pathname: *mut i8,
-    // );
-
-    // fn get_table_by_name(&mut self,
-    //     Signature: *mut i8,
-    //     Instance: u32,
-    //     Table: *mut *mut AcpiTableHeader,
-    //     Address: *mut ACPI_PHYSICAL_ADDRESS,
-    // ) -> Result<(), AcpiError>;
-
-    // fn get_table_by_index(&mut self,
-    //     Index: u32,
-    //     Table: *mut *mut AcpiTableHeader,
-    //     Instance: *mut u32,
-    //     Address: *mut ACPI_PHYSICAL_ADDRESS,
-    // ) -> Result<(), AcpiError>;
-
-    // fn get_table_by_address(&mut self,
-    //     Address: ACPI_PHYSICAL_ADDRESS,
-    //     Table: *mut *mut AcpiTableHeader,
-    // ) -> Result<(), AcpiError>;
-
-    // fn open_directory(&mut self,
-    //     Pathname: *mut i8,
-    //     WildcardSpec: *mut i8,
-    //     RequestedFileType: i8,
-    // ) -> *mut ::core::ffi::c_void;
-
-    // fn get_next_filename(&mut self, DirHandle: *mut ::core::ffi::c_void) -> *mut i8;
-
-    // fn close_directory(&mut self, DirHandle: *mut ::core::ffi::c_void);
-
-    // fn vprintf(&mut self, _format: *const u8, _args: ...);
-
     // TODO: Verify the info in the docs for these cache methods
 
     /// Creates a cache for ACPICA to store objects in to avoid lots of small heap allocations.
-    /// 
+    ///
     /// This method is only present in the trait if the `builtin_cache` feature is not set.
-    /// Otherwise, a default implementation is used which allocates the objects inside a [`Vec`], 
+    /// Otherwise, a default implementation is used which allocates the objects inside a [`Vec`],
     /// using a [`BitVec`] to keep track of which objects within the cache have been allocated.
-    /// 
-    /// The cache stores up to `max_depth` objects of size `object_size`. 
+    ///
+    /// The cache stores up to `max_depth` objects of size `object_size`.
     /// The OS is responsible for allocating and de-allocating objects within the cache.
-    /// 
-    /// The OS returns a type-erased pointer which can safely be passed via FFI, 
+    ///
+    /// The OS returns a type-erased pointer which can safely be passed via FFI,
     /// but the pointer may point to any type.
-    /// 
+    ///
     /// # Safety
-    /// * This method is only called from `AcpiCreateCache`. 
+    /// * This method is only called from `AcpiCreateCache`.
     ///
     /// [`Vec`]: alloc::vec::Vec
     /// [`BitVec`]: bitvec::vec::BitVec
@@ -318,49 +240,49 @@ pub unsafe trait AcpiHandler {
     ) -> Result<*mut c_void, AcpiError>;
 
     /// Deletes a cache which was previously created by [`create_cache`].
-    /// 
+    ///
     /// This method is only present in the trait if the `builtin_cache` feature is not set.
-    /// 
+    ///
     /// The OS is responsible for deallocating the backing memory of the cache.
     ///
     /// # Safety
     /// * This method is only called from `AcpiDeleteCache`.
     /// * `cache` is a pointer which was previously returned from [`create_cache`].
     /// * After this method is called, other cache methods will not be called for this cache.
-    /// 
+    ///
     /// [`create_cache`]: AcpiHandler::create_cache
     #[cfg(not(feature = "builtin_cache"))]
     unsafe fn delete_cache(&mut self, cache: *mut c_void) -> Result<(), AcpiAllocationError>;
 
     /// Removes all items from a cache.
-    /// 
+    ///
     /// This method is only present in the trait if the `builtin_cache` feature is not set.
-    /// 
+    ///
     /// This method should mark all slots in the cache as empty, but not deallocate the backing memory.
-    /// 
+    ///
     /// # Safety
     /// * This method is only called from `AcpiPurgeCache`
     /// * `cache` is a pointer which was previously returned from [`create_cache`]
-    /// 
+    ///
     /// [`create_cache`]: AcpiHandler::create_cache
     #[cfg(not(feature = "builtin_cache"))]
     unsafe fn purge_cache(&mut self, cache: *mut c_void);
 
     /// Allocates an object inside a cache.
-    /// 
+    ///
     /// This method is only present in the trait if the `builtin_cache` feature is not set.
-    /// 
+    ///
     /// This method should return a pointer to a free slot in the cache, or `None` if all slots are full.
-    /// 
+    ///
     /// # Safety
     /// * This method is only called from `AcpiPurgeCache`.
     /// * `cache` is a pointer which was previously returned from [`create_cache`].
-    /// 
+    ///
     /// # Implementation safety
-    /// * The returned pointer must be free for writes for the object size passed to [`create_cache`] 
+    /// * The returned pointer must be free for writes for the object size passed to [`create_cache`]
     ///     - i.e. it must not be being used by rust code, and it must not have been returned from this method before,
     ///     unless it has been explicitly freed using [`release_object`] or [`purge_cache`].
-    /// 
+    ///
     /// [`create_cache`]: AcpiHandler::create_cache
     /// [`release_object`]: AcpiHandler::release_object
     /// [`purge_cache`]: AcpiHandler::purge_cache
@@ -368,16 +290,16 @@ pub unsafe trait AcpiHandler {
     unsafe fn acquire_object(&mut self, cache: *mut c_void) -> Option<*mut u8>;
 
     /// Marks an object as free in a cache.
-    /// 
+    ///
     /// This method is only present in the trait if the `builtin_cache` feature is not set.
-    /// 
+    ///
     /// This method should mark the given object within the cache as free - i.e. allow it to be allocated again by [`acquire_object`].
-    /// 
+    ///
     /// # Safety
     /// * This method is only called from `AcpiReleaseObject`.
     /// * `cache` is a pointer which was previously returned from [`create_cache`].
     /// * `object` is a pointer which was previously returned from [`acquire_object`].
-    /// 
+    ///
     /// [`acquire_object`]: AcpiHandler::acquire_object
     /// [`create_cache`]: AcpiHandler::create_cache
     #[cfg(not(feature = "builtin_cache"))]
@@ -422,7 +344,8 @@ pub unsafe trait AcpiHandler {
 
     #[allow(missing_docs)] // TODO: docs
     #[cfg(not(feature = "builtin_semaphore"))]
-    unsafe fn signal_semaphore(&mut self, handle: *mut c_void, units: u32) -> Result<(), AcpiError>;
+    unsafe fn signal_semaphore(&mut self, handle: *mut c_void, units: u32)
+        -> Result<(), AcpiError>;
 
     /// Allocate `size` bytes of memory.
     ///

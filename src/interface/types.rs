@@ -3,7 +3,7 @@
 mod generic_address;
 
 use core::{
-    ffi::c_void,
+    ffi::{c_void, CStr},
     fmt::{Debug, Display},
 };
 
@@ -11,7 +11,7 @@ use crate::{
     bindings::types::{
         functions::{FfiAcpiOsdExecCallback, FfiAcpiOsdHandler},
         tables::FfiAcpiTableHeader,
-        FfiAcpiPredefinedNames, FfiAcpiCpuFlags,
+        FfiAcpiCpuFlags, FfiAcpiPredefinedNames,
     },
     interface::object::AcpiObject,
 };
@@ -19,12 +19,20 @@ use crate::{
 pub use generic_address::*;
 
 /// A physical address into main memory
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct AcpiPhysicalAddress(pub usize);
 
 impl AcpiPhysicalAddress {
     /// A null pointer, i.e. a pointer of value 0
     pub const NULL: Self = Self(0);
+}
+
+impl Debug for AcpiPhysicalAddress {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        f.debug_tuple("AcpiPhysicalAddress")
+            .field(&format_args!("{:#x}", self.0))
+            .finish()
+    }
 }
 
 ///  Master ACPI Table Header. This common header is used by all ACPI tables
@@ -67,14 +75,19 @@ impl<'a> AcpiPredefinedNames<'a> {
 
     /// Gets the name of the object in the namespace
     #[must_use]
+    #[allow(clippy::missing_panics_doc)] // ACPI names are ASCII, so this should never panic
     pub fn name(&self) -> &str {
-        todo!()
+        unsafe {
+            CStr::from_ptr(self.0.name)
+                .to_str()
+                .expect("Object name should have been valid utf-8")
+        }
     }
 
     /// Gets the object which will be added to the namespace
     #[must_use]
     pub fn object(&self) -> AcpiObject {
-        todo!()
+        unsafe { AcpiObject::from_type_and_val(self.0.object_type, self.0.val) }
     }
 }
 
@@ -188,7 +201,7 @@ impl Display for AcpiMappingError {
 }
 
 /// CPU flags to be preserved after releasing a lock.
-/// 
+///
 /// The OS passes this type to ACPICA when acquiring a lock, and they are returned when releasing the lock.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct AcpiCpuFlags(pub FfiAcpiCpuFlags);

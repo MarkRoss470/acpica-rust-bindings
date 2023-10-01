@@ -106,7 +106,7 @@ pub fn register_interface<T: AcpiHandler + Send + 'static>(
 pub struct AcpicaInitialization<const T: bool, const S: bool>;
 
 impl AcpicaInitialization<false, false> {
-    /// Calls the ACPICA function `AcpiLoadTables`.
+    /// Calls the ACPICA functions `AcpiInitializeTables` and `AcpiLoadTables`.
     /// 
     /// This function causes ACPICA to parse all the tables pointed to by the RSDT/XSDT
     pub fn load_tables(self) -> Result<AcpicaInitialization<true, false>, AcpiError> {

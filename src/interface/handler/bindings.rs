@@ -16,6 +16,7 @@ use crate::{
         FfiAcpiExecuteType, FfiAcpiIoAddress, FfiAcpiPciId, FfiAcpiPhysicalAddress, FfiAcpiSize,
     },
     interface::status::{AcpiErrorAsStatusExt, AcpiStatus},
+    types::AcpiPhysicalAddress,
 };
 
 use super::OS_INTERFACE;
@@ -44,15 +45,26 @@ extern "C" fn acpi_os_get_root_pointer() -> FfiAcpiPhysicalAddress {
 
 #[export_name = "AcpiOsMapMemory"]
 extern "C" fn acpi_os_map_memory(
-    _where: FfiAcpiPhysicalAddress,
-    _length: FfiAcpiSize,
+    address: FfiAcpiPhysicalAddress,
+    length: FfiAcpiSize,
 ) -> *mut ::core::ffi::c_void {
-    todo!()
+    let mut interface = OS_INTERFACE.lock();
+    let interface = interface.as_mut().unwrap();
+
+    unsafe {
+        interface
+            .map_memory(AcpiPhysicalAddress(address), length)
+            .map(<*mut u8>::cast)
+            .unwrap_or(core::ptr::null_mut())
+    }
 }
 
 #[export_name = "AcpiOsUnmapMemory"]
-extern "C" fn acpi_os_unmap_memory(_logical_address: *mut ::core::ffi::c_void, _size: FfiAcpiSize) {
-    todo!()
+extern "C" fn acpi_os_unmap_memory(logical_address: *mut ::core::ffi::c_void, size: FfiAcpiSize) {
+    let mut interface = OS_INTERFACE.lock();
+    let interface = interface.as_mut().unwrap();
+
+    unsafe { interface.unmap_memory(logical_address.cast(), size) }
 }
 
 #[export_name = "AcpiOsGetPhysicalAddress"]
