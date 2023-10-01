@@ -55,6 +55,7 @@ impl DerefMut for OsInterface {
 }
 
 /// Registers `interface` as the handler for ACPICA functions, and starts the initialization of ACPICA.
+/// See the docs for [`AcpicaInitialization`] for more info.
 ///
 /// # Panics
 /// If called more than once.
