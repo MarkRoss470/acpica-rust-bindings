@@ -1,6 +1,6 @@
 use core::{
-    ffi::{CStr, VaListImpl},
-    fmt::Display,
+    ffi::{CStr, VaList, VaListImpl},
+    fmt::{Display, Write},
     iter::Peekable,
 };
 
@@ -18,7 +18,7 @@ fn read_format_parameter(
 
             Some((param.unsigned_abs(), param < 0))
         }
-        Some('1'..='9') => {
+        Some('0'..='9') => {
             let mut number = 0;
 
             loop {
@@ -71,7 +71,20 @@ fn read_precision(
 
 struct CFmtConverter<'a, 'b> {
     format: &'a str,
-    args: &'b VaListImpl<'a>,
+    args: VaList<'b, 'a>,
+}
+
+#[allow(clippy::struct_excessive_bools)]
+#[derive(Debug, Default, Clone, Copy)]
+struct FormatParameters {
+    justify_left: bool,
+    always_show_sign: bool,
+    prepend_space: bool,
+    alternative: bool,
+    leading_zeroes: bool,
+
+    minimum_width: Option<usize>,
+    precision: Option<usize>,
 }
 
 impl<'a, 'b> Display for CFmtConverter<'a, 'b> {
@@ -100,27 +113,23 @@ impl<'a, 'b> Display for CFmtConverter<'a, 'b> {
                 continue;
             }
 
-            let mut justify_left = false;
-            let mut always_show_sign = false;
-            let mut prepend_space = false;
-            let mut alternative = false;
-            let mut leading_zeroes = false;
+            let mut params = FormatParameters::default();
 
             loop {
                 match chars.peek() {
-                    Some('-') => justify_left = true,
-                    Some('+') => always_show_sign = true,
-                    Some(' ') => prepend_space = true,
-                    Some('#') => alternative = true,
-                    Some('0') => leading_zeroes = true,
+                    Some('-') => params.justify_left = true,
+                    Some('+') => params.always_show_sign = true,
+                    Some(' ') => params.prepend_space = true,
+                    Some('#') => params.alternative = true,
+                    Some('0') => params.leading_zeroes = true,
                     _ => break,
                 }
                 chars.next();
             }
 
-            let minimum_width = { read_min_width(&mut chars, &mut args, &mut justify_left) };
+            params.minimum_width = read_min_width(&mut chars, &mut args, &mut params.justify_left);
 
-            let precision = 'p: {
+            params.precision = 'p: {
                 let Some('.') = chars.peek() else {
                     break 'p None;
                 };
@@ -129,66 +138,287 @@ impl<'a, 'b> Display for CFmtConverter<'a, 'b> {
                 read_precision(&mut chars, &mut args)
             };
 
-            // Shut up the compiler about unused variables
-            // TODO: Properly implement formatting and remove this
-            let (_, _, _, _, _, _, _) = (justify_left, always_show_sign, prepend_space, alternative, leading_zeroes, minimum_width, precision);
-
-            match chars.next() {
-                None => panic!("Printf format string ended after %"),
-                // Char
-                Some('c') => f.write_fmt(format_args!("{}", unsafe {
-                    let c: u8 = args.arg::<core::ffi::c_char>().try_into().unwrap();
-                    c as char
-                }))?,
-                // Signed int
-                Some('d' | 'i') => f.write_fmt(format_args!("{}", unsafe {
-                    args.arg::<core::ffi::c_int>()
-                }))?,
-                // Unsigned int 
-                Some('u') => f.write_fmt(format_args!("{}", unsafe {
-                    args.arg::<core::ffi::c_uint>()
-                }))?,
-                Some('o') => {
-                    let precision = precision.unwrap_or(1);
-
-                    if alternative {
-                        f.write_str("0o")?;
-                    }
-
-                    f.write_fmt(format_args!("{:0>precision$o}", unsafe {
-                        args.arg::<core::ffi::c_uint>()
-                    }))?;
-                },
-                Some('x') => f.write_fmt(format_args!("{:x}", unsafe {
-                    args.arg::<core::ffi::c_uint>()
-                }))?,
-                Some('X') => f.write_fmt(format_args!("{:X}", unsafe {
-                    args.arg::<core::ffi::c_uint>()
-                }))?,
-
-
-                // String
-                Some('s') => f.write_fmt(format_args!("{}", unsafe {
-                    CStr::from_ptr(args.arg::<*const i8>()).to_str().expect(
-                        "String given as arg to printf should have been valid utf-8",
-                    )
-                }))?,
-
-                // Pointer
-                Some('p') => f.write_fmt(format_args!("{:p}", unsafe {
-                    args.arg::<*const core::ffi::c_void>()
-                }))?,
-
-                // No hurry on implementing this because it doesn't look like it's used in ACPICA
-                Some('n') => todo!("'%n' formatter which writes the current number of bytes to a pointer"),
-                Some(s@ ('h' | 'l' | 'j' | 'z' | 't' | 'L')) => todo!("Format modifier '{s}'"),
-                Some(s @ ('f' | 'F' | 'e' | 'E' | 'a' | 'A' | 'g' | 'G')) => panic!("Formatter '{s}' is not supported because floating point numbers are not VaArgSafe"),
-                 Some(s) => panic!("Unknown printf format specifier '{s}'"),
-            }
+            match_formatter(&mut chars, f, &mut args, params)?;
         }
 
         Ok(())
     }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum Base {
+    Octal,
+    Decimal,
+    Hex,
+}
+
+impl Base {
+    const fn as_number(self) -> usize {
+        match self {
+            Base::Octal => 8,
+            Base::Decimal => 10,
+            Base::Hex => 16,
+        }
+    }
+
+    const fn prefix(self, capital: bool) -> &'static str {
+        match (self, capital) {
+            (Base::Octal, _) => "0",
+            (Base::Decimal, false) => "0d",
+            (Base::Decimal, true) => "0D",
+            (Base::Hex, false) => "0x",
+            (Base::Hex, true) => "0X",
+        }
+    }
+}
+
+#[allow(clippy::struct_excessive_bools)]
+#[derive(Debug, Clone, Copy)]
+struct UnsignedIntFormatParams {
+    pad_char: char,
+    base: Base,
+    justify_left: bool,
+    print_prefix: bool,
+    capital: bool,
+    precision: usize,
+    min_length: usize,
+}
+
+fn format_int_unsigned(
+    f: &mut core::fmt::Formatter<'_>,
+    value: usize,
+    mut params: UnsignedIntFormatParams,
+) -> Result<(), core::fmt::Error> {
+    let mut number_length = 0;
+
+    if params.print_prefix {
+        match params.base {
+            Base::Octal => params.precision = params.precision.saturating_sub(1),
+            Base::Decimal | Base::Hex => number_length += 2,
+        }
+    }
+
+    number_length +=
+        (TryInto::<u32>::try_into(params.precision).unwrap()).max(value.checked_ilog(params.base.as_number()).unwrap_or(0) + 1);
+
+    let pad_length = params.min_length.saturating_sub(number_length as _);
+
+    if !params.justify_left {
+        for _ in 0..pad_length {
+            f.write_char(params.pad_char)?;
+        }
+    }
+
+    if params.print_prefix {
+        f.write_str(params.base.prefix(params.capital))?;
+    }
+
+    // Makes format strings nicer
+    let precision = params.precision;
+
+    match (params.base, params.capital) {
+        (Base::Octal, true) => panic!("Uppercase octal formatting should not be reachable"),
+        (Base::Octal, false) => {
+            if !(value == 0 && precision == 0) {
+                f.write_fmt(format_args!("{value:0>precision$o}"))?;
+            }
+        }
+        (Base::Decimal, true) => panic!("Uppercase decimal formatting should not be reachable"),
+        (Base::Decimal, false) => f.write_fmt(format_args!("{value:0>precision$}"))?,
+        (Base::Hex, true) => f.write_fmt(format_args!("{value:0>precision$X}"))?,
+        (Base::Hex, false) => f.write_fmt(format_args!("{value:0>precision$x}"))?,
+    }
+
+    if params.justify_left {
+        for _ in 0..pad_length {
+            f.write_char(params.pad_char)?;
+        }
+    }
+
+    Ok(())
+}
+
+#[derive(Debug, Clone, Copy)]
+struct SignedIntFormatParams {
+    pad_char: char,
+    justify_left: bool,
+    precision: usize,
+    min_length: usize,
+    always_print_sign: bool,
+    prepend_space: bool,
+}
+
+fn format_int_signed(
+    f: &mut core::fmt::Formatter<'_>,
+    value: isize,
+    params: SignedIntFormatParams,
+) -> Result<(), core::fmt::Error> {
+    let mut number_length = 0;
+
+    number_length += (TryInto::<u32>::try_into(params.precision).unwrap())
+        .max(value.unsigned_abs().checked_ilog10().unwrap_or(0) + 1);
+
+    if value < 0 || params.always_print_sign {
+        number_length += 1;
+    }
+
+    let pad_length = params.min_length.saturating_sub(number_length as _);
+
+    if !params.justify_left {
+        for _ in 0..pad_length {
+            f.write_char(params.pad_char)?;
+        }
+    }
+
+    if value < 0 {
+        f.write_char('-')?;
+    } else if params.always_print_sign {
+        f.write_char('+')?;
+    } else if params.prepend_space {
+        f.write_char(' ')?;
+    }
+
+    f.write_fmt(format_args!(
+        "{:0>precision$}",
+        value.unsigned_abs(),
+        precision = params.precision
+    ))?;
+
+    if params.justify_left {
+        for _ in 0..pad_length {
+            f.write_char(params.pad_char)?;
+        }
+    }
+
+    Ok(())
+}
+
+fn match_formatter(
+    chars: &mut Peekable<core::str::Chars<'_>>,
+    f: &mut core::fmt::Formatter<'_>,
+    args: &mut VaListImpl<'_>,
+    params: FormatParameters,
+) -> Result<(), core::fmt::Error> {
+    let pad_char = if params.leading_zeroes { '0' } else { ' ' };
+
+    match chars.next() {
+        None => panic!("Printf format string ended after %"),
+        // Char
+        Some('c') => f.write_fmt(format_args!("{}", unsafe {
+            let c: u8 = args.arg::<core::ffi::c_char>().try_into().unwrap();
+            c as char
+        }))?,
+        // Signed int
+        Some('d' | 'i') => {
+            let precision = params.precision.unwrap_or(1);
+            let min_length = params.minimum_width.unwrap_or(0);
+
+            let value = unsafe { args.arg::<core::ffi::c_int>() };
+
+            format_int_signed(
+                f,
+                value as _,
+                SignedIntFormatParams {
+                    pad_char,
+                    justify_left: params.justify_left,
+                    precision,
+                    min_length,
+                    always_print_sign: params.always_show_sign,
+                    prepend_space: params.prepend_space,
+                },
+            )?;
+        }
+        // Unsigned int
+        Some(c @ ('u' | 'o' | 'x' | 'X')) => {
+            let (base, capital) = match c {
+                'u' => (Base::Decimal, false),
+                'o' => (Base::Octal, false),
+                'x' => (Base::Hex, false),
+                'X' => (Base::Hex, true),
+                _ => unreachable!(),
+            };
+
+            let precision = params.precision.unwrap_or(1);
+            let min_length = params.minimum_width.unwrap_or(0);
+
+            let value = unsafe { args.arg::<core::ffi::c_uint>() };
+            format_int_unsigned(
+                f,
+                value as _,
+                UnsignedIntFormatParams {
+                    pad_char,
+                    base,
+                    justify_left: params.justify_left,
+                    print_prefix: params.alternative,
+                    capital,
+                    precision,
+                    min_length,
+                },
+            )?;
+        }
+
+        // String
+        Some('s') => print_string(args, params, f, pad_char)?,
+
+        // Pointer
+        Some('p') => f.write_fmt(format_args!("{:p}", unsafe {
+            args.arg::<*const core::ffi::c_void>()
+        }))?,
+
+        // No hurry on implementing this because it doesn't look like it's used in ACPICA
+        Some('n') => todo!("'%n' formatter which writes the current number of bytes to a pointer"),
+        Some(s @ ('h' | 'l' | 'j' | 'z' | 't' | 'L')) => todo!("Format modifier '{s}'"),
+        Some(s @ ('f' | 'F' | 'e' | 'E' | 'a' | 'A' | 'g' | 'G')) => panic!(
+            "Formatter '{s}' is not supported because floating point numbers are not VaArgSafe"
+        ),
+        Some(s) => panic!("Unknown printf format specifier '{s}'"),
+    }
+
+    Ok(())
+}
+
+fn print_string(
+    args: &mut VaListImpl<'_>,
+    params: FormatParameters,
+    f: &mut core::fmt::Formatter<'_>,
+    pad_char: char,
+) -> Result<(), core::fmt::Error> {
+    let ptr = unsafe { args.arg::<usize>() } as *const u8;
+
+    // If max length is specified, string may not be null-terminated
+    let bytes = match params.precision {
+        Some(precision) => {
+            let bytes = unsafe { core::slice::from_raw_parts(ptr, precision) };
+            // Only take the bytes before the null terminator
+            bytes.split(|&b| b == 0).next().unwrap()
+        }
+        None => unsafe { CStr::from_ptr(ptr.cast()).to_bytes() },
+    };
+
+    let string =
+        core::str::from_utf8(bytes).expect("Shortened string should have been valid utf-8");
+
+    if let Some(minimum_width) = params.minimum_width {
+        let pad_width = minimum_width.saturating_sub(string.len());
+
+        if !params.justify_left {
+            for _ in 0..pad_width {
+                f.write_char(pad_char)?;
+            }
+        }
+
+        f.write_str(string)?;
+
+        if params.justify_left {
+            for _ in 0..pad_width {
+                f.write_char(pad_char)?;
+            }
+        }
+    } else {
+        f.write_str(string)?;
+    }
+
+    Ok(())
 }
 
 #[export_name = "AcpiOsPrintf"]
@@ -207,13 +437,13 @@ unsafe extern "C" fn acpi_os_printf(format: *const i8, mut args: ...) {
         "{}",
         CFmtConverter {
             format,
-            args: &mut args
+            args: args.as_va_list()
         }
     ));
 }
 
 #[export_name = "AcpiOsVprintf"]
-unsafe extern "C" fn acpi_os_v_printf(format: *const u8, mut args: ...) {
+unsafe extern "C" fn acpi_os_v_printf(format: *const u8, args: VaList) {
     let format = unsafe { CStr::from_ptr(format.cast()) };
     let format = format
         .to_str()
@@ -224,13 +454,7 @@ unsafe extern "C" fn acpi_os_v_printf(format: *const u8, mut args: ...) {
     let mut interface = OS_INTERFACE.lock();
     let interface = interface.as_mut().unwrap();
 
-    interface.printf(format_args!(
-        "{}",
-        CFmtConverter {
-            format,
-            args: &mut args
-        }
-    ));
+    interface.printf(format_args!("{}", CFmtConverter { format, args }));
 }
 
 #[cfg(test)]
@@ -272,35 +496,74 @@ mod tests {
     printf_test!(test_printf_const_str, "Hello", "Hello", {},);
     printf_test!(test_printf_double_percent, "Hello %", "Hello %%", {},);
     printf_test!(test_printf_s, "Hello World", "Hello %s", {s: CString::new("World").unwrap()}, s.as_ptr());
-    printf_test!(test_printf_c, "Hello A", "Hello %c", {}, b'A' as c_int);
-    printf_test!(test_printf_d, "Hello 100", "Hello %d", {}, 100 as c_int);
-    printf_test!(test_printf_i, "Hello 100", "Hello %i", {}, 100 as c_int);
+    printf_test!(test_printf_s_min_width, "Hello    World", "Hello %8s", {s: CString::new("World").unwrap()}, s.as_ptr());
+    printf_test!(test_printf_s_justify_left, "Hello World   ", "Hello %-8s", {s: CString::new("World").unwrap()}, s.as_ptr());
+    printf_test!(test_printf_c, "A", "%c", {}, b'A' as c_int);
+    printf_test!(test_printf_d, "100", "%d", {}, 100 as c_int);
+    printf_test!(test_printf_d_negative, "-100", "%d", {}, -100 as c_int);
     printf_test!(
-        test_printf_o,
-        "Hello 0o500",
-        "Hello 0o%o",
+        test_printf_d_always_show_sign,
+        "+100",
+        "%+d",
         {},
-        0o500 as c_int
+        100 as c_int
     );
     printf_test!(
-        test_printf_o_precision,
-        "Hello 0o00500",
-        "Hello 0o%.5o",
+        test_printf_d_always_show_sign_negative,
+        "-100",
+        "%+d",
         {},
-        0o500 as c_int
+        -100 as c_int
     );
+    printf_test!(
+        test_printf_d_always_show_sign_zero,
+        "+0",
+        "%+d",
+        {},
+        0 as c_int
+    );
+    printf_test!(test_printf_d_prepend_space, " 100", "% d", {}, 100 as c_int);
+    printf_test!(
+        test_printf_d_prepend_space_negative,
+        "-100",
+        "% d",
+        {},
+        -100 as c_int
+    );
+    printf_test!(test_printf_d_precision, "000100", "%.6d", {}, 100 as c_int);
+    printf_test!(test_printf_d_min_width, "   100", "%6d", {}, 100 as c_int);
+    printf_test!(
+        test_printf_d_min_width_justify_left,
+        "100   ",
+        "%-6d",
+        {},
+        100 as c_int
+    );
+    printf_test!(test_printf_i, "100", "%i", {}, 100 as c_int);
+    printf_test!(test_printf_o, "0o500", "0o%o", {}, 0o500 as c_int);
+    printf_test!(test_printf_o_precision, "00500", "%.5o", {}, 0o500 as c_int);
     printf_test!(
         test_printf_o_alternate,
-        "Hello 0o00500",
-        "Hello %#.5o",
+        "00500",
+        "%#.5o",
         {},
         0o500 as c_int
     );
+    printf_test!(test_printf_o_precision_zero, "", "%.0o", {}, 0o0 as c_int);
     printf_test!(
-        test_printf_o_precision_zero_no_chars,
-        "Hello ",
-        "Hello %.0o",
+        test_printf_o_precision_zero_alternate,
+        "0",
+        "%#.0o",
         {},
         0o0 as c_int
+    );
+    printf_test!(test_printf_x, "beef", "%x", {}, 0xbeef as c_int);
+    printf_test!(test_printf_uppercase_x, "BEEF", "%X", {}, 0xbeef as c_int);
+    printf_test!(
+        test_printf_x_precision,
+        "0000BEEF",
+        "%.8X",
+        {},
+        0xbeef as c_int
     );
 }
