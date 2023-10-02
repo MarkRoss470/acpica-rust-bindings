@@ -1,3 +1,4 @@
 /target
-/acpica-*
+# This excludes the directory but not the tar.gz file
+/acpica-*/
 .vscode/
