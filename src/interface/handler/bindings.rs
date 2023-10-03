@@ -1,7 +1,5 @@
 #[cfg(feature = "builtin_alloc")]
 mod alloc;
-#[cfg(feature = "builtin_cache")]
-mod cache;
 #[cfg(feature = "builtin_lock")]
 mod lock;
 mod overrides;

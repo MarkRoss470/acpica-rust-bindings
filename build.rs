@@ -1,8 +1,8 @@
 use std::{
     env,
     ffi::OsString,
-    fs::{self, DirEntry},
-    path::{PathBuf, Path},
+    fs::{self, DirEntry, File},
+    path::{Path, PathBuf},
     process::Command,
 };
 
@@ -11,39 +11,77 @@ fn main() {
     {
         println!("cargo:warning=Building acpica_bindings on non-unix platforms is not supported. Build may not succeed.");
     }
-
-    let acpica_dir = find_source_dir();
     let out_dir = env::var("OUT_DIR").unwrap();
     let out_dir_path = PathBuf::from(out_dir.clone());
 
-    update_source(acpica_dir.clone());
-
+    let acpica_dir = find_source_dir(out_dir_path.clone());
     let object_files = compile(&acpica_dir, &out_dir_path);
     create_archive(out_dir_path, object_files);
 }
 
-fn find_source_dir() -> PathBuf {
-    let dirs = fs::read_dir(".").unwrap();
+use flate2::read::GzDecoder;
+use tar::Archive;
+
+fn find_source_dir(out_dir: PathBuf) -> PathBuf {
+    // Find source directory already extracted by a previous compilation
+    let dirs = fs::read_dir(out_dir.clone()).unwrap();
 
     for dir in dirs {
-        let dir = dir.unwrap();
+        let entry = dir.unwrap();
 
         // Don't use a file as the source directory
-        if !dir.file_type().unwrap().is_dir() {
+        if !entry.file_type().unwrap().is_dir() {
             continue;
         }
 
-        if dir
+        if entry
             .file_name()
             .into_string()
             .unwrap_or(String::new())
             .starts_with("acpica-")
         {
-            return dir.path();
+            return entry.path();
         }
     }
 
-    panic!("Couldn't find ACPICA source directory. The directory should be in the crate root and start with 'acpica-'.");
+    // If the source is not already extracted, extract it
+
+    // Find the tarball
+    let mut dirs = fs::read_dir(".").unwrap();
+
+    let source_tarball_path = dirs.find_map(|dir| {
+        let dir = dir.unwrap();
+        let name = dir.file_name().into_string().unwrap();
+
+        if name.starts_with("acpica-") && name.ends_with(".tar.gz") {
+            Some(name)
+        } else {
+            None
+        }
+    }).expect("No source tarball: There should be a file in the crate root starting with 'acpica-' and ending with '.tar.gz'");
+
+    // Extract the tarball
+    let tarball = File::open(source_tarball_path.clone())
+        .expect("Should have been able to open tarball directory");
+    let tar = GzDecoder::new(tarball);
+    let mut archive = Archive::new(tar);
+
+    for e in archive.entries().unwrap() {
+        let mut e = e.unwrap();
+        
+        let mut path = out_dir.clone();
+        path.push(e.path().unwrap());
+
+        e.unpack(path).unwrap();
+    }
+
+    let mut dir_path = out_dir.clone();
+    dir_path.push(source_tarball_path.strip_suffix(".tar.gz").unwrap());
+
+    // Change the source files to fit the specific use case
+    update_source(dir_path.clone());
+
+    dir_path
 }
 
 /// The ACPICA sources link to the system libc by default.
@@ -53,27 +91,33 @@ fn find_source_dir() -> PathBuf {
 ///
 /// This function comments out all such definitions.
 fn update_source(acpica_dir: PathBuf) {
-    let mut platforms_path = acpica_dir.clone();
-    platforms_path.push("source/include/platform");
+    // Copy acrust.h to include/platfom
+    let mut acrust_path = acpica_dir.clone();
+    acrust_path.push("source/include/platform/acrust.h");
 
-    let platforms = fs::read_dir(platforms_path)
-        .expect("Source directory should contain sub-directory 'source/include/platform'");
+    fs::copy("./acrust.h", acrust_path).expect("Invalid source directory structure: There should be a folder inside the source directory called source/include/platform");
 
-    for platform_file in platforms {
-        let platform_file = platform_file.unwrap();
-        let contents = fs::read_to_string(platform_file.path()).unwrap();
+    // Replace
+    let mut acenv_path = acpica_dir.clone();
+    acenv_path.push("source/include/platform/acenv.h");
 
-        let contents = contents.replace(
-            "\n#define ACPI_USE_SYSTEM_CLIBRARY",
-            "\n// #define ACPI_USE_SYSTEM_CLIBRARY",
-        );
-        let contents = contents.replace(
-            "\n#define ACPI_USE_STANDARD_HEADERS",
-            "\n// #define ACPI_USE_STANDARD_HEADERS",
-        );
+    let env_text = fs::read_to_string(acenv_path.clone()).unwrap();
 
-        fs::write(platform_file.path(), contents).unwrap();
-    }
+    let (pre_platform_includes, after_platform_includes) = {
+        let (pre_platform_includes, rest) = env_text
+            .split_once("#if defined(_LINUX)")
+            .expect("acenv.h should have contained section of platform-specific includes. This is currently detected using the string '#if defined(_LINUX)'.");
+        let (_, post_platform_includes) = rest
+            .split_once("#endif")
+            .expect("The platform-specific headers should have ended in '#endif'");
+
+        (pre_platform_includes, post_platform_includes)
+    };
+
+    let new_env_text =
+        pre_platform_includes.to_string() + r#"#include "acrust.h""# + after_platform_includes;
+
+    std::fs::write(acenv_path, new_env_text.as_bytes()).unwrap();
 }
 
 /// Creates a static library containing the given object files, writing it to `out_dir/libacpica.a`
@@ -130,7 +174,7 @@ fn compile(acpica_dir: &Path, out_dir: &Path) -> Vec<PathBuf> {
             let obj_file = {
                 let mut c_file_name = c_file.file_name();
                 c_file_name.push(".o");
-                
+
                 let mut obj_file_path = out_dir.to_path_buf();
                 obj_file_path.push(c_file_name);
                 obj_file_path
