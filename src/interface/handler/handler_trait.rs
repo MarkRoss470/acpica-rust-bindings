@@ -187,7 +187,7 @@ pub unsafe trait AcpiHandler {
     /// For this reason, the OS should not add its own newline characters or this could break formatting.
     /// If your kernel has a macro which behaves like the standard `print!` macro, the implementation of this method can be as simple as
     ///
-    /// ```
+    /// ```ignore
     /// fn printf(&mut self, message: core::fmt::Arguments) {
     ///     print!("{message}");
     /// }
