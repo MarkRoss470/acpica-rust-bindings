@@ -16,7 +16,7 @@ fn main() {
 
     let acpica_dir = find_source_dir(out_dir_path.clone());
     let object_files = compile(&acpica_dir, &out_dir_path);
-    create_archive(out_dir_path, object_files);
+    create_archive(out_dir_path, out_dir, object_files);
 }
 
 use flate2::read::GzDecoder;
@@ -24,13 +24,18 @@ use tar::Archive;
 
 fn find_source_dir(out_dir: PathBuf) -> PathBuf {
     // Find source directory already extracted by a previous compilation
-    let dirs = fs::read_dir(out_dir.clone()).unwrap();
+    let dirs =
+        fs::read_dir(out_dir.clone()).expect("Should have been able to read files in OUT_DIR");
 
     for dir in dirs {
-        let entry = dir.unwrap();
+        let entry = dir.expect("Should have been able to get info about dir entry");
 
         // Don't use a file as the source directory
-        if !entry.file_type().unwrap().is_dir() {
+        if !entry
+            .file_type()
+            .expect("Should have been able to get file type")
+            .is_dir()
+        {
             continue;
         }
 
@@ -47,13 +52,14 @@ fn find_source_dir(out_dir: PathBuf) -> PathBuf {
     // If the source is not already extracted, extract it
 
     // Find the tarball
-    let mut dirs = fs::read_dir(".").unwrap();
+    let mut dirs = fs::read_dir(".").expect("Should have been able to read files in crate root");
 
     let source_tarball_path = dirs.find_map(|dir| {
-        let dir = dir.unwrap();
-        let name = dir.file_name().into_string().unwrap();
+        let dir = dir.expect("Should have been able to get info about dir entry");
+        let name = dir.file_name().into_string().expect("Should have been able to get file name of dir entry");
+        let is_dir = dir.file_type().expect("Should have been able to get file type").is_dir();
 
-        if name.starts_with("acpica-") && name.ends_with(".tar.gz") {
+        if !is_dir && name.starts_with("acpica-") && name.ends_with(".tar.gz") {
             Some(name)
         } else {
             None
@@ -66,13 +72,17 @@ fn find_source_dir(out_dir: PathBuf) -> PathBuf {
     let tar = GzDecoder::new(tarball);
     let mut archive = Archive::new(tar);
 
-    for e in archive.entries().unwrap() {
-        let mut e = e.unwrap();
-        
-        let mut path = out_dir.clone();
-        path.push(e.path().unwrap());
+    for e in archive.entries().expect("Could not parse archive") {
+        let mut e = e.expect("Should have been able to load entry from archive");
 
-        e.unpack(path).unwrap();
+        let mut path = out_dir.clone();
+        path.push(
+            e.path()
+                .expect("Should have been able to get path of entry in archive"),
+        );
+
+        e.unpack(path)
+            .expect("Should have been able to unpack entry");
     }
 
     let mut dir_path = out_dir.clone();
@@ -101,7 +111,8 @@ fn update_source(acpica_dir: PathBuf) {
     let mut acenv_path = acpica_dir.clone();
     acenv_path.push("source/include/platform/acenv.h");
 
-    let env_text = fs::read_to_string(acenv_path.clone()).unwrap();
+    let env_text =
+        fs::read_to_string(acenv_path.clone()).expect("Should have been able to read 'acenv.h'");
 
     let (pre_platform_includes, after_platform_includes) = {
         let (pre_platform_includes, rest) = env_text
@@ -117,11 +128,12 @@ fn update_source(acpica_dir: PathBuf) {
     let new_env_text =
         pre_platform_includes.to_string() + r#"#include "acrust.h""# + after_platform_includes;
 
-    std::fs::write(acenv_path, new_env_text.as_bytes()).unwrap();
+    std::fs::write(acenv_path, new_env_text.as_bytes())
+        .expect("Should have been abl to write 'acenv.h'");
 }
 
 /// Creates a static library containing the given object files, writing it to `out_dir/libacpica.a`
-fn create_archive(out_dir: PathBuf, object_files: Vec<PathBuf>) {
+fn create_archive(out_dir: PathBuf, out_dir_string: String, object_files: Vec<PathBuf>) {
     let mut archive_path = out_dir.clone();
     archive_path.push("libacpica.a");
 
@@ -131,14 +143,14 @@ fn create_archive(out_dir: PathBuf, object_files: Vec<PathBuf>) {
         ar_command.arg(obj);
     }
 
-    assert!(ar_command.status().unwrap().success());
+    assert!(ar_command
+        .status()
+        .expect("Should have been able to get status of 'ar' command")
+        .success());
 
     println!("cargo:rustc-link-lib=static=acpica");
 
-    println!(
-        "cargo:rustc-link-search=native={}",
-        env::var("OUT_DIR").unwrap()
-    );
+    println!("cargo:rustc-link-search=native={out_dir_string}");
 }
 
 /// Runs GCC on all the C files making up the ACPICA kernel subsystem,
@@ -154,7 +166,7 @@ fn compile(acpica_dir: &Path, out_dir: &Path) -> Vec<PathBuf> {
         .expect("Source directory should contain sub-directory '/source/components'");
 
     for component_dir in components {
-        let component_dir: DirEntry = component_dir.unwrap();
+        let component_dir = component_dir.expect("Should have been able to get info about dir entry");
 
         // TODO: These might be nice to have
         // Exclude the debugger and disassembler dirs because they give 'undefined type' errors
@@ -164,8 +176,8 @@ fn compile(acpica_dir: &Path, out_dir: &Path) -> Vec<PathBuf> {
             continue;
         }
 
-        for c_file in fs::read_dir(component_dir.path()).unwrap() {
-            let c_file: DirEntry = c_file.unwrap();
+        for c_file in fs::read_dir(component_dir.path()).expect("Should have been able to read component directory") {
+            let c_file = c_file.expect("Should have been able to get info about dir entry");
 
             // Put all the object files in one output directory regardless of the source directory structure
             // This doesn't lead to file name collisions because all the ACPICA source files are prefixed with the directory they come from anyway
@@ -206,7 +218,7 @@ fn compile(acpica_dir: &Path, out_dir: &Path) -> Vec<PathBuf> {
                 .arg("-fno-stack-protector") // Remove stack protections to get rid of __stack_chk_fail linker warning
                 .arg("-g") // Produce debug symbols
                 .output()
-                .unwrap();
+                .expect("Should have been able to get output of GCC command");
 
             // Check for compilation errors
             if !gcc_command_output.status.success() {
