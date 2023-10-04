@@ -1,7 +1,7 @@
 use std::{
     env,
     ffi::OsString,
-    fs::{self, DirEntry, File},
+    fs::{self, File},
     path::{Path, PathBuf},
     process::Command,
 };
@@ -105,7 +105,16 @@ fn update_source(acpica_dir: PathBuf) {
     let mut acrust_path = acpica_dir.clone();
     acrust_path.push("source/include/platform/acrust.h");
 
-    fs::copy("./acrust.h", acrust_path).expect("Invalid source directory structure: There should be a folder inside the source directory called source/include/platform");
+    let acrust_text = fs::read_to_string("./acrust.h")
+        .expect("Should have been able to read 'acrust.h'. There should be a file in the crate root with the name 'acrust.h'");
+
+    #[cfg(not(feature = "builtin_cache"))]
+    {
+        acrust_text = acrust_text.replace("#define ACPI_CACHE_T", "// #define ACPI_CACHE_T");
+        acrust_text = acrust_text.replace("#define ACPI_USE_LOCAL_CACHE", "// #define ACPI_USE_LOCAL_CACHE");
+    }
+
+    fs::write(acrust_path, acrust_text).expect("Should have been able to write to 'acrust.h': There should be a folder inside the source directory called source/include/platform");
 
     // Replace
     let mut acenv_path = acpica_dir.clone();
@@ -166,7 +175,8 @@ fn compile(acpica_dir: &Path, out_dir: &Path) -> Vec<PathBuf> {
         .expect("Source directory should contain sub-directory '/source/components'");
 
     for component_dir in components {
-        let component_dir = component_dir.expect("Should have been able to get info about dir entry");
+        let component_dir =
+            component_dir.expect("Should have been able to get info about dir entry");
 
         // TODO: These might be nice to have
         // Exclude the debugger and disassembler dirs because they give 'undefined type' errors
@@ -176,7 +186,9 @@ fn compile(acpica_dir: &Path, out_dir: &Path) -> Vec<PathBuf> {
             continue;
         }
 
-        for c_file in fs::read_dir(component_dir.path()).expect("Should have been able to read component directory") {
+        for c_file in fs::read_dir(component_dir.path())
+            .expect("Should have been able to read component directory")
+        {
             let c_file = c_file.expect("Should have been able to get info about dir entry");
 
             // Put all the object files in one output directory regardless of the source directory structure

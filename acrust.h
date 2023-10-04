@@ -215,6 +215,8 @@
 
 
 // Rust specific changes
+// These may get commented out by the build script
+
 #define ACPI_CACHE_T                ACPI_MEMORY_LIST
 #define ACPI_USE_LOCAL_CACHE        1
 
