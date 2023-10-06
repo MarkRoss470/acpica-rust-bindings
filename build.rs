@@ -105,7 +105,8 @@ fn update_source(acpica_dir: PathBuf) {
     let mut acrust_path = acpica_dir.clone();
     acrust_path.push("source/include/platform/acrust.h");
 
-    let acrust_text = fs::read_to_string("./acrust.h")
+    #[allow(unused_mut)] // This needs to be mutable for the non-builtin-cache code to work, but would raise a warning otherwise
+    let mut acrust_text = fs::read_to_string("./acrust.h")
         .expect("Should have been able to read 'acrust.h'. There should be a file in the crate root with the name 'acrust.h'");
 
     #[cfg(not(feature = "builtin_cache"))]
