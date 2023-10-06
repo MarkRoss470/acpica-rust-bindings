@@ -25,6 +25,7 @@ use super::status::AcpiError;
 
 static OS_INTERFACE: Mutex<Option<OsInterface>> = Mutex::new(None);
 
+// TODO: Are these still needed when using type state to store the same flags?
 pub(crate) static SUBSYSTEM_IS_INITIALIZED: AtomicBool = AtomicBool::new(false);
 pub(crate) static TABLES_ARE_INITIALIZED: AtomicBool = AtomicBool::new(false);
 pub(crate) static SUBSYSTEM_IS_ENABLED: AtomicBool = AtomicBool::new(false);
@@ -70,11 +71,13 @@ pub fn register_interface<T: AcpiHandler + Send + 'static>(
         handler: Box::new(interface),
         objects_to_drop: Vec::new(),
     });
+
     SUBSYSTEM_IS_INITIALIZED.store(true, Ordering::Relaxed);
 
     // AcpiInitializeSubsystem calls functions which need this lock
     drop(lock);
 
+    // SAFETY: Handlers for AcpiOs functions have been set up
     unsafe { AcpiInitializeSubsystem().as_result()? };
 
     Ok(AcpicaInitialization)
@@ -111,7 +114,9 @@ impl AcpicaInitialization<false, false> {
     /// 
     /// This function causes ACPICA to parse all the tables pointed to by the RSDT/XSDT
     pub fn load_tables(self) -> Result<AcpicaInitialization<true, false>, AcpiError> {
+        // SAFETY: `AcpiInitializeSubsystem` has been called
         unsafe { AcpiInitializeTables(core::ptr::null_mut(), 16, false).as_result()? };
+        // SAFETY: `AcpiInitializeTables` has been called
         unsafe { AcpiLoadTables().as_result()? };
 
         TABLES_ARE_INITIALIZED.store(true, Ordering::Relaxed);
@@ -125,6 +130,7 @@ impl AcpicaInitialization<true, false> {
     /// 
     /// This function causes ACPICA to enter ACPI mode and start receiving ACPI interrupts.
     pub fn enable_subsystem(self) -> Result<AcpicaInitialization<true, true>, AcpiError> {
+        // SAFETY: `AcpiLoadTables` has been called
         unsafe { AcpiEnableSubsystem(ACPI_FULL_INITIALIZATION).as_result()? };
 
         SUBSYSTEM_IS_ENABLED.store(true, Ordering::Relaxed);
@@ -138,6 +144,7 @@ impl AcpicaInitialization<true, true> {
     /// 
     /// This function causes ACPICA to enter ACPI mode and start receiving ACPI interrupts.
     pub fn initialize_objects(self) -> Result<(), AcpiError> {
+        // SAFETY: `AcpiEnableSubsystem` has been called
         unsafe { AcpiInitializeObjects(ACPI_FULL_INITIALIZATION).as_result()? };
 
         OBJECTS_ARE_INITIALIZED.store(true, Ordering::Relaxed);

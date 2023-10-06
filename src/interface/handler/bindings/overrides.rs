@@ -5,7 +5,7 @@ use crate::{
         tables::FfiAcpiTableHeader, FfiAcpiPhysicalAddress, FfiAcpiPredefinedNames, FfiAcpiString,
     },
     handler::{DropOnTerminate, OS_INTERFACE},
-    status::{AcpiErrorAsStatusExt, AcpiStatus, AcpiError},
+    status::{AcpiError, AcpiErrorAsStatusExt, AcpiStatus},
     types::{AcpiPredefinedNames, AcpiTableHeader},
 };
 
@@ -15,9 +15,9 @@ extern "C" fn acpi_os_predefined_override(
     new_val_ptr: *mut FfiAcpiString,
 ) -> AcpiStatus {
     if init_val.is_null() || new_val_ptr.is_null() {
-        return AcpiError::BadParameter.to_acpi_status()
+        return AcpiError::BadParameter.to_acpi_status();
     }
-    
+
     // SAFETY: `init_val` is valid for reads
     let init_val = unsafe { &*init_val };
     let mut lock = OS_INTERFACE.lock();
@@ -52,7 +52,7 @@ extern "C" fn acpi_os_table_override(
     new_table_ptr: *mut *mut FfiAcpiTableHeader,
 ) -> AcpiStatus {
     if existing_table.is_null() || new_table_ptr.is_null() {
-        return AcpiError::BadParameter.to_acpi_status()
+        return AcpiError::BadParameter.to_acpi_status();
     }
 
     // SAFETY: `existing_table` is valid for reads
@@ -86,8 +86,9 @@ extern "C" fn acpi_os_physical_table_override(
     new_table_address_ptr: *mut FfiAcpiPhysicalAddress,
     new_table_length_ptr: *mut u32,
 ) -> AcpiStatus {
-    if existing_table.is_null() || new_table_address_ptr.is_null() || new_table_length_ptr.is_null() {
-        return AcpiError::BadParameter.to_acpi_status()
+    if existing_table.is_null() || new_table_address_ptr.is_null() || new_table_length_ptr.is_null()
+    {
+        return AcpiError::BadParameter.to_acpi_status();
     }
 
     // SAFETY: `existing_table` is valid for reads
@@ -95,9 +96,10 @@ extern "C" fn acpi_os_physical_table_override(
     let mut lock = OS_INTERFACE.lock();
     let lock = lock.as_mut().unwrap();
 
-    // SAFETY: This is `AcpiOsPhysicalTableOverride`
     let result =
+    // SAFETY: This is `AcpiOsPhysicalTableOverride`
         unsafe { lock.physical_table_override(&AcpiTableHeader::from_ffi(existing_table)) };
+    
     let new_table = match result {
         Ok(new_table) => new_table,
         Err(e) => return e.to_acpi_status(),

@@ -12,6 +12,7 @@ fn read_format_parameter(
 ) -> Option<(usize, bool)> {
     match chars.peek() {
         Some('*') => {
+            // SAFETY: '*' in a format parameter means to read the parameter as an int from the arguments
             let param = unsafe { args.arg::<core::ffi::c_int>() as isize };
 
             chars.next();
@@ -198,8 +199,8 @@ fn format_int_unsigned(
         }
     }
 
-    number_length +=
-        (TryInto::<u32>::try_into(params.precision).unwrap()).max(value.checked_ilog(params.base.as_number()).unwrap_or(0) + 1);
+    number_length += (TryInto::<u32>::try_into(params.precision).unwrap())
+        .max(value.checked_ilog(params.base.as_number()).unwrap_or(0) + 1);
 
     let pad_length = params.min_length.saturating_sub(number_length as _);
 
@@ -304,6 +305,7 @@ fn match_formatter(
     match chars.next() {
         None => panic!("Printf format string ended after %"),
         // Char
+        // SAFETY: The '%c' specifier means the char data type
         Some('c') => f.write_fmt(format_args!("{}", unsafe {
             let c: u8 = args.arg::<core::ffi::c_char>().try_into().unwrap();
             c as char
@@ -313,6 +315,7 @@ fn match_formatter(
             let precision = params.precision.unwrap_or(1);
             let min_length = params.minimum_width.unwrap_or(0);
 
+            // SAFETY: '%d' and '%i' both mean the int data type
             let value = unsafe { args.arg::<core::ffi::c_int>() };
 
             format_int_signed(
@@ -341,7 +344,9 @@ fn match_formatter(
             let precision = params.precision.unwrap_or(1);
             let min_length = params.minimum_width.unwrap_or(0);
 
+            // SAFETY: '%u', '%o', '%x', and '%X' all mean the unsigned int data type
             let value = unsafe { args.arg::<core::ffi::c_uint>() };
+
             format_int_unsigned(
                 f,
                 value as _,
@@ -358,9 +363,11 @@ fn match_formatter(
         }
 
         // String
-        Some('s') => print_string(args, params, f, pad_char)?,
+        // SAFETY: '%s' means a string so the next argument is a C string.
+        Some('s') => unsafe { print_string(args, params, f, pad_char)? },
 
         // Pointer
+        // SAFETY: '%p' means a void* data type
         Some('p') => f.write_fmt(format_args!("{:p}", unsafe {
             args.arg::<*const core::ffi::c_void>()
         }))?,
@@ -377,21 +384,33 @@ fn match_formatter(
     Ok(())
 }
 
-fn print_string(
+/// Prints a string from the provided `args` to the provided formatter `f`.
+///
+/// # Safety
+/// The next argument in `args` must be a pointer to a C string.
+unsafe fn print_string(
     args: &mut VaListImpl<'_>,
     params: FormatParameters,
     f: &mut core::fmt::Formatter<'_>,
     pad_char: char,
 ) -> Result<(), core::fmt::Error> {
-    let ptr = unsafe { args.arg::<usize>() } as *const u8;
+    // SAFETY: The next argument is a C string
+    let ptr = unsafe { args.arg::<*const u8>() };
 
     // If max length is specified, string may not be null-terminated
     let bytes = match params.precision {
         Some(precision) => {
-            let bytes = unsafe { core::slice::from_raw_parts(ptr, precision) };
-            // Only take the bytes before the null terminator
-            bytes.split(|&b| b == 0).next().unwrap()
+            let string_length = (0..precision)
+                .take(precision)
+                // SAFETY: This read is before any null terminator and before `precision` bytes, so it is part of the string passed to printf
+                // Therefore a read of this byte is safe
+                .take_while(|i| unsafe { core::ptr::read(ptr.add(*i)) } != 0)
+                .count();
+
+            // SAFETY: The calculated byte length is memory in the passed C string and is only used here, so this reference is valid
+            unsafe { core::slice::from_raw_parts(ptr, string_length) }
         }
+        // SAFETY: If `precision` is not specified, the pointer just points to a null-terminated string.
         None => unsafe { CStr::from_ptr(ptr.cast()).to_bytes() },
     };
 
@@ -423,6 +442,7 @@ fn print_string(
 
 #[export_name = "AcpiOsPrintf"]
 unsafe extern "C" fn acpi_os_printf(format: *const i8, mut args: ...) {
+    // SAFETY: The `format` argument is a C string
     let format = unsafe { CStr::from_ptr(format) };
     let format = format
         .to_str()
@@ -444,6 +464,7 @@ unsafe extern "C" fn acpi_os_printf(format: *const i8, mut args: ...) {
 
 #[export_name = "AcpiOsVprintf"]
 unsafe extern "C" fn acpi_os_v_printf(format: *const u8, args: VaList) {
+    // SAFETY: The `format` argument is a C string
     let format = unsafe { CStr::from_ptr(format.cast()) };
     let format = format
         .to_str()

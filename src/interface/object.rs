@@ -81,58 +81,101 @@ pub enum AcpiObject<'a> {
 }
 
 impl<'a> AcpiObject<'a> {
+    /// Copies the data from an APCICA object into a safe representation.
+    ///
+    /// # Safety
+    /// `pointer` must point to a valid `ACPI_OBJECT` struct.
     pub(crate) unsafe fn from_ffi(pointer: *const FfiAcpiObject) -> Self {
-        let ffi_acpi_object = (*pointer);
-        let object_type = ffi_acpi_object.object_type;
+        // SAFETY: `pointer` is a valid acpi object
+        let ffi_acpi_object = unsafe { *pointer };
+        // SAFETY: Every variant of FfiAcpiObject has this field in this location,
+        // so it can be accessed no matter what the real variant is.
+        let object_type = unsafe { ffi_acpi_object.object_type };
 
         match object_type {
             _t @ ACPI_TYPE_ANY => Self::Any,
-            _t @ ACPI_TYPE_INTEGER => Self::Integer(ffi_acpi_object.integer.value),
+            // SAFETY: If the object is an integer then the `integer` field can be read
+            _t @ ACPI_TYPE_INTEGER => unsafe { Self::Integer(ffi_acpi_object.integer.value) },
             _t @ ACPI_TYPE_STRING => {
-                let bytes = core::slice::from_raw_parts(
-                    ffi_acpi_object.string.pointer.cast(),
-                    ffi_acpi_object.string.length as _,
-                );
+                // SAFETY: If the object is a string then the `string` field can be read
+                let string = unsafe { ffi_acpi_object.string };
+
+                // SAFETY: The object is valid so the pointer and length are correct
+                let bytes = unsafe {
+                    core::slice::from_raw_parts(string.pointer.cast(), string.length as _)
+                };
+
                 let str = core::str::from_utf8(bytes).unwrap();
+
                 Self::String(str)
             }
             _t @ ACPI_TYPE_BUFFER => {
-                let bytes = core::slice::from_raw_parts(
-                    ffi_acpi_object.buffer.pointer,
-                    ffi_acpi_object.buffer.length as _,
-                );
+                // SAFETY: If the object is a buffer then the `buffer` field can be read
+                let buffer = unsafe { ffi_acpi_object.buffer };
+
+                let bytes =
+                // SAFETY: The object is valid so the pointer and length are correct
+                    unsafe { core::slice::from_raw_parts(buffer.pointer, buffer.length as _) };
+
                 Self::Buffer(bytes)
             }
-            _t @ ACPI_TYPE_PACKAGE => Self::Package(AcpiObjectPackage {
-                count: ffi_acpi_object.package.count,
-                elements: ffi_acpi_object.package.elements,
-            }),
-            _t @ ACPI_TYPE_LOCAL_REFERENCE => Self::Reference(AcpiObjectReference {
-                actual_type: ffi_acpi_object.reference.actual_type,
-                handle: ffi_acpi_object.reference.handle,
-            }),
-            _t @ ACPI_TYPE_PROCESSOR => Self::Processor(AcpiObjectProcessor {
-                proc_id: ffi_acpi_object.processor.proc_id,
-                pblk_address: ffi_acpi_object.processor.pblk_address,
-                pblk_length: ffi_acpi_object.processor.pblk_length,
-            }),
-            _t @ ACPI_TYPE_POWER => Self::PowerResource(AcpiObjectPowerResource {
-                system_level: ffi_acpi_object.power_resource.system_level,
-                resource_order: ffi_acpi_object.power_resource.resource_order,
-            }),
+            _t @ ACPI_TYPE_PACKAGE => {
+                // SAFETY: If the object is a package then the `package` field can be read
+                let package = unsafe { ffi_acpi_object.package };
+
+                Self::Package(AcpiObjectPackage {
+                    count: package.count,
+                    elements: package.elements,
+                })
+            }
+            _t @ ACPI_TYPE_LOCAL_REFERENCE => {
+                // SAFETY: If the object is a reference then the `reference` field can be read
+                let reference = unsafe { ffi_acpi_object.reference };
+
+                Self::Reference(AcpiObjectReference {
+                    actual_type: reference.actual_type,
+                    handle: reference.handle,
+                })
+            }
+            _t @ ACPI_TYPE_PROCESSOR => {
+                // SAFETY: If the object is a processor then the `processor` field can be read
+                let processor = unsafe { ffi_acpi_object.processor };
+
+                Self::Processor(AcpiObjectProcessor {
+                    proc_id: processor.proc_id,
+                    pblk_address: processor.pblk_address,
+                    pblk_length: processor.pblk_length,
+                })
+            }
+            _t @ ACPI_TYPE_POWER => {
+                // SAFETY: If the object is a power resource then the `power_resource` field can be read
+                let power_resource = unsafe { ffi_acpi_object.power_resource };
+
+                Self::PowerResource(AcpiObjectPowerResource {
+                    system_level: power_resource.system_level,
+                    resource_order: power_resource.resource_order,
+                })
+            }
 
             _ => Self::Any,
         }
     }
 
+    /// Copies the data from an ACPI object, indicated by its type number and a pointer to the object (for integer objects, the pointer itself stores the value)
+    /// 
+    /// # Safety
+    /// `val` must be valid data of the type indicated by `object_type` 
     pub(crate) unsafe fn from_type_and_val(object_type: u8, val: *mut i8) -> Self {
         match object_type.into() {
             _t @ ACPI_TYPE_ANY => Self::Any,
             _t @ ACPI_TYPE_INTEGER => Self::Integer(val as _),
             _t @ ACPI_TYPE_STRING => {
-                let s = CStr::from_ptr(val)
-                    .to_str()
-                    .expect("String object should have been valid utf-8");
+                // SAFETY: If the object is a string then the pointer points to a null terminated string
+                let s = unsafe {
+                    CStr::from_ptr(val)
+                        .to_str()
+                        .expect("String object should have been valid utf-8")
+                };
                 Self::String(s)
             }
 

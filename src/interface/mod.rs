@@ -26,5 +26,6 @@ pub fn debug_trace(name: &str, level: u32, layer: u32, flags: u32) -> Result<(),
 
     let ffi_name = CString::new(name).expect("name should not contain null bytes");
 
+    // SAFETY: The passed pointer is valid as it was taken from a CString
     unsafe { AcpiDebugTrace(ffi_name.as_ptr(), level, layer, flags).as_result() }
 }

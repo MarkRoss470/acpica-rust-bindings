@@ -12,7 +12,12 @@ use crate::{
 pub struct AcpiSpinlock(*const AtomicBool);
 
 impl AcpiSpinlock {
+    /// Gets the pointer as a reference
+    ///
+    /// # Safety
+    /// * This struct must have been initialized with a valid pointer
     unsafe fn as_ref(&self) -> &AtomicBool {
+        // SAFETY: The contained pointer is valid
         unsafe { &*self.0 }
     }
 }
@@ -25,6 +30,7 @@ extern "C" fn acpi_os_create_lock(out_handle: *mut AcpiSpinlock) -> AcpiStatus {
 
     let lock = Box::new(AtomicBool::new(false)); // TODO: make this fallible
 
+    // SAFETY: `out_handle` is a valid pointer.
     unsafe { *out_handle = AcpiSpinlock(Box::leak(lock)) }
 
     AcpiStatus::OK
@@ -41,6 +47,7 @@ extern "C" fn acpi_os_delete_lock(handle: AcpiSpinlock) {
 
 #[export_name = "AcpiOsAcquireLock"]
 extern "C" fn acpi_os_acquire_lock(handle: AcpiSpinlock) -> FfiAcpiCpuFlags {
+    // SAFETY: The `handle` pointer was passed to ACPICA by `acpi_os_create_lock`, so it's a valid pointer
     let handle = unsafe { handle.as_ref() };
 
     loop {
@@ -55,6 +62,7 @@ extern "C" fn acpi_os_acquire_lock(handle: AcpiSpinlock) -> FfiAcpiCpuFlags {
 
 #[export_name = "AcpiOsReleaseLock"]
 extern "C" fn acpi_os_release_lock(handle: AcpiSpinlock, _flags: FfiAcpiCpuFlags) {
+    // SAFETY: The `handle` pointer was passed to ACPICA by `acpi_os_create_lock`, so it's a valid pointer
     let handle = unsafe { handle.as_ref() };
 
     handle.store(false, Ordering::Release);

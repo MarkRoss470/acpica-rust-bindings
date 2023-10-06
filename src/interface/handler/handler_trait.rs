@@ -44,6 +44,7 @@ pub unsafe trait AcpiHandler {
     ///
     /// # Safety
     /// * This method is only called from `AcpiOsTerminate`
+    /// * After this method is called, the object will be dropped and no other methods will be called
     unsafe fn terminate(&mut self) -> Result<(), AcpiError> {
         Ok(())
     }
@@ -77,7 +78,7 @@ pub unsafe trait AcpiHandler {
     /// To override the table using a physical address instead, use [`physical_table_override`]
     ///
     /// # Safety
-    /// * This method is only called from `AcpiOsTableOverride`.
+    /// * This method is only called from `AcpiOsTableOverride`
     ///
     /// [`physical_table_override`]: AcpiHandler::physical_table_override
     #[allow(unused_variables)]
@@ -92,12 +93,12 @@ pub unsafe trait AcpiHandler {
     /// To keep the original table, return `Ok(None)`
     ///
     /// # Safety
-    /// * This method is only called from `AcpiOsPhysicalTableOverride`.
+    /// * This method is only called from `AcpiOsPhysicalTableOverride`
     ///
     /// # Implementation Safety
     /// * The returned physical address must point to a valid new ACPI table with the returned length
     /// * The memory indicated by the returned pointer and length is now managed by ACPICA and must
-    ///     not be written to while ACPICA is active.
+    ///     not be written to while ACPICA is active
     #[allow(unused_variables)]
     unsafe fn physical_table_override(
         &mut self,
@@ -110,6 +111,10 @@ pub unsafe trait AcpiHandler {
     ///
     /// # Safety
     /// * This function is only called from `AcpiOsMapMemory`
+    /// * The memory at `physical_address` is valid for reads for `length` bytes
+    ///
+    /// # Implementation Safety
+    /// * The memory must stay mapped until `unmap_memory` is called.
     unsafe fn map_memory(
         &mut self,
         physical_address: AcpiPhysicalAddress,
@@ -139,7 +144,7 @@ pub unsafe trait AcpiHandler {
     /// Register the given `callback` to run in the interrupt handler for the given `interrupt_number`
     ///
     /// # Safety
-    /// * This method is only called from `AcpiOsInstallInterruptHandler`.
+    /// * This method is only called from `AcpiOsInstallInterruptHandler`
     unsafe fn install_interrupt_handler(
         &mut self,
         interrupt_number: u32,
@@ -149,7 +154,7 @@ pub unsafe trait AcpiHandler {
     /// Remove an interrupt handler which was previously registered with [`install_interrupt_handler`].
     ///
     /// # Safety
-    /// * This method is only called from `AcpiOsRemoveInterruptHandler`.
+    /// * This method is only called from `AcpiOsRemoveInterruptHandler`
     ///
     /// [`install_interrupt_handler`]: AcpiHandler::install_interrupt_handler
     unsafe fn remove_interrupt_handler(
@@ -161,7 +166,7 @@ pub unsafe trait AcpiHandler {
     /// Gets the thread ID of the kernel thread this method is called from.
     ///
     /// # Implementation safety
-    /// * The returned thread ID must be and must be unique to the executing thread.
+    /// * The returned thread ID must be and must be unique to the executing thread
     /// * The thread ID may not be 0 and may not be equal to [`u64::MAX`]
     fn get_thread_id(&mut self) -> u64;
 
@@ -244,9 +249,9 @@ pub unsafe trait AcpiHandler {
     /// The OS is responsible for deallocating the backing memory of the cache.
     ///
     /// # Safety
-    /// * This method is only called from `AcpiDeleteCache`.
-    /// * `cache` is a pointer which was previously returned from [`create_cache`].
-    /// * After this method is called, other cache methods will not be called for this cache.
+    /// * This method is only called from `AcpiDeleteCache`
+    /// * `cache` is a pointer which was previously returned from [`create_cache`]
+    /// * After this method is called, other cache methods will not be called for this cache
     ///
     /// [`create_cache`]: AcpiHandler::create_cache
     #[cfg(not(feature = "builtin_cache"))]
@@ -254,9 +259,9 @@ pub unsafe trait AcpiHandler {
 
     /// Removes all items from a cache.
     ///
-    /// This method is only present in the trait if the `builtin_cache` feature is not set.
+    /// This method is only present in the trait if the `builtin_cache` feature is not set
     ///
-    /// This method should mark all slots in the cache as empty, but not deallocate the backing memory.
+    /// This method should mark all slots in the cache as empty, but not deallocate the backing memory
     ///
     /// # Safety
     /// * This method is only called from `AcpiPurgeCache`

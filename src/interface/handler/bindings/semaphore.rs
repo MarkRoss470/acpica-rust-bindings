@@ -25,7 +25,12 @@ impl AcpiSemaphore {
 pub struct AcpiSemaphorePtr(*const AcpiSemaphore);
 
 impl AcpiSemaphorePtr {
+    /// Gets the pointer as a reference
+    ///
+    /// # Safety
+    /// * This struct must have been initialized with a valid pointer
     unsafe fn as_ref(&self) -> &AcpiSemaphore {
+        // SAFETY: The contained pointer is valid
         unsafe { &*self.0 }
     }
 }
@@ -52,9 +57,8 @@ extern "C" fn acpi_os_create_semaphore(
 
     trace!(target: "acpi_os_create_semaphore", "Semaphore created at {leak:p}");
 
+    // SAFETY: `out_handle` is a valid pointer
     unsafe { *out_handle = AcpiSemaphorePtr(leak) };
-
-    debug_assert_eq!(unsafe { core::ptr::read(out_handle).0 }, leak);
 
     AcpiStatus::OK
 }
@@ -65,7 +69,7 @@ extern "C" fn acpi_os_delete_semaphore(handle: AcpiSemaphorePtr) -> AcpiStatus {
 
     // TODO: This is not OS-portable, remove
     if (handle.0 as usize) < 0x4000_0000_0000 {
-        return AcpiError::BadParameter.to_acpi_status()
+        return AcpiError::BadParameter.to_acpi_status();
     }
 
     // SAFETY: This function is only called if there are no more references to this semaphore
@@ -84,7 +88,8 @@ extern "C" fn acpi_os_wait_semaphore(
     timeout: u16,
 ) -> AcpiStatus {
     trace!(target: "acpi_os_wait_semaphore", "Waiting on semaphore at {:p}: units {units:#x}, timeout {timeout:#x}", handle.0);
-
+ 
+    // SAFETY: The `handle` pointer was passed to ACPICA by `acpi_os_create_semaphore`, so it's a valid pointer
     let handle = unsafe { handle.as_ref() };
 
     match timeout {
@@ -105,6 +110,7 @@ extern "C" fn acpi_os_wait_semaphore(
 extern "C" fn acpi_os_signal_semaphore(handle: AcpiSemaphorePtr, units: u32) -> AcpiStatus {
     trace!(target: "acpi_os_signal_semaphore", "Signalling semaphore at {:p} for {units:#x} units", handle.0);
 
+    // SAFETY: The `handle` pointer was passed to ACPICA by `acpi_os_create_lock`, so it's a valid pointer
     let handle = unsafe { handle.as_ref() };
 
     let result = handle

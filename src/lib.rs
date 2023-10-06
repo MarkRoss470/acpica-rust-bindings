@@ -7,7 +7,8 @@
 #![feature(c_variadic)]
 #![feature(pointer_byte_offsets)]
 // Safety best practises
-#![warn(unsafe_op_in_unsafe_fn)]
+#![warn(unsafe_op_in_unsafe_fn, clippy::undocumented_unsafe_blocks)]
+#![deny(unsafe_op_in_unsafe_fn, clippy::undocumented_unsafe_blocks)]
 #![deny(clippy::missing_safety_doc)]
 // Public API best practises
 #![deny(

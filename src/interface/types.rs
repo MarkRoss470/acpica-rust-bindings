@@ -77,6 +77,7 @@ impl<'a> AcpiPredefinedNames<'a> {
     #[must_use]
     #[allow(clippy::missing_panics_doc)] // ACPI names are ASCII, so this should never panic
     pub fn name(&self) -> &str {
+        // SAFETY: The `name` pointer in an FfiAcpiPredefinedNames struct is a null terminated string
         unsafe {
             CStr::from_ptr(self.0.name)
                 .to_str()
@@ -87,6 +88,7 @@ impl<'a> AcpiPredefinedNames<'a> {
     /// Gets the object which will be added to the namespace
     #[must_use]
     pub fn object(&self) -> AcpiObject {
+        // SAFETY: The values were passed by ACPICA, so they are valid.
         unsafe { AcpiObject::from_type_and_val(self.0.object_type, self.0.val) }
     }
 }
