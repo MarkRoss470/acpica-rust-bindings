@@ -1,13 +1,11 @@
-#[cfg(not(any(
-    feature = "builtin_lock",
-    feature = "builtin_semaphore",
-    feature = "builtin_mutex"
-)))]
+#[cfg(not(all(feature = "builtin_cache", feature = "builtin_lock",)))]
 use crate::types::{AcpiAllocationError, AcpiCpuFlags};
-#[cfg(not(any(
+
+#[cfg(not(all(
+    feature = "builtin_cache",
     feature = "builtin_lock",
     feature = "builtin_semaphore",
-    feature = "builtin_mutex"
+    feature = "builtin_alloc",
 )))]
 use core::ffi::c_void;
 
@@ -331,7 +329,7 @@ pub unsafe trait AcpiHandler {
 
     #[allow(missing_docs)] // TODO: docs
     #[cfg(not(feature = "builtin_semaphore"))]
-    unsafe fn delete_semaphore(&mut self) -> Result<*mut c_void, AcpiError>;
+    unsafe fn delete_semaphore(&mut self, handle: *mut c_void) -> Result<(), AcpiError>;
 
     #[allow(missing_docs)] // TODO: docs
     #[cfg(not(feature = "builtin_semaphore"))]
