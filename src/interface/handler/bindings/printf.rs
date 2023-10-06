@@ -462,32 +462,53 @@ unsafe extern "C" fn acpi_os_v_printf(format: *const u8, args: VaList) {
 mod tests {
     use core::ffi::c_int;
 
-    use alloc::{boxed::Box, ffi::CString, fmt::format, vec::Vec};
-
-    use crate::{handler::OsInterface, testing::DummyHandler};
+    use alloc::ffi::CString;
 
     use super::*;
+
+    /// Tests that the given format string and arguments leads to the given result string when used in a [`CFmtConverter`].
+    /// 
+    /// # Safety
+    /// * `result_ptr` and `result_len` must be the pointer and length for a utf-8 string slice with lifetime at least as long as this function call
+    /// * `format_ptr` and `format_len` must be the pointer and length for a utf-8 string slice with lifetime at least as long as this function call
+    /// * `args` must contain arguments of types which match to the C format specifiers in the format string
+    unsafe extern "C" fn test_printf(result_ptr: *const u8, result_len: usize, format_ptr: *const u8, format_len: usize, mut args: ...) {
+        // SAFETY: `result_ptr` and `result_len` make up a utf-8 string slice with the right lifetime
+        let result = unsafe { core::str::from_utf8_unchecked(core::slice::from_raw_parts(result_ptr, result_len)) };
+        // SAFETY: `format_ptr` and `format_len` make up a utf-8 string slice with the right lifetime
+        let format = unsafe { core::str::from_utf8_unchecked(core::slice::from_raw_parts(format_ptr, format_len)) };
+
+        assert_eq!(
+            result,
+            alloc::format!(
+                "{}",
+                CFmtConverter {
+                    format,
+                    args: args.as_va_list()
+                }
+            )
+        );
+    }
 
     macro_rules! printf_test {
         ($fn_name: ident, $result: expr, $format_str: expr, {$($name: ident: $arg: expr),*}, $($value: expr),*) => {
             #[test]
             fn $fn_name() {
-                let mut handler = DummyHandler::new();
-                handler.fn_printf = Box::new(|args| assert_eq!($result, format(args)));
-
-                *OS_INTERFACE.lock() = Some(OsInterface {
-                    handler: Box::new(handler),
-                    objects_to_drop: Vec::new(),
-                });
-
-                let cstr = &CString::new($format_str).unwrap();
-
                 $(
                     let $name = $arg;
                 )*
 
+                let result: &str = $result;
+                let format: &str = $format_str;
+
+                // SAFETY: 
+                // * The `result_ptr` and `result_len` arguments to `test_printf` are the pointer and length 
+                //       of the `result` variable which is a string slice with the right lifetime.
+                // * The `format_ptr` and `format_len` arguments to `test_printf` are the pointer and length 
+                //       of the `format` variable which is a string slice with the right lifetime.
+                // * The arguments match the format string
                 unsafe {
-                    acpi_os_printf(cstr.as_ptr(), $($value),*);
+                    test_printf(result.as_ptr(), result.len(), format.as_ptr(), format.len(), $($value),*);
                 }
             }
         };
@@ -498,6 +519,7 @@ mod tests {
     printf_test!(test_printf_s, "Hello World", "Hello %s", {s: CString::new("World").unwrap()}, s.as_ptr());
     printf_test!(test_printf_s_min_width, "Hello    World", "Hello %8s", {s: CString::new("World").unwrap()}, s.as_ptr());
     printf_test!(test_printf_s_justify_left, "Hello World   ", "Hello %-8s", {s: CString::new("World").unwrap()}, s.as_ptr());
+    printf_test!(test_printf_s_max_length, "Hello Wor", "Hello %.3s", {s: CString::new("World").unwrap()}, s.as_ptr());
     printf_test!(test_printf_c, "A", "%c", {}, b'A' as c_int);
     printf_test!(test_printf_d, "100", "%d", {}, 100 as c_int);
     printf_test!(test_printf_d_negative, "-100", "%d", {}, -100 as c_int);
