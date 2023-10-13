@@ -1,6 +1,7 @@
 #[cfg(feature = "builtin_alloc")]
 mod alloc;
 mod interrupts;
+mod io;
 #[cfg(feature = "builtin_lock")]
 mod lock;
 mod memory;
@@ -10,15 +11,19 @@ mod printf;
 #[cfg(feature = "builtin_semaphore")]
 mod semaphore;
 mod threading;
-mod io;
 
 use ::core::ffi::c_void;
+use core::ffi::CStr;
 
-use log::trace;
+use log::{error, trace};
 
 use crate::{
-    bindings::types::{tables::FfiAcpiTableHeader, FfiAcpiPhysicalAddress},
+    bindings::{
+        consts::{ACPI_SIGNAL_BREAKPOINT, ACPI_SIGNAL_FATAL},
+        types::{tables::FfiAcpiTableHeader, FfiAcpiPhysicalAddress, FfiAcpiSignalFatalInfo},
+    },
     interface::status::{AcpiErrorAsStatusExt, AcpiStatus},
+    status::AcpiError,
 };
 
 use super::OS_INTERFACE;
@@ -61,20 +66,47 @@ extern "C" fn acpi_os_stall(microseconds: u32) {
     unsafe { interface.stall(microseconds.try_into().unwrap()) }
 }
 
-
-
 #[export_name = "AcpiOsGetTimer"]
 extern "C" fn acpi_os_get_timer() -> u64 {
     let mut interface = OS_INTERFACE.lock();
     let interface = interface.as_mut().unwrap();
 
-    // SAFETY: Thsi is `AcpiOsGetTimer`
+    // SAFETY: This is `AcpiOsGetTimer`
     unsafe { interface.get_timer() }
 }
 
 #[export_name = "AcpiOsSignal"]
-extern "C" fn acpi_os_signal(_function: u32, _info: *mut c_void) -> AcpiStatus {
-    todo!()
+extern "C" fn acpi_os_signal(function: u32, info: *mut c_void) -> AcpiStatus {
+    let mut interface = OS_INTERFACE.lock();
+    let interface = interface.as_mut().unwrap();
+
+    match function {
+        _f @ ACPI_SIGNAL_FATAL => {
+            // SAFETY: When function == ACPI_SIGNAL_FATAL, `info` points to a value of type AcpiFatalInfo.
+            let info: FfiAcpiSignalFatalInfo = unsafe { core::ptr::read(info.cast()) };
+
+            // SAFETY: This is `AcpiOsSignal`
+            unsafe {
+                interface
+                    .signal_fatal(info.resource_type, info.code, info.argument)
+                    .to_acpi_status()
+            }
+        }
+        _f @ ACPI_SIGNAL_BREAKPOINT => {
+            // SAFETY: When function == ACPI_SIGNAL_BREAKPOINT, `info` points to a null-terminated string.
+            let info = unsafe { CStr::from_ptr(info.cast()) };
+            let info = info
+                .to_str()
+                .expect("Info string should have been valid utf-8");
+
+            // SAFETY: This is `AcpiOsSignal`
+            unsafe { interface.signal_breakpoint(info).to_acpi_status() }
+        }
+        _ => {
+            error!(target: "acpi_os_signal", "Invalid or unknown value of `function`");
+            AcpiError::BadParameter.to_acpi_status()
+        }
+    }
 }
 
 #[export_name = "AcpiOsEnterSleep"]

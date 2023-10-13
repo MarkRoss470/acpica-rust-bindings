@@ -533,6 +533,17 @@ pub unsafe trait AcpiHandler {
     /// * The write is sound i.e. it has no memory-safety related side-effects.
     unsafe fn write_pci_config_u64(&mut self, id: AcpiPciId, register: usize, value: u64) -> Result<(), AcpiError>;
 
+    /// Called when the AML `Fatal` opcode is encountered. The OS can return from this method, or kill the thread executing the AML.
+    /// 
+    /// # Safety
+    /// * This method is only called from `AcpiOsSignal`
+    unsafe fn signal_fatal(&mut self, fatal_type: u32, code: u32, argument: u32) -> Result<(), AcpiError>;
+
+    /// Called when the AML `Breakpoint` opcode is encountered.
+    /// 
+    /// # Safety
+    /// * This method is only called from `AcpiOsSignal`
+    unsafe fn signal_breakpoint(&mut self, message: &str) -> Result<(), AcpiError>;
 
     // TODO: Verify the info in the docs for these cache methods
 

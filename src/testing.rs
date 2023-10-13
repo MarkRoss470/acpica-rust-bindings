@@ -146,6 +146,10 @@ pub struct DummyHandler<'a> {
     pub fn_write_pci_config_u64:
         Box<dyn Fn(crate::types::AcpiPciId, usize, u64) -> Result<(), AcpiError>>,
 
+    pub fn_signal_fatal: Box<dyn Fn(u32, u32, u32) -> Result<(), AcpiError>>,
+
+    pub fn_signal_breakpoint: Box<dyn Fn(&str) -> Result<(), AcpiError>>,
+
     #[cfg(not(feature = "builtin_cache"))]
     pub fn_create_cache: Box<dyn Fn(&str, u16, u16) -> Result<*mut c_void, AcpiError>>,
 
@@ -261,6 +265,9 @@ impl<'a> DummyHandler<'a> {
             fn_write_pci_config_u16: Box::new(dummy_3_arg),
             fn_write_pci_config_u32: Box::new(dummy_3_arg),
             fn_write_pci_config_u64: Box::new(dummy_3_arg),
+
+            fn_signal_breakpoint: Box::new(|_| panic!("Dummy function on test struct called")),
+            fn_signal_fatal: Box::new(dummy_3_arg),
 
             #[cfg(not(feature = "builtin_cache"))]
             fn_create_cache: Box::new(dummy_3_arg),
@@ -585,6 +592,19 @@ unsafe impl<'a> AcpiHandler for DummyHandler<'a> {
         value: u64,
     ) -> Result<(), AcpiError> {
         (self.fn_write_pci_config_u64)(id, register, value)
+    }
+
+    unsafe fn signal_fatal(
+        &mut self,
+        fatal_type: u32,
+        code: u32,
+        argument: u32,
+    ) -> Result<(), AcpiError> {
+        (self.fn_signal_fatal)(fatal_type, code, argument)
+    }
+
+    unsafe fn signal_breakpoint(&mut self, message: &str) -> Result<(), AcpiError> {
+        (self.fn_signal_breakpoint)(message)
     }
 
     #[cfg(not(feature = "builtin_cache"))]
