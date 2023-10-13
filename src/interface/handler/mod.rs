@@ -10,14 +10,14 @@ use core::{
     sync::atomic::{AtomicBool, Ordering},
 };
 
-use alloc::{boxed::Box, vec::Vec, ffi::CString};
+use alloc::{boxed::Box, ffi::CString, vec::Vec};
 use spin::Mutex;
 
 use crate::bindings::{
     consts::ACPI_FULL_INITIALIZATION,
     functions::{
-        AcpiEnableSubsystem, AcpiInitializeObjects, AcpiInitializeSubsystem, AcpiInitializeTables,
-        AcpiLoadTables,
+        AcpiEnableSubsystem, AcpiEnterSleepStatePrep, AcpiInitializeObjects,
+        AcpiInitializeSubsystem, AcpiInitializeTables, AcpiLoadTables, AcpiEnterSleepState, AcpiGetTimer,
     },
 };
 
@@ -84,24 +84,24 @@ pub fn register_interface<T: AcpiHandler + Send + 'static>(
 }
 
 /// The state of ACPICA's initialization, represented using type-state.
-/// 
+///
 /// ACPICA is not initialized all at once - it has multiple initialization functions for different systems.
 /// This struct keeps track of the calling of these functions using the type parameters `T`, for whether ACPICA tables are initialized,
 /// and `S` for whether the ACPICA subsystem is enabled. An `AcpiInitialization<false, false>` can be obtained from [`register_interface`],
 /// which also calls `AcpiInitializeSubsystem`.
-/// 
+///
 /// Subsystem initialization code could look like the following:
 /// ```ignore
 /// # use acpica_bindings::status::AcpiError;
 /// # use acpica_bindings::handler::register_interface;
 /// # fn main() -> Result<(), AcpiError> {
 ///     let interface = todo!(); // In real code this would be an object implementing the AcpiHandler trait
-/// 
+///
 ///     let initialization = register_interface(interface)?;
 ///     let initialization = initialization.load_tables()?;
 ///     let initialization = initialization.enable_subsystem()?;
 ///     let initialization = initialization.initialize_objects()?;
-/// 
+///
 /// #   Ok(())
 /// # }
 /// ```
@@ -111,7 +111,7 @@ pub struct AcpicaInitialization<const T: bool, const S: bool>;
 
 impl AcpicaInitialization<false, false> {
     /// Calls the ACPICA functions `AcpiInitializeTables` and `AcpiLoadTables`.
-    /// 
+    ///
     /// This function causes ACPICA to parse all the tables pointed to by the RSDT/XSDT
     pub fn load_tables(self) -> Result<AcpicaInitialization<true, false>, AcpiError> {
         // SAFETY: `AcpiInitializeSubsystem` has been called
@@ -127,7 +127,7 @@ impl AcpicaInitialization<false, false> {
 
 impl AcpicaInitialization<true, false> {
     /// Calls the ACPICA function `AcpiEnableSubsystem`.
-    /// 
+    ///
     /// This function causes ACPICA to enter ACPI mode and start receiving ACPI interrupts.
     pub fn enable_subsystem(self) -> Result<AcpicaInitialization<true, true>, AcpiError> {
         // SAFETY: `AcpiLoadTables` has been called
@@ -141,14 +141,46 @@ impl AcpicaInitialization<true, false> {
 
 impl AcpicaInitialization<true, true> {
     /// Calls the ACPICA function `AcpiEnableSubsystem`.
-    /// 
+    ///
     /// This function causes ACPICA to enter ACPI mode and start receiving ACPI interrupts.
-    pub fn initialize_objects(self) -> Result<(), AcpiError> {
+    pub fn initialize_objects(self) -> Result<AcpicaOperation, AcpiError> {
         // SAFETY: `AcpiEnableSubsystem` has been called
         unsafe { AcpiInitializeObjects(ACPI_FULL_INITIALIZATION).as_result()? };
 
         OBJECTS_ARE_INITIALIZED.store(true, Ordering::Relaxed);
 
-        Ok(())
+        Ok(AcpicaOperation)
+    }
+}
+
+/// The type on which ACPICA functions are exposed as methods.
+/// This type is obtained from the [`initialize_objects`] method on an [`AcpicaInitialization`]
+/// This type doesn't store any state, but the presence of an instance of the state indicates that ACPICA is fully set up.
+/// 
+/// [`initialize_objects`]: AcpicaInitialization::initialize_objects
+#[derive(Debug)]
+pub struct AcpicaOperation;
+
+impl AcpicaOperation {
+    /// TODO: docs
+    pub unsafe fn enter_sleep_state_prep(&mut self, state: u8) -> Result<(), AcpiError> {
+        // SAFETY: TODO
+        unsafe { AcpiEnterSleepStatePrep(state).as_result() }
+    }
+
+    /// TODO: docs
+    pub unsafe fn enter_sleep_state(&mut self, state: u8) -> Result<(), AcpiError> {
+        // SAFETY: TODO
+        unsafe { AcpiEnterSleepState(state).as_result() }
+    }
+
+    /// TODO: docs
+    pub fn get_timer(&mut self) -> u32 {
+        let mut x = 0;
+
+        // SAFETY: TODO
+        unsafe { AcpiGetTimer(&mut x).as_result().unwrap() }
+
+        x
     }
 }

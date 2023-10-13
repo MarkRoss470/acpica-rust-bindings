@@ -11,7 +11,7 @@ use crate::{
     bindings::types::{
         functions::{FfiAcpiOsdExecCallback, FfiAcpiOsdHandler},
         tables::FfiAcpiTableHeader,
-        FfiAcpiCpuFlags, FfiAcpiPredefinedNames,
+        FfiAcpiCpuFlags, FfiAcpiPciId, FfiAcpiPhysicalAddress, FfiAcpiPredefinedNames,
     },
     interface::object::AcpiObject,
 };
@@ -95,23 +95,36 @@ impl<'a> AcpiPredefinedNames<'a> {
 
 /// The address of an I/O port
 #[derive(Debug, Clone, Copy)]
-pub struct AcpiIoAddress(usize);
+pub struct AcpiIoAddress(pub usize);
+
+/// A tag identifying an interrupt callback so that it can be removed.
+/// The OS will receive the tag from [`install_interrupt_handler`] and it must be compared against each handler using [`is_tag`]
+///
+/// [`install_interrupt_handler`]: super::handler::AcpiHandler::install_interrupt_handler
+/// [`is_tag`]: AcpiInterruptCallback::is_tag
+#[derive(Debug)]
+pub struct AcpiInterruptCallbackTag(pub(crate) FfiAcpiOsdHandler);
 
 /// A callback to notify ACPICA about an interrupt.
 ///
 /// The [`call`] method should be used to run the callback from the associated interrupt handler.
 ///
 /// [`call`]: AcpiInterruptCallback::call
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct AcpiInterruptCallback {
-    function: FfiAcpiOsdHandler,
-    context: *mut c_void,
+    pub(crate) function: FfiAcpiOsdHandler,
+    pub(crate) context: *mut c_void,
 }
+
+// SAFETY: The `context` pointer in an `AcpiInterruptCallback` points into ACPICA's memory - either
+// in a static or on the kernel heap. Both of these need to be available to all kernel threads for
+// ACPICA to function at all, so the OS needs to make this sound for the library to function.
+unsafe impl Send for AcpiInterruptCallback {}
 
 /// Whether an interrupt is handled or not.
 ///
 /// TODO: What should the OS use this for?
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum AcpiInterruptHandledStatus {
     /// The interrupt has been handled
     Handled,
@@ -135,6 +148,12 @@ impl AcpiInterruptCallback {
             _ => unreachable!("Acpi callback returned an invalid value"),
         }
     }
+
+    /// Checks whether this callback matches the given `tag`
+    #[must_use]
+    pub fn is_tag(&self, tag: &AcpiInterruptCallbackTag) -> bool {
+        self.function == tag.0
+    }
 }
 
 /// A callback to run in a new thread.
@@ -144,8 +163,8 @@ impl AcpiInterruptCallback {
 /// [`call`]: AcpiThreadCallback::call
 #[derive(Debug)]
 pub struct AcpiThreadCallback {
-    function: FfiAcpiOsdExecCallback,
-    context: *mut c_void,
+    pub(crate) function: FfiAcpiOsdExecCallback,
+    pub(crate) context: *mut c_void,
 }
 
 impl AcpiThreadCallback {
@@ -170,6 +189,17 @@ pub struct AcpiPciId {
     pub device: u16,
     /// The function number of the device
     pub function: u16,
+}
+
+impl AcpiPciId {
+    pub(crate) fn from_ffi(v: FfiAcpiPciId) -> Self {
+        Self {
+            segment: v.segment,
+            bus: v.bus,
+            device: v.device,
+            function: v.function,
+        }
+    }
 }
 
 /// An error which can occur during allocation

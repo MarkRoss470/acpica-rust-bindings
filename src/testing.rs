@@ -63,7 +63,7 @@ pub struct DummyHandler<'a> {
     >,
 
     pub fn_remove_interrupt_handler: Box<
-        dyn Fn(u32, crate::types::AcpiInterruptCallback) -> Result<(), crate::status::AcpiError>,
+        dyn Fn(u32, crate::types::AcpiInterruptCallbackTag) -> Result<(), crate::status::AcpiError>,
     >,
 
     pub fn_get_thread_id: Box<dyn Fn() -> u64>,
@@ -71,7 +71,80 @@ pub struct DummyHandler<'a> {
     pub fn_execute:
         Box<dyn Fn(crate::types::AcpiThreadCallback) -> Result<(), crate::status::AcpiError>>,
 
+    pub fn_wait_for_events: Box<dyn Fn()>,
+
     pub fn_printf: Box<dyn Fn(core::fmt::Arguments)>,
+
+    pub fn_sleep: Box<dyn Fn(usize)>,
+
+    pub fn_stall: Box<dyn Fn(usize)>,
+
+    pub fn_read_port_u8: Box<dyn Fn(crate::types::AcpiIoAddress) -> Result<u8, AcpiError>>,
+
+    pub fn_read_port_u16: Box<dyn Fn(crate::types::AcpiIoAddress) -> Result<u16, AcpiError>>,
+
+    pub fn_read_port_u32: Box<dyn Fn(crate::types::AcpiIoAddress) -> Result<u32, AcpiError>>,
+
+    pub fn_write_port_u8: Box<dyn Fn(crate::types::AcpiIoAddress, u8) -> Result<(), AcpiError>>,
+
+    pub fn_write_port_u16: Box<dyn Fn(crate::types::AcpiIoAddress, u16) -> Result<(), AcpiError>>,
+
+    pub fn_write_port_u32: Box<dyn Fn(crate::types::AcpiIoAddress, u32) -> Result<(), AcpiError>>,
+
+    pub fn_enter_sleep: Box<dyn Fn(u8, u32, u32) -> Result<(), AcpiError>>,
+
+    pub fn_get_timer: Box<dyn Fn() -> u64>,
+
+    pub fn_read_physical_u8:
+        Box<dyn Fn(crate::types::AcpiPhysicalAddress) -> Result<u8, AcpiError>>,
+
+    pub fn_read_physical_u16:
+        Box<dyn Fn(crate::types::AcpiPhysicalAddress) -> Result<u16, AcpiError>>,
+
+    pub fn_read_physical_u32:
+        Box<dyn Fn(crate::types::AcpiPhysicalAddress) -> Result<u32, AcpiError>>,
+
+    pub fn_read_physical_u64:
+        Box<dyn Fn(crate::types::AcpiPhysicalAddress) -> Result<u64, AcpiError>>,
+
+    pub fn_write_physical_u8:
+        Box<dyn Fn(crate::types::AcpiPhysicalAddress, u8) -> Result<(), AcpiError>>,
+
+    pub fn_write_physical_u16:
+        Box<dyn Fn(crate::types::AcpiPhysicalAddress, u16) -> Result<(), AcpiError>>,
+
+    pub fn_write_physical_u32:
+        Box<dyn Fn(crate::types::AcpiPhysicalAddress, u32) -> Result<(), AcpiError>>,
+
+    pub fn_write_physical_u64:
+        Box<dyn Fn(crate::types::AcpiPhysicalAddress, u64) -> Result<(), AcpiError>>,
+
+    pub fn_readable: Box<dyn Fn(*mut core::ffi::c_void, usize) -> bool>,
+
+    pub fn_writable: Box<dyn Fn(*mut core::ffi::c_void, usize) -> bool>,
+
+    pub fn_read_pci_config_u8: Box<dyn Fn(crate::types::AcpiPciId, usize) -> Result<u8, AcpiError>>,
+
+    pub fn_read_pci_config_u16:
+        Box<dyn Fn(crate::types::AcpiPciId, usize) -> Result<u16, AcpiError>>,
+
+    pub fn_read_pci_config_u32:
+        Box<dyn Fn(crate::types::AcpiPciId, usize) -> Result<u32, AcpiError>>,
+
+    pub fn_read_pci_config_u64:
+        Box<dyn Fn(crate::types::AcpiPciId, usize) -> Result<u64, AcpiError>>,
+
+    pub fn_write_pci_config_u8:
+        Box<dyn Fn(crate::types::AcpiPciId, usize, u8) -> Result<(), AcpiError>>,
+
+    pub fn_write_pci_config_u16:
+        Box<dyn Fn(crate::types::AcpiPciId, usize, u16) -> Result<(), AcpiError>>,
+
+    pub fn_write_pci_config_u32:
+        Box<dyn Fn(crate::types::AcpiPciId, usize, u32) -> Result<(), AcpiError>>,
+
+    pub fn_write_pci_config_u64:
+        Box<dyn Fn(crate::types::AcpiPciId, usize, u64) -> Result<(), AcpiError>>,
 
     #[cfg(not(feature = "builtin_cache"))]
     pub fn_create_cache: Box<dyn Fn(&str, u16, u16) -> Result<*mut c_void, AcpiError>>,
@@ -125,78 +198,108 @@ unsafe impl Send for DummyHandler<'static> {}
 
 impl<'a> DummyHandler<'a> {
     pub(crate) fn new() -> Self {
+        fn dummy_0_arg<T>() -> T {
+            panic!("Dummy function on test struct called")
+        }
+        fn dummy_1_arg<T, U>(_: U) -> T {
+            panic!("Dummy function on test struct called")
+        }
+        fn dummy_2_arg<T, U, V>(_: U, _: V) -> T {
+            panic!("Dummy function on test struct called")
+        }
+        fn dummy_3_arg<T, U, V, W>(_: U, _: V, _: W) -> T {
+            panic!("Dummy function on test struct called")
+        }
+
         Self {
-            fn_get_root_pointer: Box::new(|| panic!("Dummy function on test struct called")),
-            fn_map_memory: Box::new(|_, _| panic!("Dummy function on test struct called")),
-            fn_unmap_memory: Box::new(|_, _| panic!("Dummy function on test struct called")),
-            fn_get_physical_address: Box::new(|_| panic!("Dummy function on test struct called")),
-            fn_install_interrupt_handler: Box::new(|_, _| {
-                panic!("Dummy function on test struct called")
-            }),
-            fn_remove_interrupt_handler: Box::new(|_, _| {
-                panic!("Dummy function on test struct called")
-            }),
-            fn_get_thread_id: Box::new(|| panic!("Dummy function on test struct called")),
-            fn_execute: Box::new(|_| panic!("Dummy function on test struct called")),
+            fn_get_root_pointer: Box::new(dummy_0_arg),
+            fn_map_memory: Box::new(dummy_2_arg),
+            fn_unmap_memory: Box::new(dummy_2_arg),
+            fn_get_physical_address: Box::new(dummy_1_arg),
+            fn_install_interrupt_handler: Box::new(dummy_2_arg),
+            fn_remove_interrupt_handler: Box::new(dummy_2_arg),
+            fn_get_thread_id: Box::new(dummy_0_arg),
+            fn_execute: Box::new(dummy_1_arg),
+            fn_wait_for_events: Box::new(dummy_0_arg),
             fn_printf: Box::new(|_| panic!("Dummy function on test struct called")),
-            fn_initialize: Box::new(|| panic!("Dummy function on test struct called")),
-            fn_terminate: Box::new(|| panic!("Dummy function on test struct called")),
+            fn_initialize: Box::new(dummy_0_arg),
+            fn_terminate: Box::new(dummy_0_arg),
             fn_predefined_override: Box::new(|_| panic!("Dummy function on test struct called")),
             fn_table_override: Box::new(|_| panic!("Dummy function on test struct called")),
             fn_physical_table_override: Box::new(|_| {
                 panic!("Dummy function on test struct called")
             }),
 
-            #[cfg(not(feature = "builtin_cache"))]
-            fn_create_cache: Box::new(|_, _, _| panic!("Dummy function on test struct called")),
-        
-            #[cfg(not(feature = "builtin_cache"))]
-            fn_delete_cache: Box::new(|_| panic!("Dummy function on test struct called")),
-        
-            #[cfg(not(feature = "builtin_cache"))]
-            fn_purge_cache: Box::new(|_| panic!("Dummy function on test struct called")),
-        
-            #[cfg(not(feature = "builtin_cache"))]
-            fn_acquire_object: Box::new(|_| panic!("Dummy function on test struct called")),
-        
-            #[cfg(not(feature = "builtin_cache"))]
-            fn_release_object: Box::new(|_, _| panic!("Dummy function on test struct called")),
-        
-            #[cfg(not(feature = "builtin_lock"))]
-            fn_create_lock: Box::new(|| panic!("Dummy function on test struct called")),
-        
-            #[cfg(not(feature = "builtin_lock"))]
-            fn_delete_lock: Box::new(|_| panic!("Dummy function on test struct called")),
-        
-            #[cfg(not(feature = "builtin_lock"))]
-            fn_acquire_lock: Box::new(|_| panic!("Dummy function on test struct called")),
-        
-            #[cfg(not(feature = "builtin_lock"))]
-            fn_release_lock: Box::new(|_, _| panic!("Dummy function on test struct called")),
-        
-            #[cfg(not(feature = "builtin_semaphore"))]
-            fn_create_semaphore: Box::new(|_, _| panic!("Dummy function on test struct called")),
-        
-            #[cfg(not(feature = "builtin_semaphore"))]
-            fn_delete_semaphore: Box::new(|_| panic!("Dummy function on test struct called")),
-        
-            #[cfg(not(feature = "builtin_semaphore"))]
-            fn_wait_semaphore: Box::new(|_, _, _| panic!("Dummy function on test struct called")),
-        
-            #[cfg(not(feature = "builtin_semaphore"))]
-            fn_signal_semaphore: Box::new(|_, _| panic!("Dummy function on test struct called")),
-        
-            #[cfg(not(feature = "builtin_alloc"))]
-            fn_allocate: Box::new(|_| panic!("Dummy function on test struct called")),
-        
-            #[cfg(not(feature = "builtin_alloc"))]
-            fn_free: Box::new(|_| panic!("Dummy function on test struct called")),
+            fn_sleep: Box::new(dummy_1_arg),
+            fn_stall: Box::new(dummy_1_arg),
+            fn_read_port_u8: Box::new(dummy_1_arg),
+            fn_read_port_u16: Box::new(dummy_1_arg),
+            fn_read_port_u32: Box::new(dummy_1_arg),
+            fn_write_port_u8: Box::new(dummy_2_arg),
+            fn_write_port_u16: Box::new(dummy_2_arg),
+            fn_write_port_u32: Box::new(dummy_2_arg),
 
+            fn_enter_sleep: Box::new(dummy_3_arg),
+            fn_get_timer: Box::new(dummy_0_arg),
+
+            fn_read_physical_u8: Box::new(dummy_1_arg),
+            fn_read_physical_u16: Box::new(dummy_1_arg),
+            fn_read_physical_u32: Box::new(dummy_1_arg),
+            fn_read_physical_u64: Box::new(dummy_1_arg),
+            fn_write_physical_u8: Box::new(dummy_2_arg),
+            fn_write_physical_u16: Box::new(dummy_2_arg),
+            fn_write_physical_u32: Box::new(dummy_2_arg),
+            fn_write_physical_u64: Box::new(dummy_2_arg),
+            fn_readable: Box::new(dummy_2_arg),
+            fn_writable: Box::new(dummy_2_arg),
+
+            fn_read_pci_config_u8: Box::new(dummy_2_arg),
+            fn_read_pci_config_u16: Box::new(dummy_2_arg),
+            fn_read_pci_config_u32: Box::new(dummy_2_arg),
+            fn_read_pci_config_u64: Box::new(dummy_2_arg),
+            fn_write_pci_config_u8: Box::new(dummy_3_arg),
+            fn_write_pci_config_u16: Box::new(dummy_3_arg),
+            fn_write_pci_config_u32: Box::new(dummy_3_arg),
+            fn_write_pci_config_u64: Box::new(dummy_3_arg),
+
+            #[cfg(not(feature = "builtin_cache"))]
+            fn_create_cache: Box::new(dummy_3_arg),
+            #[cfg(not(feature = "builtin_cache"))]
+            fn_delete_cache: Box::new(dummy_1_arg),
+            #[cfg(not(feature = "builtin_cache"))]
+            fn_purge_cache: Box::new(dummy_1_arg),
+            #[cfg(not(feature = "builtin_cache"))]
+            fn_acquire_object: Box::new(dummy_1_arg),
+            #[cfg(not(feature = "builtin_cache"))]
+            fn_release_object: Box::new(dummy_2_arg),
+
+            #[cfg(not(feature = "builtin_lock"))]
+            fn_create_lock: Box::new(dummy_0_arg),
+            #[cfg(not(feature = "builtin_lock"))]
+            fn_delete_lock: Box::new(dummy_1_arg),
+            #[cfg(not(feature = "builtin_lock"))]
+            fn_acquire_lock: Box::new(dummy_1_arg),
+            #[cfg(not(feature = "builtin_lock"))]
+            fn_release_lock: Box::new(dummy_2_arg),
+
+            #[cfg(not(feature = "builtin_semaphore"))]
+            fn_create_semaphore: Box::new(dummy_2_arg),
+            #[cfg(not(feature = "builtin_semaphore"))]
+            fn_delete_semaphore: Box::new(dummy_1_arg),
+            #[cfg(not(feature = "builtin_semaphore"))]
+            fn_wait_semaphore: Box::new(dummy_3_arg),
+            #[cfg(not(feature = "builtin_semaphore"))]
+            fn_signal_semaphore: Box::new(dummy_2_arg),
+
+            #[cfg(not(feature = "builtin_alloc"))]
+            fn_allocate: Box::new(dummy_1_arg),
+            #[cfg(not(feature = "builtin_alloc"))]
+            fn_free: Box::new(dummy_1_arg),
         }
     }
 }
 
-// SAFETY: 
+// SAFETY:
 // Each method in this implementation is the user of the test struct's responsibility
 unsafe impl<'a> AcpiHandler for DummyHandler<'a> {
     fn get_root_pointer(&mut self) -> crate::types::AcpiPhysicalAddress {
@@ -233,7 +336,7 @@ unsafe impl<'a> AcpiHandler for DummyHandler<'a> {
     unsafe fn remove_interrupt_handler(
         &mut self,
         interrupt_number: u32,
-        callback: crate::types::AcpiInterruptCallback,
+        callback: crate::types::AcpiInterruptCallbackTag,
     ) -> Result<(), crate::status::AcpiError> {
         (self.fn_remove_interrupt_handler)(interrupt_number, callback)
     }
@@ -250,8 +353,65 @@ unsafe impl<'a> AcpiHandler for DummyHandler<'a> {
         (self.fn_execute)(callback)
     }
 
+    unsafe fn wait_for_events(&mut self) {
+        (self.fn_wait_for_events)();
+    }
+
     fn printf(&mut self, message: core::fmt::Arguments) {
         (self.fn_printf)(message);
+    }
+
+    unsafe fn sleep(&mut self, millis: usize) {
+        (self.fn_sleep)(millis);
+    }
+
+    unsafe fn stall(&mut self, micros: usize) {
+        (self.fn_stall)(micros);
+    }
+
+    unsafe fn read_port_u8(
+        &mut self,
+        address: crate::types::AcpiIoAddress,
+    ) -> Result<u8, AcpiError> {
+        (self.fn_read_port_u8)(address)
+    }
+
+    unsafe fn read_port_u16(
+        &mut self,
+        address: crate::types::AcpiIoAddress,
+    ) -> Result<u16, AcpiError> {
+        (self.fn_read_port_u16)(address)
+    }
+
+    unsafe fn read_port_u32(
+        &mut self,
+        address: crate::types::AcpiIoAddress,
+    ) -> Result<u32, AcpiError> {
+        (self.fn_read_port_u32)(address)
+    }
+
+    unsafe fn write_port_u8(
+        &mut self,
+        address: crate::types::AcpiIoAddress,
+        value: u8,
+    ) -> Result<(), AcpiError> {
+        (self.fn_write_port_u8)(address, value)
+    }
+
+    unsafe fn write_port_u16(
+        &mut self,
+        address: crate::types::AcpiIoAddress,
+        value: u16,
+    ) -> Result<(), AcpiError> {
+        (self.fn_write_port_u16)(address, value)
+    }
+
+    unsafe fn write_port_u32(
+        &mut self,
+        address: crate::types::AcpiIoAddress,
+        value: u32,
+    ) -> Result<(), AcpiError> {
+        (self.fn_write_port_u32)(address, value)
     }
 
     unsafe fn initialize(&mut self) -> Result<(), crate::status::AcpiError> {
@@ -281,6 +441,150 @@ unsafe impl<'a> AcpiHandler for DummyHandler<'a> {
         table: &crate::types::AcpiTableHeader,
     ) -> Result<Option<(crate::types::AcpiPhysicalAddress, u32)>, crate::status::AcpiError> {
         (self.fn_physical_table_override)(table)
+    }
+
+    unsafe fn enter_sleep(&mut self, state: u8, reg_a: u32, reg_b: u32) -> Result<(), AcpiError> {
+        (self.fn_enter_sleep)(state, reg_a, reg_b)
+    }
+
+    unsafe fn get_timer(&mut self) -> u64 {
+        (self.fn_get_timer)()
+    }
+
+    unsafe fn read_physical_u8(
+        &mut self,
+        address: crate::types::AcpiPhysicalAddress,
+    ) -> Result<u8, AcpiError> {
+        (self.fn_read_physical_u8)(address)
+    }
+
+    unsafe fn read_physical_u16(
+        &mut self,
+        address: crate::types::AcpiPhysicalAddress,
+    ) -> Result<u16, AcpiError> {
+        (self.fn_read_physical_u16)(address)
+    }
+
+    unsafe fn read_physical_u32(
+        &mut self,
+        address: crate::types::AcpiPhysicalAddress,
+    ) -> Result<u32, AcpiError> {
+        (self.fn_read_physical_u32)(address)
+    }
+
+    unsafe fn read_physical_u64(
+        &mut self,
+        address: crate::types::AcpiPhysicalAddress,
+    ) -> Result<u64, AcpiError> {
+        (self.fn_read_physical_u64)(address)
+    }
+
+    unsafe fn write_physical_u8(
+        &mut self,
+        address: crate::types::AcpiPhysicalAddress,
+        value: u8,
+    ) -> Result<(), AcpiError> {
+        (self.fn_write_physical_u8)(address, value)
+    }
+
+    unsafe fn write_physical_u16(
+        &mut self,
+        address: crate::types::AcpiPhysicalAddress,
+        value: u16,
+    ) -> Result<(), AcpiError> {
+        (self.fn_write_physical_u16)(address, value)
+    }
+
+    unsafe fn write_physical_u32(
+        &mut self,
+        address: crate::types::AcpiPhysicalAddress,
+        value: u32,
+    ) -> Result<(), AcpiError> {
+        (self.fn_write_physical_u32)(address, value)
+    }
+
+    unsafe fn write_physical_u64(
+        &mut self,
+        address: crate::types::AcpiPhysicalAddress,
+        value: u64,
+    ) -> Result<(), AcpiError> {
+        (self.fn_write_physical_u64)(address, value)
+    }
+
+    unsafe fn readable(&mut self, pointer: *mut core::ffi::c_void, length: usize) -> bool {
+        (self.fn_readable)(pointer, length)
+    }
+
+    unsafe fn writable(&mut self, pointer: *mut core::ffi::c_void, length: usize) -> bool {
+        (self.fn_writable)(pointer, length)
+    }
+
+    unsafe fn read_pci_config_u8(
+        &mut self,
+        id: crate::types::AcpiPciId,
+        register: usize,
+    ) -> Result<u8, AcpiError> {
+        (self.fn_read_pci_config_u8)(id, register)
+    }
+
+    unsafe fn read_pci_config_u16(
+        &mut self,
+        id: crate::types::AcpiPciId,
+        register: usize,
+    ) -> Result<u16, AcpiError> {
+        (self.fn_read_pci_config_u16)(id, register)
+    }
+
+    unsafe fn read_pci_config_u32(
+        &mut self,
+        id: crate::types::AcpiPciId,
+        register: usize,
+    ) -> Result<u32, AcpiError> {
+        (self.fn_read_pci_config_u32)(id, register)
+    }
+
+    unsafe fn read_pci_config_u64(
+        &mut self,
+        id: crate::types::AcpiPciId,
+        register: usize,
+    ) -> Result<u64, AcpiError> {
+        (self.fn_read_pci_config_u64)(id, register)
+    }
+
+    unsafe fn write_pci_config_u8(
+        &mut self,
+        id: crate::types::AcpiPciId,
+        register: usize,
+        value: u8,
+    ) -> Result<(), AcpiError> {
+        (self.fn_write_pci_config_u8)(id, register, value)
+    }
+
+    unsafe fn write_pci_config_u16(
+        &mut self,
+        id: crate::types::AcpiPciId,
+        register: usize,
+        value: u16,
+    ) -> Result<(), AcpiError> {
+        (self.fn_write_pci_config_u16)(id, register, value)
+    }
+
+    unsafe fn write_pci_config_u32(
+        &mut self,
+        id: crate::types::AcpiPciId,
+        register: usize,
+        value: u32,
+    ) -> Result<(), AcpiError> {
+        (self.fn_write_pci_config_u32)(id, register, value)
+    }
+
+    unsafe fn write_pci_config_u64(
+        &mut self,
+        id: crate::types::AcpiPciId,
+        register: usize,
+        value: u64,
+    ) -> Result<(), AcpiError> {
+        (self.fn_write_pci_config_u64)(id, register, value)
     }
 
     #[cfg(not(feature = "builtin_cache"))]

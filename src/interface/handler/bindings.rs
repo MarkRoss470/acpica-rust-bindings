@@ -1,22 +1,24 @@
 #[cfg(feature = "builtin_alloc")]
 mod alloc;
+mod interrupts;
 #[cfg(feature = "builtin_lock")]
 mod lock;
+mod memory;
 mod overrides;
+mod pci;
 mod printf;
 #[cfg(feature = "builtin_semaphore")]
 mod semaphore;
+mod threading;
+mod io;
 
 use ::core::ffi::c_void;
 
+use log::trace;
+
 use crate::{
-    bindings::types::{
-        functions::{FfiAcpiOsdExecCallback, FfiAcpiOsdHandler},
-        tables::FfiAcpiTableHeader,
-        FfiAcpiExecuteType, FfiAcpiIoAddress, FfiAcpiPciId, FfiAcpiPhysicalAddress, FfiAcpiSize,
-    },
+    bindings::types::{tables::FfiAcpiTableHeader, FfiAcpiPhysicalAddress},
     interface::status::{AcpiErrorAsStatusExt, AcpiStatus},
-    types::AcpiPhysicalAddress,
 };
 
 use super::OS_INTERFACE;
@@ -50,158 +52,24 @@ extern "C" fn acpi_os_get_root_pointer() -> FfiAcpiPhysicalAddress {
     interface.get_root_pointer().0
 }
 
-#[export_name = "AcpiOsMapMemory"]
-extern "C" fn acpi_os_map_memory(
-    address: FfiAcpiPhysicalAddress,
-    length: FfiAcpiSize,
-) -> *mut c_void {
-    let mut interface = OS_INTERFACE.lock();
-    let interface = interface.as_mut().unwrap();
-
-    // SAFETY: This is `AcpiOsMapMemory`
-    unsafe {
-        interface
-            .map_memory(AcpiPhysicalAddress(address), length)
-            .map(<*mut u8>::cast)
-            .unwrap_or(core::ptr::null_mut())
-    }
-}
-
-#[export_name = "AcpiOsUnmapMemory"]
-extern "C" fn acpi_os_unmap_memory(logical_address: *mut c_void, size: FfiAcpiSize) {
-    let mut interface = OS_INTERFACE.lock();
-    let interface = interface.as_mut().unwrap();
-
-    // SAFETY: This is `AcpiOsUnmapMemory`, `logical_address` was provided by ACPICA and produced by acpi_os_map_memory
-    unsafe { interface.unmap_memory(logical_address.cast(), size) }
-}
-
-#[export_name = "AcpiOsGetPhysicalAddress"]
-extern "C" fn acpi_os_get_physical_address(
-    _logical_address: *mut c_void,
-    _physical_address: *mut FfiAcpiPhysicalAddress,
-) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsInstallInterruptHandler"]
-extern "C" fn acpi_os_install_interrupt_handler(
-    _interrupt_number: u32,
-    _service_routine: FfiAcpiOsdHandler,
-    _context: *mut c_void,
-) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsRemoveInterruptHandler"]
-extern "C" fn acpi_os_remove_interrupt_handler(
-    _interrupt_number: u32,
-    _service_routine: FfiAcpiOsdHandler,
-) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsGetThreadId"]
-extern "C" fn acpi_os_get_thread_id() -> u64 {
-    let mut interface = OS_INTERFACE.lock();
-    let interface = interface.as_mut().unwrap();
-
-    interface.get_thread_id()
-}
-
-#[export_name = "AcpiOsExecute"]
-extern "C" fn acpi_os_execute(
-    _type: FfiAcpiExecuteType,
-    _function: FfiAcpiOsdExecCallback,
-    _context: *mut c_void,
-) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsWaitEventsComplete"]
-extern "C" fn acpi_os_wait_events_complete() {
-    todo!()
-}
-
-#[export_name = "AcpiOsSleep"]
-extern "C" fn acpi_os_sleep(_milliseconds: u64) {
-    todo!()
-}
-
 #[export_name = "AcpiOsStall"]
-extern "C" fn acpi_os_stall(_microseconds: u32) {
-    todo!()
+extern "C" fn acpi_os_stall(microseconds: u32) {
+    let mut interface = OS_INTERFACE.lock();
+    let interface = interface.as_mut().unwrap();
+
+    // SAFETY: This is `AcpiOsStall`
+    unsafe { interface.stall(microseconds.try_into().unwrap()) }
 }
 
-#[export_name = "AcpiOsReadPort"]
-extern "C" fn acpi_os_read_port(
-    _address: FfiAcpiIoAddress,
-    _value: *mut u32,
-    _width: u32,
-) -> AcpiStatus {
-    todo!()
-}
 
-#[export_name = "AcpiOsWritePort"]
-extern "C" fn acpi_os_write_port(
-    _address: FfiAcpiIoAddress,
-    _value: u32,
-    _width: u32,
-) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsReadMemory"]
-extern "C" fn acpi_os_read_memory(
-    _address: FfiAcpiPhysicalAddress,
-    _value: *mut u64,
-    _width: u32,
-) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsWriteMemory"]
-extern "C" fn acpi_os_write_memory(
-    _address: FfiAcpiPhysicalAddress,
-    _value: u64,
-    _width: u32,
-) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsReadPciConfiguration"]
-extern "C" fn acpi_os_read_pci_configuration(
-    _pci_id: *mut FfiAcpiPciId,
-    _reg: u32,
-    _value: *mut u64,
-    _width: u32,
-) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsWritePciConfiguration"]
-extern "C" fn acpi_os_write_pci_configuration(
-    _pci_id: *mut FfiAcpiPciId,
-    _reg: u32,
-    _value: u64,
-    _width: u32,
-) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsReadable"]
-extern "C" fn acpi_os_readable(_pointer: *mut c_void, _length: FfiAcpiSize) -> bool {
-    todo!()
-}
-
-#[export_name = "AcpiOsWritable"]
-extern "C" fn acpi_os_writable(_pointer: *mut c_void, _length: FfiAcpiSize) -> bool {
-    todo!()
-}
 
 #[export_name = "AcpiOsGetTimer"]
 extern "C" fn acpi_os_get_timer() -> u64 {
-    todo!()
+    let mut interface = OS_INTERFACE.lock();
+    let interface = interface.as_mut().unwrap();
+
+    // SAFETY: Thsi is `AcpiOsGetTimer`
+    unsafe { interface.get_timer() }
 }
 
 #[export_name = "AcpiOsSignal"]
@@ -210,12 +78,18 @@ extern "C" fn acpi_os_signal(_function: u32, _info: *mut c_void) -> AcpiStatus {
 }
 
 #[export_name = "AcpiOsEnterSleep"]
-extern "C" fn acpi_os_enter_sleep(
-    _sleep_state: u8,
-    _rega_value: u32,
-    _regb_value: u32,
-) -> AcpiStatus {
-    todo!()
+extern "C" fn acpi_os_enter_sleep(sleep_state: u8, reg_a: u32, reg_b: u32) -> AcpiStatus {
+    trace!(target: "acpi_os_enter_sleep", "Entering sleep state {sleep_state}. RegA: {reg_a:#x}, RegB: {reg_b:#x}");
+
+    let mut interface = OS_INTERFACE.lock();
+    let interface = interface.as_mut().unwrap();
+
+    // SAFETY: This is `AcpiOsEnterSleep`
+    unsafe {
+        interface
+            .enter_sleep(sleep_state, reg_a, reg_b)
+            .to_acpi_status()
+    }
 }
 
 #[export_name = "AcpiOsRedirectOutput"]
@@ -318,8 +192,6 @@ extern "C" fn acpi_os_close_directory(_dir_handle: *mut c_void) {
 
 
 */
-
-// #[cfg(not(feature = "builtin_cache"))]
 
 #[cfg(not(feature = "builtin_cache"))]
 #[export_name = "AcpiOsCreateCache"]

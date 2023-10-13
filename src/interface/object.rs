@@ -2,7 +2,7 @@
 
 use core::ffi::CStr;
 
-use log::debug;
+use log::{debug, warn};
 
 use crate::bindings::{
     consts::{
@@ -180,7 +180,7 @@ impl<'a> AcpiObject<'a> {
             }
 
             _ => {
-                debug!(target: "acpi_object_from_type_and_val", "Check object type meaning. Type is {}, val is {:p}", object_type, val);
+                warn!(target: "acpi_object_from_type_and_val", "Check object type meaning. Type is {}, val is {:p}", object_type, val);
                 Self::Any
             }
         }

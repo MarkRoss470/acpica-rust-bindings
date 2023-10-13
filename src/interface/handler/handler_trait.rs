@@ -1,12 +1,6 @@
 #[cfg(not(all(feature = "builtin_cache", feature = "builtin_lock",)))]
 use crate::types::{AcpiAllocationError, AcpiCpuFlags};
 
-#[cfg(not(all(
-    feature = "builtin_cache",
-    feature = "builtin_lock",
-    feature = "builtin_semaphore",
-    feature = "builtin_alloc",
-)))]
 use core::ffi::c_void;
 
 use alloc::string::String;
@@ -14,23 +8,30 @@ use alloc::string::String;
 use crate::{
     interface::status::AcpiError,
     types::{
-        AcpiInterruptCallback, AcpiMappingError, AcpiPhysicalAddress, AcpiPredefinedNames,
-        AcpiTableHeader, AcpiThreadCallback,
+        AcpiInterruptCallback, AcpiInterruptCallbackTag, AcpiIoAddress, AcpiMappingError,
+        AcpiPhysicalAddress, AcpiPredefinedNames, AcpiTableHeader, AcpiThreadCallback, AcpiPciId,
     },
 };
 
 /// The interface between ACPICA and the host OS. Each method in this trait is mapped to an `AcpiOs...` function,
 /// which will be called on the object registered with [`register_interface`].
 ///
-/// Some methods such as [`allocate`] which can be no-ops or which map nicely to rust concepts have default implementations,
-/// but most of the methods are very OS-specific and must be implemented uniquely for each host OS.
+/// # Optional Methods
+///
+/// Some methods are only present if certain features of the crate are enabled or disabled:
+/// * `allocate` and `free` are only present if the crate feature `builtin_alloc` is disabled
+/// * `create_cache`, `delete_cache`, `purge_cache`, `acquire_object`, and `release_object`
+///     are only present if the crate feature `builtin_cache` is disabled
+/// * `create_lock`, `delete_lock`, `acquire_lock`, and `release_lock`
+///     are only present if the crate feature `builtin_lock` is disabled
+/// * `create_semaphore`, `delete_semaphore`, `wait_semaphore`, and `signal_semaphore`
+///     are only present if the crate feature `builtin_semaphore` is disabled
 ///
 /// # Safety
 /// This trait is unsafe to implement because some functions have restrictions on their
 /// implementation as well as their caller. This is indicated per method under the heading "Implementation Safety".
 ///
 /// [`register_interface`]: super::register_interface
-/// [`allocate`]: AcpiHandler::allocate
 pub unsafe trait AcpiHandler {
     /// Method called when ACPICA initialises. The default implementation of this method is a no-op.
     ///
@@ -111,7 +112,7 @@ pub unsafe trait AcpiHandler {
     ///
     /// # Safety
     /// * This function is only called from `AcpiOsMapMemory`
-    /// * The memory at `physical_address` is valid for reads for `length` bytes
+    /// * The memory at `physical_address` is valid for writes for `length` bytes
     ///
     /// # Implementation Safety
     /// * The memory must stay mapped until `unmap_memory` is called.
@@ -141,6 +142,168 @@ pub unsafe trait AcpiHandler {
         logical_address: *mut u8,
     ) -> Result<Option<AcpiPhysicalAddress>, AcpiError>;
 
+    /// Read a [`u8`] from the given physical address.
+    ///
+    /// # Safety
+    /// * The given physical address is valid for reads
+    /// * This method is only called from `AcpiOsReadMemory`
+    ///
+    /// # Implementation Safety
+    /// * As this read could be from memory mapped IO, the read should be volatile
+    ///
+    /// If you want your implementation of this method to look the same as [`read_physical_u16`], [`..._u32`], and [`..._u64`],
+    /// Read the documentation for these methods before implementing this one as the size of the type makes a difference in implementing the method soundly.
+    ///
+    /// [`read_physical_u16`]: AcpiHandler::read_physical_u16
+    /// [`..._u32`]: AcpiHandler::read_physical_u32
+    /// [`..._u64`]: AcpiHandler::read_physical_u64
+    unsafe fn read_physical_u8(&mut self, address: AcpiPhysicalAddress) -> Result<u8, AcpiError>;
+
+    /// Read a [`u16`] from the given physical address.
+    ///
+    /// # Safety
+    /// * The given physical address is valid for reads
+    /// * This method is only called from `AcpiOsReadMemory`
+    ///
+    /// # Implementation Safety
+    /// * As this read could be from memory mapped IO, the read should be volatile
+    /// * The physical address may not be 2 byte aligned, so the read should be unaligned
+    ///
+    /// These requirements can be difficult to satisfy at the same time.
+    /// If you are alright with using unstable compiler intrinsics, the [`core::intrinsics::unaligned_volatile_load`] method.
+    /// Otherwise, it is possible to read the data as a `[u8; 2]` and then transmute it into a [`u16`].
+    unsafe fn read_physical_u16(&mut self, address: AcpiPhysicalAddress) -> Result<u16, AcpiError>;
+
+    /// Read a [`u32`] from the given physical address.
+    ///
+    /// # Safety
+    /// * The given physical address is valid for reads
+    /// * This method is only called from `AcpiOsReadMemory`
+    ///
+    /// # Implementation Safety
+    /// * As this read could be from memory mapped IO, the read should be volatile
+    /// * The physical address may not be 4 byte aligned, so the read should be unaligned
+    ///
+    /// These requirements can be difficult to satisfy at the same time.
+    /// If you are alright with using unstable compiler intrinsics, the [`core::intrinsics::unaligned_volatile_load`] method.
+    /// Otherwise, it is possible to read the data as a `[u8; 4]` and then transmute it into a [`u32`].
+    unsafe fn read_physical_u32(&mut self, address: AcpiPhysicalAddress) -> Result<u32, AcpiError>;
+
+    /// Read a [`u64`] from the given physical address.
+    ///
+    /// # Safety
+    /// * The given physical address is valid for reads
+    /// * This method is only called from `AcpiOsReadMemory`
+    ///
+    /// # Implementation Safety
+    /// * As this read could be from memory mapped IO, the read should be volatile
+    /// * The physical address may not be 8 byte aligned, so the read should be unaligned
+    ///
+    /// These requirements can be difficult to satisfy at the same time.
+    /// If you are alright with using unstable compiler intrinsics, the [`core::intrinsics::unaligned_volatile_load`] method.
+    /// Otherwise, it is possible to read the data as a `[u8; 8]` and then transmute it into a [`u64`].
+    unsafe fn read_physical_u64(&mut self, address: AcpiPhysicalAddress) -> Result<u64, AcpiError>;
+
+    /// Read a [`u8`] from the given physical address.
+    ///
+    /// # Safety
+    /// * The given physical address is valid for writes
+    /// * This method is only called from `AcpiOsWriteMemory`
+    ///
+    /// # Implementation Safety
+    /// * As this read could be to memory mapped IO, the write should be volatile
+    ///
+    /// If you want your implementation of this method to look the same as [`write_physical_u16`], [`..._u32`], and [`..._u64`],
+    /// Read the documentation for these methods before implementing this one as the size of the type makes a difference in implementing the method soundly.
+    ///
+    /// [`write_physical_u16`]: AcpiHandler::write_physical_u16
+    /// [`..._u32`]: AcpiHandler::write_physical_u32
+    /// [`..._u64`]: AcpiHandler::write_physical_u64
+    unsafe fn write_physical_u8(
+        &mut self,
+        address: AcpiPhysicalAddress,
+        value: u8,
+    ) -> Result<(), AcpiError>;
+
+    /// Read a [`u16`] from the given physical address.
+    ///
+    /// # Safety
+    /// * The given physical address is valid for writes
+    /// * This method is only called from `AcpiOsWriteMemory`
+    ///
+    /// # Implementation Safety
+    /// * As this read could be to memory mapped IO, the write should be volatile
+    /// * The physical address may not be 2 byte aligned, so the read should be unaligned
+    ///
+    /// These requirements can be difficult to satisfy at the same time.
+    /// If you are alright with using unstable compiler intrinsics, the [`core::intrinsics::unaligned_volatile_store`] method.
+    /// Otherwise, it is possible to transmute the data into a `[u8; 2]` before writing it.
+    unsafe fn write_physical_u16(
+        &mut self,
+        address: AcpiPhysicalAddress,
+        value: u16,
+    ) -> Result<(), AcpiError>;
+
+    /// Read a [`u32`] from the given physical address.
+    ///
+    /// # Safety
+    /// * The given physical address is valid for writes
+    /// * This method is only called from `AcpiOsWriteMemory`
+    ///
+    /// # Implementation Safety
+    /// * As this read could be to memory mapped IO, the write should be volatile
+    /// * The physical address may not be 4 byte aligned, so the read should be unaligned
+    ///
+    /// These requirements can be difficult to satisfy at the same time.
+    /// If you are alright with using unstable compiler intrinsics, the [`core::intrinsics::unaligned_volatile_store`] method.
+    /// Otherwise, it is possible to transmute the data into a `[u8; 4]` before writing it.
+    unsafe fn write_physical_u32(
+        &mut self,
+        address: AcpiPhysicalAddress,
+        value: u32,
+    ) -> Result<(), AcpiError>;
+
+    /// Read a [`u64`] from the given physical address.
+    ///
+    /// # Safety
+    /// * The given physical address is valid for writes
+    /// * This method is only called from `AcpiOsWriteMemory`
+    ///
+    /// # Implementation Safety
+    /// * As this read could be to memory mapped IO, the write should be volatile
+    /// * The physical address may not be 8 byte aligned, so the read should be unaligned
+    ///
+    /// These requirements can be difficult to satisfy at the same time.
+    /// If you are alright with using unstable compiler intrinsics, the [`core::intrinsics::unaligned_volatile_store`] method.
+    /// Otherwise, it is possible to transmute the data into a `[u8; 8]` before writing it.
+    unsafe fn write_physical_u64(
+        &mut self,
+        address: AcpiPhysicalAddress,
+        value: u64,
+    ) -> Result<(), AcpiError>;
+
+    /// Check whether `pointer` is valid for reads of `length` bytes.
+    /// This is only in terms of the memory being mapped with the right permissions and valid, not in terms of rust's ownership rules.
+    ///
+    /// # Return Value
+    /// * `true` if the pointer is valid for `length` bytes of reads
+    /// * `false` if the pointer is not valid
+    ///
+    /// # Safety
+    /// * This method is only called from `AcpiOsReadable`
+    unsafe fn readable(&mut self, pointer: *mut c_void, length: usize) -> bool;
+
+    /// Check whether `pointer` is valid for writes of `length` bytes.
+    /// This is only in terms of the memory being mapped with the right permissions and valid, not in terms of rust's ownership rules.
+    ///
+    /// # Return Value
+    /// * `true` if the pointer is valid for `length` bytes of writes
+    /// * `false` if the pointer is not valid
+    ///
+    /// # Safety
+    /// * This method is only called from `AcpiOsWritable`
+    unsafe fn writable(&mut self, pointer: *mut c_void, length: usize) -> bool;
+
     /// Register the given `callback` to run in the interrupt handler for the given `interrupt_number`
     ///
     /// # Safety
@@ -152,15 +315,22 @@ pub unsafe trait AcpiHandler {
     ) -> Result<(), AcpiError>;
 
     /// Remove an interrupt handler which was previously registered with [`install_interrupt_handler`].
+    /// The passed `tag` should be compared to each registered handler using [`is_tag`], and whichever handler returns `true` should be removed.
+    /// If no handler is found, [`AcpiError::NotExist`] should be returned.
     ///
     /// # Safety
     /// * This method is only called from `AcpiOsRemoveInterruptHandler`
     ///
+    /// # Implementation Safety
+    /// * If the handler is found, it must be removed and not called again and [`Ok`] returned.
+    /// * If the handler is not found, [`AcpiError::NotExist`] must be returned.
+    ///
     /// [`install_interrupt_handler`]: AcpiHandler::install_interrupt_handler
+    /// [`is_tag`]: AcpiInterruptCallback::is_tag
     unsafe fn remove_interrupt_handler(
         &mut self,
         interrupt_number: u32,
-        callback: AcpiInterruptCallback,
+        tag: AcpiInterruptCallbackTag,
     ) -> Result<(), AcpiError>;
 
     /// Gets the thread ID of the kernel thread this method is called from.
@@ -170,7 +340,8 @@ pub unsafe trait AcpiHandler {
     /// * The thread ID may not be 0 and may not be equal to [`u64::MAX`]
     fn get_thread_id(&mut self) -> u64;
 
-    /// Run the callback in a new kernel thread.
+    /// Run the callback in a new kernel thread. The [`call`] method of the given `callback` must be run, and then the kernel thread should be destroyed.
+    /// The OS should keep track of which kernel threads were spawned using this method so that [`wait_for_events`] can be implemented correctly.
     ///
     /// # Safety
     /// * This method is only called from `AcpiOsExecute`
@@ -178,11 +349,43 @@ pub unsafe trait AcpiHandler {
     /// # Return value
     /// * `Ok(())`: The thread is queued and ready to execute
     /// * `Err(e)`: There was an error creating the thread
+    ///
+    /// [`call`]: AcpiThreadCallback::call
+    /// [`wait_for_events`]: AcpiHandler::wait_for_events
     unsafe fn execute(
         &mut self,
         // callback_type: AcpiExecuteType,
         callback: AcpiThreadCallback,
     ) -> Result<(), AcpiError>;
+
+    /// Waits for all tasks run with [`execute`] to complete before returning.
+    ///
+    /// # Safety
+    /// * This method is only called from `AcpiOsWaitEventsComplete`
+    ///
+    /// # Implementation Safety
+    /// * This method must not return until all
+    ///
+    /// [`execute`]: AcpiHandler::execute
+    unsafe fn wait_for_events(&mut self);
+
+    /// Sleep the current kernel thread for the given number of milliseconds
+    ///
+    /// # Safety
+    /// * This method is only called from `AcpiOsSleep`
+    ///
+    /// # Implementation Safety
+    /// * This method must not return until the given number of milliseconds has elapsed. The OS should attempt not to overshoot the target time by too much.
+    unsafe fn sleep(&mut self, millis: usize);
+
+    /// Loop for the given number of microseconds, without sleeping the kernel thread
+    ///
+    /// # Safety
+    /// * This method is only called from `AcpiOsStall`
+    ///
+    /// # Implementation Safety
+    /// * This method must not return until the given number of microseconds has elapsed. The OS should attempt not to overshoot the target time by too much.
+    unsafe fn stall(&mut self, micros: usize);
 
     /// Print a message to the kernel's output.
     ///
@@ -197,31 +400,146 @@ pub unsafe trait AcpiHandler {
     /// ```
     fn printf(&mut self, message: core::fmt::Arguments);
 
-    // fn read_memory(
-    //     &mut self,
-    //     address: AcpiPhysicalAddress,
-    //     value: &mut [u64],
-    //     width: u32,
-    // ) -> Result<(), AcpiError>;
+    /// Read a [`u8`] from the given port
+    ///
+    /// # Safety
+    /// * This method is only called from `AcpiOsReadPort`
+    unsafe fn read_port_u8(&mut self, address: AcpiIoAddress) -> Result<u8, AcpiError>;
 
-    // fn write_memory(
-    //     &mut self,
-    //     address: AcpiPhysicalAddress,
-    //     value: u64,
-    //     width: u32,
-    // ) -> Result<(), AcpiError>;
+    /// Read a [`u16`] from the given port
+    ///
+    /// # Safety
+    /// * This method is only called from `AcpiOsReadPort`
+    unsafe fn read_port_u16(&mut self, address: AcpiIoAddress) -> Result<u16, AcpiError>;
 
-    // fn readable(&mut self, Pointer: *mut ::core::ffi::c_void, Length: usize) -> bool;
+    /// Read a [`u32`] from the given port
+    ///
+    /// # Safety
+    /// * This method is only called from `AcpiOsReadPort`
+    unsafe fn read_port_u32(&mut self, address: AcpiIoAddress) -> Result<u32, AcpiError>;
 
-    // fn writable(&mut self, Pointer: *mut ::core::ffi::c_void, Length: usize) -> bool;
+    /// Write a [`u8`] to the given port
+    ///
+    /// # Safety
+    /// * This method is only called from `AcpiOsWritePort`
+    unsafe fn write_port_u8(&mut self, address: AcpiIoAddress, value: u8) -> Result<(), AcpiError>;
+
+    /// Write a [`u16`] to the given port
+    ///
+    /// # Safety
+    /// * This method is only called from `AcpiOsWritePort`
+    unsafe fn write_port_u16(
+        &mut self,
+        address: AcpiIoAddress,
+        value: u16,
+    ) -> Result<(), AcpiError>;
+
+    /// Write a [`u32`] to the given port
+    ///
+    /// # Safety
+    /// * This method is only called from `AcpiOsWritePort`
+    unsafe fn write_port_u32(
+        &mut self,
+        address: AcpiIoAddress,
+        value: u32,
+    ) -> Result<(), AcpiError>;
+
+    /// Called just before the system enters a sleep state.
+    /// This method allows the OS to do any final processing before entering the new state.
+    /// The default implementation is a no-op.
+    ///
+    /// # Safety
+    /// * This method is only called from `AcpiOsEnterSleep`
+    ///
+    // TODO: Figure out what reg_a and reg_b are and add docs
+    #[allow(unused_variables)]
+    unsafe fn enter_sleep(&mut self, state: u8, reg_a: u32, reg_b: u32) -> Result<(), AcpiError> {
+        Ok(())
+    }
+
+    /// Get the value of the system timer in 100 nanosecond units
+    ///
+    /// # Safety
+    /// * This method is only called from `AcpiOsGetTimer`
+    ///
+    /// # Implementation Safety
+    /// * The timer must not decrease i.e. later calls to this function must return a greater value
+    // TODO: There might be more safety conditions
+    unsafe fn get_timer(&mut self) -> u64;
+
+    
+    /// Read a [`u8`] from the configuration space of the given PCI ID and return it.
+    /// `register` is the offset of the value to read in bytes.
+    /// 
+    /// # Safety
+    /// * This method is only called from `AcpiOsReadPciConfiguration`
+    /// * The read is sound i.e. it has no memory-safety related side-effects.
+    unsafe fn read_pci_config_u8(&mut self, id: AcpiPciId, register: usize) -> Result<u8, AcpiError>;
+    
+    /// Read a [`u16`] from the configuration space of the given PCI ID and return it.
+    /// `register` is the offset of the value to read in bytes.
+    /// 
+    /// # Safety
+    /// * This method is only called from `AcpiOsReadPciConfiguration`
+    /// * The read is sound i.e. it has no memory-safety related side-effects.
+    unsafe fn read_pci_config_u16(&mut self, id: AcpiPciId, register: usize) -> Result<u16, AcpiError>;
+    
+    /// Read a [`u32`] from the configuration space of the given PCI ID and return it.
+    /// `register` is the offset of the value to read in bytes.
+    /// 
+    /// # Safety
+    /// * This method is only called from `AcpiOsReadPciConfiguration`
+    /// * The read is sound i.e. it has no memory-safety related side-effects.
+    unsafe fn read_pci_config_u32(&mut self, id: AcpiPciId, register: usize) -> Result<u32, AcpiError>;
+    
+    /// Read a [`u64`] from the configuration space of the given PCI ID and return it.
+    /// `register` is the offset of the value to read in bytes.
+    /// 
+    /// # Safety
+    /// * This method is only called from `AcpiOsReadPciConfiguration`
+    /// * The read is sound i.e. it has no memory-safety related side-effects.
+    unsafe fn read_pci_config_u64(&mut self, id: AcpiPciId, register: usize) -> Result<u64, AcpiError>;
+
+    
+    /// Write a [`u8`] to the configuration space of the given PCI ID.
+    /// `register` is the offset of the value to read in bytes.
+    /// 
+    /// # Safety
+    /// * This method is only called from `AcpiOsWritePciConfiguration`
+    /// * The write is sound i.e. it has no memory-safety related side-effects.
+    unsafe fn write_pci_config_u8(&mut self, id: AcpiPciId, register: usize, value: u8) -> Result<(), AcpiError>;
+    
+    /// Write a [`u16`] to the configuration space of the given PCI ID.
+    /// `register` is the offset of the value to read in bytes.
+    /// 
+    /// # Safety
+    /// * This method is only called from `AcpiOsRWriteciConfiguration`
+    /// * The write is sound i.e. it has no memory-safety related side-effects.
+    unsafe fn write_pci_config_u16(&mut self, id: AcpiPciId, register: usize, value: u16) -> Result<(), AcpiError>;
+    
+    /// Write a [`u32`] to the configuration space of the given PCI ID.
+    /// `register` is the offset of the value to read in bytes.
+    /// 
+    /// # Safety
+    /// * This method is only called from `AcpiOsRWriteciConfiguration`
+    /// * The write is sound i.e. it has no memory-safety related side-effects.
+    unsafe fn write_pci_config_u32(&mut self, id: AcpiPciId, register: usize, value: u32) -> Result<(), AcpiError>;
+    
+    /// Write a [`u64`] to the configuration space of the given PCI ID.
+    /// `register` is the offset of the value to read in bytes.
+    /// 
+    /// # Safety
+    /// * This method is only called from `AcpiOsRWriteciConfiguration`
+    /// * The write is sound i.e. it has no memory-safety related side-effects.
+    unsafe fn write_pci_config_u64(&mut self, id: AcpiPciId, register: usize, value: u64) -> Result<(), AcpiError>;
+
 
     // TODO: Verify the info in the docs for these cache methods
 
     /// Creates a cache for ACPICA to store objects in to avoid lots of small heap allocations.
     ///
     /// This method is only present in the trait if the `builtin_cache` feature is not set.
-    /// Otherwise, a default implementation is used which allocates the objects inside a [`Vec`],
-    /// using a [`BitVec`] to keep track of which objects within the cache have been allocated.
+    /// Otherwise, ACPICA's builtin implementation is used.
     ///
     /// The cache stores up to `max_depth` objects of size `object_size`.
     /// The OS is responsible for allocating and de-allocating objects within the cache.
