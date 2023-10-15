@@ -12,7 +12,7 @@ use crate::types::AcpiAllocationError;
 
 use alloc::boxed::Box;
 
-use crate::{handler::AcpiHandler, status::AcpiError};
+use crate::{handler::AcpiHandler, status::AcpiError, types::tables::AcpiTableHeader};
 
 #[allow(clippy::type_complexity)]
 pub struct DummyHandler<'a> {
@@ -27,14 +27,14 @@ pub struct DummyHandler<'a> {
 
     pub fn_table_override: Box<
         dyn Fn(
-            &crate::types::AcpiTableHeader,
+            &AcpiTableHeader,
         )
-            -> Result<Option<crate::types::AcpiTableHeader<'a>>, crate::status::AcpiError>,
+            -> Result<Option<AcpiTableHeader<'a>>, crate::status::AcpiError>,
     >,
 
     pub fn_physical_table_override: Box<
         dyn Fn(
-            &crate::types::AcpiTableHeader,
+            &AcpiTableHeader,
         ) -> Result<
             Option<(crate::types::AcpiPhysicalAddress, u32)>,
             crate::status::AcpiError,
@@ -438,14 +438,14 @@ unsafe impl<'a> AcpiHandler for DummyHandler<'a> {
 
     unsafe fn table_override(
         &mut self,
-        table: &crate::types::AcpiTableHeader,
-    ) -> Result<Option<crate::types::AcpiTableHeader>, crate::status::AcpiError> {
+        table: &AcpiTableHeader,
+    ) -> Result<Option<AcpiTableHeader>, crate::status::AcpiError> {
         (self.fn_table_override)(table)
     }
 
     unsafe fn physical_table_override(
         &mut self,
-        table: &crate::types::AcpiTableHeader,
+        table: &AcpiTableHeader,
     ) -> Result<Option<(crate::types::AcpiPhysicalAddress, u32)>, crate::status::AcpiError> {
         (self.fn_physical_table_override)(table)
     }

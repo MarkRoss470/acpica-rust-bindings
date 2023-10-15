@@ -8,7 +8,6 @@ use crate::bindings::functions::AcpiDebugTrace;
 
 use self::{handler::SUBSYSTEM_IS_INITIALIZED, status::AcpiError};
 
-pub mod object;
 pub mod status;
 pub mod types;
 

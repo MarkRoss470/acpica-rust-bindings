@@ -1,22 +1,22 @@
 //! Contains rust equivalents of types used by ACPICA
 
 mod generic_address;
+pub mod tables;
+mod object;
 
 use core::{
     ffi::{c_void, CStr},
     fmt::{Debug, Display},
 };
 
-use crate::{
-    bindings::types::{
+use crate::bindings::types::{
         functions::{FfiAcpiOsdExecCallback, FfiAcpiOsdHandler},
-        tables::FfiAcpiTableHeader,
-        FfiAcpiCpuFlags, FfiAcpiPciId, FfiAcpiPhysicalAddress, FfiAcpiPredefinedNames,
-    },
-    interface::object::AcpiObject,
-};
+        FfiAcpiCpuFlags, FfiAcpiPciId, FfiAcpiPredefinedNames,
+    };
 
 pub use generic_address::*;
+
+use self::object::AcpiObject;
 
 /// A physical address into main memory
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
@@ -32,27 +32,6 @@ impl Debug for AcpiPhysicalAddress {
         f.debug_tuple("AcpiPhysicalAddress")
             .field(&format_args!("{:#x}", self.0))
             .finish()
-    }
-}
-
-///  Master ACPI Table Header. This common header is used by all ACPI tables
-///  except the RSDP and FACS.
-///
-pub struct AcpiTableHeader<'a>(&'a mut FfiAcpiTableHeader);
-
-impl<'a> AcpiTableHeader<'a> {
-    pub(crate) fn from_ffi(ffi_header: &'a mut FfiAcpiTableHeader) -> Self {
-        Self(ffi_header)
-    }
-
-    pub(crate) fn as_ffi(&mut self) -> &mut FfiAcpiTableHeader {
-        self.0
-    }
-}
-
-impl<'a> Debug for AcpiTableHeader<'a> {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        f.debug_tuple("AcpiTableHeader").field(&self.0).finish()
     }
 }
 

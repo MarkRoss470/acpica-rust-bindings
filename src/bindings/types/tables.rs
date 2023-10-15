@@ -39,14 +39,14 @@ pub mod windows;
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableHeader {
-    pub signature: [i8; 4usize],
+    pub signature: [u8; 4usize],
     pub length: u32,
     pub revision: u8,
     pub checksum: u8,
-    pub oem_id: [i8; 6usize],
-    pub oem_table_id: [i8; 8usize],
+    pub oem_id: [u8; 6usize],
+    pub oem_table_id: [u8; 8usize],
     pub oem_revision: u32,
-    pub asl_compiler_id: [i8; 4usize],
+    pub asl_compiler_id: [u8; 4usize],
     pub asl_compiler_revision: u32,
 }
 

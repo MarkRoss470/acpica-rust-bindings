@@ -9,6 +9,7 @@ edition = "2021"
 [dependencies]
 spin = {version = "0.9.8", default-features = false, features = ["mutex", "spin_mutex"]}
 log = {version= "*", default-features = false}
+bitfield-struct = {version="*", default-features = false}
 
 # Optional dependencies
 bitvec = {version = "1", optional = true, default-features = false}
