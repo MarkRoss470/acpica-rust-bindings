@@ -20,7 +20,7 @@ use log::{error, trace};
 use crate::{
     bindings::{
         consts::{ACPI_SIGNAL_BREAKPOINT, ACPI_SIGNAL_FATAL},
-        types::{tables::FfiAcpiTableHeader, FfiAcpiPhysicalAddress, FfiAcpiSignalFatalInfo},
+        types::{FfiAcpiPhysicalAddress, FfiAcpiSignalFatalInfo},
     },
     interface::status::{AcpiErrorAsStatusExt, AcpiStatus},
     status::AcpiError,
@@ -122,97 +122,6 @@ extern "C" fn acpi_os_enter_sleep(sleep_state: u8, reg_a: u32, reg_b: u32) -> Ac
             .enter_sleep(sleep_state, reg_a, reg_b)
             .to_acpi_status()
     }
-}
-
-#[export_name = "AcpiOsRedirectOutput"]
-extern "C" fn acpi_os_redirect_output(_destination: *mut c_void) {
-    todo!()
-}
-
-#[export_name = "AcpiOsGetLine"]
-extern "C" fn acpi_os_get_line(
-    _buffer: *mut i8,
-    _buffer_length: u32,
-    _bytes_read: *mut u32,
-) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsInitializeDebugger"]
-extern "C" fn acpi_os_initialize_debugger() -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsTerminateDebugger"]
-extern "C" fn acpi_os_terminate_debugger() {
-    todo!()
-}
-
-#[export_name = "AcpiOsWaitCommandReady"]
-extern "C" fn acpi_os_wait_command_ready() -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsNotifyCommandComplete"]
-extern "C" fn acpi_os_notify_command_complete() -> AcpiStatus {
-    todo!()
-}
-
-// #[export_name = "AcpiOsTracePoint"]
-// extern "C" fn acpi_os_trace_point(
-//     _type: FfiAcpiTraceEventType,
-//     _begin: bool,
-//     _aml: *mut u8,
-//     _pathname: *mut i8,
-// ) {
-//     todo!()
-// }
-
-#[export_name = "AcpiOsGetTableByName"]
-extern "C" fn acpi_os_get_table_by_name(
-    _signature: *mut i8,
-    _instance: u32,
-    _table: *mut *mut FfiAcpiTableHeader,
-    _address: *mut FfiAcpiPhysicalAddress,
-) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsGetTableByIndex"]
-extern "C" fn acpi_os_get_table_by_index(
-    _index: u32,
-    _table: *mut *mut FfiAcpiTableHeader,
-    _instance: *mut u32,
-    _address: *mut FfiAcpiPhysicalAddress,
-) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsGetTableByAddress"]
-extern "C" fn acpi_os_get_table_by_address(
-    _address: FfiAcpiPhysicalAddress,
-    _table: *mut *mut FfiAcpiTableHeader,
-) -> AcpiStatus {
-    todo!()
-}
-
-#[export_name = "AcpiOsOpenDirectory"]
-extern "C" fn acpi_os_open_directory(
-    _pathname: *mut i8,
-    _wildcard_spec: *mut i8,
-    _requested_file_type: i8,
-) -> *mut c_void {
-    todo!()
-}
-
-#[export_name = "AcpiOsGetNextFilename"]
-extern "C" fn acpi_os_get_next_filename(_dir_handle: *mut c_void) -> *mut i8 {
-    todo!()
-}
-
-#[export_name = "AcpiOsCloseDirectory"]
-extern "C" fn acpi_os_close_directory(_dir_handle: *mut c_void) {
-    todo!()
 }
 
 /*

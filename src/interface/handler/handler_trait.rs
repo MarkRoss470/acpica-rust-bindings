@@ -9,7 +9,7 @@ use crate::{
     interface::status::AcpiError,
     types::{
         AcpiInterruptCallback, AcpiInterruptCallbackTag, AcpiIoAddress, AcpiMappingError,
-        AcpiPhysicalAddress, AcpiPredefinedNames, AcpiTableHeader, AcpiThreadCallback, AcpiPciId,
+        AcpiPhysicalAddress, AcpiPredefinedNames, AcpiThreadCallback, AcpiPciId, tables::AcpiTableHeader,
     },
 };
 
@@ -30,6 +30,10 @@ use crate::{
 /// # Safety
 /// This trait is unsafe to implement because some functions have restrictions on their
 /// implementation as well as their caller. This is indicated per method under the heading "Implementation Safety".
+/// 
+/// As well as this, it is undefined behaviour for a panic to unwind across an FFI boundary from rust code to C code.
+/// Users of this library who have panic unwinding enabled are responsible for ensuring that a panic never unwinds out of a method in this trait.
+/// If the OS is built with `panic=abort`, this is not an issue.
 ///
 /// [`register_interface`]: super::register_interface
 pub unsafe trait AcpiHandler {

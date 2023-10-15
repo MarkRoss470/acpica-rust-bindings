@@ -6,7 +6,7 @@ use crate::{
     },
     handler::{DropOnTerminate, OS_INTERFACE},
     status::{AcpiError, AcpiErrorAsStatusExt, AcpiStatus},
-    types::{AcpiPredefinedNames, AcpiTableHeader},
+    types::{tables::AcpiTableHeader, AcpiPredefinedNames},
 };
 
 #[export_name = "AcpiOsPredefinedOverride"]
@@ -48,15 +48,15 @@ extern "C" fn acpi_os_predefined_override(
 
 #[export_name = "AcpiOsTableOverride"]
 extern "C" fn acpi_os_table_override(
-    existing_table: *mut FfiAcpiTableHeader,
-    new_table_ptr: *mut *mut FfiAcpiTableHeader,
+    existing_table: *const FfiAcpiTableHeader,
+    new_table_ptr: *mut *const FfiAcpiTableHeader,
 ) -> AcpiStatus {
     if existing_table.is_null() || new_table_ptr.is_null() {
         return AcpiError::BadParameter.to_acpi_status();
     }
 
     // SAFETY: `existing_table` is valid for reads
-    let existing_table = unsafe { &mut *existing_table };
+    let existing_table = unsafe { &*existing_table };
     let mut lock = OS_INTERFACE.lock();
     let lock = lock.as_mut().unwrap();
 
@@ -71,8 +71,8 @@ extern "C" fn acpi_os_table_override(
     unsafe {
         core::ptr::write_unaligned(
             new_table_ptr,
-            new_table.map_or(core::ptr::null_mut(), |mut new_table| {
-                new_table.as_ffi() as *mut _
+            new_table.map_or(core::ptr::null(), |new_table| {
+                new_table.as_ffi() as *const _
             }),
         );
     }
@@ -99,7 +99,7 @@ extern "C" fn acpi_os_physical_table_override(
     let result =
     // SAFETY: This is `AcpiOsPhysicalTableOverride`
         unsafe { lock.physical_table_override(&AcpiTableHeader::from_ffi(existing_table)) };
-    
+
     let new_table = match result {
         Ok(new_table) => new_table,
         Err(e) => return e.to_acpi_status(),
