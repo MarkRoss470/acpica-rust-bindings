@@ -14,8 +14,13 @@ fn main() {
     let out_dir = env::var("OUT_DIR").unwrap();
     let out_dir_path = PathBuf::from(out_dir.clone());
 
+    let optimisation_level = env::var("OPT_LEVEL").unwrap();
+    let is_debug = env::var("DEBUG").unwrap().parse().unwrap();
+
+    println!("{optimisation_level}, {is_debug}");
+
     let acpica_dir = find_source_dir(out_dir_path.clone());
-    let object_files = compile(&acpica_dir, &out_dir_path);
+    let object_files = compile(&acpica_dir, &out_dir_path, &optimisation_level, is_debug);
     create_archive(out_dir_path, out_dir, object_files);
 }
 
@@ -112,7 +117,10 @@ fn update_source(acpica_dir: PathBuf) {
     #[cfg(not(feature = "builtin_cache"))]
     {
         acrust_text = acrust_text.replace("#define ACPI_CACHE_T", "// #define ACPI_CACHE_T");
-        acrust_text = acrust_text.replace("#define ACPI_USE_LOCAL_CACHE", "// #define ACPI_USE_LOCAL_CACHE");
+        acrust_text = acrust_text.replace(
+            "#define ACPI_USE_LOCAL_CACHE",
+            "// #define ACPI_USE_LOCAL_CACHE",
+        );
     }
 
     fs::write(acrust_path, acrust_text).expect("Should have been able to write to 'acrust.h': There should be a folder inside the source directory called source/include/platform");
@@ -165,7 +173,7 @@ fn create_archive(out_dir: PathBuf, out_dir_string: String, object_files: Vec<Pa
 
 /// Runs GCC on all the C files making up the ACPICA kernel subsystem,
 /// returning the filepaths of the generated object files.
-fn compile(acpica_dir: &Path, out_dir: &Path) -> Vec<PathBuf> {
+fn compile(acpica_dir: &Path, out_dir: &Path, optimisation_level: &str, is_debug: bool) -> Vec<PathBuf> {
     let mut object_files = vec![];
 
     let mut components_path = acpica_dir.to_path_buf();
@@ -213,7 +221,9 @@ fn compile(acpica_dir: &Path, out_dir: &Path) -> Vec<PathBuf> {
 
             println!("Compiling {:?}", c_file.path());
 
-            let gcc_command_output = Command::new("gcc")
+            let mut gcc_command = Command::new("gcc");
+
+            gcc_command
                 .arg("-o")
                 .arg(obj_file) // Set output object file
                 .arg("-c")
@@ -229,7 +239,17 @@ fn compile(acpica_dir: &Path, out_dir: &Path) -> Vec<PathBuf> {
                 }) // Set /source/include as directory for header files
                 .arg("-DACPI_DEBUG_OUTPUT") // TODO: Get it to compile without this for non-debug builds
                 .arg("-fno-stack-protector") // Remove stack protections to get rid of __stack_chk_fail linker warning
-                .arg("-g") // Produce debug symbols
+                .arg("-g"); // Produce debug symbols
+
+            // Match the optimisation level of the C code to the rust project
+            match (optimisation_level, is_debug) {
+                ("0", true) => gcc_command.arg("-Og"), // Best setting for debugging
+                ("0", false) => gcc_command.arg("-O0"), // Least optimised
+                ("1" | "2" | "3", _) => gcc_command.arg("-O1"), // TODO: 02 and 03 crash at runtime - debug this?
+                (_, _) => panic!("Unknown optimisation level '{optimisation_level}'"),
+            };
+
+            let gcc_command_output = gcc_command 
                 .output()
                 .expect("Should have been able to get output of GCC command");
 
