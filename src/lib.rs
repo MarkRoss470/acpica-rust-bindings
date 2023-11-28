@@ -41,6 +41,9 @@ pub use interface::*;
 #[ignore = "This just forces the compiler to actually link in ACPICA"]
 #[allow(unreachable_code)]
 fn force_link() {
+    use crate::bindings::functions::AcpiDisable;
+
     panic!("This test should not be run,just compiled");
-    debug_trace("Hello world", 0, 0, 0).unwrap();
+    // SAFETY: This code is never reached
+    unsafe { AcpiDisable() };
 }
