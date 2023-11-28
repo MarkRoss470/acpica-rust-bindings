@@ -1,7 +1,7 @@
 use crate::bindings::types::FfiAcpiTableHeader;
 
 ///  HMAT - Heterogeneous Memory Attributes Table (ACPI 6.3)
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableHmat {

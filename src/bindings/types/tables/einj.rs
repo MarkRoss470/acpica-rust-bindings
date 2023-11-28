@@ -2,7 +2,7 @@ use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::FfiAcpiWheaHea
 
 ///  EINJ - Error Injection Table (ACPI 4.0)
 ///         Version 1
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableEinj {

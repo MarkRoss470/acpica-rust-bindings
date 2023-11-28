@@ -1,10 +1,9 @@
 use crate::bindings::types::FfiAcpiTableHeader;
 
-
 ///  DRTM - Dynamic Root of Trust for Measurement table
 ///  Conforms to \"TCG D-RTM Architecture\" June 17 2013, Version 1.0.0
 ///  Table version 1
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableDrtm {

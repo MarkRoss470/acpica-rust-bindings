@@ -1,11 +1,10 @@
 use crate::bindings::types::FfiAcpiTableHeader;
 
-
 ///  CSRT - Core System Resource Table
 ///         Version 0
-/// 
+///
 ///  Conforms to the \"Core System Resource Table (CSRT)\", November 14, 2011
-/// 
+///
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableCsrt {

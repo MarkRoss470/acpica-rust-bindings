@@ -22,7 +22,6 @@ extern "C" fn acpi_os_allocate(size: FfiAcpiSize) -> *mut ::core::ffi::c_void {
 
     trace!(target: "acpi_os_allocate", "Allocated memory at {ptr:p}");
 
-
     // SAFETY:
     // There are no references to the Vec any more, so writing to its memory is sound.
     unsafe { core::ptr::write_unaligned(ptr.cast::<usize>(), size) }

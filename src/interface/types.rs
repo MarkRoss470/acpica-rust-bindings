@@ -1,8 +1,8 @@
 //! Contains rust equivalents of types used by ACPICA
 
 mod generic_address;
-pub mod tables;
 pub mod object;
+pub mod tables;
 
 use core::{
     ffi::{c_void, CStr},
@@ -10,9 +10,9 @@ use core::{
 };
 
 use crate::bindings::types::{
-        functions::{FfiAcpiOsdExecCallback, FfiAcpiOsdHandler},
-        FfiAcpiCpuFlags, FfiAcpiPciId, FfiAcpiPredefinedNames,
-    };
+    functions::{FfiAcpiOsdExecCallback, FfiAcpiOsdHandler},
+    FfiAcpiCpuFlags, FfiAcpiPciId, FfiAcpiPredefinedNames,
+};
 
 pub use generic_address::*;
 

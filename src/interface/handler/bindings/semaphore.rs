@@ -88,7 +88,7 @@ extern "C" fn acpi_os_wait_semaphore(
     timeout: u16,
 ) -> AcpiStatus {
     trace!(target: "acpi_os_wait_semaphore", "Waiting on semaphore at {:p}: units {units:#x}, timeout {timeout:#x}", handle.0);
- 
+
     // SAFETY: The `handle` pointer was passed to ACPICA by `acpi_os_create_semaphore`, so it's a valid pointer
     let handle = unsafe { handle.as_ref() };
 

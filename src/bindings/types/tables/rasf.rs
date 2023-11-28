@@ -1,9 +1,8 @@
 use crate::bindings::types::FfiAcpiTableHeader;
 
-
 ///  RASF - RAS Feature Table (ACPI 5.0)
 ///         Version 1
-/// 
+///
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableRasf {

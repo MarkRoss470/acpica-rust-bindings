@@ -2,10 +2,9 @@ use crate::bindings::types::FfiAcpiTableHeader;
 
 use super::FfiAcpiSubtableHeader;
 
-
 ///  SRAT - System Resource Affinity Table
 ///         Version 3
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableSrat {

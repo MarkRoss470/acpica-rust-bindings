@@ -8,8 +8,8 @@ use alloc::string::String;
 use crate::{
     interface::status::AcpiError,
     types::{
-        AcpiInterruptCallback, AcpiInterruptCallbackTag, AcpiIoAddress, AcpiMappingError,
-        AcpiPhysicalAddress, AcpiPredefinedNames, AcpiThreadCallback, AcpiPciId, tables::AcpiTableHeader,
+        tables::AcpiTableHeader, AcpiInterruptCallback, AcpiInterruptCallbackTag, AcpiIoAddress,
+        AcpiMappingError, AcpiPciId, AcpiPhysicalAddress, AcpiPredefinedNames, AcpiThreadCallback,
     },
 };
 
@@ -29,7 +29,7 @@ use crate::{
 /// # Safety
 /// This trait is unsafe to implement because some functions have restrictions on their
 /// implementation as well as their caller. This is indicated per method under the heading "Implementation Safety".
-/// 
+///
 /// As well as this, it is undefined behaviour for a panic to unwind across an FFI boundary from rust code to C code.
 /// Users of this library who have panic unwinding enabled are responsible for ensuring that a panic never unwinds out of a method in this trait.
 /// If the OS is built with `panic=abort`, this is not an issue.
@@ -470,80 +470,119 @@ pub unsafe trait AcpiHandler {
     // TODO: There might be more safety conditions
     unsafe fn get_timer(&mut self) -> u64;
 
-    
     /// Read a [`u8`] from the configuration space of the given PCI ID and return it.
     /// `register` is the offset of the value to read in bytes.
-    /// 
+    ///
     /// # Safety
     /// * This method is only called from `AcpiOsReadPciConfiguration`
     /// * The read is sound i.e. it has no memory-safety related side-effects.
-    unsafe fn read_pci_config_u8(&mut self, id: AcpiPciId, register: usize) -> Result<u8, AcpiError>;
-    
+    unsafe fn read_pci_config_u8(
+        &mut self,
+        id: AcpiPciId,
+        register: usize,
+    ) -> Result<u8, AcpiError>;
+
     /// Read a [`u16`] from the configuration space of the given PCI ID and return it.
     /// `register` is the offset of the value to read in bytes.
-    /// 
+    ///
     /// # Safety
     /// * This method is only called from `AcpiOsReadPciConfiguration`
     /// * The read is sound i.e. it has no memory-safety related side-effects.
-    unsafe fn read_pci_config_u16(&mut self, id: AcpiPciId, register: usize) -> Result<u16, AcpiError>;
-    
+    unsafe fn read_pci_config_u16(
+        &mut self,
+        id: AcpiPciId,
+        register: usize,
+    ) -> Result<u16, AcpiError>;
+
     /// Read a [`u32`] from the configuration space of the given PCI ID and return it.
     /// `register` is the offset of the value to read in bytes.
-    /// 
+    ///
     /// # Safety
     /// * This method is only called from `AcpiOsReadPciConfiguration`
     /// * The read is sound i.e. it has no memory-safety related side-effects.
-    unsafe fn read_pci_config_u32(&mut self, id: AcpiPciId, register: usize) -> Result<u32, AcpiError>;
-    
+    unsafe fn read_pci_config_u32(
+        &mut self,
+        id: AcpiPciId,
+        register: usize,
+    ) -> Result<u32, AcpiError>;
+
     /// Read a [`u64`] from the configuration space of the given PCI ID and return it.
     /// `register` is the offset of the value to read in bytes.
-    /// 
+    ///
     /// # Safety
     /// * This method is only called from `AcpiOsReadPciConfiguration`
     /// * The read is sound i.e. it has no memory-safety related side-effects.
-    unsafe fn read_pci_config_u64(&mut self, id: AcpiPciId, register: usize) -> Result<u64, AcpiError>;
+    unsafe fn read_pci_config_u64(
+        &mut self,
+        id: AcpiPciId,
+        register: usize,
+    ) -> Result<u64, AcpiError>;
 
-    
     /// Write a [`u8`] to the configuration space of the given PCI ID.
     /// `register` is the offset of the value to read in bytes.
-    /// 
+    ///
     /// # Safety
     /// * This method is only called from `AcpiOsWritePciConfiguration`
     /// * The write is sound i.e. it has no memory-safety related side-effects.
-    unsafe fn write_pci_config_u8(&mut self, id: AcpiPciId, register: usize, value: u8) -> Result<(), AcpiError>;
-    
+    unsafe fn write_pci_config_u8(
+        &mut self,
+        id: AcpiPciId,
+        register: usize,
+        value: u8,
+    ) -> Result<(), AcpiError>;
+
     /// Write a [`u16`] to the configuration space of the given PCI ID.
     /// `register` is the offset of the value to read in bytes.
-    /// 
+    ///
     /// # Safety
     /// * This method is only called from `AcpiOsRWriteciConfiguration`
     /// * The write is sound i.e. it has no memory-safety related side-effects.
-    unsafe fn write_pci_config_u16(&mut self, id: AcpiPciId, register: usize, value: u16) -> Result<(), AcpiError>;
-    
+    unsafe fn write_pci_config_u16(
+        &mut self,
+        id: AcpiPciId,
+        register: usize,
+        value: u16,
+    ) -> Result<(), AcpiError>;
+
     /// Write a [`u32`] to the configuration space of the given PCI ID.
     /// `register` is the offset of the value to read in bytes.
-    /// 
+    ///
     /// # Safety
     /// * This method is only called from `AcpiOsRWriteciConfiguration`
     /// * The write is sound i.e. it has no memory-safety related side-effects.
-    unsafe fn write_pci_config_u32(&mut self, id: AcpiPciId, register: usize, value: u32) -> Result<(), AcpiError>;
-    
+    unsafe fn write_pci_config_u32(
+        &mut self,
+        id: AcpiPciId,
+        register: usize,
+        value: u32,
+    ) -> Result<(), AcpiError>;
+
     /// Write a [`u64`] to the configuration space of the given PCI ID.
     /// `register` is the offset of the value to read in bytes.
-    /// 
+    ///
     /// # Safety
     /// * This method is only called from `AcpiOsRWriteciConfiguration`
     /// * The write is sound i.e. it has no memory-safety related side-effects.
-    unsafe fn write_pci_config_u64(&mut self, id: AcpiPciId, register: usize, value: u64) -> Result<(), AcpiError>;
+    unsafe fn write_pci_config_u64(
+        &mut self,
+        id: AcpiPciId,
+        register: usize,
+        value: u64,
+    ) -> Result<(), AcpiError>;
 
     /// Called when the AML `Fatal` opcode is encountered. The OS can return from this method, or kill the thread executing the AML.
-    /// 
+    ///
     /// # Safety
     /// * This method is only called from `AcpiOsSignal`
-    unsafe fn signal_fatal(&mut self, fatal_type: u32, code: u32, argument: u32) -> Result<(), AcpiError>;
+    unsafe fn signal_fatal(
+        &mut self,
+        fatal_type: u32,
+        code: u32,
+        argument: u32,
+    ) -> Result<(), AcpiError>;
 
     /// Called when the AML `Breakpoint` opcode is encountered.
-    /// 
+    ///
     /// # Safety
     /// * This method is only called from `AcpiOsSignal`
     unsafe fn signal_breakpoint(&mut self, message: &str) -> Result<(), AcpiError>;

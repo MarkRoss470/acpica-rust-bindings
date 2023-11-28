@@ -21,7 +21,7 @@ pub(crate) struct FfiAcpiTableFacs {
 
 ///  FADT - Fixed ACPI Description Table (Signature \"FACP\")
 ///         Version 6
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableFadt {

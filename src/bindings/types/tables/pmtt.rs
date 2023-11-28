@@ -1,9 +1,8 @@
 use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::IncompleteArrayField};
 
-
 ///  PMTT - Platform Memory Topology Table (ACPI 5.0)
 ///         Version 1
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTablePmtt {

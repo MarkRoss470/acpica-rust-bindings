@@ -1,11 +1,11 @@
-use crate::bindings::types::{FfiAcpiTableHeader, FfiAcpiGenericAddress};
+use crate::bindings::types::{FfiAcpiGenericAddress, FfiAcpiTableHeader};
 
 ///  WDAT - Watchdog Action Table
 ///         Version 1
-/// 
+///
 ///  Conforms to \"Hardware Watchdog Timers Design Specification\",
 ///  Copyright 2006 Microsoft Corporation.
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableWdat {
@@ -69,10 +69,10 @@ pub enum FfiAcpiWdatInstructions {
 
 ///  WDDT - Watchdog Descriptor Table
 ///         Version 1
-/// 
+///
 ///  Conforms to \"Using the Intel ICH Family Watchdog Timer (WDT)\",
 ///  Version 001, September 2002
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableWddt {
@@ -90,10 +90,10 @@ pub(crate) struct FfiAcpiTableWddt {
 
 ///  WDRT - Watchdog Resource Table
 ///         Version 1
-/// 
+///
 ///  Conforms to \"Watchdog Timer Hardware Requirements for Windows Server 2003\",
 ///  Version 1.01, August 28, 2006
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableWdrt {
@@ -109,4 +109,3 @@ pub(crate) struct FfiAcpiTableWdrt {
     pub max_count: u16,
     pub units: u8,
 }
-

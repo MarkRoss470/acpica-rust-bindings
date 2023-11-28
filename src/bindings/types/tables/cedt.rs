@@ -2,9 +2,9 @@ use crate::{bindings::types::FfiAcpiTableHeader, bindings::types::IncompleteArra
 
 ///  CEDT - CXL Early Discovery Table
 ///         Version 1
-/// 
+///
 ///  Conforms to the \"CXL Early Discovery Table\" (CXL 2.0)
-/// 
+///
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableCedt {

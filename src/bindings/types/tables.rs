@@ -35,7 +35,7 @@ pub mod windows;
 
 ///  Master ACPI Table Header. This common header is used by all ACPI tables
 ///  except the RSDP and FACS.
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableHeader {
@@ -51,7 +51,7 @@ pub(crate) struct FfiAcpiTableHeader {
 }
 
 ///  Common subtable headers
-/// 
+///
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiSubtableHeader {
@@ -61,7 +61,7 @@ pub(crate) struct FfiAcpiSubtableHeader {
 
 ///  RSDP - Root System Description Pointer (Signature is \"RSD PTR \")
 ///         Version 2
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableRsdp {
@@ -77,7 +77,7 @@ pub(crate) struct FfiAcpiTableRsdp {
 }
 ///  RSDP - Root System Description Pointer (Signature is \"RSD PTR \")
 ///         Version 2
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiRsdpCommon {

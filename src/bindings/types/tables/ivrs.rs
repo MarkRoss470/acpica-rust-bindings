@@ -2,10 +2,10 @@ use crate::bindings::types::FfiAcpiTableHeader;
 
 ///  IVRS - I/O Virtualization Reporting Structure
 ///         Version 1
-/// 
+///
 ///  Conforms to \"AMD I/O Virtualization Technology (IOMMU) Specification\",
 ///  Revision 1.26, February 2009.
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableIvrs {

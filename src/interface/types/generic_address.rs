@@ -136,7 +136,7 @@ impl AcpiGenericAddress {
     pub const ACCESS_WIDTH_4_BYTES: u8 = 3;
     /// The value of [`access_width`][AcpiGenericAddress::access_width] corresponding to a quad word access (8 bytes)
     pub const ACCESS_WIDTH_8_BYTES: u8 = 4;
-    
+
     pub(crate) fn from_ffi(value: FfiAcpiGenericAddress) -> Self {
         Self {
             space_id: GasAddressSpace::from_u8(value.space_id),

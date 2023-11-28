@@ -1,5 +1,6 @@
 use crate::{
-    bindings::types::FfiAcpiTableHeader, bindings::types::{IncompleteArrayField, FfiAcpiGenericAddress},
+    bindings::types::FfiAcpiTableHeader,
+    bindings::types::{FfiAcpiGenericAddress, IncompleteArrayField},
 };
 
 use super::FfiAcpiSubtableHeader;

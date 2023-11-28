@@ -1,18 +1,24 @@
 use core::ops::{Deref, DerefMut};
 
-use alloc::{ffi::CString, boxed::Box, vec::Vec};
+use alloc::{boxed::Box, ffi::CString, vec::Vec};
 use spin::Mutex;
 
-use crate::bindings::{functions::{AcpiInitializeSubsystem, AcpiInitializeTables, AcpiLoadTables, AcpiEnableSubsystem, AcpiInitializeObjects}, consts::ACPI_FULL_INITIALIZATION};
+use crate::bindings::{
+    consts::ACPI_FULL_INITIALIZATION,
+    functions::{
+        AcpiEnableSubsystem, AcpiInitializeObjects, AcpiInitializeSubsystem, AcpiInitializeTables,
+        AcpiLoadTables,
+    },
+};
 
 use self::{handler::AcpiHandler, status::AcpiError};
 
 pub mod handler;
 
-pub mod status;
-pub mod types;
-mod tables;
 pub mod devices;
+pub mod status;
+mod tables;
+pub mod types;
 
 static OS_INTERFACE: Mutex<Option<OsInterface>> = Mutex::new(None);
 
@@ -150,4 +156,3 @@ impl AcpicaOperation<true, true, true, false> {
         Ok(AcpicaOperation)
     }
 }
-

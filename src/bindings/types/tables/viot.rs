@@ -2,7 +2,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 
 ///  VIOT - Virtual I/O Translation Table
 ///         Version 1
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableViot {

@@ -2,7 +2,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 
 ///  NFIT - NVDIMM Interface Table (ACPI 6.0+)
 ///         Version 1
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableNfit {
@@ -142,4 +142,3 @@ pub(crate) struct FfiAcpiNfitCapabilities {
     pub capabilities: u32,
     pub reserved2: u32,
 }
-

@@ -1,9 +1,8 @@
 use crate::bindings::types::FfiAcpiTableHeader;
 
-
 ///  GTDT - Generic Timer Description Table (ACPI 5.1)
 ///         Version 2
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableGtdt {

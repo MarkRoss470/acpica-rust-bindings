@@ -1,6 +1,11 @@
 use log::debug;
 
-use crate::{bindings::types::FfiAcpiPciId, status::{AcpiStatus, AcpiError, AcpiErrorAsStatusExt}, types::AcpiPciId, interface::OS_INTERFACE};
+use crate::{
+    bindings::types::FfiAcpiPciId,
+    interface::OS_INTERFACE,
+    status::{AcpiError, AcpiErrorAsStatusExt, AcpiStatus},
+    types::AcpiPciId,
+};
 
 #[export_name = "AcpiOsReadPciConfiguration"]
 extern "C" fn acpi_os_read_pci_configuration(
@@ -10,7 +15,7 @@ extern "C" fn acpi_os_read_pci_configuration(
     width: u32,
 ) -> AcpiStatus {
     if value.is_null() || pci_id.is_null() {
-        return AcpiError::BadParameter.to_acpi_status()
+        return AcpiError::BadParameter.to_acpi_status();
     }
 
     debug!(target: "acpi_os_read_pci_configuration", "Reading {width} bytes from {pci_id:?}");
@@ -56,7 +61,7 @@ extern "C" fn acpi_os_write_pci_configuration(
     width: u32,
 ) -> AcpiStatus {
     let pci_id = AcpiPciId::from_ffi(pci_id);
-    
+
     let mut interface = OS_INTERFACE.lock();
     let interface = interface.as_mut().unwrap();
 
@@ -71,7 +76,7 @@ extern "C" fn acpi_os_write_pci_configuration(
             16 => interface.write_pci_config_u16(pci_id, reg, value as _),
             32 => interface.write_pci_config_u32(pci_id, reg, value as _),
             64 => interface.write_pci_config_u64(pci_id, reg, value),
-            _ => panic!("Invalid value of `width`")
+            _ => panic!("Invalid value of `width`"),
         }
     };
 

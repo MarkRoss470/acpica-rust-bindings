@@ -1,11 +1,11 @@
-use crate::bindings::types::{FfiAcpiTableHeader, FfiAcpiGenericAddress};
+use crate::bindings::types::{FfiAcpiGenericAddress, FfiAcpiTableHeader};
 
 ///  HPET - High Precision Event Timer table
 ///         Version 1
-/// 
+///
 ///  Conforms to \"IA-PC HPET (High Precision Event Timers) Specification\",
 ///  Version 1.0a, October 2004
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableHpet {

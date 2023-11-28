@@ -1,12 +1,11 @@
 use crate::bindings::types::FfiAcpiTableHeader;
 
-
 ///  DMAR - DMA Remapping table
 ///         Version 1
-/// 
+///
 ///  Conforms to \"Intel Virtualization Technology for Directed I/O\",
 ///  Version 2.3, October 2014
-/// 
+///
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableDmar {

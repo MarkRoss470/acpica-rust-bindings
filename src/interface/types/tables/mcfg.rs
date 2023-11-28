@@ -21,7 +21,7 @@ impl<'a> Mcfg<'a> {
     }
 
     /// Gets an iterator over the table's records
-    /// 
+    ///
     /// # Panics
     /// If the table is malformed - if the table (excluding header and reserved bytes) is not a multiple of 16 bytes in length
     pub fn records(&self) -> impl Iterator<Item = McfgRecord> + '_ {

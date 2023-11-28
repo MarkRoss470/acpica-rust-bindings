@@ -1,10 +1,10 @@
-use crate::bindings::types::{IncompleteArrayField, FfiAcpiTableHeader};
+use crate::bindings::types::{FfiAcpiTableHeader, IncompleteArrayField};
 
 ///  AEST - Arm Error Source Table
-/// 
+///
 ///  Conforms to: ACPI for the Armv8 RAS Extensions 1.1 Platform Design Document
 ///  September 2020.
-/// 
+///
 #[repr(C, packed)]
 pub(crate) struct FfiAcpiTableAest {
     pub header: FfiAcpiTableHeader,

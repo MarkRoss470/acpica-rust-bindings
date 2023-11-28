@@ -1,11 +1,10 @@
 use crate::bindings::types::FfiAcpiTableHeader;
 
-
 ///  DBG2 - Debug Port Table 2
 ///         Version 0 (Both main table and subtables)
-/// 
+///
 ///  Conforms to \"Microsoft Debug Port Table 2 (DBG2)\", September 21, 2020
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableDbg2 {

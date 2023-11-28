@@ -7,9 +7,12 @@ pub use handler_trait::AcpiHandler;
 
 use alloc::ffi::CString;
 
-use crate::{bindings::functions::{
-    AcpiDebugTrace, AcpiEnterSleepState, AcpiEnterSleepStatePrep, AcpiGetTimer,
-}, AcpicaOperation};
+use crate::{
+    bindings::functions::{
+        AcpiDebugTrace, AcpiEnterSleepState, AcpiEnterSleepStatePrep, AcpiGetTimer,
+    },
+    AcpicaOperation,
+};
 
 use super::status::AcpiError;
 

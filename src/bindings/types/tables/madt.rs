@@ -4,7 +4,7 @@ use super::FfiAcpiSubtableHeader;
 
 ///  MADT - Multiple APIC Description Table
 ///         Version 3
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableMadt {

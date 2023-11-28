@@ -4,7 +4,7 @@ use super::FfiAcpiSubtableHeader;
 
 ///  PPTT - Processor Properties Topology Table (ACPI 6.2)
 ///         Version 1
-/// 
+///
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTablePptt {

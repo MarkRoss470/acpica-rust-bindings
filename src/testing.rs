@@ -23,10 +23,7 @@ pub struct DummyHandler<'a> {
     >,
 
     pub fn_table_override: Box<
-        dyn Fn(
-            &AcpiTableHeader,
-        )
-            -> Result<Option<AcpiTableHeader<'a>>, crate::status::AcpiError>,
+        dyn Fn(&AcpiTableHeader) -> Result<Option<AcpiTableHeader<'a>>, crate::status::AcpiError>,
     >,
 
     pub fn_physical_table_override: Box<

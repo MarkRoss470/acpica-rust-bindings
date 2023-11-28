@@ -2,17 +2,17 @@ use crate::bindings::types::FfiAcpiTableHeader;
 
 ///  TCPA - Trusted Computing Platform Alliance table
 ///         Version 2
-/// 
+///
 ///  TCG Hardware Interface Table for TPM 1.2 Clients and Servers
-/// 
+///
 ///  Conforms to \"TCG ACPI Specification, Family 1.2 and 2.0\",
 ///  Version 1.2, Revision 8
 ///  February 27, 2017
-/// 
+///
 ///  NOTE: There are two versions of the table with the same signature --
 ///  the client version and the server version. The common `platform_class`
 ///  field is used to differentiate the two types of tables.
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableTcpaHdr {
@@ -22,13 +22,13 @@ pub(crate) struct FfiAcpiTableTcpaHdr {
 
 ///  TPM2 - Trusted Platform Module (TPM) 2.0 Hardware Interface Table
 ///         Version 4
-/// 
+///
 ///  TCG Hardware Interface Table for TPM 2.0 Clients and Servers
-/// 
+///
 ///  Conforms to \"TCG ACPI Specification, Family 1.2 and 2.0\",
 ///  Version 1.2, Revision 8
 ///  February 27, 2017
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableTpm23 {

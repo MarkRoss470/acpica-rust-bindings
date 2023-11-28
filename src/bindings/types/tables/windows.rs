@@ -2,9 +2,9 @@ use crate::bindings::types::FfiAcpiTableHeader;
 
 ///  WAET - Windows ACPI Emulated devices Table
 ///         Version 1
-/// 
+///
 ///  Conforms to \"Windows ACPI Emulated Devices Table\", version 1.0, April 6, 2009
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableWaet {
@@ -12,12 +12,11 @@ pub(crate) struct FfiAcpiTableWaet {
     pub flags: u32,
 }
 
-
 ///  WPBT - Windows Platform Environment Table (ACPI 6.0)
 ///         Version 1
-/// 
+///
 ///  Conforms to \"Windows Platform Binary Table (WPBT)\" 29 November 2011
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableWpbt {
@@ -37,10 +36,10 @@ pub(crate) struct FfiAcpiWpbtUnicode {
 
 ///  WSMT - Windows SMM Security Mitigations Table
 ///         Version 1
-/// 
+///
 ///  Conforms to \"Windows SMM Security Mitigations Table\",
 ///  Version 1.0, April 18, 2016
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableWsmt {

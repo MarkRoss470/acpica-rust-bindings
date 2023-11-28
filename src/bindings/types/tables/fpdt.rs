@@ -2,7 +2,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 
 ///  FPDT - Firmware Performance Data Table (ACPI 5.0)
 ///         Version 1
-/// 
+///
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableFpdt {

@@ -1,10 +1,10 @@
 use crate::bindings::types::FfiAcpiTableHeader;
 
 ///  IORT - IO Remapping Table
-/// 
+///
 ///  Conforms to \"IO Remapping Table System Software on ARM Platforms\",
 ///  Document number: ARM DEN 0049E.b, Feb 2021
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableIort {

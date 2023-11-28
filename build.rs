@@ -173,7 +173,12 @@ fn create_archive(out_dir: PathBuf, out_dir_string: String, object_files: Vec<Pa
 
 /// Runs GCC on all the C files making up the ACPICA kernel subsystem,
 /// returning the filepaths of the generated object files.
-fn compile(acpica_dir: &Path, out_dir: &Path, optimisation_level: &str, is_debug: bool) -> Vec<PathBuf> {
+fn compile(
+    acpica_dir: &Path,
+    out_dir: &Path,
+    optimisation_level: &str,
+    is_debug: bool,
+) -> Vec<PathBuf> {
     let mut object_files = vec![];
 
     let mut components_path = acpica_dir.to_path_buf();
@@ -249,7 +254,7 @@ fn compile(acpica_dir: &Path, out_dir: &Path, optimisation_level: &str, is_debug
                 (_, _) => panic!("Unknown optimisation level '{optimisation_level}'"),
             };
 
-            let gcc_command_output = gcc_command 
+            let gcc_command_output = gcc_command
                 .output()
                 .expect("Should have been able to get output of GCC command");
 

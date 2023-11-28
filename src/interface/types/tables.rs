@@ -4,10 +4,10 @@ use core::fmt::Debug;
 
 use crate::bindings::types::tables::FfiAcpiTableHeader;
 
-pub mod madt;
-pub mod uefi;
 pub mod fadt;
+pub mod madt;
 pub mod mcfg;
+pub mod uefi;
 
 pub use madt::Madt;
 pub use uefi::Uefi;

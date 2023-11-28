@@ -3,7 +3,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 #[allow(clippy::doc_markdown)]
 ///  IBFT - Boot Firmware Table
 ///         Version 1
-/// 
+///
 ///  Conforms to \"iSCSI Boot Firmware Table (iBFT) as Defined in ACPI 3.0b
 ///  Specification\", Version 1.01, March 1, 2007
 #[repr(C)]

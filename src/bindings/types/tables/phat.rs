@@ -2,7 +2,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 
 ///  PHAT - Platform Health Assessment Table (ACPI 6.4)
 ///         Version 1
-/// 
+///
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTablePhat {

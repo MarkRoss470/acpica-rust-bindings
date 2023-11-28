@@ -2,7 +2,7 @@ use crate::bindings::types::FfiAcpiTableHeader;
 
 ///  RSDT/XSDT - Root System Description Tables
 ///              Version 1 (both)
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableRsdt {

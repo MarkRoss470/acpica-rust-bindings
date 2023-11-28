@@ -1,8 +1,8 @@
-use crate::bindings::types::{FfiAcpiTableHeader, FfiAcpiGenericAddress};
+use crate::bindings::types::{FfiAcpiGenericAddress, FfiAcpiTableHeader};
 
 ///  HEST - Hardware Error Source Table (ACPI 4.0)
 ///         Version 1
-/// 
+///
 #[repr(C, packed)]
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct FfiAcpiTableHest {

@@ -1,5 +1,12 @@
-use crate::{AcpicaOperation, types::tables::{AcpiTableHeader, Uefi, Madt, mcfg::Mcfg, fadt::Fadt}, bindings::{functions::{AcpiGetTable, AcpiGetTableByIndex}, types::tables::FfiAcpiTableHeader}, status::AcpiError};
-
+use crate::{
+    bindings::{
+        functions::{AcpiGetTable, AcpiGetTableByIndex},
+        types::tables::FfiAcpiTableHeader,
+    },
+    status::AcpiError,
+    types::tables::{fadt::Fadt, mcfg::Mcfg, AcpiTableHeader, Madt, Uefi},
+    AcpicaOperation,
+};
 
 impl<const TL: bool, const E: bool, const I: bool> AcpicaOperation<true, TL, E, I> {
     fn get_tables_of_type(&self, signature: [u8; 4]) -> impl Iterator<Item = AcpiTableHeader> {
@@ -132,9 +139,7 @@ impl<const TL: bool, const E: bool, const I: bool> AcpicaOperation<true, TL, E, 
     #[allow(clippy::missing_panics_doc)]
     #[must_use]
     pub fn mcfg(&self) -> Option<Mcfg> {
-        let ptr = self
-            .table(*b"MCFG")?
-            .as_ffi() as *const FfiAcpiTableHeader;
+        let ptr = self.table(*b"MCFG")?.as_ffi() as *const FfiAcpiTableHeader;
 
         let ptr = ptr.cast();
         // SAFETY: The signature is "APIC" so the table is an MADT

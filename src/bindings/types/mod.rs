@@ -12,7 +12,7 @@ use self::object::{FfiAcpiObject, FfiAcpiObjectType};
 /// The last field of a C struct can be an array with no fixed size.
 /// This struct is the rust equivalent.
 /// The type can be cast to a slice using the [`as_slice`] and [`as_mut_slice`] methods.
-/// 
+///
 /// [`as_slice`]: IncompleteArrayField::as_slice
 /// [`as_mut_slice`]: IncompleteArrayField::as_mut_slice
 #[repr(C)]
@@ -89,7 +89,7 @@ pub(crate) struct FfiAcpiObjectList {
 pub(crate) struct FfiAcpiBuffer<'a> {
     pub(crate) length: FfiAcpiSize,
     pub(crate) pointer: *mut ::core::ffi::c_void,
-    pub _p: PhantomData<&'a mut [u8]>
+    pub _p: PhantomData<&'a mut [u8]>,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]

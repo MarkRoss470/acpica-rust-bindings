@@ -488,16 +488,26 @@ mod tests {
     use super::*;
 
     /// Tests that the given format string and arguments leads to the given result string when used in a [`CFmtConverter`].
-    /// 
+    ///
     /// # Safety
     /// * `result_ptr` and `result_len` must be the pointer and length for a utf-8 string slice with lifetime at least as long as this function call
     /// * `format_ptr` and `format_len` must be the pointer and length for a utf-8 string slice with lifetime at least as long as this function call
     /// * `args` must contain arguments of types which match to the C format specifiers in the format string
-    unsafe extern "C" fn test_printf(result_ptr: *const u8, result_len: usize, format_ptr: *const u8, format_len: usize, mut args: ...) {
+    unsafe extern "C" fn test_printf(
+        result_ptr: *const u8,
+        result_len: usize,
+        format_ptr: *const u8,
+        format_len: usize,
+        mut args: ...
+    ) {
         // SAFETY: `result_ptr` and `result_len` make up a utf-8 string slice with the right lifetime
-        let result = unsafe { core::str::from_utf8_unchecked(core::slice::from_raw_parts(result_ptr, result_len)) };
+        let result = unsafe {
+            core::str::from_utf8_unchecked(core::slice::from_raw_parts(result_ptr, result_len))
+        };
         // SAFETY: `format_ptr` and `format_len` make up a utf-8 string slice with the right lifetime
-        let format = unsafe { core::str::from_utf8_unchecked(core::slice::from_raw_parts(format_ptr, format_len)) };
+        let format = unsafe {
+            core::str::from_utf8_unchecked(core::slice::from_raw_parts(format_ptr, format_len))
+        };
 
         assert_eq!(
             result,
@@ -522,10 +532,10 @@ mod tests {
                 let result: &str = $result;
                 let format: &str = $format_str;
 
-                // SAFETY: 
-                // * The `result_ptr` and `result_len` arguments to `test_printf` are the pointer and length 
+                // SAFETY:
+                // * The `result_ptr` and `result_len` arguments to `test_printf` are the pointer and length
                 //       of the `result` variable which is a string slice with the right lifetime.
-                // * The `format_ptr` and `format_len` arguments to `test_printf` are the pointer and length 
+                // * The `format_ptr` and `format_len` arguments to `test_printf` are the pointer and length
                 //       of the `format` variable which is a string slice with the right lifetime.
                 // * The arguments match the format string
                 unsafe {
