@@ -125,7 +125,7 @@ pub(crate) struct FfiAcpiPnpDeviceIdList {
 #[derive(Debug)]
 pub(crate) struct FfiAcpiDeviceInfo {
     pub(crate) info_size: u32,
-    pub(crate) name: u32,
+    pub(crate) name: [u8; 4],
     pub(crate) object_type: FfiAcpiObjectType,
     pub(crate) param_count: u8,
     pub(crate) valid: u16,

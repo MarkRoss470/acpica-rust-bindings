@@ -162,9 +162,9 @@ impl<'a> AcpiObject<'a> {
     }
 
     /// Copies the data from an ACPI object, indicated by its type number and a pointer to the object (for integer objects, the pointer itself stores the value)
-    /// 
+    ///
     /// # Safety
-    /// `val` must be valid data of the type indicated by `object_type` 
+    /// `val` must be valid data of the type indicated by `object_type`
     pub(crate) unsafe fn from_type_and_val(object_type: u8, val: *mut i8) -> Self {
         match object_type.into() {
             _t @ ACPI_TYPE_ANY => Self::Any,
@@ -183,6 +183,60 @@ impl<'a> AcpiObject<'a> {
                 warn!(target: "acpi_object_from_type_and_val", "Check object type meaning. Type is {}, val is {:p}", object_type, val);
                 Self::Any
             }
+        }
+    }
+
+    /// Gets the type of the object
+    #[must_use]
+    pub fn get_type(&self) -> AcpiObjectType {
+        match self {
+            AcpiObject::Any => AcpiObjectType::Any,
+            AcpiObject::Integer(_) => AcpiObjectType::Integer,
+            AcpiObject::String(_) => AcpiObjectType::String,
+            AcpiObject::Buffer(_) => AcpiObjectType::Buffer,
+            AcpiObject::Package(_) => AcpiObjectType::Package,
+            AcpiObject::Reference(_) => AcpiObjectType::Reference,
+            AcpiObject::Processor(_) => AcpiObjectType::Processor,
+            AcpiObject::PowerResource(_) => AcpiObjectType::PowerResource,
+        }
+    }
+}
+
+/// A type of an [`AcpiObject`]. This is used when the type of data is known but the value is not.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum AcpiObjectType {
+    /// The object can be any type, or the type is not known.
+    /// From ACPICA comments: "\[Any\] is used to indicate a NULL package element or an unresolved named reference."
+    Any,
+    /// The object is an integer
+    Integer,
+    /// The object is a string
+    String,
+    /// The object is a buffer of bytes
+    Buffer,
+    /// The object is a package containing other AML data
+    Package,
+    /// The object is a reference to another [`AcpiObject`]
+    Reference,
+    /// The object describes the features of a processor
+    Processor,
+    /// The object describes a power resource
+    PowerResource,
+}
+
+impl AcpiObjectType {
+    pub(crate) fn from_type_id(id: FfiAcpiObjectType) -> Self {
+        match id {
+            _t @ ACPI_TYPE_ANY => Self::Any,
+            _t @ ACPI_TYPE_INTEGER => Self::Integer,
+            _t @ ACPI_TYPE_STRING => Self::String,
+            _t @ ACPI_TYPE_BUFFER => Self::Buffer,
+            _t @ ACPI_TYPE_PACKAGE => Self::Package,
+            _t @ ACPI_TYPE_LOCAL_REFERENCE => Self::Reference,
+            _t @ ACPI_TYPE_PROCESSOR => Self::Processor,
+            _t @ ACPI_TYPE_POWER => Self::PowerResource,
+
+            _ => Self::Any,
         }
     }
 }
