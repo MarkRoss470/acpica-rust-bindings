@@ -56,13 +56,47 @@ impl<'a> Madt<'a> {
     }
 }
 
+/// An error occurring when attempting to fetch the IO APIC address from the
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum IoApicAddressFetchError {
+    /// There was no [`IoApic`] record in the MADT
+    ///
+    /// [`IoApic`]: MadtRecord::IoApic
+    NoRecord,
+}
+
+impl<'a> Madt<'a> {
+    /// Returns the physical address of the IO APIC
+    pub fn io_apic_address(&self) -> Result<AcpiPhysicalAddress, IoApicAddressFetchError> {
+        let mut records = self.records();
+
+        let address = records
+            .find_map(|record| {
+                if let MadtRecord::IoApic { address, .. } = record {
+                    Some(address)
+                } else {
+                    None
+                }
+            })
+            .ok_or(IoApicAddressFetchError::NoRecord)?;
+
+        // If there are more IO APICs after the first one
+        if records.any(|record| matches!(&record, MadtRecord::IoApic { .. })) {
+            todo!("Multiple I/O APICs");
+        }
+
+        Ok(AcpiPhysicalAddress(address.try_into().unwrap()))
+    }
+}
+
 impl<'a> Debug for Madt<'a> {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_struct("AcpiTableMadt")
-        .field("header", &self.header())
-        .field("local_apic_address", &self.local_apic_address())
-        .field("pcat_compatible", &self.pcat_compatible())
-        .finish()
+            .field("header", &self.header())
+            .field("local_apic_address", &self.local_apic_address())
+            .field("pcat_compatible", &self.pcat_compatible())
+            .finish()
     }
 }
 
@@ -311,7 +345,7 @@ impl<'a> MadtRecord<'a> {
         macro_rules! read {
             ($read_type: ty, $from: expr) => {{
                 const SIZE_OF_TYPE: usize = ::core::mem::size_of::<$read_type>();
-                
+
                 let from: &mut &[u8] = &mut $from;
 
                 let (arr, rest) = from.split_at(SIZE_OF_TYPE);
@@ -330,7 +364,9 @@ impl<'a> MadtRecord<'a> {
         // The second byte is always the length of the record in bytes
         let length: u8 = from[1];
 
-        let (mut from, rest) = from.split_at(length as usize);
+        let (from, rest) = from.split_at(length as usize);
+        // The first two bytes are the variant and length, and aren't part of the data
+        let mut from = &from[2..];
 
         let record = match variant {
             0x00 => Self::ProcessorLocalApic {

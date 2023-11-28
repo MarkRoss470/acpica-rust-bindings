@@ -2,7 +2,7 @@
 
 mod generic_address;
 pub mod tables;
-mod object;
+pub mod object;
 
 use core::{
     ffi::{c_void, CStr},
@@ -32,6 +32,13 @@ impl Debug for AcpiPhysicalAddress {
         f.debug_tuple("AcpiPhysicalAddress")
             .field(&format_args!("{:#x}", self.0))
             .finish()
+    }
+}
+
+#[cfg(feature = "x86_64")]
+impl From<AcpiPhysicalAddress> for x86_64::PhysAddr {
+    fn from(val: AcpiPhysicalAddress) -> Self {
+        x86_64::PhysAddr::new(val.0.try_into().unwrap())
     }
 }
 

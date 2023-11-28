@@ -6,6 +6,8 @@ use crate::bindings::types::tables::FfiAcpiTableHeader;
 
 pub mod madt;
 pub mod uefi;
+pub mod fadt;
+pub mod mcfg;
 
 pub use madt::Madt;
 pub use uefi::Uefi;
