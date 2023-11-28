@@ -4,7 +4,7 @@ use core::{
     iter::Peekable,
 };
 
-use crate::handler::OS_INTERFACE;
+use crate::interface::OS_INTERFACE;
 
 fn read_format_parameter(
     chars: &mut Peekable<impl Iterator<Item = char>>,

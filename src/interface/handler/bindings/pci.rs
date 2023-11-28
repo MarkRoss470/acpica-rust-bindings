@@ -1,17 +1,22 @@
-use crate::{bindings::types::FfiAcpiPciId, status::{AcpiStatus, AcpiError, AcpiErrorAsStatusExt}, types::AcpiPciId, handler::OS_INTERFACE};
+use log::debug;
+
+use crate::{bindings::types::FfiAcpiPciId, status::{AcpiStatus, AcpiError, AcpiErrorAsStatusExt}, types::AcpiPciId, interface::OS_INTERFACE};
 
 #[export_name = "AcpiOsReadPciConfiguration"]
 extern "C" fn acpi_os_read_pci_configuration(
-    pci_id: FfiAcpiPciId,
+    pci_id: *const FfiAcpiPciId,
     reg: u32,
     value: *mut u64,
     width: u32,
 ) -> AcpiStatus {
-    if value.is_null() {
+    if value.is_null() || pci_id.is_null() {
         return AcpiError::BadParameter.to_acpi_status()
     }
 
-    let pci_id = AcpiPciId::from_ffi(pci_id);
+    debug!(target: "acpi_os_read_pci_configuration", "Reading {width} bytes from {pci_id:?}");
+
+    // SAFETY: `pci_id` is non-null so it is valid
+    let pci_id = unsafe { AcpiPciId::from_ffi(pci_id.read()) };
 
     let mut interface = OS_INTERFACE.lock();
     let interface = interface.as_mut().unwrap();

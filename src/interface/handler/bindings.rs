@@ -1,4 +1,3 @@
-#[cfg(feature = "builtin_alloc")]
 mod alloc;
 mod interrupts;
 mod io;
@@ -22,11 +21,12 @@ use crate::{
         consts::{ACPI_SIGNAL_BREAKPOINT, ACPI_SIGNAL_FATAL},
         types::{FfiAcpiPhysicalAddress, FfiAcpiSignalFatalInfo},
     },
-    interface::status::{AcpiErrorAsStatusExt, AcpiStatus},
+    interface::{
+        status::{AcpiErrorAsStatusExt, AcpiStatus},
+        OS_INTERFACE,
+    },
     status::AcpiError,
 };
-
-use super::OS_INTERFACE;
 
 #[export_name = "AcpiOsInitialize"]
 extern "C" fn acpi_os_initialize() -> AcpiStatus {
@@ -167,36 +167,6 @@ extern "C" fn acpi_os_acquire_object(mut cache: *mut c_void) -> *mut c_void {
 #[export_name = "AcpiOsReleaseObject"]
 extern "C" fn acpi_os_release_object(mut cache: *mut c_void, object: *mut c_void) -> AcpiStatus {
     todo!()
-}
-
-#[cfg(not(feature = "builtin_alloc"))]
-#[export_name = "AcpiOsAllocate"]
-extern "C" fn acpi_os_allocate(size: FfiAcpiSize) -> *mut c_void {
-    let mut interface = OS_INTERFACE.lock();
-    let interface = interface.as_mut().unwrap();
-
-    unsafe {
-        interface
-            .allocate(size)
-            .unwrap_or(core::ptr::null_mut())
-            .cast()
-    }
-}
-
-// TODO: allow native allocate zeroed (set USE_NATIVE_ALLOCATE_ZEROED build flag)
-// #[cfg(not(feature = "builtin_alloc"))]
-// #[export_name = "AcpiOsAllocateZeroed"]
-// extern "C" fn acpi_os_allocate_zeroed(_size: FfiAcpiSize) -> *mut ::core::ffi::c_void {
-//     todo!()
-// }
-
-#[cfg(not(feature = "builtin_alloc"))]
-#[export_name = "AcpiOsFree"]
-extern "C" fn acpi_os_free(memory: *mut c_void) {
-    let mut interface = OS_INTERFACE.lock();
-    let interface = interface.as_mut().unwrap();
-
-    unsafe { interface.free(memory.cast()) }
 }
 
 #[cfg(not(feature = "builtin_lock"))]

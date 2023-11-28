@@ -1,6 +1,6 @@
 use core::ffi::c_void;
 
-use crate::{bindings::types::functions::FfiAcpiOsdHandler, status::{AcpiStatus, AcpiErrorAsStatusExt}, handler::OS_INTERFACE, types::{AcpiInterruptCallback, AcpiInterruptCallbackTag}};
+use crate::{bindings::types::functions::FfiAcpiOsdHandler, status::{AcpiStatus, AcpiErrorAsStatusExt}, types::{AcpiInterruptCallback, AcpiInterruptCallbackTag}, interface::OS_INTERFACE};
 
 #[export_name = "AcpiOsInstallInterruptHandler"]
 extern "C" fn acpi_os_install_interrupt_handler(

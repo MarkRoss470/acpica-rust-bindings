@@ -2,7 +2,7 @@ use core::ffi::c_void;
 
 use crate::{
     bindings::types::{functions::FfiAcpiOsdExecCallback, FfiAcpiExecuteType},
-    handler::OS_INTERFACE,
+    interface::OS_INTERFACE,
     status::{AcpiErrorAsStatusExt, AcpiStatus},
     types::AcpiThreadCallback,
 };

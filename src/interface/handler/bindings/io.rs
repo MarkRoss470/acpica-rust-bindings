@@ -1,6 +1,6 @@
 use crate::{
     bindings::types::FfiAcpiIoAddress,
-    handler::OS_INTERFACE,
+    interface::OS_INTERFACE,
     status::{AcpiError, AcpiErrorAsStatusExt, AcpiStatus},
     types::AcpiIoAddress,
 };

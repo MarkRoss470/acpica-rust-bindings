@@ -44,3 +44,5 @@ extern "C" fn acpi_os_free(memory: *mut ::core::ffi::c_void) {
     // Explicitly drop the Vec to free the memory
     drop(v);
 }
+
+// TODO: Native AllocateZeroed

@@ -2,7 +2,7 @@ use core::ffi::c_void;
 
 use crate::{
     bindings::types::{FfiAcpiPhysicalAddress, FfiAcpiSize},
-    handler::OS_INTERFACE,
+    interface::OS_INTERFACE,
     status::{AcpiError, AcpiErrorAsStatusExt, AcpiStatus},
     types::AcpiPhysicalAddress,
 };

@@ -19,7 +19,6 @@ use crate::{
 /// # Optional Methods
 ///
 /// Some methods are only present if certain features of the crate are enabled or disabled:
-/// * `allocate` and `free` are only present if the crate feature `builtin_alloc` is disabled
 /// * `create_cache`, `delete_cache`, `purge_cache`, `acquire_object`, and `release_object`
 ///     are only present if the crate feature `builtin_cache` is disabled
 /// * `create_lock`, `delete_lock`, `acquire_lock`, and `release_lock`
@@ -682,42 +681,4 @@ pub unsafe trait AcpiHandler {
     #[cfg(not(feature = "builtin_semaphore"))]
     unsafe fn signal_semaphore(&mut self, handle: *mut c_void, units: u32)
         -> Result<(), AcpiError>;
-
-    /// Allocate `size` bytes of memory.
-    ///
-    /// This method is only present in the trait if the `builtin_alloc` feature is not set.
-    /// Otherwise, a default implementation is used which forwards allocations to the system allocator.
-    ///
-    /// The implementation of this method is not as straightforward as it may seem, as rust's heap allocator
-    /// API requires the length to be passed to [`dealloc`] as part of the
-    /// [`Layout`], but the ACPICA [`free`] function doesn't pass it.
-    /// The default implementations of these methods stores the allocated size in the first few bytes of the
-    /// allocation and returning the rest to ACPICA.
-    ///
-    /// # Safety
-    /// * This method is only called from `AcpiOsAllocate`
-    /// * The returned pointer must only be used to access `size` bytes.
-    ///
-    /// [`dealloc`]: alloc::alloc::dealloc
-    /// [`Layout`]: alloc::alloc::Layout
-    /// [`free`]: AcpiHandler::free
-    #[cfg(not(feature = "builtin_alloc"))]
-    unsafe fn allocate(&mut self, size: usize) -> Result<*mut u8, AcpiAllocationError>;
-
-    // TODO: native allocate zeroed (see bindings.rs)
-    // fn allocate_zeroed(&mut self, Size: usize) -> *mut ::core::ffi::c_void;
-
-    /// Free the allocation at `memory`.
-    ///
-    /// This method is only present in the trait if the `builtin_alloc` feature is not set.
-    /// Otherwise, a default implementation is used which forwards allocations to the system allocator.
-    ///
-    /// See the docs for [`allocate`] for potential problems implementing this method.
-    ///
-    /// # Safety
-    /// * `memory` must be a pointer which was allocated using [`allocate`]
-    ///
-    /// [`allocate`]: AcpiHandler::allocate
-    #[cfg(not(feature = "builtin_alloc"))]
-    unsafe fn free(&mut self, memory: *mut u8);
 }

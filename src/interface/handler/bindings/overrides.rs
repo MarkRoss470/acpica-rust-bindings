@@ -4,7 +4,7 @@ use crate::{
     bindings::types::{
         tables::FfiAcpiTableHeader, FfiAcpiPhysicalAddress, FfiAcpiPredefinedNames, FfiAcpiString,
     },
-    handler::{DropOnTerminate, OS_INTERFACE},
+    interface::{DropOnTerminate, OS_INTERFACE},
     status::{AcpiError, AcpiErrorAsStatusExt, AcpiStatus},
     types::{tables::AcpiTableHeader, AcpiPredefinedNames},
 };

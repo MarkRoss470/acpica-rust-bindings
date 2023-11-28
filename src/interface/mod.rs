@@ -1,30 +1,153 @@
+use core::ops::{Deref, DerefMut};
+
+use alloc::{ffi::CString, boxed::Box, vec::Vec};
+use spin::Mutex;
+
+use crate::bindings::{functions::{AcpiInitializeSubsystem, AcpiInitializeTables, AcpiLoadTables, AcpiEnableSubsystem, AcpiInitializeObjects}, consts::ACPI_FULL_INITIALIZATION};
+
+use self::{handler::AcpiHandler, status::AcpiError};
+
 pub mod handler;
-
-use core::sync::atomic::Ordering;
-
-use alloc::ffi::CString;
-
-use crate::bindings::functions::AcpiDebugTrace;
-
-use self::{handler::SUBSYSTEM_IS_INITIALIZED, status::AcpiError};
 
 pub mod status;
 pub mod types;
+mod tables;
+pub mod devices;
 
-/// Rust binding to the ACPICA `AcpiDebugTrace` function.
+static OS_INTERFACE: Mutex<Option<OsInterface>> = Mutex::new(None);
+
+#[derive(Debug)]
+enum DropOnTerminate {
+    CString(CString),
+}
+
+struct OsInterface {
+    handler: Box<dyn AcpiHandler + Send>,
+    objects_to_drop: Vec<DropOnTerminate>,
+}
+
+impl Deref for OsInterface {
+    type Target = Box<dyn AcpiHandler + Send>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.handler
+    }
+}
+
+impl DerefMut for OsInterface {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.handler
+    }
+}
+
+/// Registers `interface` as the handler for ACPICA functions, and starts the initialization of ACPICA.
+/// See the docs for [`AcpicaOperation`] for more info.
 ///
 /// # Panics
-/// * If the OS interface has not been set up using [`register_interface`]
-/// * If `name` contains null bytes, including at the end.
-///
-/// TODO: Find enums for layer, level, and flags
-/// 
-/// [`register_interface`]: handler::register_interface
-pub fn debug_trace(name: &str, level: u32, layer: u32, flags: u32) -> Result<(), AcpiError> {
-    assert!(SUBSYSTEM_IS_INITIALIZED.load(Ordering::Relaxed), "Subsystem not initialised");
+/// If called more than once.
+pub fn register_interface<T: AcpiHandler + Send + 'static>(
+    interface: T,
+) -> Result<AcpicaOperation<false, false, false, false>, AcpiError> {
+    let mut lock = OS_INTERFACE.lock();
 
-    let ffi_name = CString::new(name).expect("name should not contain null bytes");
+    assert!(!lock.is_some(), "Interface is already initialized");
 
-    // SAFETY: The passed pointer is valid as it was taken from a CString
-    unsafe { AcpiDebugTrace(ffi_name.as_ptr(), level, layer, flags).as_result() }
+    *lock = Some(OsInterface {
+        handler: Box::new(interface),
+        objects_to_drop: Vec::new(),
+    });
+
+    // AcpiInitializeSubsystem calls functions which need this lock
+    drop(lock);
+
+    // SAFETY: Handlers for AcpiOs functions have been set up
+    unsafe { AcpiInitializeSubsystem().as_result()? };
+
+    Ok(AcpicaOperation)
 }
+
+/// The interface to ACPICA functions. The state of ACPICA's initialization is tracked using const generics on this type.
+///
+/// ACPICA is not initialized all at once - it has multiple initialization functions for different systems.
+/// This struct keeps track of the calling of these functions using the type parameters `T`, for whether ACPICA tables are initialized,
+/// and `S` for whether the ACPICA subsystem is enabled. An `AcpiOperation<false, false>` can be obtained from [`register_interface`],
+/// which also calls `AcpiInitializeSubsystem`.
+///
+/// Subsystem initialization code could look like the following:
+///
+/// ```ignore
+/// # use acpica_bindings::status::AcpiError;
+/// # use acpica_bindings::handler::register_interface;
+/// # fn main() -> Result<(), AcpiError> {
+///     let interface = todo!(); // In real code this would be an object implementing the AcpiHandler trait
+///
+///     let initialization = register_interface(interface)?;
+///     let initialization = initialization.load_tables()?;
+///     let initialization = initialization.enable_subsystem()?;
+///     let initialization = initialization.initialize_objects()?;
+///
+/// #   Ok(())
+/// # }
+/// ```
+#[derive(Debug)]
+#[must_use]
+pub struct AcpicaOperation<
+    const TABLES_INITIALIZED: bool,
+    const TABLES_LOADED: bool,
+    const SUBSYSTEM_ENABLED: bool,
+    const OBJECTS_INITIALIZED: bool,
+>;
+
+/// An alias to an [`AcpicaOperation`] which is completely initialized, and all methods are available.
+pub type AcpicaOperationFullyInitialized = AcpicaOperation<true, true, true, true>;
+
+impl AcpicaOperation<false, false, false, false> {
+    /// Calls the ACPICA function `AcpiInitializeTables`.
+    ///
+    /// This function causes ACPICA to parse all the tables pointed to by the RSDT/XSDT
+    pub fn initialize_tables(
+        self,
+    ) -> Result<AcpicaOperation<true, false, false, false>, AcpiError> {
+        // SAFETY: `AcpiInitializeSubsystem` has been called
+        unsafe { AcpiInitializeTables(core::ptr::null_mut(), 16, false).as_result()? };
+
+        Ok(AcpicaOperation)
+    }
+}
+
+impl AcpicaOperation<true, false, false, false> {
+    /// Calls the ACPICA function `AcpiLoadTables`.
+    ///
+    /// This function causes ACPICA to parse and execute AML code in order to build the AML namespace.
+    pub fn load_tables(self) -> Result<AcpicaOperation<true, true, false, false>, AcpiError> {
+        // SAFETY: `AcpiInitializeTables` has been called
+        unsafe { AcpiLoadTables().as_result()? };
+
+        Ok(AcpicaOperation)
+    }
+}
+
+impl AcpicaOperation<true, true, false, false> {
+    /// Calls the ACPICA function `AcpiEnableSubsystem`.
+    ///
+    /// This function causes ACPICA to enter ACPI mode and start receiving ACPI interrupts.
+    pub fn enable_subsystem(self) -> Result<AcpicaOperation<true, true, true, false>, AcpiError> {
+        // SAFETY: `AcpiLoadTables` has been called
+        unsafe { AcpiEnableSubsystem(ACPI_FULL_INITIALIZATION).as_result()? };
+
+        Ok(AcpicaOperation)
+    }
+}
+
+impl AcpicaOperation<true, true, true, false> {
+    /// Calls the ACPICA function `AcpiEnableSubsystem`.
+    ///
+    /// This function causes ACPICA to enter ACPI mode and start receiving ACPI interrupts.
+    pub fn initialize_objects(self) -> Result<AcpicaOperationFullyInitialized, AcpiError> {
+        // SAFETY: `AcpiEnableSubsystem` has been called
+        unsafe { AcpiInitializeObjects(ACPI_FULL_INITIALIZATION).as_result()? };
+
+        Ok(AcpicaOperation)
+    }
+}
+
