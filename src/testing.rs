@@ -7,9 +7,6 @@ use crate::types::AcpiCpuFlags;
 )))]
 use core::ffi::c_void;
 
-#[cfg(not(feature = "builtin_alloc"))]
-use crate::types::AcpiAllocationError;
-
 use alloc::boxed::Box;
 
 use crate::{handler::AcpiHandler, status::AcpiError, types::tables::AcpiTableHeader};
@@ -188,12 +185,6 @@ pub struct DummyHandler<'a> {
 
     #[cfg(not(feature = "builtin_semaphore"))]
     pub fn_signal_semaphore: Box<dyn Fn(*mut c_void, u32) -> Result<(), AcpiError>>,
-
-    #[cfg(not(feature = "builtin_alloc"))]
-    pub fn_allocate: Box<dyn Fn(usize) -> Result<*mut u8, AcpiAllocationError>>,
-
-    #[cfg(not(feature = "builtin_alloc"))]
-    pub fn_free: Box<dyn Fn(*mut u8)>,
 }
 
 // SAFETY: This struct is only used in tests, which are carried out in a no_std environment not linked to any OS
@@ -297,11 +288,6 @@ impl<'a> DummyHandler<'a> {
             fn_wait_semaphore: Box::new(dummy_3_arg),
             #[cfg(not(feature = "builtin_semaphore"))]
             fn_signal_semaphore: Box::new(dummy_2_arg),
-
-            #[cfg(not(feature = "builtin_alloc"))]
-            fn_allocate: Box::new(dummy_1_arg),
-            #[cfg(not(feature = "builtin_alloc"))]
-            fn_free: Box::new(dummy_1_arg),
         }
     }
 }
@@ -688,15 +674,5 @@ unsafe impl<'a> AcpiHandler for DummyHandler<'a> {
         units: u32,
     ) -> Result<(), AcpiError> {
         (self.fn_signal_semaphore)(handle, units)
-    }
-
-    #[cfg(not(feature = "builtin_alloc"))]
-    unsafe fn allocate(&mut self, size: usize) -> Result<*mut u8, AcpiAllocationError> {
-        (self.fn_allocate)(size)
-    }
-
-    #[cfg(not(feature = "builtin_alloc"))]
-    unsafe fn free(&mut self, memory: *mut u8) {
-        (self.fn_free)(memory)
     }
 }
