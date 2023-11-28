@@ -2,6 +2,7 @@ pub mod consts;
 pub mod types;
 pub mod statics;
 pub mod functions;
+pub mod buffer;
 
 
 

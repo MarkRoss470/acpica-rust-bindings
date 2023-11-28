@@ -86,9 +86,10 @@ pub(crate) struct FfiAcpiObjectList {
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
-pub(crate) struct FfiAcpiBuffer {
+pub(crate) struct FfiAcpiBuffer<'a> {
     pub(crate) length: FfiAcpiSize,
     pub(crate) pointer: *mut ::core::ffi::c_void,
+    pub _p: PhantomData<&'a mut [u8]>
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
