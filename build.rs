@@ -3,25 +3,15 @@ use std::{
     ffi::OsString,
     fs::{self, File},
     path::{Path, PathBuf},
-    process::Command,
 };
 
 fn main() {
-    #[cfg(not(unix))]
-    {
-        println!("cargo:warning=Building acpica_bindings on non-unix platforms is not supported. Build may not succeed.");
-    }
     let out_dir = env::var("OUT_DIR").unwrap();
     let out_dir_path = PathBuf::from(out_dir.clone());
 
-    let optimisation_level = env::var("OPT_LEVEL").unwrap();
-    let is_debug = env::var("DEBUG").unwrap().parse().unwrap();
-
-    println!("{optimisation_level}, {is_debug}");
-
     let acpica_dir = find_source_dir(out_dir_path.clone());
-    let object_files = compile(&acpica_dir, &out_dir_path, &optimisation_level, is_debug);
-    create_archive(out_dir_path, out_dir, object_files);
+
+    compile(&acpica_dir);
 }
 
 use flate2::read::GzDecoder;
@@ -150,36 +140,13 @@ fn update_source(acpica_dir: PathBuf) {
         .expect("Should have been abl to write 'acenv.h'");
 }
 
-/// Creates a static library containing the given object files, writing it to `out_dir/libacpica.a`
-fn create_archive(out_dir: PathBuf, out_dir_string: String, object_files: Vec<PathBuf>) {
-    let mut archive_path = out_dir.clone();
-    archive_path.push("libacpica.a");
-
-    let mut ar_command = Command::new("ar");
-    ar_command.arg("-rcs").arg(archive_path);
-    for obj in object_files {
-        ar_command.arg(obj);
-    }
-
-    assert!(ar_command
-        .status()
-        .expect("Should have been able to get status of 'ar' command")
-        .success());
-
-    println!("cargo:rustc-link-lib=static=acpica");
-
-    println!("cargo:rustc-link-search=native={out_dir_string}");
-}
-
-/// Runs GCC on all the C files making up the ACPICA kernel subsystem,
-/// returning the filepaths of the generated object files.
-fn compile(
-    acpica_dir: &Path,
-    out_dir: &Path,
-    optimisation_level: &str,
-    is_debug: bool,
-) -> Vec<PathBuf> {
-    let mut object_files = vec![];
+/// Compiles the code using the [`cc`] crate
+fn compile(acpica_dir: &Path) {
+    let mut compilation = cc::Build::new();
+    compilation
+        .include(acpica_dir.to_str().unwrap().to_string() + "/source/include") // Add `source/include` as an include directory
+        .flag("-DACPI_DEBUG_OUTPUT") // Set the ACPI_DEBUG_OUTPUT symbol
+        .flag("-fno-stack-protector");
 
     let mut components_path = acpica_dir.to_path_buf();
     components_path.push("source/components");
@@ -205,75 +172,9 @@ fn compile(
         {
             let c_file = c_file.expect("Should have been able to get info about dir entry");
 
-            // Put all the object files in one output directory regardless of the source directory structure
-            // This doesn't lead to file name collisions because all the ACPICA source files are prefixed with the directory they come from anyway
-            // E.g. the debugger and disassembler directories both have `names` C files, but one is `dbnames.c` and one is `dmnames.c`
-            // so they will end up in different object files.
-            let obj_file = {
-                let mut c_file_name = c_file.file_name();
-                c_file_name.push(".o");
-
-                let mut obj_file_path = out_dir.to_path_buf();
-                obj_file_path.push(c_file_name);
-                obj_file_path
-            };
-
-            object_files.push(obj_file.clone());
-
-            if obj_file.exists() {
-                continue;
-            }
-
-            println!("Compiling {:?}", c_file.path());
-
-            let mut gcc_command = Command::new("gcc");
-
-            gcc_command
-                .arg("-o")
-                .arg(obj_file) // Set output object file
-                .arg("-c")
-                .arg(c_file.path()) // Set input C file
-                .arg({
-                    let mut s = OsString::from("-I");
-                    s.push(acpica_dir.as_os_str());
-                    s.push("/source/include");
-
-                    println!("{s:?}");
-
-                    s
-                }) // Set /source/include as directory for header files
-                .arg("-DACPI_DEBUG_OUTPUT") // TODO: Get it to compile without this for non-debug builds
-                .arg("-fno-stack-protector") // Remove stack protections to get rid of __stack_chk_fail linker warning
-                .arg("-g"); // Produce debug symbols
-
-            // Match the optimisation level of the C code to the rust project
-            match (optimisation_level, is_debug) {
-                ("0", true) => gcc_command.arg("-Og"), // Best setting for debugging
-                ("0", false) => gcc_command.arg("-O0"), // Least optimised
-                ("1" | "2" | "3", _) => gcc_command.arg("-O1"), // TODO: 02 and 03 crash at runtime - debug this?
-                (_, _) => panic!("Unknown optimisation level '{optimisation_level}'"),
-            };
-
-            let gcc_command_output = gcc_command
-                .output()
-                .expect("Should have been able to get output of GCC command");
-
-            // Check for compilation errors
-            if !gcc_command_output.status.success() {
-                eprintln!("Compilation failed:");
-                println!(
-                    " --- stdout\n{}",
-                    String::from_utf8_lossy(&gcc_command_output.stdout)
-                );
-                println!(
-                    " --- stderr\n{}",
-                    String::from_utf8_lossy(&gcc_command_output.stderr)
-                );
-                panic!();
-            }
+            compilation.file(c_file.path());
         }
     }
 
-    // Return the generated object files
-    object_files
+    compilation.compile("acpica")
 }
