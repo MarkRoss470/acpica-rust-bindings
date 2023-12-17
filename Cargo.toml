@@ -1,13 +1,13 @@
 [package]
 name = "acpica-bindings"
 type = "lib"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 
 authors = ["Mark Ross"]
 description = "Incomplete rust bindings to Intel's ACPICA kernel subsystem"
 readme = "README.md"
-repository = "https://https://github.com/MarkRoss470/acpica-rust-bindings"
+repository = "https://github.com/MarkRoss470/acpica-rust-bindings"
 license = "MIT"
 keywords = ["osdev", "acpi"]
 categories = ["api-bindings", "hardware-support", "no-std"]
