@@ -144,8 +144,9 @@ fn update_source(acpica_dir: PathBuf) {
 fn compile(acpica_dir: &Path) {
     let mut compilation = cc::Build::new();
     compilation
+        .warnings(false) // Otherwise lots of annoying warnings are printed
         .include(acpica_dir.to_str().unwrap().to_string() + "/source/include") // Add `source/include` as an include directory
-        .flag("-DACPI_DEBUG_OUTPUT") // Set the ACPI_DEBUG_OUTPUT symbol
+        .define("ACPI_DEBUG_OUTPUT", None) // Set the ACPI_DEBUG_OUTPUT symbol
         .flag("-fno-stack-protector");
 
     let mut components_path = acpica_dir.to_path_buf();

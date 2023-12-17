@@ -1,4 +1,4 @@
-//! The [`AcpiTableMadt`] type
+//! The [`Madt`] type
 
 use core::{ffi::CStr, fmt::Debug};
 

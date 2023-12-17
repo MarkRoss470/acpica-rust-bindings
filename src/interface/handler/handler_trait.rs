@@ -34,7 +34,7 @@ use crate::{
 /// Users of this library who have panic unwinding enabled are responsible for ensuring that a panic never unwinds out of a method in this trait.
 /// If the OS is built with `panic=abort`, this is not an issue.
 ///
-/// [`register_interface`]: super::register_interface
+/// [`register_interface`]: crate::register_interface
 pub unsafe trait AcpiHandler {
     /// Method called when ACPICA initialises. The default implementation of this method is a no-op.
     ///

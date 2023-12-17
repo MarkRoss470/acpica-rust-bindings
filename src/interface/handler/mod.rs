@@ -25,7 +25,7 @@ impl<const TI: bool, const TL: bool, const E: bool, const I: bool> AcpicaOperati
     ///
     /// TODO: Find enums for layer, level, and flags
     ///
-    /// [`register_interface`]: handler::register_interface
+    /// [`register_interface`]: super::register_interface
     pub fn debug_trace(
         &self,
         name: &str,

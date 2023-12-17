@@ -1,4 +1,4 @@
-//! The [`AcpiTableUefi`] type for reading the `UEFI` table
+//! The [`Uefi`] type for reading the `UEFI` table
 
 use core::fmt::Debug;
 

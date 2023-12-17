@@ -1,7 +1,38 @@
-//! # Dependencies
-//! This crate builds ACPICA from source, which means that the following system commands must be available:
-//! * GCC for compiling C code
-//! * AR for creating a static library
+//! # ACPICA bindings
+//! Incomplete rust bindings to Intel's ACPICA kernel subsystem. This crate is very much still under development - I am adding features as they are needed by [my OS project].
+//! If you are using this crate, expect lots of compiler warnings and `todo!`s.
+//!
+//! ## Build Dependencies
+//! This crate builds ACPICA from source, using the [`cc`] crate. This crate requires the presence of a C compiler on the system -
+//! see that crate's documentation for more information.
+//!
+//! The crate also uses unstable rust features, so needs a nightly or beta compiler.
+//!
+//! ## Runtime Dependencies
+//! As the crate is designed to be used in an OS kernel, it has minimal dependencies. The crate does require dynamic memory allocation, however.
+//!
+//! The crate also uses the [`log`] crate for logging.
+//!
+//! ## Usage
+//! The ACPICA kernel subsystem calls into OS code using various functions prefixed with `AcpiOs`. These are translated by this library into calls to methods on the `AcpiHandler` trait. An object implementing this trait must be passed to `register_handler` before any ACPI functionality can be used. Initializing the library could look like this:
+//!
+//! ```rust, ignore
+//! struct HandlerStruct {}
+//!
+//! impl AcpiHandler for HandlerStruct {
+//!     // ...
+//! }
+//!
+//! let handler = HandlerStruct {};
+//!
+//! let initialization = register_interface(handler)?;
+//! let initialization = initialization.load_tables()?;
+//! let initialization = initialization.enable_subsystem()?;
+//! let initialization = initialization.initialize_objects()?;
+//! ```
+//!
+//! [my OS project]: https://github.com/MarkRoss470/rust-os
+//! [`cc`]: https://crates.io/crates/cc
 
 #![no_std]
 #![feature(c_variadic)]
