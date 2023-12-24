@@ -143,11 +143,21 @@ fn update_source(acpica_dir: PathBuf) {
 /// Compiles the code using the [`cc`] crate
 fn compile(acpica_dir: &Path) {
     let mut compilation = cc::Build::new();
+
+    // ACPICA miscompiles if compiled with -O2, so limit the optimisation level to -O1
+    // TODO: debug these miscompilations? 
+    let opt_level = env::var("OPT_LEVEL")
+        .unwrap()
+        .parse::<u32>()
+        .unwrap()
+        .min(1);
+
     compilation
         .warnings(false) // Otherwise lots of annoying warnings are printed
         .include(acpica_dir.to_str().unwrap().to_string() + "/source/include") // Add `source/include` as an include directory
         .define("ACPI_DEBUG_OUTPUT", None) // Set the ACPI_DEBUG_OUTPUT symbol
-        .flag("-fno-stack-protector");
+        .flag("-fno-stack-protector")
+        .opt_level(opt_level);
 
     let mut components_path = acpica_dir.to_path_buf();
     components_path.push("source/components");
